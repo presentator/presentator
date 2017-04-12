@@ -24,5 +24,5 @@ You could join our team and help us by:
 - [Suggest a new feature](https://github.com/ganigeorgiev/presentator/issues)
 - [Report an issue](https://github.com/ganigeorgiev/presentator/issues)
 - [Translate messages](https://presentator.io/en/support-us)
-- [Contribute to the core code or fix bugs](docs/start-coding-standarts.md)
+- [Contribute to the core code or fix bugs](docs/start-coding-standards.md)
 - [Donate a small amount via PayPal or Patreon](https://presentator.io/en/support-us)

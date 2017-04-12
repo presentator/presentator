@@ -3,7 +3,7 @@ Presentator - Path aliases
 
 ### Presentator aliases:
 
-Defined in defined in `common/config/bootstrap.php`.
+Defined in `common/config/bootstrap.php`.
 
 - `@console`  - console directory
 - `@common`   - common directory
