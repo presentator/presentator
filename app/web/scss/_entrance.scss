@@ -1,0 +1,160 @@
+/* ---- Language widget ---- */
+.language-widget {
+    position: absolute;
+    left: 0%;
+    top: 100%;
+    width: 100%;
+    margin: $baseSpacing 0;
+    text-align: center;
+    font-size: 13px;
+    label, select, .custom-select {
+        display: inline-block;
+        vertical-align: middle;
+        clear: none;
+        width: auto;
+        margin: 0;
+        font-size: inherit;
+    }
+    label {
+        margin-right: 5px;
+        opacity: 0.7;
+    }
+    .custom-select {
+        width: 155px;
+        text-align: left;
+    }
+    select, .select-field {
+        $height: 32px;
+        $vSpacing: 12px;
+        height: $height;
+        font-size: inherit;
+        line-height: $height - $vSpacing;
+        background: $greyColor;
+        @include transition(background 0.2s);
+    }
+    .active .select-field {
+        background: #fff;
+    }
+    .select-dropdown {
+        top: auto;
+        bottom: 100%;
+        margin-bottom: -2px;
+        @include border-radius($baseRadius);
+        @include border-bottom-left-radius(0);
+        @include border-bottom-right-radius(0);
+        @include box-shadow(0px -3px 10px 0px rgba(44, 75, 137, 0.1));
+        .option {
+            padding: 4px 10px;
+        }
+    }
+}
+
+/* ---- Auth panel ---- */
+// panel
+.auth-panel {
+    $panelWidth: 500px;
+    @include panel;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    border: 0;
+    max-width: 100%;
+    width: $panelWidth;
+    padding: 0;
+    text-align: left;
+    margin-bottom: $baseSpacing;
+    @include transition(height 0.3s);
+    .footer {
+        padding: $baseSpacing;
+        margin-top: $baseSpacing;
+        background: $lighterGreyColor;
+        @include border-bottom-left-radius($baseRadius);
+        @include border-bottom-right-radius($baseRadius);
+    }
+}
+// wrapper (@todo rename to auth-panel)
+.auth-panel-wrapper {
+    padding: 0;
+    text-align: center;
+    & > .table-wrapper .table-cell {
+        padding: $baseSpacing 0;
+        @media screen and (max-width: $pageMinWidth)  {
+            max-width: 100px;
+            padding: $baseSpacing 10px;
+        }
+    }
+    .logo {
+        display: inline-block;
+        vertical-align: top;
+        clear: none;
+        width: 250px;
+        height: 100px;
+        margin-bottom: $baseSpacing;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        img {
+            vertical-align: top;
+            display: inline-block;
+        }
+        .txt {
+            display: block;
+            clear: both;
+            width: 100%;
+            color: #fff;
+            line-height: 1;
+            font-size: 22px;
+            text-align: center;
+            font-weight: 300;
+            margin: 15px 0 0;
+        }
+    }
+}
+
+/* ---- Diagonal container ---- */
+.diagonal-bg-wrapper {
+    position: fixed;
+    z-index: -1;
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    background: url('#{$imagesPath}/intro.jpg') right center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    &:after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($secondaryColor, 0.8) url('#{$imagesPath}/pattern_white.png');
+    }
+    .diagonal-bg {
+        position: absolute;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        width: 400%;
+        height: 400%;
+        margin-top: 50px;
+        @include transform(translate3d(-50%, -50%, 0) rotate(0deg));
+        @include transition(none);
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background: $lightGreyColor;
+        }
+        &.animate {
+            @include transition(transform 1s);
+        }
+    }
+}

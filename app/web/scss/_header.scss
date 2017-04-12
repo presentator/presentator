@@ -1,0 +1,104 @@
+// Profile header menu
+.profile {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    color: inherit;
+    cursor: pointer;
+    @include user-select(none);
+    &:after {
+        // arrow
+        content: "\f35f";
+        display: inline-block;
+        vertical-align: middle;
+        font-family: $iconFont;
+        height: 15px;
+        line-height: 15px;
+        font-size: 16px;
+        color: $txtColor;
+        @include transition(color 0.2s);
+    }
+    .dropdown-menu {
+        margin-top: 5px;
+    }
+    .avatar {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    .name {
+        opacity: 0.5;
+        color: inherit;
+        @include transition(color 0.2s, opacity 0.2s);
+    }
+    &:hover {
+        .name {
+            opacity: 1;
+        }
+    }
+}
+
+// Page title
+.page-title {
+    @extend %block;
+    margin: 0;
+    .item {
+        display: inline-block;
+        vertical-align: top;
+        font-weight: 300;
+        text-decoration: none;
+        &:after {
+            content: "\f3d3";
+            display: inline-block;
+            vertical-align: middle;
+            font-family: $iconFont;
+            font-size: 16px;
+            line-height: inherit;
+            margin: 0 5px 0 10px;
+            color: $txtColor;
+        }
+        &:last-child:after {
+            content: none;
+            display: none;
+        }
+    }
+    a:hover {
+        color: $primaryColor;
+    }
+}
+
+// Page header wrapper
+.page-header {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: $headerHeight;
+    margin: 0;
+    padding: 20px $baseSpacing;
+    color: $txtColor;
+    .page-title, .profile {
+        clear: none;
+        width: auto;
+    }
+    .page-title {
+        float: left;
+        line-height: 45px;
+        padding-right: 10px;
+    }
+    .profile {
+        float: right;
+        padding-left: 10px;
+    }
+    .scrolling & {
+        background: #fff;
+        height: 62px;
+        padding-top: 7px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid $greyColor;
+        @include animation(header-scroll-show 0.3s);
+    }
+    .scroll-back & {
+        @include animation(header-scroll-hide 0.3s forwards);
+    }
+}

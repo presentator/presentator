@@ -1,0 +1,256 @@
+@mixin transform ($value...) {
+    -webkit-transform: $value;
+    -ms-transform:     $value;
+    -o-transform:      $value;
+    transform:         $value;
+}
+@mixin transform-origin ($value) {
+    -webkit-transform-origin: $value;
+    -moz-transform-origin:    $value;
+    -ms-transform-origin:     $value;
+    -o-transform-origin:      $value;
+    transform-origin:         $value;
+}
+
+@mixin transition ($value...) {
+    -webkit-transition: $value;
+    -o-transition:      $value;
+    transition:         $value;
+}
+
+@mixin animation ($value...) {
+    -webkit-animation: $value;
+    -moz-animation:    $value;
+    animation:         $value;
+}
+
+// border-radius
+@mixin border-radius ($value...) {
+    -webkit-border-radius: $value;
+    -moz-border-radius:    $value;
+    -ms-border-radius:     $value;
+    -o-border-radius:      $value;
+    border-radius:         $value;
+}
+@mixin border-top-left-radius ($value) {
+    -webkit-border-top-left-radius: $value;
+    -moz-border-top-left-radius:    $value;
+    -ms-border-top-left-radius:     $value;
+    -o-border-top-left-radius:      $value;
+    border-top-left-radius:         $value;
+}
+@mixin border-top-right-radius ($value) {
+    -webkit-border-top-right-radius: $value;
+    -moz-border-top-right-radius:    $value;
+    -ms-border-top-right-radius:     $value;
+    -o-border-top-right-radius:      $value;
+    border-top-right-radius:         $value;
+}
+@mixin border-bottom-left-radius ($value) {
+    -webkit-border-bottom-left-radius: $value;
+    -moz-border-bottom-left-radius:    $value;
+    -ms-border-bottom-left-radius:     $value;
+    -o-border-bottom-left-radius:      $value;
+    border-bottom-left-radius:         $value;
+}
+@mixin border-bottom-right-radius ($value) {
+    -webkit-border-bottom-right-radius: $value;
+    -moz-border-bottom-right-radius:    $value;
+    -ms-border-bottom-right-radius:     $value;
+    -o-border-bottom-right-radius:      $value;
+    border-bottom-right-radius:         $value;
+}
+
+@mixin pointer-events ($value) {
+    -webkit-pointer-events: $value;
+    -moz-pointer-events:    $value;
+    -ms-pointer-events:     $value;
+    -o-pointer-events:      $value;
+    pointer-events:         $value;
+}
+
+@mixin user-select ($value: none) {
+    -webkit-user-select: $value;
+    -moz-user-select:    $value;
+    -ms-user-select:     $value;
+    -o-user-select:      $value;
+    user-select:         $value;
+}
+
+@mixin box-shadow ($value...) {
+    -webkit-box-shadow: $value;
+    box-shadow:         $value;
+}
+
+@mixin placeholder ($color) {
+    &::-webkit-input-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &:-moz-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &::-moz-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &:-ms-input-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+}
+
+@mixin selection ($bgColor, $textColor: #fff) {
+    &::-moz-selection {
+        color: $textColor;
+        background: $bgColor;
+    }
+    &::selection {
+        color: $textColor;
+        background: $bgColor;
+    }
+}
+
+@mixin scrollbar($width: 6px) {
+    &::-webkit-scrollbar {
+        width: $width;
+        height: $width;
+    }
+    &::-webkit-scrollbar-track {
+        background: $greyColor;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $txtColor;
+        &:hover {
+            background: darken($txtColor, 10%);
+        }
+    }
+}
+
+@mixin clear-list {
+    margin: 0;
+    padding: 0;
+    li {
+        margin: 0;
+        padding: 0;
+        &:before {
+            content: none;
+        }
+    }
+}
+
+@mixin v-align-helper {
+    text-align: center;
+    font-size: 0; /* remove inline-block whitespaces */
+    &:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 0;
+        height: 100%;
+    }
+    & > div, & > span, & > article, & > section {
+        font-size: 14px; /* reset */
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+@mixin panel {
+    background: #fff;
+    border: 1px solid $greyColor;
+    @include border-radius($baseRadius);
+    @include box-shadow(0px 3px 10px 0px rgba(44, 75, 137, 0.1));
+}
+
+@mixin arrow-border($size: 10px, $color: #ffffff, $position: 'top') {
+    display: inline-block;
+    vertical-align: top;
+    width: 0;
+    height: 0;
+    border: $size solid white;
+    @include transform(rotate(-45deg));
+    @include transform-origin(0 0);
+
+    @if $position == 'top' {
+        border-color: $color $color transparent transparent;
+        @include box-shadow(1px -1px 0px 0px rgba(44, 75, 137, 0.15));
+    } @else if  $position == 'bottom' {
+        border-color: transparent transparent $color $color;
+        @include box-shadow(-1px 1px 0px 0px rgba(44, 75, 137, 0.15));
+    } @else if  $position == 'left' {
+        border-color: $color transparent transparent $color;
+        @include box-shadow(-1px -1px 0px 0px rgba(44, 75, 137, 0.15));
+    } @else if  $position == 'right' {
+        border-color: transparent $color $color transparent;
+        @include box-shadow(1px 1px 0px 0px rgba(44, 75, 137, 0.15));
+    }
+}
+
+@mixin hide {
+    opacity: 0;
+    visibility: hidden;
+}
+@mixin show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+@mixin items-per-row ($items: 3, $margin: $baseSpacing, $itemSelector: '.box') {
+    #{$itemSelector} {
+        $plainMargin: $margin / ($margin * 0 + 1); // strip unit
+        $size: calc((100% - #{($items - 1) * $plainMargin}px) / #{$items});
+        float: left;
+        width: $size;
+        padding-bottom: $size;
+        margin-bottom: $margin;
+        &:nth-child(1n) { // reset by overwriting previous calls
+            margin-right: $margin;
+            clear: none;
+        }
+        &:nth-child(#{$items}n) { // row clear
+            margin-right: 0;
+            clear: right;
+        }
+        .no-csscalc & {
+            $fallbackSize: (100% - ($items * 2%)) / $items;
+            width: $fallbackSize;
+            padding-bottom: $fallbackSize;
+            margin-right: 2%;
+            margin-bottom: 2%;
+            &:nth-child(1n) { margin-right: 2%; }
+            &:nth-child(#{$items}n) { margin-right: 0; }
+        }
+    }
+}
+
+@mixin btn-ghost-coloring($color) {
+    color: $color;
+    border-color: $color;
+    &:hover { background: rgba($color, 0.05); }
+    &:active { background: rgba($color, 0.1); }
+}
+
+@mixin sideHighlight($color, $height: 15px, $width: 3px) {
+    &:after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: $width;
+        height: $height;
+        margin-top: -($height / 2);
+        background: $color;
+        @include box-shadow(1px 0px 10px 0px rgba($color, 0.5));
+    }
+}

@@ -1,0 +1,53 @@
+.page-footer {
+    @extend %block;
+    position: relative;
+    z-index: 2;
+    clear: both;
+    width: 100%;
+    height: $footerHeight;
+    margin: 0;
+    padding: $baseSpacing;
+    font-size: 12px;
+    a {
+        color: inherit;
+        text-decoration: underline;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    .icon-link {
+        text-decoration: none;
+        .txt, i {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .txt {
+            text-decoration: underline;
+        }
+        i {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        &:hover {
+            .txt {
+                text-decoration: none;
+            }
+        }
+        &.heart-link {
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+    .links {
+        float: left;
+    }
+    .credits {
+        float: right;
+        opacity: 0.5;
+        @include transition(opacity 0.2s);
+        &:hover {
+            opacity: 1;
+        }
+    }
+}

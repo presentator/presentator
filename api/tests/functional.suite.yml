@@ -1,0 +1,11 @@
+class_name: FunctionalTester
+bootstrap: false
+modules:
+    enabled:
+        - Yii2:
+            part: [fixtures, email]
+        - REST:
+            # url: /
+            depends: Yii2
+    config:
+        - Yii2
