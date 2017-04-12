@@ -1,0 +1,7 @@
+class_name: FunctionalTester
+bootstrap: false
+modules:
+    enabled:
+        - Asserts
+        - Yii2
+        - \app\tests\Helper\Functional

@@ -1,0 +1,241 @@
+/* ---- Comment target ---- */
+.comment-target {
+    $size: 35px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    z-index: 1;
+    width: $size;
+    height: $size;
+    line-height: $size;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: normal;
+    background: $dangerColor;
+    @include border-radius($size);
+    @include box-shadow(0px 0px 0px 0px rgba($dangerColor, 0.4));
+    @include transition(color 0.2s, background 0.2s, transform 0.2s, opacity 0.2s, visibility 0.2s, box-shadow 0.2s);
+    @include hide;
+    // States
+    &:hover {
+        background: darken($dangerColor, 5%);
+        @include box-shadow(0px 0px 0px 3px rgba($dangerColor, 0.4));
+    }
+    &:active {
+        @include box-shadow(0px 0px 0px 5px rgba($dangerColor, 0.4));
+    }
+    &.new {
+        @include animation(scale-entrance 0.3s linear);
+    }
+    &.remove-start {
+        @include animation(scale-exit 0.3s linear forwards);
+    }
+    &.unread {
+        background: $warningColor;
+        @include animation(unread-comment-pulse 1.2s linear infinite);
+        &:hover {
+            background: darken($warningColor, 5%);
+        }
+        &:active {
+            background: darken($warningColor, 5%);
+        }
+    }
+    &.selected {
+        z-index: 3;
+        background: $successColor;
+        @include animation(none);
+        @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+        &:hover,
+        &:active {
+            background: $successColor;
+            @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+        }
+    }
+    .hotspots-mode & {
+        @include hide;
+        @include pointer-events(none);
+    }
+    .comments-mode & {
+        @include show;
+    }
+}
+// Targets list
+.comment-targets-list {
+    counter-reset: commentsCounter;
+    .comment-target {
+        counter-increment: commentsCounter;
+        &:before {
+            content: counter(commentsCounter);
+        }
+    }
+}
+
+/* ---- Comment popover ---- */
+.comment-popover {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 390px;
+    height: auto;
+    display: none;
+    margin: 0 15px;
+    @include pointer-events(none);
+    // comment item
+    .comment {
+        $commentPadding: 20px;
+        $avatarSize: 40px;
+        @extend %block;
+        position: relative;
+        padding: $commentPadding;
+        color: $txtColor;
+        background: #fff;
+        border-bottom: 1px solid $lightGreyColor;
+        @include transition(background 0.2s, box-shadow 1s);
+        @include border-top-left-radius($baseRadius);
+        @include border-top-right-radius($baseRadius);
+        .content {
+            margin-top: 15px;
+        }
+        .heading {
+            @extend %block;
+            @extend %clear-after;
+            position: relative;
+            padding-left: $avatarSize + 10px;
+            padding-right: 20px;
+            line-height: 20px;
+        }
+        .avatar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: $avatarSize;
+            height: $avatarSize;
+            line-height: $avatarSize - 2px;
+            background: #fff;
+            color: $greyColor;
+            border: 1px solid $lightGreyColor;
+        }
+        .author, .date {
+            float: left;
+            clear: both;
+            margin: 0;
+        }
+        .author {
+            cursor: pointer;
+            color: $txtColor;
+            text-decoration: underline;
+            @include ellipsis;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        .date {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .delete-handle {
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+            font-size: 16px;
+            color: $greyColor;
+            @include transition(opacity 0.2s, color 0.2s, transform 0.2s);
+            @include user-select(none);
+            &:hover {
+                color: $dangerColor;
+            }
+        }
+        &.focus {
+            @include transition(background 0.2s, box-shadow 0.2s);
+            @include box-shadow(inset 0px 0px 0px 2px $warningColor);
+        }
+        &.primary-comment {
+            background: #fff;
+            .delete-handle {
+                font-size: 19px;
+            }
+        }
+    }
+
+    // Reply form
+    .reply-form {
+        $baseInputHeight: 50px;
+        $btnWidth: 40px;
+        @extend %block;
+        position: relative;
+        padding: 0 $btnWidth 0 20px;
+        background: $lighterGreyColor;
+        @include border-radius($baseRadius);
+        .reply-input {
+            width: 100%;
+            line-height: 24px;
+            height: $baseInputHeight;
+            padding: (($baseInputHeight - 24) / 2) 0;
+            resize: none;
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid $lightGreyColor;
+            @include box-shadow(none);
+            &:focus {
+                @include box-shadow(none);
+                color: $txtColor;
+            }
+            &:last-child {
+                border: 0;
+            }
+        }
+        .reply-btn {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0 10px;
+            background: 0;
+            cursor: pointer;
+            width: $btnWidth;
+            height: $baseInputHeight;
+            line-height: $baseInputHeight;
+            text-align: center;
+            color: $successColor;
+            font-size: 18px;
+            background: none;
+            border-radius: 0;
+            @include transition(color 0.2s, transform 0.2s);
+            &:hover {
+                color: lighten($successColor, 5%);
+            }
+        }
+    }
+
+    // Comments wrapper
+    .comments-wrapper {
+        @extend %block;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 360px;
+        & ~ .reply-form {
+            @include border-top-left-radius(0);
+            @include border-top-right-radius(0);
+        }
+    }
+
+    // States
+    &.close-start {
+        display: block;
+        @include animation(popover-hide 0.2s forwards);
+    }
+    .comment-active & {
+        display: block;
+        @include pointer-events(auto);
+        @include animation(popover-show 0.3s);
+    }
+    .comment-active.pins-drag & {
+        display: block;
+        @include pointer-events(none);
+        @include animation(popover-hide 0.2s forwards);
+    }
+}

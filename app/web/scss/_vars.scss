@@ -1,0 +1,43 @@
+// paths
+$fontsPath:  '../fonts';
+$imagesPath: '../images';
+
+// fonts
+$baseFont: 'Ubuntu', Arial, Helvetica, sans-serif;
+$iconFont: 'Ionicons';
+
+// colors
+$primaryColor:        #7a82f4;
+$secondaryColor:      #322955;
+$lightSecondaryColor: lighten($secondaryColor, 3%);
+$successColor:        #44e4a6;
+$warningColor:        #ffe606;
+$dangerColor:         #fe7c7b;
+$greyColor:           #d8dfec;
+$lightGreyColor:      #eff2f8;
+$lighterGreyColor:    lighten($lightGreyColor, 1.6%);
+$txtColor:            #9ca6b3;
+$lightSidebarColor:   #796fa2;
+$lighterSidebarColor: lighten($lightSidebarColor, 10%);
+$overlayColor:        #2e364e;
+
+// sizes
+$baseSpacing:         30px; // padding and margin
+$baseRadius:          3px;
+$sidebarWidth:        70px;
+$projectSidebarWidth: 200px;
+$pageMinWidth:        900px;
+
+$inputHeight:   45px;
+$smInputHeight: 40px;
+$lgInputHeight: 50px;
+$xsInputHeight: 36px;
+
+$headerHeight: 88px;
+$footerHeight: 85px;
+
+
+// others
+$sidebarZ:    100;
+$screenEditZ: 200;
+$popupZ:      300;

@@ -1,0 +1,531 @@
+/* --- Hotspots bulk panel ---- */
+// bulk popover
+.hotspots-bulk-screens-popover {
+    $spacing: 20px;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    top: auto;
+    right: auto;
+    width: 300px;
+    margin-bottom: 10px;
+    background: $lightGreyColor;
+    display: none;
+    &.bottom-left:before,
+    &.bottom-right:before {
+        border-color: transparent transparent $lightGreyColor $lightGreyColor;
+    }
+    // States
+    &.active {
+        display: block;
+        @include animation(popover-show 0.3s);
+    }
+    &.close-start {
+        display: block;
+        @include animation(popover-hide 0.2s forwards);
+    }
+    .popover-thumbs-wrapper {
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: $spacing $spacing 0 $spacing;
+        @include items-per-row(3, $spacing);
+    }
+}
+
+/* ---- Floating menu ---- */
+.floating-menu {
+    $itemWidth: 55px;
+    $itemHeight: 50px;
+    $edgeDistance: 20px;
+    position: fixed;
+    z-index: 100;
+    display: block;
+    overflow: hidden;
+    width: $itemWidth;
+    left: $edgeDistance;
+    top: $edgeDistance;
+    background: #fff;
+    text-align: center;
+    @include panel;
+    @include transition(border 0.2s);
+    ul {
+        @extend %block;
+        @include clear-list;
+        li {
+            @extend %block;
+        }
+    }
+    .bubble {
+        $size: 17px;
+        position: absolute;
+        z-index: 1;
+        right: 5px;
+        top: 5px;
+        width: $size;
+        height: $size;
+        color: $txtColor;
+        line-height: $size;
+        font-size: 11px;
+        background: $lightGreyColor;
+        @include border-radius($size);
+    }
+    .menu-item {
+        @extend %block;
+        position: relative;
+        text-align: center;
+        height: $itemHeight;
+        line-height: $itemHeight;
+        cursor: pointer;
+        overflow: hidden;
+        border-bottom: 1px solid $lightGreyColor;
+        @include transition(color 0.2s, background 0.2s, height 0.3s);
+        @include user-select(none);
+        i {
+            font-size: 21px;
+            line-height: inherit;
+            font-weight: normal;
+            &.ion-ios-eye-outline {
+                font-size: 23px;
+            }
+        }
+        &.disable {
+            opacity: 0.7;
+            @include pointer-events(none);
+        }
+        &:hover, &.active {
+            background: $lighterGreyColor;
+        }
+        &:active {
+            transition-duration: 0.1;
+            background: $lightGreyColor;
+        }
+        &:first-child {
+            @include border-top-left-radius($baseRadius);
+            @include border-top-right-radius($baseRadius);
+        }
+        &:last-child {
+            border-bottom: 0;
+            @include border-bottom-left-radius($baseRadius);
+            @include border-bottom-right-radius($baseRadius);
+        }
+        &.preview-handle,
+        &.hotspots-handle {
+            color: $primaryColor;
+            .bubble {
+                color: #fff;
+                background: $primaryColor;
+            }
+            &.active {
+                @include sideHighlight($primaryColor);
+            }
+        }
+        &.comments-handle {
+            color: $dangerColor;
+            .bubble {
+                color: #fff;
+                background: $dangerColor;
+            }
+            &.active {
+                @include sideHighlight($dangerColor);
+            }
+        }
+        &.info-handle {
+            i {
+                font-size: 19px;
+            }
+        }
+        &.versions-handle {
+            i {
+                font-size: 20px;
+            }
+        }
+        &.visibility-handle {
+            height: auto;
+            font-size: 11px;
+            line-height: 22px;
+            font-weight: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            &:after {
+                content: attr(data-expanded-text);
+            }
+        }
+        &.comments-nav {
+            display: none;
+            height: auto;
+            line-height: 22px;
+            font-size: 11px;
+            color: $dangerColor;
+            background: $lighterGreyColor;
+            i {
+                font-size: inherit;
+                color: inherit;
+            }
+            .nav-handle {
+                width: 50%;
+                float: left;
+                cursor: pointer;
+                border-right: 1px solid $lightGreyColor;
+                @include transition(background 0.2s);
+                &:last-child {
+                    border-right: 0;
+                }
+                &:hover {
+                    background: $lightGreyColor;
+                }
+            }
+            .comments-mode & {
+                display: block;
+            }
+        }
+    }
+    .versions-select {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        margin: 0;
+        cursor: pointer;
+        padding: 0 5px;
+        color: $txtColor;
+        @include box-shadow(none);
+        @include border-radius(none);
+        @include transition(background 0.2s, color 0.2s);
+        &:hover {
+            background: $lighterGreyColor;
+        }
+    }
+    &.collapsed {
+        border-color: $successColor;
+        .menu-item {
+            border: 0;
+            height: 0px;
+        }
+        .visibility-handle {
+            height: auto;
+            display: block;
+            color: #fff;
+            background: $successColor;
+            @include border-radius($baseRadius);
+            &:after {
+                content: attr(data-collapsed-text);
+            }
+        }
+    }
+}
+
+/* ---- Screen edit container ---- */
+.version-slider {
+    position: fixed;
+    z-index: $screenEditZ;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: $lightGreyColor;
+    @include animation(tab-show 0.3s);
+    &.close-anim {
+        @include animation(tab-hide 0.3s forwards);
+    }
+    // close handle
+    .close-handle {
+        $size: 35px;
+        display: inline-block;
+        vertical-align: top;
+        width: $size;
+        height: $size;
+        cursor: pointer;
+        color: #fff;
+        font-size: 26px;
+        line-height: $size - 2px;
+        text-align: center;
+        background: rgba($dangerColor, 0.7);
+        border: 1px solid $dangerColor;
+        outline: 10px solid transparent; // used as click bumper
+        @include border-radius($size);
+        @include box-shadow(0px 1px 10px 0px rgba($dangerColor, 0.3));
+        @include transition(color 0.2s, background 0.2s, transform 0.2s);
+        &:hover {
+            background: $dangerColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            @include transform(scale(0.9));
+        }
+    }
+    .close-handle-wrapper {
+        position: absolute;
+        z-index: 100;
+        right: 0;
+        top: 0;
+        padding: 20px;
+    }
+
+    // Slider caption
+    .slider-caption {
+        display: inline-block;
+        vertical-align: top;
+        padding: 10px 20px;
+        margin-left: 0;
+        color: #fff;
+        text-align: center;
+        background: rgba($overlayColor, 0.8);
+        @include border-radius($baseRadius);
+        @include transition(opacity 0.5s, visibility 0.5s);
+        @include hide;
+        &.active {
+            @include show;
+        }
+        .title {
+            margin: 0;
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: normal;
+        }
+    }
+    .slider-caption-wrapper {
+        $width: 400px;
+        position: fixed;
+        z-index: 99;
+        left: 50%;
+        top: $baseSpacing;
+        max-width: 100%;
+        width: $width;
+        margin-left: -($width / 2);
+        text-align: center;
+        @include user-select(none);
+        @include pointer-events(none);
+    }
+
+    // Sliders
+    .slider-item {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        overflow: auto;
+        max-height: 100%;
+        max-width: 100%;
+        background: $lighterGreyColor;
+        text-align: center;
+        border: 0;
+        @include border-radius($baseRadius);
+        @include box-shadow(0px 0 0px 5px $greyColor);
+        @include transition(box-shadow 0.3s);
+        &[data-alignment="left"] {
+            text-align: left;
+        }
+        &[data-alignment="right"] {
+            text-align: right;
+        }
+        .img-wrapper, img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .img-wrapper {
+            position: relative;
+            z-index: 0;
+            // loading icon
+            &:before {
+                // no image icon
+                $size: 50px;
+                content: "\f3f5";
+                display: block;
+                position: absolute;
+                z-index: 0;
+                top: 15%;
+                left: 50%;
+                margin-left: -($size / 2);
+                width: $size;
+                height: $size;
+                line-height: $size;
+                text-align: center;
+                font-size: 46px;
+                color: $greyColor;
+                font-family: $iconFont;
+            }
+            // overlay
+            &:after {
+                content: "";
+                position: absolute;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba($overlayColor, 0.8);
+                @include transition(opacity 0.2s, visibility 0.2s);
+                @include hide;
+                .hotspot-active &,
+                .comment-active & {
+                    @include show;
+                }
+            }
+            &.lazy-load-start:before {
+                @include animation(primary-color-pulse 1.5s infinite linear);
+            }
+            &.loaded:before {
+                display: none;
+            }
+        }
+        .hotspots-mode &,
+        .preview-mode & {
+            @include box-shadow(0px 0 0px 5px $primaryColor);
+        }
+        .comments-mode & {
+            @include box-shadow(0px 0 0px 5px $dangerColor);
+        }
+        .hotspots-mode &,
+        .comments-mode & {
+            .img-wrapper img {
+                cursor: crosshair;
+            }
+        }
+    }
+    .slider-items {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: hidden;
+        text-align: center;
+        padding: 10px;
+        @include v-align-helper;
+        @include user-select(none);
+        .slider-item {
+            display: none;
+            &.active {
+                display: inline-block;
+                @include animation(fade-in 0.4s);
+            }
+            &.change-start {
+                @include animation(fade-out 0.35s forwards);
+            }
+        }
+    }
+
+    // Nav
+    .slider-nav-item {
+        $size: 50px;
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        top: 50%;
+        width: $size;
+        height: $size;
+        margin-top: -($size / 2);
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        line-height: $size - 2;
+        cursor: pointer;
+        opacity: 0.7;
+        background: $secondaryColor;
+        @include transition(border 0.2s, color 0.2s, opacity 0.2s, transform 0.2s);
+        i {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+            @include transition(transform 0.1s);
+        }
+        &.prev {
+            @include border-top-right-radius($baseRadius);
+            @include border-bottom-right-radius($baseRadius);
+        }
+        &.next {
+            left: auto;
+            right: 0;
+            @include border-top-left-radius($baseRadius);
+            @include border-bottom-left-radius($baseRadius);
+        }
+        &:hover,
+        &:active {
+            opacity: 1;
+            @include transform(translateX(0));
+        }
+        &:active {
+            i {
+                @include transform(scale(0.8));
+            }
+        }
+        .hotspots-mode &,
+        .preview-mode & {
+            background: $primaryColor;
+        }
+        .comments-mode & {
+            background: $dangerColor;
+        }
+    }
+
+    // Options
+    &.desktop {
+        .slider-items {
+            padding: 0;
+        }
+        .slider-item {
+            width: 100%;
+            height: 100%;
+            @include border-radius(0);
+            @include box-shadow(none);
+        }
+        // .slider-nav-item.prev {
+        //     @include transform(translateX(-80%));
+        // }
+        // .slider-nav-item.next {
+        //     @include transform(translateX(80%));
+        // }
+        // &.left-highlight .slider-nav-item.prev,
+        // &.right-highlight .slider-nav-item.next {
+        //     @include transform(translateX(0));
+        // }
+    }
+    &.align-left {
+        .slider-item {
+            text-align: left;
+        }
+    }
+    &.align-right {
+        .slider-item {
+            text-align: right;
+        }
+    }
+
+    // hotspots and comments
+    .hotspot,
+    .comment-target {
+        position: absolute;
+    }
+}
+
+body {
+    &.screen-edit-active {
+        overflow: hidden;
+    }
+}
+
+
+.cursor-tooltip {
+    .hotspots-mode &,
+    .comments-mode &,
+    .preview-mode & {
+        @include transition(none);
+    }
+    &.hotspots-mode-tooltip {
+        background: rgba($primaryColor, 0.8);
+        .hotspot-action-active &,
+        .hotspot-active & {
+            display: none !important;
+        }
+    }
+    &.comments-mode-tooltip {
+        background: rgba($dangerColor, 0.8);
+        .comment-active & {
+            display: none !important;
+        }
+    }
+}

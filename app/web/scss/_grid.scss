@@ -1,0 +1,28 @@
+// Columns
+%col {
+    position: relative;
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 ($baseSpacing / 2);
+}
+@for $i from 1 through 12 {
+    .cols-#{$i} {
+        @extend %col;
+        width: 100% / (12 / $i);
+    }
+}
+
+// Row
+.row {
+    @extend %clear-after;
+    display: block;
+    clear: both;
+    width: auto;
+    margin: 0 (-$baseSpacing / 2);
+    /* fix inline-block gaps */
+    font-size: 0px;
+    %col {
+        font-size: 14px;
+    }
+}

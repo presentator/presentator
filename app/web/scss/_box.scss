@@ -1,0 +1,321 @@
+.box {
+    @include panel;
+    border: 0;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    @include user-select(none);
+    @include transition(background 0.2s, transform 0.4s, box-shadow 0.4s);
+    /* relative square */
+    width: 200px;
+    padding-bottom: 200px;
+    &:hover, &:active {
+        @include box-shadow(0px 3px 10px 0px rgba(44, 75, 137, 0.3));
+    }
+    & > .content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+    }
+
+    // Pin
+    .pin {
+        position: absolute;
+        z-index: 3;
+        left: auto;
+        bottom: auto;
+        right: -5px;
+        top: -5px;
+    }
+
+    // featured
+    .featured {
+        position: relative;
+        z-index: 0;
+        display: block;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        border: 2px solid #fff;
+        background: $lighterGreyColor;
+        @include border-radius($baseRadius);
+        &:after {
+            // no image icon
+            $size: 50px;
+            content: "\f3f5";
+            display: block;
+            position: absolute;
+            z-index: 0;
+            left: 50%;
+            top: 50%;
+            margin-top: -($size / 2);
+            margin-left: -($size / 2);
+            width: $size;
+            height: $size;
+            line-height: $size;
+            text-align: center;
+            font-size: 40px;
+            color: $greyColor;
+            font-family: $iconFont;
+        }
+        &.lazy-load-start:after {
+            @include animation(primary-color-pulse 1.5s infinite linear);
+        }
+        &.loaded:after {
+            display: none;
+        }
+        img {
+            display: block;
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            height: auto;
+            max-width: 100%;
+            @include border-radius($baseRadius);
+            @include transform(translate(-50%, -50%));
+            &.loaded {
+                @include animation(none);
+            }
+        }
+        .featured-overlay {
+            display: block;
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba($secondaryColor, 0.8);
+            text-decoration: none;
+            @include border-radius($baseRadius);
+            @include transition(background 0.2s, opacity 0.3s, visibility 0.3s);
+            @include hide;
+        }
+        .overlay-item {
+            $edgeSpacing: 10px;
+            display: block;
+            position: absolute;
+            z-index: 3;
+            width: auto;
+            padding: 5px;
+            color: #fff;
+            line-height: 1;
+            @include transition(color 0.2s, transform 0.2s, opacity 0.3s, visibility 0.3s);
+            @include hide;
+            & > a {
+                display: inline-block;
+                vertical-align: top;
+                opacity: 0.7;
+                color: inherit;
+                @include transition(opacity 0.2s);
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            // top-left is default
+            left: $edgeSpacing;
+            top: $edgeSpacing;
+            @include transform(translateY(-10px));
+            &.top-right {
+                bottom: auto;
+                left: auto;
+                right: $edgeSpacing;
+                top: $edgeSpacing;
+                @include transform(translateY(-10px));
+            }
+            &.bottom-left {
+                top: auto;
+                right: auto;
+                left: $edgeSpacing;
+                bottom: $edgeSpacing;
+                @include transform(translateY(10px));
+            }
+            &.bottom-right {
+                top: auto;
+                left: auto;
+                right: $edgeSpacing;
+                bottom: $edgeSpacing;
+                @include transform(translateY(10px));
+            }
+            &.center {
+                bottom: auto;
+                right: auto;
+                top: 50%;
+                left: 50%;
+                text-align: center;
+                @include transform(translate(-50%, -50%) scale(0.8));
+            }
+            // specific overlay items
+            .more-options {
+                font-size: 25px;
+            }
+            .dropdown-menu {
+                border: 0;
+            }
+        }
+        input[type="checkbox"],
+        input[type="radio"], {
+            & ~ label:before {
+                border-color: #fff;
+                background: #fff;
+            }
+            & ~ label:after {
+                color: $primaryColor;
+            }
+        }
+    }
+
+    // hover and bulk selected states
+    .featured:hover,
+    &.bulk-selected .featured {
+        .featured-overlay,
+        .overlay-item {
+            @include show;
+            @include transform(scale(1));
+        }
+        .overlay-item.center {
+            @include transform(translate(-50%, -50%) scale(1));
+        }
+    }
+    &.bulk-selected .featured {
+        .featured-overlay {
+            background: rgba($warningColor, 0.8);
+        }
+        input[type="checkbox"],
+        input[type="radio"] {
+            & ~ label:after {
+                color: $warningColor;
+            }
+        }
+    }
+
+    // overlay panel container
+    .overlay-panel {
+        position: absolute;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        left: 0;
+        bottom: 0;
+        text-align: left;
+        padding: 15px 20px;
+        background: #fff;
+        border-top: 1px solid $lightGreyColor;
+        @include border-bottom-left-radius($baseRadius);
+        @include border-bottom-right-radius($baseRadius);
+        & ~ .featured {
+            height: calc(100% - 70px);
+        }
+        .title {
+            @extend %block;
+            max-width: 100%;
+            padding: 0;
+            margin: 0 0 15px;
+            font-size: 15px;
+            line-height: 1;
+            font-weight: normal;
+            color: $txtColor;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            a {
+                max-width: 100%;
+                text-decoration: none;
+                color: $txtColor;
+                &:hover {
+                    color: $primaryColor;
+                }
+            }
+        }
+        .meta {
+            @extend %block;
+            @extend %clear-after;
+            font-size: 12px;
+            .item {
+                position: relative;
+                float: left;
+                line-height: 14px;
+                &:after {
+                    content: "";
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 1px;
+                    height: 12px;
+                    padding: 0;
+                    margin: 0 10px;
+                    background: $lightGreyColor;
+                }
+                &:last-child:after {
+                    content: none;
+                    display: none;
+                }
+            }
+        }
+    }
+
+    // sortable placeholder
+    &.sortable-placeholder {
+        background: none;
+        border-color: $greyColor;
+    }
+
+    // action box
+    &.action-box {
+        cursor: pointer;
+        text-align: center;
+        color: $txtColor;
+        background: #fff;
+        .table-cell {
+            padding: $baseSpacing;
+            vertical-align: middle;
+        }
+        .icon, .txt {
+            @extend %block;
+            clear: both;
+            @include transition(color 0.2s, transform 0.2s);
+        }
+        .icon {
+            font-size: 72px;
+            line-height: 1;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+        .txt {
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 30px;
+        }
+        &:hover {
+            .icon {
+                @include transform(scale(1.1));
+            }
+        }
+        &:active {
+            .icon {
+                @include transform(scale(1.2));
+            }
+        }
+        &.success {
+            color: $successColor;
+        }
+        &.danger {
+            color: $dangerColor;
+        }
+        &.warning {
+            color: $warningColor;
+        }
+        &.primary {
+            color: $primaryColor;
+        }
+        &.secondary {
+            color: $warningColor;
+        }
+    }
+}

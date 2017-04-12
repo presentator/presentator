@@ -1,0 +1,135 @@
+.popup {
+    position: fixed;
+    z-index:  $popupZ;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include v-align-helper;
+    display: none;
+    // overlay
+    &:after {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($overlayColor, 0.5);
+    }
+    // close icon
+    .close-icon {
+        display: inline-block;
+        vertical-align: top;
+        color: #fff;
+        padding: 5px;
+        line-height: 1;
+        font-size: 22px;
+        font-weight: normal;
+        cursor: pointer;
+        &:before {
+            content: "\f2d7";
+            font-family: $iconFont;
+            font-size: inherit;
+            line-height: inherit;
+            display: inline-block;
+            vertical-align: top;
+            @include transition(transform 0.2s);
+        }
+        &:hover:before {
+            @include transform(scale(1.2));
+        }
+        &:active:before {
+            transition-duration: 0s;
+            @include transform(scale(1));
+        }
+    }
+    // title
+    .popup-title {
+        @extend %block;
+        @extend %clear-after;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 24px;
+        color: $txtColor;
+        margin: 0 0 ($baseSpacing - 5);
+    }
+    // content wrapper
+    .popup-content {
+        @include panel;
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        vertical-align: middle;
+        border: 0;
+        width: 550px;
+        max-width: 100%;
+        min-height: 50px;
+        font-size: 14px;
+        text-align: left;
+        padding: $baseSpacing;
+        margin: $baseSpacing 0 ($baseSpacing * 2);
+        .close-icon {
+            position: absolute;
+            right: -5px;
+            top: -35px;
+        }
+        .footer {
+            // simulate out-expand
+            display: block;
+            width: auto;
+            margin-left: -$baseSpacing;
+            margin-right: -$baseSpacing;
+            margin-bottom: -$baseSpacing;
+            margin-top: $baseSpacing;
+            padding: $baseSpacing;
+            background: $lightGreyColor;
+            @include border-bottom-left-radius($baseRadius);
+            @include border-bottom-right-radius($baseRadius);
+        }
+    }
+    // Sizes
+    &.small {
+        .popup-content {
+            width: 400px;
+        }
+    }
+    &.large {
+        .popup-content {
+            width: 800px;
+        }
+    }
+}
+
+// Open
+body.popup-active {
+    overflow: hidden;
+}
+.popup.active {
+    display: block;
+    &:after {
+        @include animation(fade-in 0.4s forwards);
+    }
+    .popup-content {
+        @include animation(popup-show 0.4s forwards);
+    }
+    .close-icon {
+        opacity: 0;
+        @include animation(scale-entrance 0.3s 0.3s forwards);
+    }
+}
+// Close
+.popup.close-start {
+    &:after {
+        @include animation(fade-out 0.4s 0.3s forwards);
+    }
+    .popup-content {
+        @include animation(popup-hide 0.3s 0.15s forwards);
+    }
+    .close-icon {
+        @include animation(fade-out 0.3s forwards);
+    }
+}
