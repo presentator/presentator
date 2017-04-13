@@ -3,10 +3,10 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Response;
-use yii\web\UploadedFile;
 use yii\web\BadRequestHttpException;
 use app\models\UserForm;
 use app\models\AvatarForm;
+use common\components\web\CUploadedFile;
 
 /**
  * Users controller.
@@ -70,7 +70,7 @@ class UsersController extends AppController
 
         $user          = Yii::$app->user->identity;
         $model         = new AvatarForm($user);
-        $model->avatar = UploadedFile::getInstance($model, 'avatar');
+        $model->avatar = CUploadedFile::getInstance($model, 'avatar');
 
         if ($model->tempUpload()) {
             return [

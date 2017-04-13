@@ -457,38 +457,44 @@ class User extends CActiveRecord implements IdentityInterface
 
     /**
      * Creates single image thumb (based on `self::THUMB_SIZES`).
-     * @param  string $tempFile
+     * If `$cropDimensions` is missing it will create by default a centered thumb.
+     * @param  null|array $cropDimensions
      * @return boolean
      */
-    public function cropAvatar(array $cropDimensions)
+    public function cropAvatar(array $cropDimensions = null)
     {
         ini_set('memory_limit', '256M');
 
-        $avatarPath = $this->getAvatarPath(false);
-        if (!file_exists($avatarPath)) {
+        $originalAvatarPath = $this->getAvatarPath(false);
+        if (!file_exists($originalAvatarPath)) {
             return false;
         }
 
-        if (!isset($cropDimensions['w']) ||
-            !isset($cropDimensions['h']) ||
-            !isset($cropDimensions['x']) ||
-            !isset($cropDimensions['y'])
-        ) {
-            throw new InvalidParamException('Crop dimensions must have "w", "h", "x" and "y" properties!');
+        if (!empty($cropDimensions)) {
+            if (!isset($cropDimensions['w']) ||
+                !isset($cropDimensions['h']) ||
+                !isset($cropDimensions['x']) ||
+                !isset($cropDimensions['y'])
+            ) {
+                throw new InvalidParamException('Crop dimensions must have "w", "h", "x" and "y" properties!');
+            }
+
+            $image = Image::crop(
+                    $originalAvatarPath,
+                    $cropDimensions['w'],
+                    $cropDimensions['h'],
+                    [
+                        ($cropDimensions['x'] ? $cropDimensions['x'] : 0),
+                        ($cropDimensions['y'] ? $cropDimensions['y'] : 0),
+                    ]
+                )
+                ->thumbnail(new Box(self::THUMB_WIDTH, self::THUMB_HEIGHT));
+        } else {
+            $image = Image::thumbnail($originalAvatarPath, self::THUMB_WIDTH, self::THUMB_HEIGHT);
         }
 
-        // generate avatar thumb
-        Image::crop(
-                $avatarPath,
-                $cropDimensions['w'],
-                $cropDimensions['h'],
-                [
-                    ($cropDimensions['x'] ? $cropDimensions['x'] : 0),
-                    ($cropDimensions['y'] ? $cropDimensions['y'] : 0),
-                ]
-            )
-            ->thumbnail(new Box(self::THUMB_WIDTH, self::THUMB_HEIGHT))
-            ->save($this->getAvatarPath(true), ['quality' => self::THUMB_QUALITY]);
+        // store avatar thumb
+        $image->save($this->getAvatarPath(true), ['quality' => self::THUMB_QUALITY]);
 
         return true;
     }

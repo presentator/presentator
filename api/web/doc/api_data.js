@@ -1353,7 +1353,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"http://app.presentator.op/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
           "type": "json"
         }
       ]
@@ -1377,9 +1377,98 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "/users/register",
+    "title": "04. Register",
+    "name": "register",
+    "group": "Users",
+    "description": "<p>Register and create a new <strong>Inactive</strong> <code>User</code> model. The new created user still need to verify its email.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>User password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "passwordConfirm",
+            "description": "<p>User password confirmation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "firstName",
+            "description": "<p>User first name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "lastName",
+            "description": "<p>User last name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "notifications",
+            "description": "<p>User notifications setting for receiving emails when new comment is leaved (<code>true</code> by default)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": true,
+            "field": "avatar",
+            "description": "<p>User avatar image</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "400 Bad Request (example):",
+          "content": "{\n  \"message\": \"Oops, an error occurred while processing your request.\",\n  \"errors\": {\n    \"email\": \"Invalid email address.\",\n    \"password\": \"Password cannot be blank.\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/controllers/UsersController.php",
+    "groupTitle": "Users",
+    "sampleRequest": [
+      {
+        "url": "https://api.presentator.io/users/register"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "204 Success response (example):",
+          "content": "null",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "PUT",
     "url": "/users/update",
-    "title": "02. Update authenticated user",
+    "title": "04. Update authenticated user",
     "name": "update",
     "group": "Users",
     "description": "<p>Updates an authenticated <code>User</code> model.</p>",
@@ -1462,7 +1551,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"http://app.presentator.op/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
           "type": "json"
         }
       ]

@@ -111,7 +111,7 @@ class UserForm extends Model
     }
 
     /**
-     * Saves model settings to the user model.
+     * Saves form settings to the user model.
      * @return boolean
      */
     public function save()

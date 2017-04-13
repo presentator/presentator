@@ -62,7 +62,6 @@ class SiteController extends AppController
         (new AuthHandler($client))->handle();
     }
 
-
     /**
      * Renders error page.
      * @return string

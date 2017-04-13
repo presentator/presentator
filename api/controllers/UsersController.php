@@ -48,7 +48,7 @@ class UsersController extends ApiController
      *   "status": 1,
      *   "createdAt": 1489244154,
      *   "updatedAt": 1489244169,
-     *   "avatar": "http://app.presentator.op/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
+     *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
      *     "language": "bg-BG",
      *     "notifications": true
@@ -79,9 +79,33 @@ class UsersController extends ApiController
         );
     }
 
+
     /**
-     * Performs user model registration.
-     * @return array
+     * @api {POST} /users/register
+     * 04. Register
+     * @apiName register
+     * @apiGroup Users
+     * @apiDescription
+     * Register and create a new **Inactive** `User` model. The new created user still need to verify its email.
+     *
+     * @apiParam {String}  email           User email
+     * @apiParam {String}  password        User password
+     * @apiParam {String}  passwordConfirm User password confirmation
+     * @apiParam {String}  [firstName]     User first name
+     * @apiParam {String}  [lastName]      User last name
+     * @apiParam {Boolean} [notifications] User notifications setting for receiving emails when new comment is leaved (`true` by default)
+     * @apiParam {File}    [avatar]        User avatar image
+     *
+     * @apiErrorExample {json} 400 Bad Request (example):
+     * {
+     *   "message": "Oops, an error occurred while processing your request.",
+     *   "errors": {
+     *     "email": "Invalid email address.",
+     *     "password": "Password cannot be blank."
+     *   }
+     * }
+     *
+     * @apiUse 204
      */
     public function actionRegister()
     {
@@ -90,7 +114,12 @@ class UsersController extends ApiController
         if ($model->load(Yii::$app->request->post(), '') &&
             ($user = $model->register())
         ) {
-            return $user->toArray([], ['settings']);
+            Yii::$app->response->statusCode = 204;
+
+            // the user is inactive so there is no need to return it
+            // return $user->toArray([], ['settings']);
+
+            return null;
         }
 
         return $this->setErrorResponse(
@@ -101,7 +130,7 @@ class UsersController extends ApiController
 
     /**
      * @api {PUT} /users/update
-     * 02. Update authenticated user
+     * 04. Update authenticated user
      * @apiName update
      * @apiGroup Users
      * @apiDescription
@@ -127,7 +156,7 @@ class UsersController extends ApiController
      *   "status": 1,
      *   "createdAt": 1489244154,
      *   "updatedAt": 1489244169,
-     *   "avatar": "http://app.presentator.op/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
+     *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
      *     "language": "bg-BG",
      *     "notifications": true

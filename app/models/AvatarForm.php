@@ -3,9 +3,9 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use yii\web\UploadedFile;
 use common\models\User;
 use common\components\helpers\CFileHelper;
+use common\components\web\CUploadedFile;
 use Imagine\Image\Box;
 use yii\imagine\Image;
 
@@ -17,7 +17,7 @@ use yii\imagine\Image;
 class AvatarForm extends Model
 {
     /**
-     * @var UploadedFile
+     * @var CUploadedFile
      */
     public $avatar;
 
@@ -72,7 +72,7 @@ class AvatarForm extends Model
      */
     public function tempUpload()
     {
-        if ($this->validate() && $this->avatar instanceof UploadedFile) {
+        if ($this->validate() && $this->avatar instanceof CUploadedFile) {
             CFileHelper::createDirectory($this->user->getUploadDir());
 
             ini_set('memory_limit', '512M');
