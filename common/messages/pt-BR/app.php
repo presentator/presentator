@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return araray(
+return array(
     '320x480 <em>(Landscape)</em>' => '',
     '320x480 <em>(Portrait)</em>' => '',
     '375x667 <em>(Landscape)</em>' => '',
