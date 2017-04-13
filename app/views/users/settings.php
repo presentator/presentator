@@ -110,7 +110,7 @@ $hasAvatar = !empty($user->getAvatarUrl());
 
             <div id="preview_container" class="preview-container" <?= !$hasAvatar ? 'style="display: none;"' : '' ?>>
                 <figure class="preview-image-wrapper">
-                    <img data-src="<?= $user->getAvatarUrl(false) ?>" data-preview-url="<?= $user->getAvatarUrl(false) ?>" id="preview_img" class="lazy-load preview-image" alt="Preview image"/>
+                    <img data-src="<?= $user->getAvatarUrl(false) ?>?v=<?= time() ?>" data-preview-url="<?= $user->getAvatarUrl(false) ?>?v=<?= time() ?>" id="preview_img" class="lazy-load preview-image" alt="Preview image"/>
 
                     <div id="crop_hotspot" class="hotspot crop-hotspot"><span class="resize-handle"></span></div>
                 </figure>
