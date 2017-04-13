@@ -21,6 +21,7 @@ return [
 
     'facebookUrl'  => 'https://www.facebook.com/presentator.io',
     'githubUrl'    => 'https://github.com/ganigeorgiev/presentator',
+    'issuesUrl'    => 'https://github.com/ganigeorgiev/presentator/issues',
     'supportUsUrl' => 'https://presentator.io/en/support-us',
 
     'facebookAuth' => [

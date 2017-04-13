@@ -22,9 +22,9 @@
 
             <?php if (isset(Yii::$app->params['supportUsUrl'])): ?>
             <li>
-                <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="icon-link heart-link" target="_blank">
+                <a href="<?= Yii::$app->params['supportUsUrl'] ?>" class="icon-link heart-link" target="_blank">
                     <i class="ion ion-heart"></i>
-                    <span class="txt"><?= Yii::t('app', 'Help us') ?></span>
+                    <span class="txt"><?= Yii::t('app', 'Support us') ?></span>
                 </a>
             </li>
             <?php endif ?>
