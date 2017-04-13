@@ -19,6 +19,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? (Html::encode($this->title) . ' - ') : '' ?>Presentator.io</title>
+    <link href="/images/favicon.png?v=1492082737" rel="shortcut icon" type="image/png">
     <?php $this->head() ?>
 </head>
 <body class="<?= isset($this->params['bodyClass']) ? $this->params['bodyClass'] : ''; ?> lang-<?= substr(Yii::$app->language, 0, 2) ?>">
