@@ -359,7 +359,7 @@ pre.prettyprint {
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background: #d8dfec;
+  background: #eff2f8;
   border-right: 1px solid #d8dfec;
 }
 .logo {
@@ -415,7 +415,7 @@ pre.prettyprint {
   border: 0;
   text-shadow: none;
   color: #757c86;
-  background: #eff2f8;
+  background: #fff;
   border-radius: 3px;
 }
 
@@ -425,7 +425,7 @@ pre.prettyprint {
 }
 
 .sidenav > li.nav-header > a:hover {
-  background-color: #fff;
+  background-color: #d8dfec;
 }
 
 .sidenav > li.nav-header.active > a:hover {
