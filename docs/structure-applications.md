@@ -13,4 +13,4 @@ There is also a `common` directory that contains files used by more than one app
 
 Both `api` and `app` are web applications and both contain the web directory. That's the webroot you should point your web server to.
 
-Each application has its own namespace and [alias](structure-path-aliases) corresponding to its name (_for the `app` the alias is `@main`_). Same applies to the common directory.
+Each application has its own namespace and [alias](structure-path-aliases.md) corresponding to its name (_for the `app` the alias is `@main`_). Same applies to the common directory.
