@@ -49,7 +49,7 @@ class RegisterForm extends Model
     /**
      * @var CUploadedFile
      */
-    public $avatar = null;
+    public $avatar;
 
     /**
      * @inheritdoc
@@ -81,8 +81,6 @@ class RegisterForm extends Model
      */
     public function register()
     {
-        $this->avatar = CUploadedFile::getInstanceByName('avatar');
-
         if ($this->validate()) {
             $user            = new User;
             $user->status    = User::STATUS_INACTIVE;

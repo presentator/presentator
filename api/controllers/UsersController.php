@@ -5,6 +5,7 @@ use Yii;
 use yii\filters\AccessControl;
 use common\models\User;
 use common\components\data\CActiveDataProvider;
+use common\components\web\CUploadedFile;
 use api\models\LoginForm;
 use api\models\RegisterForm;
 use api\models\UserForm;
@@ -111,12 +112,14 @@ class UsersController extends ApiController
     {
         $model = new RegisterForm();
 
+        $model->avatar = CUploadedFile::getInstanceByName('avatar');
+
         if ($model->load(Yii::$app->request->post(), '') &&
             ($user = $model->register())
         ) {
             Yii::$app->response->statusCode = 204;
 
-            // the user is inactive so there is no need to return it
+            // the created user is Inactive so there is no need to return it
             // return $user->toArray([], ['settings']);
 
             return null;

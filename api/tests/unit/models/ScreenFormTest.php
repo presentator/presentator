@@ -57,22 +57,6 @@ class ScreenFormTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Test helper to create CUploadedFile instance from file path.
-     * @param  string $path
-     * @return CUploadedFile
-     */
-    protected function getUploadedFileInstance($path)
-    {
-        return new CUploadedFile([
-            'name'     => basename($path),
-            'tempName' => $path,
-            'type'     => FileHelper::getMimeType($path),
-            'size'     => filesize($path),
-            'error'    => UPLOAD_ERR_OK,
-        ]);
-    }
-
-    /**
      * `ScreenForm::validateHex()` inline validator test.
      */
     public function testValidateHex()
@@ -138,7 +122,7 @@ class ScreenFormTest extends \Codeception\Test\Unit
                 'versionId'  => 1004, // not owned by the user
                 'alignment'  => 0,
                 'background' => '#abc',
-                'image'      => $this->getUploadedFileInstance($imagePath),
+                'image'      => $this->tester->getUploadedFileInstance($imagePath),
             ]);
             $model->scenario = ScreenForm::SCENARIO_CREATE;
 
@@ -159,7 +143,7 @@ class ScreenFormTest extends \Codeception\Test\Unit
                 'versionId'  => 1001,
                 'alignment'  => Screen::ALIGNMENT_LEFT,
                 'background' => '#fff000',
-                'image'      => $this->getUploadedFileInstance($imagePath),
+                'image'      => $this->tester->getUploadedFileInstance($imagePath),
             ]);
             $model->scenario = ScreenForm::SCENARIO_CREATE;
 

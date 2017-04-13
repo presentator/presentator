@@ -1,6 +1,9 @@
 <?php
 namespace api\tests;
 
+use common\components\helpers\CFileHelper;
+use common\components\web\CUploadedFile;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -23,4 +26,20 @@ class UnitTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+
+    /**
+     * Helper to create CUploadedFile instance from file path.
+     * @param  string $path
+     * @return CUploadedFile
+     */
+    public function getUploadedFileInstance($path)
+    {
+        return new CUploadedFile([
+            'name'     => basename($path),
+            'tempName' => $path,
+            'type'     => CFileHelper::getMimeType($path),
+            'size'     => filesize($path),
+            'error'    => UPLOAD_ERR_OK,
+        ]);
+    }
 }
