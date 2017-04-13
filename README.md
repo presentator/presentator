@@ -9,6 +9,7 @@ Its main goal is to enable web designers to create simple dynamic prototypes and
 - [Installation](docs/start-installation.md)
 - [Running tests](docs/start-tests.md)
 - [Coding standards](docs/start-coding-standards.md)
+- [REST API documentation](https://api.presentator.io/doc)
 
 ## Structure
 - [Directories](docs/structure-directories.md)
