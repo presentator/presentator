@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-The Presentator platform is free software. It is released under the terms of
+Presentator is a free software. It is released under the terms of
 the following BSD License.
 
 Redistribution and use in source and binary forms, with or without
