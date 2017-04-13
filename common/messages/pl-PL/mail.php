@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'A new comment was left for project "{projectTitle}".' => '',
     'Activate account' => '',
     'Best Regards' => '',
@@ -44,4 +44,4 @@ return [
     'You are invited to review the design for "{projectTitle}".' => '',
     'You are no longer an administrator to project "{projectTitle}".' => '',
     'You have successfully registered via Facebook.' => '',
-];
+);

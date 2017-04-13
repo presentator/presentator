@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}"',
     'Activate account' => 'Активирай профила',
     'Best Regards' => 'Поздрави',
@@ -44,4 +44,4 @@ return [
     'You are invited to review the design for "{projectTitle}".' => 'Поканени сте да разгледате дизайна на "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Вие бяхте премахнати като администратор към проект "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Успешно се регистрирахте с Facebook.',
-];
+);

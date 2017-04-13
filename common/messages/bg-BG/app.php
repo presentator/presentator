@@ -16,7 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
+    'Support us' => 'Подкрепи ни',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Landscape)</em>',
@@ -94,7 +95,6 @@ return [
     'Go to login page' => 'Към страницата за вход',
     'Has unread comments' => 'Има непрочетени коментари',
     'Hello and welcome to Presentator.io!' => 'Здравей и добре дошъл в Presentator.io',
-    'Help us' => 'Помогни ни',
     'Hide' => 'Скрий',
     'Hotspots mode' => 'Режим Препратки',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'Прочетох и приемам <a href="#" data-popup="#terms_popup">Общите условия</a>',
@@ -235,4 +235,4 @@ return [
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
     '{projectTitle} preview' => '{projectTitle} преглед',
-];
+);

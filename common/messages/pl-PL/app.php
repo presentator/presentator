@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     '320x480 <em>(Landscape)</em>' => '',
     '320x480 <em>(Portrait)</em>' => '',
     '375x667 <em>(Landscape)</em>' => '',
@@ -94,7 +94,6 @@ return [
     'Go to login page' => '',
     'Has unread comments' => '',
     'Hello and welcome to Presentator.io!' => '',
-    'Help us' => '',
     'Hide' => '',
     'Hotspots mode' => '',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => '',
@@ -192,6 +191,7 @@ return [
     'Successfully updated avatar.' => '',
     'Successfully updated profile settings.' => '',
     'Successfully updated project settings.' => '',
+    'Support us' => '',
     'Tablet' => '',
     'Terms' => '',
     'Terms and Conditions' => '',
@@ -235,4 +235,4 @@ return [
     'or' => '',
     '{projectTitle} - Projects' => '',
     '{projectTitle} preview' => '',
-];
+);
