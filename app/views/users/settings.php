@@ -11,13 +11,9 @@ use common\widgets\CActiveForm;
  */
 
 $hasAvatar = !empty($user->getAvatarUrl());
-?>
 
-<?php $this->beginBlock('page_title'); ?>
-<h3 class="page-title">
-    <div class="item"><?= Yii::t('app', 'Settings') ?></div>
-</h3>
-<?php $this->endBlock(); ?>
+$this->title = Yii::t('app', 'Settings');
+?>
 
 <div class="base-wrapper">
     <div class="table-wrapper">

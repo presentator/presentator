@@ -11,7 +11,7 @@ use common\widgets\LanguageSwitch;
  * @var $registerForm \app\models\RegisterForm
  */
 
-$this->title = 'Login';
+$this->title = Yii::t('app', 'Login');
 ?>
 
 <?php $this->beginBlock('before_global_wrapper'); ?>
