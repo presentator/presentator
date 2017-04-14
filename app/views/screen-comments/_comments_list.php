@@ -12,7 +12,7 @@ $showDelete = isset($showDelete) ? $showDelete : true;
         <div class="heading">
             <figure class="avatar" data-txt="<?= substr($comment->from, 0, 1) ?>">
                 <?php if ($comment->fromUser && $comment->fromUser->getAvatarUrl(true)): ?>
-                    <img src="<?= $comment->fromUser->getAvatarUrl(true) ?>" alt="User avatar">
+                    <img src="<?= $comment->fromUser->getAvatarUrl(true) ?>?v=<?= time() ?>" alt="User avatar">
                 <?php endif ?>
             </figure>
             <a href="mailto: <?= Html::encode($comment->from) ?>" class="author"><?= Html::encode($comment->from) ?></a>

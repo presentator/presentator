@@ -28,7 +28,7 @@ return array(
     'Explore project' => 'Преглед на проекта',
     'From' => 'От',
     'Hello' => 'Здравейте',
-    'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'Ако имаге нужда от допълнителна помощ, може да се свържете с нас на {supportEmail}.',
+    'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'Ако имате нужда от допълнителна помощ, може да се свържете с нас на {supportEmail}.',
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'Ако смятате, че това съобщение е грешка или имате нужда от допълнителна помощ, може да се свържете с нас на {supportEmail}.',
     'Message' => 'Съобщение',
     'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => 'п.п. Ако не искате да получавате повече подобни известия, може да изключите опцията от настройките на профилната ви страница в платформата.',

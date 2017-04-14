@@ -59,7 +59,7 @@ var PR = {
      * @param  {String} str
      * @return {String}
      */
-    htmlEncode: function (str) {
+    htmlEncode: function(str) {
         if (!str || !str.length) {
             return '';
         }
@@ -78,7 +78,7 @@ var PR = {
      * @param  {String} str
      * @return {String}
      */
-    htmlDecode: function (str) {
+    htmlDecode: function(str) {
         if (!str || !str.length) {
             return '';
         }
@@ -128,7 +128,7 @@ var PR = {
      * Aborts incomplete ajax request
      * @param {Object} xhr
      */
-    abortXhr: function (xhr) {
+    abortXhr: function(xhr) {
         if (xhr && xhr.readyState != 4) {
             xhr.abort();
         }
@@ -139,7 +139,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isObject: function (item) {
+    isObject: function(item) {
         if (typeof item === 'object') {
             return true;
         }
@@ -152,7 +152,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isArray: function (item) {
+    isArray: function(item) {
         if (typeof item === 'object' && item.constructor === Array) {
             return true;
         }
@@ -165,7 +165,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isFunction: function (item) {
+    isFunction: function(item) {
         if (item && typeof item === 'function') {
             return true;
         }
@@ -178,7 +178,7 @@ var PR = {
      * @param  {Mixed}  item
      * @return {Boolean}
      */
-    isJquery: function (item) {
+    isJquery: function(item) {
         if (item && item instanceof jQuery) {
             return true;
         }
@@ -192,7 +192,7 @@ var PR = {
      * @param  {String} url
      * @return {Boolean}
      */
-    isValidUrl: function (url) {
+    isValidUrl: function(url) {
         var urlRegex = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
 
         return urlRegex.test(url);
@@ -202,7 +202,7 @@ var PR = {
      * Adds disabled to empty form fields to prevent serializing.
      * @param {String} form selector
      */
-    ignoreEmptyFields: function (form) {
+    ignoreEmptyFields: function(form) {
         form = form || '.ignore-empty';
 
         $(document).on('submit', form, function() {
@@ -226,7 +226,7 @@ var PR = {
      * @param  {String|Object} selector
      * @return {jQuery}
      */
-    getTarget: function (selector) {
+    getTarget: function(selector) {
         var $selector = $(selector);
         var isolateType = '';
 
@@ -254,7 +254,7 @@ var PR = {
 
      * @param {String} selector
      */
-    checkToggle: function (selector) {
+    checkToggle: function(selector) {
         var self = this;
 
         selector = selector || '[data-bind="checkToggle"]';
@@ -287,7 +287,7 @@ var PR = {
      *
      * @param {String} selector
      */
-    clickToggle: function (selector) {
+    clickToggle: function(selector) {
         var self = this;
 
         selector = selector || '[data-bind="clickToggle"]';
@@ -347,7 +347,7 @@ var PR = {
      * <div id="my_div">Some content...</div>
      * ```
      */
-    visibilityToggle: function () {
+    visibilityToggle: function() {
         var $target;
         function toggle(input, animation) {
             $target = $($(input).data('toggle'));
@@ -383,7 +383,7 @@ var PR = {
      * @param  {String} selector
      * @return {Boolean}
      */
-    hasVerticalScrollbar: function (selector) {
+    hasVerticalScrollbar: function(selector) {
         var elem = $(selector || 'html').get(0);
 
         if (elem && elem.scrollHeight > elem.clientHeight) {
@@ -398,7 +398,7 @@ var PR = {
      * @param  {String} selector
      * @return {Boolean}
      */
-    hasHorizontalScrollbar: function (selector) {
+    hasHorizontalScrollbar: function(selector) {
         var elem = $(selector || 'html').get(0);
 
         if (elem && elem.scrollWidth > elem.clientWidth) {
@@ -420,7 +420,7 @@ var PR = {
      *
      * @return {Object} A reference to the newly created window
      */
-    windowOpen: function (url, width, height, name) {
+    windowOpen: function(url, width, height, name) {
         width  = width  || 600;
         height = height || 480;
         name   = name   || 'popup';
@@ -448,7 +448,7 @@ var PR = {
      * @param {String} type
      * @param {Number} timeout
      */
-    addNotification: function (text, type, timeout) {
+    addNotification: function(text, type, timeout) {
         if (typeof text !== 'string' || text.length === 0) {
             return;
         }
@@ -472,9 +472,26 @@ var PR = {
     },
 
     /**
+     * Safely adds version query paramater to file url to prevent browser cache.
+     * @param  {String} url
+     * @return {String}
+     */
+    nocacheUrl: function(url) {
+        if (!url) {
+            return '';
+        }
+
+        if (url.indexOf('?') > 0) {
+            return url + '&v=' + Date.now();
+        }
+
+        return url + '?v=' + Date.now();
+    },
+
+    /**
      * Hides all broken images from the DOM tree.
      */
-    hideBrokenImages: function () {
+    hideBrokenImages: function() {
         $('img').each(function() {
             if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                 $(this).hide();
@@ -528,7 +545,11 @@ var PR = {
                 recursiveCall();
             } else {
                 $.each(groups[priorities[0]], function(i, $img) {
-                    $img.attr('src', $img.data('src'));
+                    if ($img.data('nocache')) {
+                        $img.attr('src', PR.nocacheUrl($img.data('src')));
+                    } else {
+                        $img.attr('src', $img.data('src'));
+                    }
                     $img.$parent.addClass('lazy-load-start');
 
                     $img.on('load', function() {
@@ -618,7 +639,7 @@ var PR = {
                     }
                 }, 100);
             }
-        }).ajaxComplete(function (event, request, settings) {
+        }).ajaxComplete(function(event, request, settings) {
             if (loadingInterval) {
                 clearTimeout(loadingInterval);
             }
@@ -777,7 +798,7 @@ var PR = {
      * @param {Mixed} popover
      * @param {Mixed} view
      */
-    repositionPopover: function (item, popover, view) {
+    repositionPopover: function(item, popover, view) {
         var $item = $(item);
         if (!$item.length) {
             console.warn('The realated popover item was not found!');
@@ -839,7 +860,7 @@ var PR = {
      * Horizontal item alignment based on data attribute.
      * @param {Mixed} item
      */
-    horizontalAlign: function (item) {
+    horizontalAlign: function(item) {
         var $item = $(item);
         if (!$item.length) {
             console.warn('Missing item element!');
@@ -864,7 +885,7 @@ var PR = {
      * @param {Mixed} typeSelect
      * @param {Mixed} subtypeSelect
      */
-    bindSubtypesToggle: function (typeSelect, subtypeSelect, animationOnInit) {
+    bindSubtypesToggle: function(typeSelect, subtypeSelect, animationOnInit) {
         animationOnInit = typeof animationOnInit !== 'undefined' ? animationOnInit : true;
 
         var $typeSelect    = $(typeSelect);
@@ -874,7 +895,7 @@ var PR = {
         var $customSubtypeSelect = $subtypeSelect.closest('.custom-select');
         var $activeSubtypes;
 
-        var toggle = function (typeVal, animations) {
+        var toggle = function(typeVal, animations) {
             animations = typeof animations !== 'undefined' ? animations : true;
 
             $activeSubtypes = $customSubtypeSelect.find('.option').hide()
@@ -923,7 +944,7 @@ var PR = {
      * @param  {String} delimiter
      * @return {String}
      */
-    highlightLastStringPart: function (url, delimiter) {
+    highlightLastStringPart: function(url, delimiter) {
         delimiter = delimiter || '/';
 
         var parts = url.split(delimiter);

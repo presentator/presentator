@@ -72,7 +72,7 @@ ProfileView.prototype.init = function() {
     self.$avatarPopup.on('popupOpen', function(e) {
         if (self.$previewImg.data('preview-url')) {
             // reset preview image
-            self.$previewImg.attr('src', self.$previewImg.data('preview-url')).show();
+            self.$previewImg.attr('src', PR.nocacheUrl(self.$previewImg.data('preview-url'))).show();
             self.$uploadContainer.hide();
             self.$previewContainer.show();
         }
@@ -150,8 +150,8 @@ ProfileView.prototype.tempAvatarUpload = function() {
             self.$uploadContainer.hide();
             self.$previewContainer.show();
 
-            if (response.avatarUrl) {
-                self.$previewImg.attr('src', response.avatarUrl + '?v=' + Date.now()).show();
+            if (response.tempAvatarUrl) {
+                self.$previewImg.attr('src', PR.nocacheUrl(response.tempAvatarUrl)).show();
             }
         }
 
@@ -189,10 +189,7 @@ ProfileView.prototype.saveAvatar = function() {
         h: self.$cropHotspot.height() * ratio
     };
 
-    var isTemp = true;
-    if (self.$previewImg.data('preview-url')) {
-        isTemp = self.$previewImg.data('preview-url').indexOf('avatar_temp.jpg') >= 0;
-    }
+    var isTemp = self.$previewImg.attr('src').indexOf('avatar_temp.jpg') >= 0;
 
     PR.abortXhr(self.saveAvatarXHR);
     self.saveAvatarXHR = $.ajax({
@@ -210,7 +207,7 @@ ProfileView.prototype.saveAvatar = function() {
                 setTimeout(function() {
                     self.$previewImg.data('preview-url', response.avatarUrl);
                     $(self.settings.deleteAvatarHandle).show();
-                    $(self.settings.avatarImg).show().attr('src', response.avatarThumbUrl + '?v=' + Date.now());
+                    $(self.settings.avatarImg).show().attr('src', PR.nocacheUrl(response.avatarThumbUrl));
                 }, 100); // animations delay
             }
         }

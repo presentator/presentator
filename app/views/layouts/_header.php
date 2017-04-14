@@ -14,7 +14,7 @@ use yii\helpers\Url;
         <div class="profile" data-bind="clickToggle" data-target="#profile_dropdown_menu">
             <span class="name"><?= Html::encode(Yii::$app->user->identity->getIdentificator()) ?></span>
             <figure class="avatar">
-                <img data-src="<?= Yii::$app->user->identity->getAvatarUrl(true) ?>?v=<?= time() ?>" class="lazy-load avatar-img" alt="Avatar">
+                <img data-src="<?= Yii::$app->user->identity->getAvatarUrl(true) ?>" data-nocache="1" class="lazy-load avatar-img" alt="Avatar">
             </figure>
 
             <div class="dropdown-menu" id="profile_dropdown_menu">

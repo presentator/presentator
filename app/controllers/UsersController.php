@@ -74,8 +74,8 @@ class UsersController extends AppController
 
         if ($model->tempUpload()) {
             return [
-                'success'   => true,
-                'avatarUrl' => $user->getTempAvatarUrl(),
+                'success'       => true,
+                'tempAvatarUrl' => $user->getTempAvatarUrl(),
             ];
         }
 
