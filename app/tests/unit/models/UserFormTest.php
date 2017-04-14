@@ -53,7 +53,6 @@ class UserFormTest extends \Codeception\Test\Unit
         verify('Model lastName should match with user2 one', $model->lastName)->equals($user2->lastName);
         verify('Model email should match with user2 one', $model->email)->equals($user2->email);
         verify('Model notifications should match with user2 one', $model->notifications)->equals($user2->getSetting(User::NOTIFICATIONS_SETTING_KEY));
-        verify('Model language should match with user2 one', $model->language)->equals($user2->getSetting(User::LANGUAGE_SETTING_KEY));
     }
 
     /**
@@ -110,14 +109,12 @@ class UserFormTest extends \Codeception\Test\Unit
                 'newPassword'        => '123456789',
                 'newPasswordConfirm' => '1234567',
                 'changePassword'     => true,
-                'language'           => 'invalid',
                 'notifications'      => false,
             ]);
 
             verify('Model should not save', $model->save())->false();
             verify('oldPassword error message should be set', $model->errors)->hasKey('oldPassword');
             verify('newPasswordConfirm error message should be set', $model->errors)->hasKey('newPasswordConfirm');
-            verify('language error message should be set', $model->errors)->hasKey('language');
         });
 
         $this->specify('Correct save attempt', function() use ($user) {
@@ -128,7 +125,6 @@ class UserFormTest extends \Codeception\Test\Unit
                 'newPassword'        => '123456789',
                 'newPasswordConfirm' => '123456789',
                 'changePassword'     => true,
-                'language'           => 'bg-BG',
                 'notifications'      => false,
             ]);
 
@@ -138,7 +134,6 @@ class UserFormTest extends \Codeception\Test\Unit
             verify('User firstName should match', $user->firstName)->equals('Lorem');
             verify('User lastName should match', $user->lastName)->equals('Ipsum');
             verify('User password should match', $user->validatePassword('123456789'))->true();
-            verify('User language lastName should match', $user->getSetting(User::LANGUAGE_SETTING_KEY))->equals('bg-BG');
             verify('User notifications setting should match', $user->getSetting(User::NOTIFICATIONS_SETTING_KEY))->equals(false);
         });
     }

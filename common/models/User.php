@@ -37,7 +37,6 @@ class User extends CActiveRecord implements IdentityInterface
     const THUMB_HEIGHT  = 100;
     const THUMB_QUALITY = 100;
 
-    const LANGUAGE_SETTING_KEY      = 'language';
     const NOTIFICATIONS_SETTING_KEY = 'notifications';
 
     /**
@@ -86,7 +85,6 @@ class User extends CActiveRecord implements IdentityInterface
 
         $extraFields['settings'] = function ($model, $field) {
             return [
-                self::LANGUAGE_SETTING_KEY      => $model->getSetting(self::LANGUAGE_SETTING_KEY, Yii::$app->language),
                 self::NOTIFICATIONS_SETTING_KEY => $model->getSetting(self::NOTIFICATIONS_SETTING_KEY, true),
             ];
         };

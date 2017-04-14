@@ -49,7 +49,11 @@ class AppController extends Controller
 
         if (!$requestLang) {
             // auto detect
-            $countryCode = strtolower(Yii::$app->geoip->lookupCountryCode());
+            try {
+                $countryCode = strtolower(Yii::$app->geoip->lookupCountryCode());
+            } catch (\Exception $e) {
+                $countryCode = 'en';
+            }
 
             if ($countryCode === 'bg') {
                 $lang = 'bg';

@@ -51,7 +51,6 @@ class UsersController extends ApiController
      *   "updatedAt": 1489244169,
      *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
-     *     "language": "bg-BG",
      *     "notifications": true
      *   }
      * }
@@ -144,7 +143,6 @@ class UsersController extends ApiController
      *
      * @apiParam {String}  [firstName]          User first name
      * @apiParam {String}  [lastName]           User last name
-     * @apiParam {String}  [language]           User prefered language setting (current app language by default)
      * @apiParam {Boolean} [notifications]      User notifications setting for receiving emails on new leaved comment (`true` by default)
      * @apiParam {String}  [oldPassword]        User old password (**required** on user password change)
      * @apiParam {String}  [newPassword]        User new password (**required** on user password change)
@@ -161,7 +159,6 @@ class UsersController extends ApiController
      *   "updatedAt": 1489244169,
      *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
-     *     "language": "bg-BG",
      *     "notifications": true
      *   }
      * }

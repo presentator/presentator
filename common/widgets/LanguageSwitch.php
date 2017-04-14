@@ -49,7 +49,7 @@ class LanguageSwitch extends Widget
         $tagAttributes = Html::renderTagAttributes($this->options);
 
         $result = '<div class="language-widget ' . $customClasses .'" ' . $tagAttributes . '>';
-        $result .= '<label for="#language_select">' . Yii::t('app', 'Language') . '</label>';
+        $result .= '<label for="language_select">' . Yii::t('app', 'Language') . '</label>';
         $result .= '<select id="language_select" class="language-select">';
 
         // language options

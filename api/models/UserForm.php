@@ -38,11 +38,6 @@ class UserForm extends Model
     public $newPasswordConfirm;
 
     /**
-     * @var string
-     */
-    public $language;
-
-    /**
      * @var boolean
      */
     public $notifications = true;
@@ -70,7 +65,6 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            ['language', 'in', 'range' => Yii::$app->params['languages']],
             [['notifications'], 'boolean'],
             ['newPassword', 'string', 'min' => 4, 'max' => 255],
             ['newPasswordConfirm', 'compare', 'compareAttribute'=>'newPassword', 'message'=> Yii::t('app', "Passwords don't match")],
@@ -121,7 +115,6 @@ class UserForm extends Model
             $user->firstName = $this->firstName;
             $user->lastName  = $this->lastName;
             $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
-            $user->setSetting(User::LANGUAGE_SETTING_KEY, $this->language ? $this->language : Yii::$app->language);
 
             if ($this->newPassword) {
                 $user->setPassword($this->newPassword);

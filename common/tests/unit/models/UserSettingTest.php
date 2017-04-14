@@ -60,10 +60,10 @@ class UserSettingTest extends \Codeception\Test\Unit
         $user = User::findOne(1002);
 
         $this->specify('Creates new setting model', function() use ($user) {
-            $result  = UserSetting::setSettingByUser($user, 'mySetting', 'test');
-            $setting = UserSetting::findOne(['settingName' => 'mySetting']);
+            $result  = UserSetting::setSettingByUser($user, 'myNewSetting', 'test');
+            $setting = UserSetting::findOne(['settingName' => 'myNewSetting']);
 
-            verify('The method should complete successfully', $result)->true();
+            verify('Method should complete successfully', $result)->true();
             verify('UserSetting model instance', $setting)->isInstanceof(UserSetting::className());
             verify('UserSetting model to have the specified value', $setting->settingValue)->equals('test');
             verify('UserSetting model to be attached to the user', $setting->userId)->equals($user->id);
@@ -71,18 +71,18 @@ class UserSettingTest extends \Codeception\Test\Unit
 
         $this->specify('Update existing setting model', function() use ($user) {
             // before
-            $setting     = UserSetting::findOne(['settingName' => 'language', 'userId' => $user->id]);
+            $setting     = UserSetting::findOne(['settingName' => User::NOTIFICATIONS_SETTING_KEY, 'userId' => $user->id]);
             $beforeValue = $setting->settingValue;
 
-            $result = UserSetting::setSettingByUser($user, 'language', 'someNewValue');
+            $result = UserSetting::setSettingByUser($user, User::NOTIFICATIONS_SETTING_KEY, 'someNewValue');
 
             // after
-            $setting    = UserSetting::findOne(['settingName' => 'language', 'userId' => $user->id]);
+            $setting->refresh();
             $afterValue = $setting->settingValue;
 
-            verify('The method should complete successfully', $result)->true();
-            verify('The before and after value should be different', $beforeValue)->notEquals($afterValue);
-            verify('The after value should be the specified one', $afterValue)->equals('someNewValue');
+            verify('Method should complete successfully', $result)->true();
+            verify('Before and after value should be different', $beforeValue)->notEquals($afterValue);
+            verify('After value should match with the specified one', $afterValue)->equals('someNewValue');
         });
     }
 
@@ -99,8 +99,8 @@ class UserSettingTest extends \Codeception\Test\Unit
         });
 
         $this->specify('Existing user setting', function() use ($user) {
-            $value = UserSetting::getSettingByUser($user, 'language', 'en-US');
-            verify($value)->equals('bg-BG');
+            $value = UserSetting::getSettingByUser($user, User::NOTIFICATIONS_SETTING_KEY, false);
+            verify($value)->equals(true);
         });
     }
 }

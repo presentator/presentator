@@ -74,7 +74,6 @@ class RegisterForm extends Model
 
             // set initial user settings
             if ($user->save() && $user->sendActivationEmail()) {
-                $user->setSetting(User::LANGUAGE_SETTING_KEY, Yii::$app->language);
                 $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, true);
 
                 return $user;

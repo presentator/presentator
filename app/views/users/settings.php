@@ -60,15 +60,6 @@ $hasAvatar = !empty($user->getAvatarUrl());
                 </div>
             </div>
 
-            <div class="row">
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'language')->dropdownList([
-                        'bg-BG' => 'Bulgarian',
-                        'en-US' => 'English'
-                    ]); ?>
-                </div>
-            </div>
-
             <h6 class="faded"><?= Yii::t('app', 'Security') ?></h6>
             <?= $form->field($userForm, 'changePassword')->checkbox(['data-toggle' => '#change_password_block']) ?>
             <div class="row" id="change_password_block">

@@ -215,7 +215,7 @@ class UserTest extends \Codeception\Test\Unit
 
             verify($query)->isInstanceOf(ActiveQuery::className());
             verify('Should be hasMany relation', $query->multiple)->true();
-            verify('Query result should not be empty array', $user->userSettings)->count(2);
+            verify('Query result should not be empty array', $user->userSettings)->count(1);
             foreach ($user->userSettings as $model) {
                 verify($model)->isInstanceOf(UserSetting::className());
             }
@@ -1048,8 +1048,8 @@ class UserTest extends \Codeception\Test\Unit
     public function testSetSetting()
     {
         $user    = User::findOne(1002);
-        $result  = $user->setSetting('mySetting', 'test');
-        $setting = UserSetting::findOne(['settingName' => 'mySetting', 'userId' => $user->id]);
+        $result  = $user->setSetting('myTestSetting', 'test');
+        $setting = UserSetting::findOne(['settingName' => 'myTestSetting', 'userId' => $user->id]);
 
         verify('The method should return true', $result)->true();
         verify('UserSetting model to exist', $setting)->isInstanceOf(UserSetting::className());
@@ -1070,8 +1070,8 @@ class UserTest extends \Codeception\Test\Unit
         });
 
         $this->specify('Existing user setting', function() use ($user) {
-            $value = $user->getSetting('language', 'en-US');
-            verify($value)->equals('bg-BG');
+            $value = $user->getSetting('notifications', false);
+            verify($value)->equals(true);
         });
     }
 

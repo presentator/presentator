@@ -103,7 +103,6 @@ class RegisterForm extends Model
                 }
 
                 // set user settings
-                $user->setSetting(User::LANGUAGE_SETTING_KEY, Yii::$app->language);
                 $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
 
                 return $user;

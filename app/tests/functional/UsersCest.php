@@ -58,14 +58,12 @@ class UsersCest
             'UserForm' => [
                 'firstName'          => 'John',
                 'lastName'           => '',
-                'language'           => 'invalid_lang_string',
                 'changePassword'     => 1,
                 'oldPassword'        => 'incorrect_password',
                 'newPassword'        => '123456',
                 'newPasswordConfirm' => '987654',
             ],
         ]);
-        $I->seeElement('.field-userform-language.has-error');
         $I->seeElement('.field-userform-oldpassword.has-error');
         $I->seeElement('.field-userform-newpasswordconfirm.has-error');
         $I->dontSeeElement('.field-userform-firstname.has-error');
@@ -88,7 +86,6 @@ class UsersCest
                 'email'              => 'invalid_email', // should be ignored
                 'firstName'          => 'John',
                 'lastName'           => '',
-                'language'           => 'bg-BG',
                 'changePassword'     => 1,
                 'oldPassword'        => '123456',
                 'newPassword'        => '111222',
