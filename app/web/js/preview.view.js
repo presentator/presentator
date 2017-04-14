@@ -289,7 +289,7 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
     var self       = this;
     var mappedHash = self.getHashNav();
 
-    versionPos = versionPos || mappedHash.versionPos || 1;
+    versionPos = versionPos || mappedHash.versionPos || 0;
     screenPos  = screenPos  || mappedHash.screenPos  || 1;
 
     PR.abortXhr(self.generalXHR);
@@ -305,8 +305,9 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
             // append the new content
             self.$previewWrapper.html(response.previewHtml);
 
-            var $body    = $('body');
-            var $slider  = $(self.settings.versionSlider);
+            var $body            = $('body');
+            var $slider          = $(self.settings.versionSlider);
+            var activeVersionPos = ($(self.settings.versionsSelect).find('option:selected').index() || 0) + 1;
 
             $slider.on('sliderChange sliderInit', function(e, $activeSlide) {
                 // update active preview thumb on slider change
@@ -323,7 +324,7 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
                 self.commentsView.updateCommentsCounter();
 
-                self.setHashNav(versionPos, $activeSlide.index() + 1);
+                self.setHashNav(activeVersionPos, $activeSlide.index() + 1);
 
                 self.updateSliderCaption();
             });

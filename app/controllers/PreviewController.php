@@ -97,11 +97,11 @@ class PreviewController extends AppController
 
                 // find the specific active project version
                 $versionPos = $request->get('version_pos', -1);
-                if (isset($project->versions[$versionPos])) {
+                if ($versionPos >= 0 && isset($project->versions[$versionPos])) {
                     $activeVersion = $project->versions[$versionPos];
-                } else if ($project->latestActiveVersion) {
+                } elseif ($project->latestActiveVersion) {
                     $activeVersion = $project->latestActiveVersion;
-                } else if (isset($project->versions[0])) {
+                } elseif (isset($project->versions[0])) {
                     $activeVersion = $project->versions[0];
                 }
 
