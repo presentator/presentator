@@ -3,6 +3,7 @@ namespace common\components\web;
 
 use Yii;
 use yii\web\UrlManager;
+use common\components\helpers\GeoIPHelper;
 
 /**
  * Extends the default Yii2 UrlManager class.
@@ -18,7 +19,13 @@ class CUrlManager extends UrlManager
     {
         // manually add lang param to the url
         if (!isset($params['lang'])) {
-            $params['lang'] = Yii::$app->request->get('lang', 'en');
+            $lang = Yii::$app->request->get('lang', null);
+
+            if (!$lang) {
+                $lang = GeoIPHelper::detectLanguageCode();
+            }
+
+            $params['lang'] = $lang;
         }
 
         return parent::createUrl($params);
