@@ -65,6 +65,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'app/web/js/all.min.js': [
+                        // @v1.1 define common files here...
                     ]
                 }
             }

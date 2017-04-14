@@ -94,11 +94,11 @@ h2 {
   padding: 0;
 }
 
-section {
+/*section {
   padding: 30px 0;
   border-top: 4px dashed #d8dfec;
 }
-
+*/
 section h1 {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
@@ -107,6 +107,19 @@ section h1 {
   padding-bottom: 14px;
   margin: 0 0 10px 0;
   padding: 0;
+}
+
+section > h1 {
+  margin: 0;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 28px;
+  line-height: 36px;
+  background: #d8dfec;
+}
+
+section > h1 + div article:first-child {
+  border-top: 0;
 }
 
 article {

@@ -5,7 +5,7 @@ define({ "api": [
     "title": "",
     "name": "HideBlock",
     "group": "Intro",
-    "description": "<p>Welcome to Presentator.io API docs.</p> <p>The API resources are separated in 5 groups:</p> <ul> <li> <p><strong>Previews</strong> - Services related to the ProjectPreview model schema.</p> </li> <li> <p><strong>Users</strong> - Services related to the User model schema.</p> </li> <li> <p><strong>Projects</strong> - Services related to the Project model schema.</p> </li> <li> <p><strong>Versions</strong> - Services related to the Version model schema.</p> </li> <li> <p><strong>Screens</strong> - Services related to the Screen model schema.</p> </li> <li> <p><strong>Screen comments</strong> - Services related to the ScreenComment model schema.</p> </li> </ul> <p>Each API resource could be localized by prefixing the result with the appropriate language code, eg. <code>api.presentator.io/bg/...</code>.</p> <p>The available language codes are: <code>bg</code>, <code>en</code>, <code>pt-br</code>, <code>pl</code>.</p>",
+    "description": "<p>Welcome to Presentator.io API docs.</p> <p>The API resources are separated in 5 groups:</p> <ul> <li> <p><strong>Previews</strong> - Services related to the ProjectPreview model schema.</p> </li> <li> <p><strong>Users</strong> - Services related to the User model schema.</p> </li> <li> <p><strong>Projects</strong> - Services related to the Project model schema.</p> </li> <li> <p><strong>Versions</strong> - Services related to the Version model schema.</p> </li> <li> <p><strong>Screens</strong> - Services related to the Screen model schema.</p> </li> <li> <p><strong>Screen comments</strong> - Services related to the ScreenComment model schema.</p> </li> </ul> <p><em>The API is still in very early development and therefore if you have any feature suggestions, please report them at the <a href=\"https://github.com/ganigeorgiev/presentator/issues\">project GitHub issues page</a>.</em></p>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
@@ -13,10 +13,10 @@ define({ "api": [
   {
     "type": "hide",
     "url": "off",
-    "title": "01. \"envelope\" parameter",
+    "title": "02. \"envelope\" parameter",
     "name": "envelopeParam",
     "group": "Intro",
-    "description": "<p>Enables you to output some additional data (like status code, pagination info, etc.) to the response.</p> <pre><code>?envelope=true </code></pre> <p>Sample output:</p>  <pre class=\"prettyprint language-json\">  {\"status\":200,\"headers\":{\"X-Access-Token\":\"example.access.token\"},\"response\":{...}}  </pre>",
+    "description": "<p>Enables you to output some additional data (like status code, pagination info, etc.) to the response.</p> <pre><code>?envelope=true </code></pre> <p>Sample output:</p> <pre class=\"prettyprint language-json\"> {\"status\":200,\"headers\":{\"X-Access-Token\":\"example.access.token\"},\"response\":{...}} </pre>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
@@ -24,10 +24,10 @@ define({ "api": [
   {
     "type": "hide",
     "url": "off",
-    "title": "02. \"fields\" and \"expand\" parameters",
+    "title": "03. \"fields\" and \"expand\" parameters",
     "name": "fieldsExpandParams",
     "group": "Intro",
-    "description": "<ul> <li> <p><strong>fields</strong></p> <p>Used to filter the returned attributes. For example the following will output only the &quot;id&quot; and the &quot;title&quot; of each returned service main model:</p> <pre><code>?fields=id,title </code></pre> <blockquote> <p><strong>NB!</strong> For more info about the allowed attributes on which the <code>fields</code> param could apply, check the description of the specific service. By default - all main model's (first level object) attributes.</p> </blockquote> </li> <li> <p><strong>expand</strong></p> <p>Load additional related resources to the main model on demand.</p> <pre><code>?expand=tags </code></pre> <blockquote> <p><strong>NB!</strong> Check the description of the specific service for more info about the allowed relations that <code>expand</code> could resolve. For convenience, most of the services automatically prefetch some of the commonly used rels.</p> </blockquote> </li> </ul>",
+    "description": "<ul> <li> <p><strong>fields</strong></p> <p>Used to filter the returned attributes. For example the following will output only the &quot;id&quot; and the &quot;title&quot; of each returned service main model:</p> <pre><code>?fields=id,title </code></pre> <blockquote> <p><strong>NB!</strong> For more info about the allowed attributes on which the <code>fields</code> param could apply, check the description of the specific service. By default - all main model's (first level object) attributes.</p> </blockquote> </li> <li> <p><strong>expand</strong></p> <p>Load additional related resources to the main model on demand.</p> <pre><code>?expand=settings </code></pre> <blockquote> <p><strong>NB!</strong> Check the description of the specific service for more info about the allowed relations that <code>expand</code> could resolve. For convenience, most of the services automatically prefetch some of the commonly used rels.</p> </blockquote> </li> </ul>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
@@ -35,10 +35,10 @@ define({ "api": [
   {
     "type": "hide",
     "url": "off",
-    "title": "03. Listing parameters",
+    "title": "04. Listing parameters",
     "name": "introListingParams",
     "group": "Intro",
-    "description": "<p>Most of the <em>listing services</em> (that returns array with objects) support the following GET parameters:</p> <ul> <li> <p><strong>per-page</strong></p> <p>Specify the number of the returned results (often used in combination with <code>page</code> param to create pagination).</p> <pre><code>?per-page=10 </code></pre> </li> <li> <p><strong>page</strong></p> <p>Set the current page for paginated results.</p> <pre><code>?page=1 </code></pre> <p>If pagination is applied, will add to the response the following helper headers:</p> <p><code>X-Pagination-Total-Count</code>  (total items)</p> <p><code>X-Pagination-Page-Count</code>   (total pages)</p> <p><code>X-Pagination-Per-Page</code>     (items per page)</p> <p><code>X-Pagination-Current-Page</code> (current page number)</p> </li> <li> <p><strong>sort</strong></p> <p>Define the order of the returned results. Use <code>-</code> / <code>+</code> (or nothing) in front of the attribute for DESC/ASC order</p> <pre><code>?sort=-created_at,+first_name,last_name </code></pre> <blockquote> <p><strong>NB!</strong> For more info about the allowed attributes on which the <code>sort</code> param could apply, check the description of the specific service.</p> </blockquote> </li> <li> <p><strong>q</strong></p> <pre><code>?q=term(sample-term1),id(1|!2|3) </code></pre> <blockquote> <p><strong>NB!</strong> For more info about the allowed attributes on which the <code>q</code> param could apply, check the description of the specific service.</p> </blockquote> </li> </ul>",
+    "description": "<p>Most of the <em>listing services</em> (that returns array with objects) support the following GET parameters:</p> <ul> <li> <p><strong>per-page</strong> Specify the number of the returned results (often used in combination with <code>page</code> param to create pagination).</p> <pre><code>?per-page=10 </code></pre> </li> <li> <p><strong>page</strong> Set the current page for paginated results.</p> <pre><code>?page=1 </code></pre> <p>If pagination is applied, will add to the response the following helper headers:</p> <p><code>X-Pagination-Total-Count</code>  (total items)</p> <p><code>X-Pagination-Page-Count</code>   (total pages)</p> <p><code>X-Pagination-Per-Page</code>     (items per page)</p> <p><code>X-Pagination-Current-Page</code> (current page number)</p> </li> <li> <p><strong>sort</strong> Define the order of the returned results. Use <code>-</code> / <code>+</code> (or nothing) in front of the attribute for DESC/ASC order</p> <pre><code>?sort=-created_at,+first_name,last_name </code></pre> <blockquote> <p><strong>NB!</strong> For more info about the allowed attributes on which the <code>sort</code> param could apply, check the description of the specific service.</p> </blockquote> </li> </ul>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
@@ -46,10 +46,21 @@ define({ "api": [
   {
     "type": "hide",
     "url": "off",
-    "title": "06. Constants",
+    "title": "05. Constants",
     "name": "introModelsConstants",
     "group": "Intro",
     "description": "<h2>Global (if nothing else is specified)</h2> <table>     <tr>         <th style=\"width: 32%\">Field</th>         <th style=\"width: 32%\">Value</th>         <th style=\"width: 32%\">Description</th>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">status</td>         <td style=\"width: 32%\" class=\"code\">0</td>         <td style=\"width: 32%\"><p>Inactive</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">status</td>         <td style=\"width: 32%\" class=\"code\">1</td>         <td style=\"width: 32%\"><p>Active</p></td>     </tr> </table> <h2>Project model</h2> <table>     <tr>         <th style=\"width: 32%\">Field</th>         <th style=\"width: 32%\">Value</th>         <th style=\"width: 32%\">Description</th>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">type</td>         <td style=\"width: 32%\" class=\"code\">1</td>         <td style=\"width: 32%\"><p>Desktop</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">type</td>         <td style=\"width: 32%\" class=\"code\">2</td>         <td style=\"width: 32%\"><p>Tablet</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">type</td>         <td style=\"width: 32%\" class=\"code\">3</td>         <td style=\"width: 32%\"><p>Mobile</p></td>     </tr>     <tr class=\"delimiter\"><td colspan=\"3\"></td></tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">21</td>         <td style=\"width: 32%\"><p>Tablet screen - <code>[768, 1024]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">22</td>         <td style=\"width: 32%\"><p>Tablet screen - <code>[1024, 768]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">23</td>         <td style=\"width: 32%\"><p>Tablet screen - <code>[800, 1200]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">24</td>         <td style=\"width: 32%\"><p>Tablet screen - <code>[1200, 800]</code></p></td>     </tr>     <tr class=\"delimiter\"><td colspan=\"3\"></td></tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">31</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[320, 480]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">32</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[480, 320]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">33</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[375, 667]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">34</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[667, 375]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">35</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[412, 732]</code></p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">subtype</td>         <td style=\"width: 32%\" class=\"code\">36</td>         <td style=\"width: 32%\"><p>Mobile screen - <code>[732, 712]</code></p></td>     </tr> </table> <h2>ProjectPreview model</h2> <table>     <tr>         <th style=\"width: 32%\">Field</th>         <th style=\"width: 32%\">Value</th>         <th style=\"width: 32%\">Description</th>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">type</td>         <td style=\"width: 32%\" class=\"code\">1</td>         <td style=\"width: 32%\"><p>View only</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">type</td>         <td style=\"width: 32%\" class=\"code\">2</td>         <td style=\"width: 32%\"><p>View and comment</p></td>     </tr> </table> <h2>Screen model</h2> <table>     <tr>         <th style=\"width: 32%\">Field</th>         <th style=\"width: 32%\">Value</th>         <th style=\"width: 32%\">Description</th>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">alignment</td>         <td style=\"width: 32%\" class=\"code\">1</td>         <td style=\"width: 32%\"><p>Left</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">alignment</td>         <td style=\"width: 32%\" class=\"code\">2</td>         <td style=\"width: 32%\"><p>Center</p></td>     </tr>     <tr>         <td style=\"width: 32%\" class=\"code\">alignment</td>         <td style=\"width: 32%\" class=\"code\">3</td>         <td style=\"width: 32%\"><p>Right</p></td>     </tr> </table>",
+    "version": "0.0.0",
+    "filename": "docs/apidoc-intro.js",
+    "groupTitle": "Intro"
+  },
+  {
+    "type": "hide",
+    "url": "off",
+    "title": "01. Localizing response",
+    "name": "localizations",
+    "group": "Intro",
+    "description": "<p>Each API response could be localized with the <code>lang</code> GET parameter:</p> <pre><code>?lang=bg </code></pre> <p>Currently available language codes are: <code>bg</code>, <code>en</code>, <code>pt-br</code>, <code>pl</code>.</p> <p>If the <code>lang</code> parameter is not set, the API will try to detect it via <strong>GeoIP</strong>.</p>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
@@ -1353,7 +1364,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true\n  }\n}",
           "type": "json"
         }
       ]
@@ -1511,13 +1522,6 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "language",
-            "description": "<p>User prefered language setting (current app language by default)</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Boolean",
             "optional": true,
             "field": "notifications",
@@ -1551,7 +1555,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"language\": \"bg-BG\",\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true\n  }\n}",
           "type": "json"
         }
       ]
