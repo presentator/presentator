@@ -5,6 +5,7 @@ use Yii;
 use yii\rest\Controller;
 use yii\filters\auth\CompositeAuth;
 use common\components\HttpJwtAuth;
+use common\components\helpers\GeoIPHelper;
 
 /**
  * Base API controller that is intended to be inherited by all api controllers.
@@ -34,6 +35,27 @@ class ApiController extends Controller
         ];
 
         return $behaviors;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        $request     = Yii::$app->getRequest();;
+        $requestLang = $request->get('lang', null);
+        $lang        = 'en';
+
+        if (!$requestLang) {
+            // auto detect
+            $lang = GeoIPHelper::detectLanguageCode();
+        } elseif (isset(Yii::$app->params['languages'][$requestLang])) {
+            $lang = $requestLang;
+        }
+
+        Yii::$app->language = Yii::$app->params['languages'][$lang];
+
+        return parent::beforeAction($action);
     }
 
     /**

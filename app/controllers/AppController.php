@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\components\helpers\GeoIPHelper;
 
 /**
  * Base controller that is intended to be inherited by all app controllers.
@@ -49,21 +50,7 @@ class AppController extends Controller
 
         if (!$requestLang) {
             // auto detect
-            try {
-                $countryCode = strtolower(Yii::$app->geoip->lookupCountryCode());
-            } catch (\Exception $e) {
-                $countryCode = 'en';
-            }
-
-            if ($countryCode === 'bg') {
-                $lang = 'bg';
-            } elseif ($countryCode === 'pl') {
-                $lang = 'pl';
-            } elseif ($countryCode === 'br' || $countryCode === 'pt' || $countryCode === 'pt-br') {
-                $lang = 'pt-br';
-            } else {
-                $lang = 'en';
-            }
+            $lang = GeoIPHelper::detectLanguageCode();
         } elseif (isset(Yii::$app->params['languages'][$requestLang])) {
             $lang = $requestLang;
         }
