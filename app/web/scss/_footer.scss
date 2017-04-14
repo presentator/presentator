@@ -8,6 +8,7 @@
     margin: 0;
     padding: $baseSpacing;
     font-size: 12px;
+    line-height: 30px;
     a {
         color: inherit;
         text-decoration: underline;
@@ -39,15 +40,67 @@
             }
         }
     }
-    .links {
-        float: left;
-    }
+
+    // Credits
     .credits {
         float: right;
         opacity: 0.5;
         @include transition(opacity 0.2s);
         &:hover {
             opacity: 1;
+        }
+    }
+
+    // Links
+    .links {
+        float: left;
+    }
+
+    // language switch widget
+    .language-widget {
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        font-size: inherit;
+        label, select, .custom-select {
+            display: inline-block;
+            vertical-align: middle;
+            clear: none;
+            width: auto;
+            font-size: inherit;
+            margin: -1px 0 0; /* visual alignment fix */
+        }
+        label {
+            margin-right: 5px;
+        }
+        .custom-select {
+            width: 155px;
+            text-align: left;
+        }
+        select, .select-field {
+            $height: 30px;
+            $vSpacing: 10px;
+            height: $height;
+            font-size: inherit;
+            line-height: $height - $vSpacing;
+            background: $greyColor;
+            @include transition(background 0.2s);
+        }
+        .active .select-field {
+            background: #fff;
+        }
+        .select-dropdown {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: -2px;
+            @include border-radius($baseRadius);
+            @include border-bottom-left-radius(0);
+            @include border-bottom-right-radius(0);
+            @include box-shadow(0px -3px 10px 0px rgba(44, 75, 137, 0.1));
+            .option {
+                padding: 5px 10px;
+                line-height: 19px;
+            }
         }
     }
 }

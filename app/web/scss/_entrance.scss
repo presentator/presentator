@@ -1,54 +1,3 @@
-/* ---- Language widget ---- */
-.language-widget {
-    position: absolute;
-    left: 0%;
-    top: 100%;
-    width: 100%;
-    margin: $baseSpacing 0;
-    text-align: center;
-    font-size: 13px;
-    label, select, .custom-select {
-        display: inline-block;
-        vertical-align: middle;
-        clear: none;
-        width: auto;
-        margin: 0;
-        font-size: inherit;
-    }
-    label {
-        margin-right: 5px;
-        opacity: 0.7;
-    }
-    .custom-select {
-        width: 155px;
-        text-align: left;
-    }
-    select, .select-field {
-        $height: 32px;
-        $vSpacing: 12px;
-        height: $height;
-        font-size: inherit;
-        line-height: $height - $vSpacing;
-        background: $greyColor;
-        @include transition(background 0.2s);
-    }
-    .active .select-field {
-        background: #fff;
-    }
-    .select-dropdown {
-        top: auto;
-        bottom: 100%;
-        margin-bottom: -2px;
-        @include border-radius($baseRadius);
-        @include border-bottom-left-radius(0);
-        @include border-bottom-right-radius(0);
-        @include box-shadow(0px -3px 10px 0px rgba(44, 75, 137, 0.1));
-        .option {
-            padding: 4px 10px;
-        }
-    }
-}
-
 /* ---- Auth panel ---- */
 // panel
 .auth-panel {
@@ -84,6 +33,8 @@
             padding: $baseSpacing 10px;
         }
     }
+
+    // logo
     .logo {
         display: inline-block;
         vertical-align: top;
@@ -108,6 +59,59 @@
             text-align: center;
             font-weight: 300;
             margin: 15px 0 0;
+        }
+    }
+
+    // language switch widget
+    .language-widget {
+        position: absolute;
+        left: 0%;
+        top: 100%;
+        width: 100%;
+        margin: $baseSpacing 0;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        font-size: 13px;
+        label, select, .custom-select {
+            display: inline-block;
+            vertical-align: middle;
+            clear: none;
+            width: auto;
+            margin: 0;
+            font-size: inherit;
+        }
+        label {
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+        .custom-select {
+            width: 155px;
+            text-align: left;
+        }
+        select, .select-field {
+            $height: 32px;
+            $vSpacing: 12px;
+            height: $height;
+            font-size: inherit;
+            line-height: $height - $vSpacing;
+            background: $greyColor;
+            @include transition(background 0.2s);
+        }
+        .active .select-field {
+            background: #fff;
+        }
+        .select-dropdown {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: -2px;
+            @include border-radius($baseRadius);
+            @include border-bottom-left-radius(0);
+            @include border-bottom-right-radius(0);
+            @include box-shadow(0px -3px 10px 0px rgba(44, 75, 137, 0.1));
+            .option {
+                padding: 4px 10px;
+            }
         }
     }
 }

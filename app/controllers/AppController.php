@@ -43,20 +43,32 @@ class AppController extends Controller
      */
     public function beforeAction($action)
     {
-        $request = Yii::$app->getRequest();
-        if (!Yii::$app->user->isGuest) {
-            $lang = substr(Yii::$app->user->identity->getSetting('language', 'en-US'), 0, 2);
-        } else {
-            $lang = $request->get('lang', 'en');
-        }
+        $request     = Yii::$app->getRequest();;
+        $requestLang = $request->get('lang', null);
+        $lang        = 'en';
 
-        if (isset(Yii::$app->params['languages'][$lang])) {
-            if ($lang !== $request->get('lang', null) && !$request->isAjax) {
-                $this->redirect(Url::current(['lang' => $lang]));
+        if (!$requestLang) {
+            // auto detect
+            $countryCode = strtolower(Yii::$app->geoip->lookupCountryCode());
+
+            if ($countryCode === 'bg') {
+                $lang = 'bg';
+            } elseif ($countryCode === 'pl') {
+                $lang = 'pl';
+            } elseif ($countryCode === 'br' || $countryCode === 'pt' || $countryCode === 'pt-br') {
+                $lang = 'pt-br';
+            } else {
+                $lang = 'en';
             }
-
-            Yii::$app->language = Yii::$app->params['languages'][$lang];
+        } elseif (isset(Yii::$app->params['languages'][$requestLang])) {
+            $lang = $requestLang;
         }
+
+        if ($lang !== $requestLang && !$request->isAjax) {
+            $this->redirect(Url::current(['lang' => $lang]));
+        }
+
+        Yii::$app->language = Yii::$app->params['languages'][$lang];
 
         return parent::beforeAction($action);
     }

@@ -1,7 +1,14 @@
+<?php
+use common\widgets\LanguageSwitch;
+?>
 <footer id="page_footer" class="page-footer">
     <div class="links">
         <ul class="separator-list">
             <li><?= date('Y') ?> Presentator.io</li>
+            <li>
+                <?= LanguageSwitch::widget(); ?>
+            </li>
+
             <?php if (isset(Yii::$app->params['githubUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['githubUrl'] ?>" class="icon-link github-link" target="_blank">

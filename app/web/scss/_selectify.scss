@@ -1,0 +1,102 @@
+/* ---- Selectify container ---- */
+.custom-select {
+    @extend %block;
+    position: relative;
+    text-align: left;
+    select {
+        position: absolute;
+        left: -999px;
+        width: 1px;
+        height: 1px;
+        @include hide;
+    }
+    // Field/selected label
+    .select-field {
+        @extend input;
+        position: relative;
+        margin: 0;
+        width: 100%;
+        cursor: pointer;
+        line-height: 32px;
+        padding-right: 40px;
+        @include ellipsis;
+        @include user-select(none);
+        &:after {
+            $arrowHeight: 20px;
+            content: "\f104";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            margin-top: -($arrowHeight / 2);
+            height: $arrowHeight;
+            line-height: $arrowHeight;
+            font-family: $iconFont;
+            font-size: 13px;
+            @include transition(transform 0.2s);
+        }
+    }
+    // Dropdown
+    .option {
+        @extend %block;
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid $lightGreyColor;
+        @include transition(color 0.2s, background 0.2s);
+        @include user-select(none);
+        &:last-child {
+            border-bottom: 0;
+        }
+        &:hover {
+            background: $lighterGreyColor;
+        }
+        &:active {
+            background: $lightGreyColor;
+        }
+        &.active {
+            color: $primaryColor;
+        }
+    }
+    .select-dropdown {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin-top: -2px;
+        z-index: 9999;
+        width: 100%;
+        height: auto;
+        max-height: 182px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @include panel;
+        @include scrollbar();
+        @include border-top-left-radius(0px);
+        @include border-top-right-radius(0px);
+        @include transition(opacity 0.2s, visibility 0.2s, transform 0.2s);
+        @include transform(translateY(10px));
+        @include hide;
+    }
+    // States
+    &.active {
+        .select-field {
+            &:after {
+                @include transform(rotate(180deg));
+            }
+        }
+        .select-dropdown {
+            @include show;
+            @include transform(translateY(0px));
+        }
+    }
+    // Layouts
+    .inline-options &,
+    &.inline-options {
+        .option {
+            float: left;
+            width: 50%;
+            clear: none;
+            &:nth-child(2n) {
+                border-left: 1px solid $lightGreyColor;
+            }
+        }
+    }
+}

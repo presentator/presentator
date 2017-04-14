@@ -24,6 +24,16 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-main', 'httpOnly' => true],
         ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'facebook' => [
+                    'class'        => 'yii\authclient\clients\Facebook',
+                    'clientId'     => $params['facebookAuth']['clientId'],
+                    'clientSecret' => $params['facebookAuth']['clientSecret'],
+                ],
+            ],
+        ],
         'session' => [
             // this is the name of the session cookie used for login on the app
             'name' => 'app-main',

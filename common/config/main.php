@@ -7,6 +7,10 @@ $params = array_merge(
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'geoip' => [
+            'class' => 'dpodium\yii2\geoip\components\CGeoIP',
+            'mode'  => 'STANDARD',  // Choose MEMORY_CACHE or STANDARD mode
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [
@@ -30,16 +34,6 @@ return [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
-            'clients' => [
-                'facebook' => [
-                    'class'        => 'yii\authclient\clients\Facebook',
-                    'clientId'     => $params['facebookAuth']['clientId'],
-                    'clientSecret' => $params['facebookAuth']['clientSecret'],
-                ],
-            ],
         ],
         'mainUrlManager' => [
             'class' => 'common\components\web\CUrlManager',
