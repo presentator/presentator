@@ -206,7 +206,11 @@ ScreenView.prototype.init = function() {
     $document.on('keydown', function(e) {
         self.pressedKey = e.which;
 
-        if (self.$activeVersionSlider && self.$activeVersionSlider.length) {
+        if (self.$activeVersionSlider &&
+            self.$activeVersionSlider.length &&
+            !$body.hasClass('hotspot-active') &&
+            !$body.hasClass('comment-active')
+        ) {
             if (e.which == PR.keys.left) {
                 e.preventDefault();
                 self.$activeVersionSlider.slider('goTo', 'prev');
@@ -224,8 +228,9 @@ ScreenView.prototype.init = function() {
     $document.on('sliderChange sliderInit', function(e, $activeSlide) {
         PR.horizontalAlign($activeSlide);
 
-        self.commentsView.updateCommentsCounter();
         self.hotspotsView.deselectHotspot();
+        self.commentsView.deselectCommentTarget();
+        self.commentsView.updateCommentsCounter();
     });
 
     // Screen settings

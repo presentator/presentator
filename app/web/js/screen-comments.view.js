@@ -380,17 +380,21 @@ ScreenCommentsView.prototype.selectCommentTarget = function (target, scrollToCom
 ScreenCommentsView.prototype.deselectCommentTarget = function (commentTarget) {
     var self = this;
 
-    var $target = $(commentTarget || self.settings.commentTarget + '.selected')
+    var $popover = $(self.settings.commentPopover);
+    var $target  = $(commentTarget || self.settings.commentTarget + '.selected')
         .removeClass('selected');
 
-    $('body').removeClass('comment-active');
-    $(self.settings.commentPopover).addClass('close-start').stop(true, true).delay(300).queue(function(next) {
-        $(this).removeClass('close-start');
-        $(this).find(self.settings.commentsList).empty();
-        $(this).find(self.settings.commentForm).get(0).reset();
+    if ($popover.is(':visible')) {
+        $popover.addClass('close-start').stop(true, true).delay(300).queue(function(next) {
+            $popover.removeClass('close-start');
+            $popover.find(self.settings.commentsList).empty();
+            $popover.find(self.settings.commentForm).get(0).reset();
 
-        next();
-    });
+            next();
+        });
+    }
+
+    $('body').removeClass('comment-active');
 
     if ($target.data('isNew') == true) {
         self.pinsInst.removePin($target);

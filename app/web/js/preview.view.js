@@ -89,15 +89,21 @@ PreviewView.prototype.init = function() {
             e.preventDefault();
 
             self.hidePreviewThumbs();
-        } else if (e.which === PR.keys.left) {
-            var $slider = $(self.settings.versionSlider);
-            if ($slider.length) {
-                $slider.slider('goTo', 'prev');
-            }
-        } else if (e.which === PR.keys.right) {
-            var $slider = $(self.settings.versionSlider);
-            if ($slider.length) {
-                $slider.slider('goTo', 'next');
+        } else if (!$body.hasClass('comment-active')) {
+            if (e.which === PR.keys.left) {
+                e.preventDefault();
+
+                var $slider = $(self.settings.versionSlider);
+                if ($slider.length) {
+                    $slider.slider('goTo', 'prev');
+                }
+            } else if (e.which === PR.keys.right) {
+                e.preventDefault();
+
+                var $slider = $(self.settings.versionSlider);
+                if ($slider.length) {
+                    $slider.slider('goTo', 'next');
+                }
             }
         }
     });
@@ -312,6 +318,8 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 PR.horizontalAlign($activeSlide);
 
                 self.hidePreviewThumbs();
+
+                self.commentsView.deselectCommentTarget();
 
                 self.commentsView.updateCommentsCounter();
 
