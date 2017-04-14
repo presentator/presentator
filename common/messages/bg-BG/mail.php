@@ -36,7 +36,7 @@ return array(
     'Reset password' => 'Смяна на парола',
     'Screen' => 'Екран',
     'Thank you for registering to {appLink}.' => 'Благодарим ви за регистрацията в {appLink}.',
-    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => 'За да може да се логвате без да е необходима Facebook аутентикация, автоматично сме задали следната парола на вашия профил:',
+    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => 'За да може да се логвате без да е необходима Facebook аутентикация, автоматично сме задали следната парола на Вашия профил:',
     'View project' => 'Виж проекта',
     'We\'ve received a request to reset your account password.' => 'Получихме заявка за смяна на вашата парола.',
     'Click on the button below to reset it and set a new one:' => 'Кликнете на бутона по-долу, за да продължите:',
