@@ -90,10 +90,6 @@ class SiteController extends AppController
         $projects = $user->findProjects(10);
         $comments = $user->findLeavedScreenComments(30);
 
-        if (empty($projects)) {
-            $this->view->params['bodyClass'] = 'flex-page-content';
-        }
-
         $projectIds      = ArrayHelper::getColumn($projects, 'id');
         $commentCounters = $user->countUnreadCommentsByProjects($projectIds);
 

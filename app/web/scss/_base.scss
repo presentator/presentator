@@ -428,15 +428,6 @@ ul {
         height: auto;
     }
 }
-.flex-page-content {
-    .page-content {
-        display: flex;
-        &:after {
-            content: none;
-            display: none;
-        }
-    }
-}
 
 // Separator inline list
 .separator-list {

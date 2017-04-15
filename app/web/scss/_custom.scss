@@ -301,7 +301,7 @@
 
 .welcome-panel {
     position: relative;
-    margin: 0 auto $baseSpacing;
+    margin: (2 * $baseSpacing) auto;
     width: 450px;
     max-width: 100%;
     min-height: 200px;

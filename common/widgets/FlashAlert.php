@@ -87,7 +87,7 @@ class FlashAlert extends Widget
         foreach ($flashes as $type => $data) {
             if (isset($this->types[$type])) {
                 $result .= $this->before;
-                $result .= sprintf('<div class="alert %s%s" %s>', $this->types[$type], $customClasses, $tagAttributes);
+                $result .= sprintf('<div class="alert page-alert %s%s" %s>', $this->types[$type], $customClasses, $tagAttributes);
 
                 $data = (array) $data;
                 foreach ($data as $item) {
