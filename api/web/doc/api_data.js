@@ -71,7 +71,7 @@ define({ "api": [
     "title": "02. Leave comment",
     "name": "leaveComment",
     "group": "Previews",
-    "description": "<p>Leave a new comment to a specific project preview screen (the <code>slug</code> must relate to a <code>ProjectAccess</code> model with type <em>View and Comment</em>). Returns the new created comment.</p>",
+    "description": "<p>Leave a new comment to a specific project preview screen (the <code>slug</code> must relate to a <code>ProjectPreview</code> model with type <em>View and Comment</em>). Returns the new created comment.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -80,7 +80,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "slug",
-            "description": "<p>ProjectAccess model slug (<code>GET</code> parameter)</p>"
+            "description": "<p>ProjectPreview model slug (<code>GET</code> parameter)</p>"
           },
           {
             "group": "Parameter",
@@ -191,7 +191,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "slug",
-            "description": "<p>ProjectAccess model slug</p>"
+            "description": "<p>ProjectPreview model slug</p>"
           },
           {
             "group": "Parameter",

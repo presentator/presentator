@@ -32,7 +32,7 @@ class PreviewsController extends ApiController
      * @apiDescription
      * Returns a ProjectPreview model with its related project.
      *
-     * @apiParam {String} slug       ProjectAccess model slug
+     * @apiParam {String} slug       ProjectPreview model slug
      * @apiParam {String} [password] Project password (if has any)
      *
      * @apiSuccessExample {json} 200 Success response (example):
@@ -142,10 +142,10 @@ class PreviewsController extends ApiController
      * @apiName leaveComment
      * @apiGroup Previews
      * @apiDescription
-     * Leave a new comment to a specific project preview screen (the `slug` must relate to a `ProjectAccess` model with type *View and Comment*).
+     * Leave a new comment to a specific project preview screen (the `slug` must relate to a `ProjectPreview` model with type *View and Comment*).
      * Returns the new created comment.
      *
-     * @apiParam {String} slug       ProjectAccess model slug (`GET` parameter)
+     * @apiParam {String} slug       ProjectPreview model slug (`GET` parameter)
      * @apiParam {String} [password] Project password (`GET` parameter)
      * @apiParam {String} message    Comment message
      * @apiParam {String} from       Sender email address
