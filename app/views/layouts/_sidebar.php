@@ -11,7 +11,7 @@ $action     = Yii::$app->controller->action->id;
     <nav class="main-menu">
         <ul>
             <li class="<?= ($controller === 'site' && $action === 'index') ? 'active' : ''?>">
-                <a href="<?= Url::home() ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>"><i class="ion ion-home"></i></a>
+                <a href="<?= Url::to(['site/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>"><i class="ion ion-home"></i></a>
             </li>
             <li class="<?= ($controller === 'projects') ? 'active' : ''?>">
                 <a href="<?= Url::to(['projects/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Projects') ?>"><i class="ion ion-social-buffer"></i></a>
