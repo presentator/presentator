@@ -5,8 +5,8 @@ return [
     'languages' => [
         'en'    => 'en-US',
         'bg'    => 'bg-BG',
-        'pt-br' => 'pt-BR',
-        'pl'    => 'pl-PL',
+        // 'pt-br' => 'pt-BR',
+        // 'pl'    => 'pl-PL',
     ],
     'maxUploadSize' => 15,
 
