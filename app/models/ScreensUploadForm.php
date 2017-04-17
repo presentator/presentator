@@ -48,7 +48,6 @@ class ScreensUploadForm extends Model
                 'extensions'  => 'png, jpg, jpeg',
                 'maxFiles'    => 10,
                 'maxSize'     => (1024 * 1024 * Yii::$app->params['maxUploadSize']),
-                'maxWidth'    => 3500,
             ],
         ];
     }
