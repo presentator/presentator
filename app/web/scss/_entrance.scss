@@ -125,7 +125,7 @@
     width: 100%;
     text-align: center;
     overflow: hidden;
-    background: url('#{$imagesPath}/intro.jpg') right center;
+    background: $secondaryColor url('#{$imagesPath}/intro.jpg?v=1492424578') right center;
     background-repeat: no-repeat;
     background-size: cover;
     &:after {
@@ -136,7 +136,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background: rgba($secondaryColor, 0.8) url('#{$imagesPath}/pattern_white.png');
+        background: rgba($secondaryColor, 0.9) url('#{$imagesPath}/pattern_white.png?v=1492424578');
     }
     .diagonal-bg {
         position: absolute;
