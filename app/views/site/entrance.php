@@ -49,7 +49,8 @@ $this->title = Yii::t('app', 'Login');
                     </div>
                 </div>
                 <footer class="footer text-center">
-                    <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>" class="facebook-link"
+                    <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>"
+                        class="facebook-link"
                         data-window="facebookLogin"
                         data-width="990"
                         data-height="700"

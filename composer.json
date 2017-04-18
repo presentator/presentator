@@ -18,7 +18,8 @@
         "yiisoft/yii2-authclient": "^2.1",
         "yiisoft/yii2-imagine": "^2.1",
         "yii2tech/ar-position": "^1.0",
-        "dpodium/yii2-geoip": "*"
+        "dpodium/yii2-geoip": "*",
+        "himiklab/yii2-recaptcha-widget" : "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

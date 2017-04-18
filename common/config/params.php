@@ -28,4 +28,9 @@ return [
         'clientId'     => '',
         'clientSecret' => '',
     ],
+
+    'recaptcha' => [
+        'siteKey'   => '',
+        'secretKey' => '',
+    ],
 ];

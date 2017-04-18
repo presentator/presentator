@@ -4,6 +4,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use \himiklab\yii2\recaptcha\ReCaptchaValidator;
 
 /**
  * Login form model.
@@ -12,6 +13,8 @@ use common\models\User;
  */
 class LoginForm extends Model
 {
+    const SCENARIO_RECAPTCHA = 'scenarioReCaptcha';
+
     /**
      * @var string
      */
@@ -21,6 +24,11 @@ class LoginForm extends Model
      * @var string
      */
     public $password;
+
+    /**
+     * @var string
+     */
+    public $reCaptcha;
 
     /**
      * @var User
@@ -48,6 +56,7 @@ class LoginForm extends Model
             ['email', 'email'],
             ['email', 'exist', 'targetClass' => User::className(), 'filter' => ['status' => User::STATUS_ACTIVE]],
             ['password', 'validatePassword'],
+            [['reCaptcha'], ReCaptchaValidator::className(), 'on' => self::SCENARIO_RECAPTCHA],
         ];
     }
 

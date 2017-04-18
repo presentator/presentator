@@ -19,21 +19,6 @@ return [
         'request' => [
             'csrfParam' => '_csrf-app-main',
         ],
-        'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-main', 'httpOnly' => true],
-        ],
-        'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
-            'clients' => [
-                'facebook' => [
-                    'class'        => 'yii\authclient\clients\Facebook',
-                    'clientId'     => $params['facebookAuth']['clientId'],
-                    'clientSecret' => $params['facebookAuth']['clientSecret'],
-                ],
-            ],
-        ],
         'session' => [
             // this is the name of the session cookie used for login on the app
             'name' => 'app-main',
@@ -49,6 +34,27 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'user' => [
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity-main', 'httpOnly' => true],
+        ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'facebook' => [
+                    'class'        => 'yii\authclient\clients\Facebook',
+                    'clientId'     => $params['facebookAuth']['clientId'],
+                    'clientSecret' => $params['facebookAuth']['clientSecret'],
+                ],
+            ],
+        ],
+        'reCaptcha' => [
+            'name'    => 'reCaptcha',
+            'class'   => 'himiklab\yii2\recaptcha\ReCaptcha',
+            'siteKey' => $params['recaptcha']['siteKey'],
+            'secret'  => $params['recaptcha']['secretKey'],
         ],
         'urlManager' => [
             'class' => 'common\components\web\CUrlManager',
@@ -141,7 +147,6 @@ return [
                 '<slug:[\w\-]+>/ajax-invoke-access'                          => 'preview/ajax-invoke-access',
             ],
         ],
-
     ],
     'params' => $params,
 ];

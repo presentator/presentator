@@ -9,10 +9,16 @@ return [
     // !!! insert a secret key in the following (if it is empty) - this is required for API User authentication
     'apiUserSecretKey' => '',
 
-    // facebook app data
+    // facebook login app data
     'facebookAuth' => [
         'clientId'     => '',
         'clientSecret' => '',
+    ],
+
+    // recaptcha keys (prevent login brute force attacks)
+    'recaptcha' => [
+        'siteKey'   => '',
+        'secretKey' => '',
     ],
 
     // service email address

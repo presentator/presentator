@@ -21,6 +21,8 @@ use common\components\AuthHandler;
  */
 class SiteController extends AppController
 {
+    const SESSION_LOGIN_ATTEMPTS_KEY = 'wrongLoginAttempts';
+
     /**
      * @inheritdoc
      */
@@ -86,6 +88,10 @@ class SiteController extends AppController
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/entrance']);
+        }
+
         $user     = Yii::$app->user->identity;
         $projects = $user->findProjects(10);
         $comments = $user->findLeavedScreenComments(30);
@@ -115,8 +121,9 @@ class SiteController extends AppController
         $this->view->params['bodyClass'] = 'full-page';
         $this->view->params['globalWrapperClass'] = 'auth-panel-wrapper';
 
-        $loginForm    = new LoginForm();
-        $registerForm = new RegisterForm();
+        $loginForm          = new LoginForm();
+        $registerForm       = new RegisterForm();
+        $wrongLoginAttempts = Yii::$app->session->get(self::SESSION_LOGIN_ATTEMPTS_KEY, 0);
 
         // each separate post data is prefixed with the appropriate form name
         // so we can use the `Model::load()` method to detect which form was actually submitted
@@ -124,13 +131,21 @@ class SiteController extends AppController
         if ($loginForm->load($postData)) {
             // login
             if ($loginForm->login()) {
+                Yii::$app->session->remove(self::SESSION_LOGIN_ATTEMPTS_KEY);
                 return $this->goBack();
             }
+
+            Yii::$app->session->set(self::SESSION_LOGIN_ATTEMPTS_KEY, ++$wrongLoginAttempts);
         } elseif ($registerForm->load($postData)) {
             // register
             if ($registerForm->register()) {
                 Yii::$app->session->setFlash('registerSuccess');
             }
+        }
+
+        // show recaptcha on too many wrong login attempts
+        if ($wrongLoginAttempts >= 3) {
+            $loginForm->scenario = LoginForm::SCENARIO_RECAPTCHA;
         }
 
         return $this->render('entrance', [
