@@ -323,7 +323,10 @@
 .projects-list {
     @extend %block;
     @extend %clear-after;
-    @include items-per-row(5);
+    @include items-per-row(7);
+    @media screen and (max-width: 2300px)  {
+        @include items-per-row(5);
+    }
     @media screen and (max-width: 1600px)  {
         @include items-per-row(4);
     }
@@ -342,7 +345,10 @@
 .screens-list {
     @extend %block;
     @extend %clear-after;
-    @include items-per-row(5);
+    @include items-per-row(7);
+    @media screen and (max-width: 2300px)  {
+        @include items-per-row(5);
+    }
     @media screen and (max-width: 1600px)  {
         @include items-per-row(4);
     }
