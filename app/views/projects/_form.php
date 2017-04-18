@@ -70,8 +70,8 @@ if ($isNewRecord) {
             ])
             ->dropDownList($subtypesList, [
                 'data-default' => [
-                    Project::TYPE_TABLET => 11,
-                    Project::TYPE_MOBILE => 21,
+                    Project::TYPE_TABLET => 21,
+                    Project::TYPE_MOBILE => 31,
                 ],
             ])
             ->label(false);
