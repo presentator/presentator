@@ -696,18 +696,18 @@ class UserTest extends \Codeception\Test\Unit
     public function testSearchUsers()
     {
         $this->specify('Search for INACTIVE users by name part', function() {
-            $users = User::searchUsers('Gani Georgiev');
+            $users = User::searchUsers('Gani Georgiev', [], true);
             verify('Should be empty', $users)->isEmpty();
         });
 
         $this->specify('Search for INACTIVE users by email part', function() {
-            $users = User::searchUsers('test1@presentator.io');
+            $users = User::searchUsers('test1@presentator.io', [], true);
             verify('Should be empty', $users)->isEmpty();
         });
 
-        $this->specify('Search for ACTIVE users by name part', function() {
+        $this->specify('Search for ACTIVE users by name part (fuzzy search)', function() {
             $search = 'Lorem';
-            $users  = User::searchUsers($search);
+            $users  = User::searchUsers($search, [], true);
 
             verify('Should found 1 active user', $users)->count(1);
             foreach ($users as $user) {
@@ -715,9 +715,16 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Search for ACTIVE users by email part', function() {
+        $this->specify('Search for ACTIVE users by name part (non fuzzy search)', function() {
+            $search = 'Lorem';
+            $users  = User::searchUsers($search, [], false);
+
+            verify('Should be empty', $users)->isEmpty();
+        });
+
+        $this->specify('Search for ACTIVE users by email part (fuzzy search)', function() {
             $search = '@presentator.io';
-            $users  = User::searchUsers($search);
+            $users  = User::searchUsers($search, [], true);
 
             verify('Should found 4 active user', $users)->count(5);
             foreach ($users as $user) {
@@ -725,9 +732,16 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Search for ACTIVE users by email part with exclude', function() {
+        $this->specify('Search for ACTIVE users by email part (non fuzzy search)', function() {
             $search = '@presentator.io';
-            $users  = User::searchUsers($search, [1004, 1005]);
+            $users  = User::searchUsers($search, [], false);
+
+            verify('Should be empty', $users)->isEmpty();
+        });
+
+        $this->specify('Search for ACTIVE users by email part with exclude (fuzzy search)', function() {
+            $search = '@presentator.io';
+            $users  = User::searchUsers($search, [1004, 1005], true);
 
             verify('Users count should match', $users)->count(3);
             foreach ($users as $user) {
