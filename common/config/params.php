@@ -3,10 +3,9 @@
 return [
     'showCredits' => true,
     'languages' => [
-        'en'    => 'en-US',
-        'bg'    => 'bg-BG',
-        // 'pt-br' => 'pt-BR',
-        // 'pl'    => 'pl-PL',
+        'en' => 'en-US',
+        'bg' => 'bg-BG',
+        'pl' => 'pl-PL',
     ],
     'maxUploadSize' => 15,
 

@@ -63,11 +63,11 @@ class LanguageSwitch extends Widget
             ($currentLang == 'en-us' ? 'selected' : ''),
             (Yii::t('app', 'English'))
         );
-        // $result .= sprintf('<option value="%s" %s>%s</option>',
-        //     Url::current(['lang' => 'pl']),
-        //     ($currentLang == 'pl-pl' ? 'selected' : ''),
-        //     (Yii::t('app', 'Polish'))
-        // );
+        $result .= sprintf('<option value="%s" %s>%s</option>',
+            Url::current(['lang' => 'pl']),
+            ($currentLang == 'pl-pl' ? 'selected' : ''),
+            (Yii::t('app', 'Polish'))
+        );
         // $result .= sprintf('<option value="%s" %s>%s</option>',
         //     Url::current(['lang' => 'pt-br']),
         //     ($currentLang == 'pt-br' ? 'selected' : ''),
