@@ -125,7 +125,7 @@ class UsersCest
             'notifications' => true,
             'password'        => '123456',
             'passwordConfirm' => '123456',
-        ], ['avatar' => Yii::getAlias('@common/tests/_data/test_image.png')]);
+        ], ['avatar' => Yii::getAlias('@common/tests/_data/test_image.jpg')]);
         $I->seeResponseCodeIs(204);
     }
 
