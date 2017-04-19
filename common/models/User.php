@@ -509,15 +509,16 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public static function searchUsers($search, array $exclude = [], $limit = -1, $offset = 0)
     {
-        $nameExpression = new Expression("UPPER(CONCAT_WS(' ', `firstName`, `lastName`))");
+        // $nameExpression = new Expression("UPPER(CONCAT_WS(' ', `firstName`, `lastName`))");
 
         return static::find()
             ->distinct()
-            ->where([
-                'or',
-                ['like', $nameExpression, strtoupper($search)],
-                ['like', 'email', $search]
-            ])
+            ->where(['email' => $search])
+            // ->where([
+            //     'or',
+            //     ['like', $nameExpression, strtoupper($search)],
+            //     ['like', 'email', $search]
+            // ])
             ->andWhere(['status' => static::STATUS_ACTIVE])
             ->andWhere(['not in', 'id', $exclude])
             ->limit($limit)
