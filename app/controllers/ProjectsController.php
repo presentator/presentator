@@ -418,7 +418,7 @@ class ProjectsController extends AppController
 
         if ($project && strlen($search) >= 2) {
             $currentAdminIds = ArrayHelper::getColumn($project->users, 'id');
-            $users           = User::searchUsers($search, $currentAdminIds, 20);
+            $users           = User::searchUsers($search, $currentAdminIds, Yii::$app->params['fuzzyUsersSearch']);
             $suggestionsHtml = $this->renderPartial('/users/_suggestions', ['users' => $users]);
 
             return [

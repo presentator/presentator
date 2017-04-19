@@ -1,13 +1,16 @@
 <?php
 
 return [
-    'showCredits' => true,
+    'fuzzyUsersSearch' => false,
+    'showCredits'      => true,
+    'maxUploadSize'    => 15,
+
+    // short/url lang code => full lang code
     'languages' => [
         'en' => 'en-US',
         'bg' => 'bg-BG',
         'pl' => 'pl-PL',
     ],
-    'maxUploadSize' => 15,
 
     'publicUrl'        => '',
     'activationSalt'   => '',

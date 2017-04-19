@@ -501,25 +501,36 @@ class User extends CActiveRecord implements IdentityInterface
     --------------------------------------------------------------- */
     /**
      * Returns a list with filtered user models by searching within their name and email.
-     * @param  string  $search  Search keyword.
-     * @param  array   $exclude User id(s) to exclude.
-     * @param  integer $limit   Number of returned results.
-     * @param  integer $offset  Returned results offset.
+     * @param  string  $search      Search keyword.
+     * @param  array   $exclude     User id(s) to exclude.
+     * @param  boolean $fuzzySearch Whether to enable fuzzy email/name search or not.
+     * @param  integer $limit       Number of returned results.
+     * @param  integer $offset      Returned results offset.
      * @return User[]
      */
-    public static function searchUsers($search, array $exclude = [], $limit = -1, $offset = 0)
+    public static function searchUsers(
+        $search,
+        array $exclude = [],
+        $fuzzySearch = false,
+        $limit = 20,
+        $offset = 0
+    )
     {
-        // $nameExpression = new Expression("UPPER(CONCAT_WS(' ', `firstName`, `lastName`))");
+        $query = static::find()->distinct();
 
-        return static::find()
-            ->distinct()
-            ->where(['email' => $search])
-            // ->where([
-            //     'or',
-            //     ['like', $nameExpression, strtoupper($search)],
-            //     ['like', 'email', $search]
-            // ])
-            ->andWhere(['status' => static::STATUS_ACTIVE])
+        if ($fuzzySearch) {
+            $nameExpression = new Expression("UPPER(CONCAT_WS(' ', `firstName`, `lastName`))");
+            $query->where([
+                'or',
+                ['like', $nameExpression, strtoupper($search)],
+                ['like', 'email', $search]
+            ]);
+        } else {
+            // full string match
+            $query->where(['email' => $search]);
+        }
+
+        return $query->andWhere(['status' => static::STATUS_ACTIVE])
             ->andWhere(['not in', 'id', $exclude])
             ->limit($limit)
             ->offset($offset)
