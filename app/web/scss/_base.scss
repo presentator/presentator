@@ -20,6 +20,9 @@ body {
     background: $lightGreyColor;
     padding: 0 0 0 $sidebarWidth;
     overflow: hidden;
+    // fix osx "bolded" fonts
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     &.with-secondary-sidebar {
         padding-left: $sidebarWidth + $projectSidebarWidth;
     }
