@@ -580,9 +580,10 @@ input[type="radio"] {
     }
     input {
         position: absolute;
-        left: -999px;
+        left: -3999px; /* display:none or visibility:hidden prevent older IE versions from receiving events */
         width: 1px;
         height: 1px;
+        -webkit-appearance: none;
         &:checked ~ label {
             border-color: $primaryColor;
             &:after {
