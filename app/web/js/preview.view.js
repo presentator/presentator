@@ -164,10 +164,22 @@ PreviewView.prototype.init = function() {
         if ($body.hasClass('preview-mode')) {
             e.preventDefault();
 
-            $body.addClass('preview-mode-hint').stop(true, true).delay(400).queue(function(next) {
+            $body.addClass('preview-mode-hint').stop(true, true).delay(500).queue(function(next) {
                 $body.removeClass('preview-mode-hint');
                 next();
             });
+        }
+    });
+
+    // Keyboard shortcut to toggle hotspots visibility
+    $document.on('keydown', function(e) {
+        if (e.shiftKey &&
+            e.which === PR.keys.h &&
+            $body.hasClass('preview-mode')
+        ) {
+            e.preventDefault();
+
+            $body.toggleClass('hotspots-force-show');
         }
     });
 
@@ -407,7 +419,7 @@ PreviewView.prototype.activatePreviewMode = function() {
  * Activates project comment mode.
  */
 PreviewView.prototype.activateCommentsMode = function() {
-    $('body').removeClass('preview-mode').addClass('comments-mode');
+    $('body').removeClass('preview-mode hotspots-force-show').addClass('comments-mode');
     $(this.settings.previewModeHandle).removeClass('active');
     $(this.settings.commentsModeHandle).addClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);

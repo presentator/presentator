@@ -125,7 +125,8 @@
             opacity: 1;
         }
     }
-    .preview-mode-hint & {
+    .preview-mode-hint &,
+    .hotspots-force-show & {
         opacity: 1;
     }
     &.remove-start {
