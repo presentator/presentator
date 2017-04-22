@@ -117,6 +117,7 @@
             !$popupContent.has(e.target).length
         ) {
             e.preventDefault();
+
             PR.closePopup();
         }
     });
