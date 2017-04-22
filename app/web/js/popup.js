@@ -121,6 +121,31 @@
         }
     });
 
+    $document.on('click', '.popup:not([data-overlay-close="false"])', function(e) {
+        $popupContent = $(this).find('.popup-content');
+        if (
+            !$popupContent.is(e.target) &&
+            !$popupContent.has(e.target).length
+        ) {
+            e.preventDefault();
+            PR.closePopup();
+        }
+    });
+
+    // Keyboard shortcut to close an active popup with `esc` key
+    $document.on('keydown', function(e) {
+        if (PR.keys &&                                             // keys are defined
+            e.which === PR.keys.esc &&                             // is `esc` key pressed
+            $body.hasClass('popup-active') &&                      // has active popup
+            !$(e.target).is(':input:not(:button)') &&              // is not form input
+            $('.popup.active').find('.popup-close:visible').length // popup has visible close handle
+        ) {
+            e.preventDefault();
+
+            PR.closePopup();
+        }
+    });
+
     // Auto open popup based on url hash value
     if (window.location.hash && $('.popup' + window.location.hash).length) {
         PR.openPopup(window.location.hash);
