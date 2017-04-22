@@ -121,17 +121,6 @@
         }
     });
 
-    $document.on('click', '.popup:not([data-overlay-close="false"])', function(e) {
-        $popupContent = $(this).find('.popup-content');
-        if (
-            !$popupContent.is(e.target) &&
-            !$popupContent.has(e.target).length
-        ) {
-            e.preventDefault();
-            PR.closePopup();
-        }
-    });
-
     // Keyboard shortcut to close an active popup with `esc` key
     $document.on('keydown', function(e) {
         if (PR.keys &&                                             // keys are defined
