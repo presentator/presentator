@@ -231,7 +231,7 @@ return array(
     'You must provide a valid project password.' => 'Невалидна парола на проект.',
     'Your account was activated successfully.' => 'Профилът ти бе активиран успешно.',
     'Your password was successfully changed!' => 'Паролата на профилът ти бе обновена успешно!',
-    'of' => 'на',
+    'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
     '{projectTitle} preview' => '{projectTitle} преглед',
