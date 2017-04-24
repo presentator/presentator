@@ -90,6 +90,7 @@ return array(
     'Forgotten password?' => 'Nie pamiętasz hasła?',
     'From' => 'Od',
     'From (email)' => 'Od (email)',
+    'French' => 'Francuski',
     'General' => 'Ogólny',
     'Go to login page' => 'Przejdź do ekranu logowania',
     'Has unread comments' => 'Nowe komentarze',

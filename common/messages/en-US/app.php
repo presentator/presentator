@@ -90,6 +90,7 @@ return array(
     'Forgotten password?' => 'Forgotten password?',
     'From' => 'From',
     'From (email)' => 'From (email)',
+    'French' => 'French',
     'General' => 'General',
     'Go to login page' => 'Go to login page',
     'Has unread comments' => 'Has unread comments',

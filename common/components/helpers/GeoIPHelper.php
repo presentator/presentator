@@ -27,6 +27,8 @@ class GeoIPHelper
             $lang = 'bg';
         } elseif ($countryCode === 'pl') {
             $lang = 'pl';
+        } elseif ($countryCode === 'fr') {
+            $lang = 'fr';
         } elseif ($countryCode === 'br' || $countryCode === 'pt' || $countryCode === 'pt-br') {
             $lang = 'pt-br';
         } else {

@@ -10,6 +10,7 @@ return [
         'en' => 'en-US',
         'bg' => 'bg-BG',
         'pl' => 'pl-PL',
+        'fr' => 'fr-FR',
     ],
 
     'publicUrl'        => '',

@@ -91,6 +91,7 @@ return array(
     'Forgotten password?' => 'Забравена парола?',
     'From' => 'От',
     'From (email)' => 'От (email)',
+    'French' => 'Френски',
     'General' => 'Общи',
     'Go to login page' => 'Към страницата за вход',
     'Has unread comments' => 'Непрочетени коментари',
