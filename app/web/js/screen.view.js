@@ -451,8 +451,8 @@ ScreenView.prototype.initScreensDropzone = function() {
     myDropzone.on('sending', function(file, xhr, formData) {
         $activeScreensWrapper = self.getActiveScreensWrapper();
 
-        formData.set(yii.getCsrfParam(), yii.getCsrfToken());
-        formData.set('versionId', $activeScreensWrapper.data('version-id'));
+        formData.append(yii.getCsrfParam(), yii.getCsrfToken());
+        formData.append('versionId', $activeScreensWrapper.data('version-id'));
 
         self.$uploadContainer.addClass('loading');
         self.$uploadPopup.find('.popup-close').hide();

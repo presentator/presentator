@@ -136,7 +136,7 @@ ProfileView.prototype.tempAvatarUpload = function() {
     });
 
     myDropzone.on('sending', function(file, xhr, formData) {
-        formData.set(yii.getCsrfParam(), yii.getCsrfToken());
+        formData.append(yii.getCsrfParam(), yii.getCsrfToken());
         self.$uploadContainer.show().addClass('loading');
     });
 
