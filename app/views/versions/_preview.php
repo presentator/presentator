@@ -168,8 +168,8 @@ if ($project->subtype) {
             <?php endif ?>
 
             <?php if ($allowComment): ?>
-                <li id="fm_preview_handle" class="menu-item preview-handle active <?= empty($activeVersion->screens) ? 'disable' : '' ?>" data-cursor-tooltip="<?= Yii::t('app', 'All screens') ?>"" data-cursor-tooltip="<?= Yii::t('app', 'Preview mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-eye-outline"></i></li>
-                <li id="fm_comments_handle" class="menu-item comments-handle <?= empty($activeVersion->screens) ? 'disable' : '' ?>" data-cursor-tooltip="<?= Yii::t('app', 'All screens') ?>"" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
+                <li id="fm_preview_handle" class="menu-item preview-handle active <?= empty($activeVersion->screens) ? 'disable' : '' ?>" data-cursor-tooltip="<?= Yii::t('app', 'Preview mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-eye-outline"></i></li>
+                <li id="fm_comments_handle" class="menu-item comments-handle <?= empty($activeVersion->screens) ? 'disable' : '' ?>" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
                     <i class="ion ion-ios-chatboxes-outline"></i>
                     <span class="bubble comments-counter">0</span>
                 </li>

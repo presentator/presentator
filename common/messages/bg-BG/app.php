@@ -152,7 +152,7 @@ return array(
     'Preferred language' => 'Предпочитан език',
     'Prev comment' => 'Предишен коментар',
     'Preview links' => 'URL адреси за преглед',
-    'Preview mode' => 'Тип',
+    'Preview mode' => 'Режим Преглед',
     'Project preview links' => 'URL адреси за преглед',
     'Projects' => 'Проекти',
     'Receive an email when a new screen comment is added' => 'Изпращане на email при нов коментар',
