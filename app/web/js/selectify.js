@@ -63,7 +63,7 @@
                     settings = $.extend({}, defaults, options);
                     $select.data('pr.selectify', settings);
                 } else {
-                    methods.destroy.refresh(select); // refresh on reinit
+                    methods.refresh.call(select); // refresh on reinit
 
                     return true;
                 }
