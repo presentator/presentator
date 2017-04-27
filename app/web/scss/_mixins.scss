@@ -240,6 +240,7 @@
     &:active { background: rgba($color, 0.1); }
 }
 
+// @todo remove
 @mixin sideHighlight($color, $height: 15px, $width: 3px) {
     &:after {
         content: "";
@@ -252,5 +253,20 @@
         margin-top: -($height / 2);
         background: $color;
         @include box-shadow(1px 0px 10px 0px rgba($color, 0.5));
+    }
+}
+
+@mixin topHighlight($color, $width: 15px, $height: 3px) {
+    &:after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: $width;
+        height: $height;
+        margin-left: -($width / 2);
+        background: $color;
+        @include box-shadow(0px 1px 10px 0px rgba($color, 0.5));
     }
 }

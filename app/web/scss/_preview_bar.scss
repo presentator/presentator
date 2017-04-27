@@ -1,0 +1,267 @@
+/* ---- Preview thumbs ---- */
+.preview-thumbs {
+    @extend %clear-after;
+    width: 100%;
+    height: auto;
+    display: block;
+    text-align: center;
+    margin: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: left;
+    padding: ($baseSpacing / 2) 0;
+    .preview-thumb {
+        $spacing: $baseSpacing / 2;
+        $size: 100px;
+        float: none;
+        clear: both;
+        cursor: pointer;
+        width: $size;
+        padding-bottom: $size;
+        margin: 0 $spacing 0 0;
+        &:first-child {
+            margin-left: $spacing;
+        }
+        &:before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba($overlayColor, 0.7);
+            @include border-radius($baseRadius);
+            @include transition(opacity 0.3s, visibility 0.3s);
+            @include hide;
+        }
+        &:after {
+            $iconSize: 25px;
+            content: "\f120";
+            position: absolute;
+            z-index: 3;
+            top: 50%;
+            left: 50%;
+            margin-top: -($iconSize / 2);
+            margin-left: -($iconSize / 2);
+            width: $iconSize;
+            height: $iconSize;
+            line-height: $iconSize;
+            text-align: center;
+            color: $successColor;
+            font-size: 19px;
+            font-family: $iconFont;
+            @include transition(opacity 0.3s, visibility 0.3s, transform 0.3s);
+            @include transform(translateY(10px));
+            @include hide;
+        }
+        &.active {
+            background: $overlayColor;
+            &:before, &:after {
+                @include show;
+                @include transform(translateY(0px));
+            }
+        }
+    }
+}
+
+/* ---- Preview bar ---- */
+.preview-bar {
+    @include panel;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 0;
+    text-align: center;
+    .bar-content,
+    .bar-ctrl {
+        @extend %block;
+        @extend %clear-after;
+        position: relative;
+    }
+    .bar-ctrl {
+        height: $previewBarCtrlHeight;
+        line-height: $previewBarCtrlHeight;
+        @include transition(height 0.2s, line-height 0.2s);
+    }
+    .bar-content {
+        display: none;
+        border-bottom: 1px solid $lightGreyColor;
+    }
+
+    // Prev/Next ctrls
+    .ctrl {
+        float: left;
+        font-size: 16px;
+        line-height: inherit;
+        text-align: center;
+        width: $previewBarCtrlHeight;
+        cursor: pointer;
+        @include user-select(none);
+        @include transition(color 0.2s, background 0.2s);
+        i {
+            vertical-align: top;
+            line-height: inherit;
+        }
+        &.ctrl-next {
+            float: right;
+        }
+        &:hover, &.active {
+            background: $lighterGreyColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: $lightGreyColor;
+        }
+    }
+
+    // Visibility toggle
+    .visibility-toggle {
+        $height: 20px;
+        position: absolute;
+        z-index: 1;
+        right: $previewBarCtrlHeight + ($baseSpacing / 2);
+        top: ($previewBarCtrlHeight - $height) / 2;
+        margin-top: -1px;
+        cursor: pointer;
+        padding: 0 10px;
+        font-size: 12px;
+        line-height: $height;
+        background: #fff;
+        border: 1px solid $lightGreyColor;
+        @include border-radius(3px);
+        @include transition(color 0.2s, background 0.2s, opacity 0.2s);
+        @include user-select(none);
+        &:hover {
+            background: $lighterGreyColor
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: $lightGreyColor;
+        }
+    }
+
+    // Menu
+    .bubble {
+        $size: 17px;
+        position: absolute;
+        z-index: 1;
+        right: -13px;
+        top: 5px;
+        width: $size;
+        height: $size;
+        color: $txtColor;
+        line-height: $size;
+        font-size: 11px;
+        font-family: $baseFont;
+        background: $lightGreyColor;
+        @include border-radius($size);
+    }
+    .menu {
+        display: inline-block;
+        vertical-align: top;
+        ul {
+            @extend %block;
+            @include clear-list;
+        }
+        i {
+            position: relative;
+            font-size: 23px;
+            line-height: inherit;
+            font-weight: normal;
+            vertical-align: top;
+        }
+        .menu-item {
+            float: left;
+            clear: none;
+            min-width: 70px;
+            cursor: pointer;
+            text-align: center;
+            line-height: inherit;
+            border-right: 1px solid $lightGreyColor;
+            @include transition(color 0.2s, background 0.2s);
+            &:first-child {
+                border-left: 1px solid $lightGreyColor;
+            }
+            &:hover, &.active {
+                background: $lighterGreyColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $lightGreyColor;
+            }
+            &.preview-handle,
+            &.hotspots-handle {
+                color: $primaryColor;
+                .bubble {
+                    color: #fff;
+                    background: $primaryColor;
+                }
+                &.active {
+                    @include topHighlight($primaryColor);
+                }
+            }
+            &.comments-handle {
+                color: $dangerColor;
+                .bubble {
+                    color: #fff;
+                    background: $dangerColor;
+                }
+                &.active {
+                    @include topHighlight($dangerColor);
+                }
+            }
+        }
+    }
+
+    // Custom selects
+    .select-field {
+        border: 0;
+        height: 100%;
+        line-height: inherit;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 20px;
+        background: none;
+        &:after {
+            right: 10px;
+        }
+    }
+    .select-dropdown {
+        line-height: 20px;
+        margin-top: 0;
+    }
+
+    // States/Layouts
+    &.expanded {
+        .bar-content {
+            display: block;
+        }
+    }
+}
+.preview-bar-toggle {
+    position: absolute;
+    z-index: 999999;
+    right: 0px;
+    top: -1px;
+    padding: 5px 10px;
+    cursor: pointer;
+    line-height: 1;
+    font-size: 12px;
+    opacity: 0.5;
+    background: $lighterGreyColor;
+    border: 1px solid $greyColor;
+    @include user-select(none);
+    @include border-bottom-left-radius($baseRadius);
+    @include transition(background 0.2s, opacity 0.2s);
+    &:hover {
+        opacity: 1;
+        background: $lightGreyColor;
+    }
+    &:active {
+        opacity: 1;
+        transition-duration: 0.1s;
+        background: darken($lightGreyColor, 5%);
+    }
+}

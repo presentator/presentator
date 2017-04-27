@@ -342,7 +342,7 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
             });
 
             $slider.slider({
-                nav: $slider.find(self.settings.versionSliderItem).length > 1
+                nav: false
             });
 
             $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {

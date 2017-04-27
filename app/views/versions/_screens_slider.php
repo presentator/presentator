@@ -42,6 +42,22 @@ $isGuest = Yii::$app->user->isGuest;
         <span class="close-handle close-screen-edit"><i class="ion ion-ios-close-empty"></i></span>
     </div>
 
+    <div class="preview-bar">
+        <span class="ctrl ctrl-prev"><i class="ion ion ion-android-arrow-back"></i></span>
+        <span class="ctrl ctrl-next"><i class="ion ion ion-android-arrow-forward"></i></span>
+            <nav class="menu">
+                <ul>
+                    <li id="fm_hotspots_handle" class="menu-item hotspots-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Hotspots mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-crop"></i></li>
+                    <li id="fm_comments_handle" class="menu-item comments-handle" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
+                        <i class="ion ion-ios-chatboxes-outline"></i>
+                        <span class="bubble comments-counter">0</span>
+                    </li>
+                    <li id="fm_settings_handle" class="menu-item settings-handle" data-cursor-tooltip="<?= Yii::t('app', 'Screen settings') ?>"><i class="ion ion-ios-gear-outline"></i></li>
+                    <li id="fm_visibility_handle" class="menu-item visibility-handle" data-collapsed-text="<?= Yii::t('app', 'Menu') ?>" data-expanded-text="<?= Yii::t('app', 'Hide') ?>"></li>
+                </ul>
+            </nav>
+    </div>
+
     <nav class="floating-menu <?= $collapseFloatingMenu ? 'collapsed' : '' ?>">
         <ul>
             <li id="fm_hotspots_handle" class="menu-item hotspots-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Hotspots mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-crop"></i></li>

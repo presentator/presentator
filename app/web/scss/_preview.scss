@@ -57,62 +57,6 @@
 }
 
 /* ---- Preview thumbs ---- */
-.preview-thumbs {
-    @extend %clear-after;
-    width: 800px;
-    display: block;
-    margin: $baseSpacing auto;
-    text-align: center;
-    .listing {
-        @include items-per-row(5);
-    }
-    .preview-thumb {
-        cursor: pointer;
-        // float: none;
-        // display: inline-block;
-        // vertical-align: top;
-        &:before {
-            content: "";
-            position: absolute;
-            z-index: 2;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba($overlayColor, 0.7);
-            @include border-radius($baseRadius);
-            @include transition(opacity 0.3s, visibility 0.3s);
-            @include hide;
-        }
-        &:after {
-            $iconSize: 25px;
-            content: "\f120";
-            position: absolute;
-            z-index: 3;
-            top: 50%;
-            left: 50%;
-            margin-top: -($iconSize / 2);
-            margin-left: -($iconSize / 2);
-            width: $iconSize;
-            height: $iconSize;
-            line-height: $iconSize;
-            text-align: center;
-            color: $successColor;
-            font-size: 19px;
-            font-family: $iconFont;
-            @include transition(opacity 0.3s, visibility 0.3s, transform 0.3s);
-            @include transform(translateY(10px));
-            @include hide;
-        }
-        &.active {
-            background: $overlayColor;
-            &:before, &:after {
-                @include show;
-                @include transform(translateY(0px));
-            }
-        }
-    }
-}
 .preview-thumbs-wrapper {
     position: absolute;
     z-index: 100;

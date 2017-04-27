@@ -18,7 +18,7 @@
         width: 100%;
         cursor: pointer;
         line-height: 32px;
-        padding-right: 40px;
+        padding-right: 30px;
         @include ellipsis;
         @include user-select(none);
         &:after {
@@ -67,6 +67,7 @@
         max-height: 182px;
         overflow-x: hidden;
         overflow-y: auto;
+        line-height: 24px;
         @include panel;
         @include scrollbar();
         @include border-top-left-radius(0px);
