@@ -22,18 +22,18 @@ var ScreenView = function(data) {
         'bulkVersionsSelect': '#bulk_versions_select',
 
         // scren edit
-        'editPopup':          '#screens_edit_popup',
-        'openHandle':         '.open-screen-edit',
-        'closeHandle':        '.close-screen-edit',
-        'floatingMenu':       '.floating-menu',
-        'versionSlider':      '.version-slider',
-        'versionSliderItem':  '.slider-item',
-        'settingsHandle':     '#fm_settings_handle',
-        'floatingMenuHandle': '#fm_visibility_handle',
+        'editPopup':         '#screens_edit_popup',
+        'openHandle':        '.open-screen-edit',
+        'closeHandle':       '.close-screen-edit',
+        'versionSlider':     '.version-slider',
+        'versionSliderItem': '.slider-item',
+        'settingsHandle':    '#panel_settings_handle',
+        'nextSlideHandle':   '#slider_next_handle',
+        'prevSlideHandle':   '#slider_prev_handle',
 
         // mode handles
-        'hotspotsModeHandle': '#fm_hotspots_handle',
-        'commentsModeHandle': '#fm_comments_handle',
+        'hotspotsModeHandle': '#panel_hotspots_handle',
+        'commentsModeHandle': '#panel_comments_handle',
 
         // texts
         'versionOptionText':     'Version',
@@ -53,12 +53,10 @@ var ScreenView = function(data) {
 
         'hotspotsViewSettings': {},
         'commentsViewSettings': {},
-        'versionViewSettings': {},
+        'versionViewSettings':  {}
     };
 
     this.settings = $.extend({}, defaults, data);
-
-    this.FLOATING_MENU_COLLAPSE_COOKIE = 'floating-menu-collapse';
 
     // commonly used "static" selectors
     this.$screensWrapperTabs = $(this.settings.screensWrapperTabs);
@@ -165,20 +163,6 @@ ScreenView.prototype.init = function() {
         self.resetBulkSelection();
     });
 
-    // Floating menu visibility toggle
-    $document.on('click', self.settings.floatingMenuHandle, function(e) {
-        e.preventDefault();
-
-        var $menu = $(this).closest(self.settings.floatingMenu);
-        if ($menu.hasClass('collapsed')) {
-            $menu.removeClass('collapsed');
-            PR.cookies.setItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 0);
-        } else {
-            $menu.addClass('collapsed');
-            PR.cookies.setItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 1);
-        }
-    });
-
     // Open screen edit container
     $document.on('click', self.settings.screenItem + ' ' + self.settings.openHandle, function(e) {
         e.preventDefault();
@@ -208,6 +192,7 @@ ScreenView.prototype.init = function() {
 
         if (self.$activeVersionSlider &&
             self.$activeVersionSlider.length &&
+            !$body.hasClass('popup-active') &&
             !$body.hasClass('hotspot-active') &&
             !$body.hasClass('comment-active')
         ) {
@@ -222,6 +207,16 @@ ScreenView.prototype.init = function() {
     });
     $document.on('keyup', function(e) {
         self.pressedKey = null;
+    });
+
+    // Custom slider nav
+    $document.on('click', self.settings.nextSlideHandle, function(e) {
+        e.preventDefault();
+        $(self.settings.versionSlider).slider('goTo', 'next');
+    });
+    $document.on('click', self.settings.prevSlideHandle, function(e) {
+        e.preventDefault();
+        $(self.settings.versionSlider).slider('goTo', 'prev');
     });
 
     // Screen alignment
@@ -592,16 +587,14 @@ ScreenView.prototype.initSortable = function() {
  */
 ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback) {
     var self = this;
-    var floatingMenuCollapsed = Number(PR.cookies.getItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 0));
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
         url: self.settings.ajaxGetScreensSliderUrl,
         type: 'GET',
         data: {
-            'versionId':    versionId,
-            'screenId':     screenId,
-            'collapseMenu': floatingMenuCollapsed ? 1 : 0,
+            'versionId': versionId,
+            'screenId':  screenId
         },
     }).done(function(response) {
         if (response.success) {
@@ -611,9 +604,7 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
                 .append(response.screensSliderHtml);
 
             self.$activeVersionSlider = $(self.settings.versionSlider).first();
-            self.$activeVersionSlider.slider({
-                nav: self.$activeVersionSlider.find(self.settings.versionSliderItem).length > 1
-            });
+            self.$activeVersionSlider.slider({nav: false});
 
             self.$activeVersionSlider.find(self.settings.versionSliderItem).on('scroll', function(e) {
                 if ($body.hasClass('hotspot-active')) {

@@ -430,7 +430,7 @@ ScreenHotspotsView.prototype.repositionPopover = function (hotspot) {
 
     var $popover = $(self.settings.hotspotPopover);
 
-    PR.repositionPopover($hotspot, $popover);
+    PR.repositionPopover($hotspot, $popover, '.version-slider-content');
 
     var hotspotLink = $hotspot.data('link');
     if (!isNaN(hotspotLink)) {

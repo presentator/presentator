@@ -178,6 +178,12 @@ ScreenCommentsView.prototype.init = function() {
             }
         };
     });
+
+    $(window).on('resize', function() {
+        if ($body.hasClass('comment-active')) {
+            self.repositionPopover();
+        }
+    });
 };
 
 /**
@@ -192,10 +198,10 @@ ScreenCommentsView.prototype.getActiveScreenSliderItem = function() {
  * Repositions comments list popover.
  * @param {null|Object} item
  */
-ScreenCommentsView.prototype.repositionPopover = function (item) {
-    var $item = item ? $(item) : this.getActiveScreenSliderItem().find(this.settings.commentTarget + '.selected');
+ScreenCommentsView.prototype.repositionPopover = function(item) {
+    var $item    = item ? $(item) : this.getActiveScreenSliderItem().find(this.settings.commentTarget + '.selected');
 
-    PR.repositionPopover($item, this.settings.commentPopover);
+    PR.repositionPopover($item, this.settings.commentPopover, '.version-slider-content');
 };
 
 /**

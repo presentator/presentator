@@ -91,7 +91,7 @@ hr {
 .text-right {
     text-align: right;
 }
-.text-small {
+small, .text-small {
     font-size: 12px;
     line-height: 16px;
 }
@@ -589,6 +589,15 @@ ul {
         width: 100%;
         margin: 0;
         @include transform(translate(-50%, -50%));
+    }
+    &.small {
+        $size: 32px;
+        width: $size;
+        height: $size;
+        line-height: $size - 4;
+        &:before {
+            font-size: 12px;
+        }
     }
     &.large {
         $size: 100px;

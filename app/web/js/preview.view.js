@@ -13,18 +13,20 @@ var PreviewView = function(data) {
         'versionSliderItem':      '.slider-item',
         'versionSliderCaption':   '.slider-caption',
         'versionsSelect':         '.versions-select',
-        'previewThumbsWrapper':   '.preview-thumbs-wrapper',
-        'previewThumb':           '.preview-thumb',
         'hotspot':                '.hotspot',
         'activeSlideTitleHolder': '.active-slide-title',
         'activeSlideOrderHolder': '.active-slide-order',
 
-        // menu handles
-        'floatingMenu':       '.floating-menu',
-        'floatingMenuHandle': '#fm_visibility_handle',
-        'screensMenuHandle':  '#fm_screens_handle',
-        'previewModeHandle':  '#fm_preview_handle',
-        'commentsModeHandle': '#fm_comments_handle',
+        // control panel
+        'controlPanel':           '.version-slider-panel',
+        'contorlPanelToggle':     '#panel_toggle_handle',
+        'previewThumbsContainer': '#preview_thumbs_container',
+        'previewThumb':           '.preview-thumb',
+        'previewThumbsHandle':    '#panel_screens_handle',
+        'previewModeHandle':      '#panel_preview_handle',
+        'commentsModeHandle':     '#panel_comments_handle',
+        'nextSlideHandle':        '#slider_next_handle',
+        'prevSlideHandle':        '#slider_prev_handle',
 
         // screen comments
         'ajaxCommentCreateUrl': '/screen-comments/ajax-create',
@@ -41,9 +43,9 @@ var PreviewView = function(data) {
 
     this.settings = $.extend({}, defaults, data);
 
-    this.FLOATING_MENU_COLLAPSE_COOKIE = 'floating-menu-collapse';
-
-    // commonly used selectors
+    // cached selectors
+    this.$document          = $(document);
+    this.$body              = $('body');
     this.$accessForm        = $(this.settings.accessForm);
     this.$accessFormWrapper = $(this.settings.accessFormWrapper);
     this.$previewWrapper    = $(this.settings.previewWrapper);
@@ -70,9 +72,6 @@ var PreviewView = function(data) {
 PreviewView.prototype.init = function() {
     var self = this;
 
-    var $document = $(document);
-    var $body     = $('body');
-
     if (self.settings.grantedAccess) {
         self.invokeAccess();
     }
@@ -84,12 +83,12 @@ PreviewView.prototype.init = function() {
     });
 
     // keyboard shortcuts
-    $document.on('keydown', function(e) {
+    self.$document.on('keydown', function(e) {
         if (e.which === PR.keys.esc) {
             e.preventDefault();
 
             self.hidePreviewThumbs();
-        } else if (!$body.hasClass('comment-active')) {
+        } else if (!self.$body.hasClass('comment-active')) {
             if (e.which === PR.keys.left) {
                 e.preventDefault();
 
@@ -108,42 +107,34 @@ PreviewView.prototype.init = function() {
         }
     });
 
-
     // Versions select
-    $document.on('change', self.settings.versionsSelect, function(e) {
+    self.$document.on('change', self.settings.versionsSelect, function(e) {
         self.invokeAccess($(this).find('option:selected').index() + 1, 1);
     });
 
-    // Floating menu visibility toggle
-    $document.on('click', self.settings.floatingMenuHandle, function(e) {
+    // Control panel visibility toggle
+    self.$document.on('click', self.settings.contorlPanelToggle, function(e) {
         e.preventDefault();
 
-        var $menu = $(this).closest(self.settings.floatingMenu);
-        if ($menu.hasClass('collapsed')) {
-            $menu.removeClass('collapsed');
-            PR.cookies.setItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 0);
-        } else {
-            $menu.addClass('collapsed');
-            PR.cookies.setItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 1);
-        }
+        self.toggleControlPanel();
     });
 
     // Preview mode handle
-    $document.on('click', self.settings.previewModeHandle, function(e) {
+    self.$document.on('click', self.settings.previewModeHandle, function(e) {
         e.preventDefault();
 
         self.activatePreviewMode();
     });
 
     // Comments mode handle
-    $document.on('click', self.settings.commentsModeHandle, function(e) {
+    self.$document.on('click', self.settings.commentsModeHandle, function(e) {
         e.preventDefault();
 
         self.activateCommentsMode();
     });
 
     // Hotspots navigation
-    $document.on('click', self.settings.hotspot, function(e) {
+    self.$document.on('click', self.settings.hotspot, function(e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -160,60 +151,53 @@ PreviewView.prototype.init = function() {
     });
 
     // Preview mode hints
-    $document.on('click', self.settings.versionSliderItem, function(e) {
-        if ($body.hasClass('preview-mode')) {
+    self.$document.on('click', self.settings.versionSliderItem, function(e) {
+        if (self.$body.hasClass('preview-mode')) {
             e.preventDefault();
 
-            $body.addClass('preview-mode-hint').stop(true, true).delay(500).queue(function(next) {
-                $body.removeClass('preview-mode-hint');
+            self.$body.addClass('preview-mode-hint').stop(true, true).delay(500).queue(function(next) {
+                self.$body.removeClass('preview-mode-hint');
                 next();
             });
         }
     });
 
     // Keyboard shortcut to toggle hotspots visibility
-    $document.on('keydown', function(e) {
+    self.$document.on('keydown', function(e) {
         if (e.shiftKey &&
             e.which === PR.keys.h &&
-            $body.hasClass('preview-mode')
+            self.$body.hasClass('preview-mode')
         ) {
             e.preventDefault();
 
-            $body.toggleClass('hotspots-force-show');
+            self.$body.toggleClass('hotspots-force-show');
         }
     });
 
     // Show preview thumb screens
-    $document.on('click', self.settings.screensMenuHandle, function(e) {
+    self.$document.on('click', self.settings.previewThumbsHandle, function(e) {
         e.preventDefault();
 
-        self.showPreviewThumbs();
+        self.togglePreviewThumbs();
     });
 
-    // Change slider on preview thumb click
-    $document.on('click', self.settings.previewThumb, function(e) {
+    // Change slide on preview thumb click
+    self.$document.on('click', self.settings.previewThumb, function(e) {
         e.preventDefault();
 
-        $slider = $(self.settings.versionSlider);
-        if ($slider.length) {
-            $slider.slider('goTo', $(this).index());
-        }
-
-        self.hidePreviewThumbs();
+        $(self.settings.versionSlider).slider('goTo', $(this).index());
     });
 
-    // Hide preview thumb screens on outside click
-    $previewThumbs = $();
-    $document.on('click', self.settings.previewThumbsWrapper, function(e) {
-        $previewThumbs = $(self.settings.previewThumb);
-        if (
-            !$previewThumbs.is(e.target) ||
-            !$previewThumbs.find(e.target).length
-        ) {
-            e.preventDefault();
+    // Custom slider nav
+    self.$document.on('click', self.settings.nextSlideHandle, function(e) {
+        e.preventDefault();
 
-            self.hidePreviewThumbs();
-        }
+        $(self.settings.versionSlider).slider('goTo', 'next');
+    });
+    self.$document.on('click', self.settings.prevSlideHandle, function(e) {
+        e.preventDefault();
+
+        $(self.settings.versionSlider).slider('goTo', 'prev');
     });
 };
 
@@ -317,20 +301,53 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
             // append the new content
             self.$previewWrapper.html(response.previewHtml);
 
-            var $body            = $('body');
-            var $slider          = $(self.settings.versionSlider);
-            var activeVersionPos = ($(self.settings.versionsSelect).find('option:selected').index() || 0) + 1;
+            var $slider                = $(self.settings.versionSlider);
+            var activeVersionPos       = ($(self.settings.versionsSelect).find('option:selected').index() || 0) + 1;
+            var $previewThumbContainer = $(self.settings.previewThumbsContainer)
+            var isPreviewThumbVisible  = false;
+            var previewThumbScroll     = 0;
+            var $previewThumb;
+
+            $slider.on('sliderChangeBefore', function(e, $activeSlide) {
+                // update active preview thumb on slider change
+                $previewThumb = $(self.settings.previewThumb).removeClass('active')
+                    .filter('[data-screen-id="' + $activeSlide.data('screen-id') + '"]').addClass('active');
+
+                isPreviewThumbVisible = $previewThumb.is(':visible');
+                previewThumbScroll    = 0; // reset
+
+                if (!$previewThumb.length) {
+                    return;
+                }
+
+                if (!isPreviewThumbVisible) {
+                    $previewThumbContainer.show(); // show the preview container to properly get thumb position
+                }
+
+                // calculate scroll position
+                if ($previewThumb.position().left + $previewThumb.width() > self.$document.width()) {
+                    previewThumbScroll = $previewThumbContainer.scrollLeft() + $previewThumb.position().left + $previewThumb.width() - self.$document.width() + 15;
+                } else if ($previewThumb.position().left < 0) {
+                    previewThumbScroll = $previewThumbContainer.scrollLeft() + $previewThumb.position().left - 15;
+
+                }
+
+                // perform scroll (if needed)
+                if (previewThumbScroll > 0) {
+                    if (isPreviewThumbVisible) {
+                        $previewThumbContainer.stop(true, true).animate({'scrollLeft': previewThumbScroll}, 300);
+                    } else {
+                        $previewThumbContainer.scrollLeft(previewThumbScroll);
+                    }
+                }
+
+                if (!isPreviewThumbVisible) {
+                    $previewThumbContainer.hide(); // revert changes
+                }
+            });
 
             $slider.on('sliderChange sliderInit', function(e, $activeSlide) {
-                // update active preview thumb on slider change
-                var screenId = $activeSlide.data('screen-id');
-
-                $(self.settings.previewThumb).removeClass('active')
-                    .filter('[data-screen-id="' + screenId + '"]').addClass('active');
-
                 PR.horizontalAlign($activeSlide);
-
-                self.hidePreviewThumbs();
 
                 self.commentsView.deselectCommentTarget();
 
@@ -341,12 +358,10 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 self.updateSliderCaption();
             });
 
-            $slider.slider({
-                nav: false
-            });
+            $slider.slider({nav: false});
 
             $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {
-                if ($body.hasClass('comment-active')) {
+                if (self.$body.hasClass('comment-active')) {
                     self.commentsView.deselectCommentTarget();
                 }
             });
@@ -355,12 +370,6 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
             if (screenPos > 1) {
                 $slider.slider('goTo', screenPos - 1, false);
-            }
-
-            if (Number(PR.cookies.getItem(self.FLOATING_MENU_COLLAPSE_COOKIE, 0))) {
-                $(self.settings.floatingMenu).addClass('collapsed');
-            } else {
-                $(self.settings.floatingMenu).removeClass('collapsed');
             }
 
             self.$accessFormWrapper.removeClass('active').addClass('inactive');
@@ -380,33 +389,89 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
     });
 };
 
+// --- Preview container
+
 /**
  * Show preview thumbs container.
+ * @param {Boolean} animate
  */
-PreviewView.prototype.showPreviewThumbs = function() {
-    $(this.settings.previewThumbsWrapper).addClass('active');
+PreviewView.prototype.showPreviewThumbs = function(animate) {
+    animate = typeof animate !== 'undefined' ? animate : true;
+
+    $(this.settings.previewThumbsHandle).addClass('active');
+    if (animate) {
+        $(this.settings.previewThumbsContainer).stop(true, true).slideDown(250);
+    } else {
+        $(this.settings.previewThumbsContainer).show();
+    }
 };
 
 /**
  * Hide preview thumbs container.
+ * @param {Boolean} animate
  */
-PreviewView.prototype.hidePreviewThumbs = function() {
-    var $previewThumbsWrapper = $(this.settings.previewThumbsWrapper);
+PreviewView.prototype.hidePreviewThumbs = function(animate) {
+    animate = typeof animate !== 'undefined' ? animate : true;
 
-    if ($previewThumbsWrapper.hasClass('active')) {
-        $previewThumbsWrapper.addClass('close-start').stop(true, true).delay(400).queue(function(next) {
-            $previewThumbsWrapper.removeClass('active close-start');
-
-            next();
-        });
+    $(this.settings.previewThumbsHandle).removeClass('active');
+    if (animate) {
+        $(this.settings.previewThumbsContainer).stop(true, true).slideUp(250);
+    } else {
+        $(this.settings.previewThumbsContainer).hide();
     }
 };
+
+/**
+ * Toggle preview thumbs container visibility.
+ * @param {Boolean} animate
+ */
+PreviewView.prototype.togglePreviewThumbs = function(animate) {
+    animate = typeof animate !== 'undefined' ? animate : true;
+
+    if ($(this.settings.previewThumbsContainer).is(':visible')) {
+        this.hidePreviewThumbs(animate);
+    } else {
+        this.showPreviewThumbs(animate);
+    }
+};
+
+// --- Control panel
+
+/**
+ * Show preview version control panel.
+ */
+PreviewView.prototype.showControlPanel = function() {
+    this.$body.removeClass('control-panel-collapsed');
+    $(this.settings.controlPanel).stop(true, true).slideDown(200).removeClass('collapsed');
+};
+
+/**
+ * Hide preview version control panel.
+ */
+PreviewView.prototype.hideControlPanel = function() {
+    this.$body.addClass('control-panel-collapsed');
+    $(this.settings.controlPanel).stop(true, true).slideUp(200).addClass('collapsed');
+    this.hidePreviewThumbs(false);
+};
+
+/**
+ * Toggle preview version control panel.
+ */
+PreviewView.prototype.toggleControlPanel = function() {
+    if (this.$body.hasClass('control-panel-collapsed')) {
+        this.showControlPanel();
+    } else {
+        this.hideControlPanel();
+    }
+};
+
+// --- Modes
 
 /**
  * Activates project preview mode.
  */
 PreviewView.prototype.activatePreviewMode = function() {
-    $('body').addClass('preview-mode').removeClass('comments-mode');
+    this.$body.addClass('preview-mode').removeClass('comments-mode');
     $(this.settings.previewModeHandle).addClass('active');
     $(this.settings.commentsModeHandle).removeClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', '');
@@ -419,7 +484,7 @@ PreviewView.prototype.activatePreviewMode = function() {
  * Activates project comment mode.
  */
 PreviewView.prototype.activateCommentsMode = function() {
-    $('body').removeClass('preview-mode hotspots-force-show').addClass('comments-mode');
+    this.$body.removeClass('preview-mode hotspots-force-show').addClass('comments-mode');
     $(this.settings.previewModeHandle).removeClass('active');
     $(this.settings.commentsModeHandle).addClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);

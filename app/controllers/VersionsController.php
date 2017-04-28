@@ -118,11 +118,10 @@ class VersionsController extends AppController
      * Generates and returns screens slider html.
      * @param  integer `versionId`          ID of the version to load.
      * @param  null|integer `screenId`      Optional parameter to mark the specific screen as active.
-     * @param  integer      `collapse_menu` Optional parameter based on which the slider menu will be collapsed/expanded by default.
      * @return array
      * @throws BadRequestHttpException For none ajax request
      */
-    public function actionAjaxGetScreensSlider($versionId, $screenId = null, $collapseMenu = 0)
+    public function actionAjaxGetScreensSlider($versionId, $screenId = null)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -139,7 +138,6 @@ class VersionsController extends AppController
             $screensSliderHtml    = $this->renderPartial('/versions/_screens_slider', [
                 'model'                => $version,
                 'activeScreenId'       => $screenId,
-                'collapseFloatingMenu' => $collapseMenu,
                 'unreadCommentTargets' => $unreadCommentTargets,
             ]);
 

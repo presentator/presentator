@@ -33,192 +33,6 @@
     }
 }
 
-/* ---- Floating menu ---- */
-.floating-menu {
-    $itemWidth: 55px;
-    $itemHeight: 50px;
-    $edgeDistance: 20px;
-    position: fixed;
-    z-index: 100;
-    display: block;
-    overflow: hidden;
-    width: $itemWidth;
-    left: $edgeDistance;
-    top: $edgeDistance;
-    background: #fff;
-    text-align: center;
-    @include panel;
-    @include transition(border 0.2s);
-    ul {
-        @extend %block;
-        @include clear-list;
-        li {
-            @extend %block;
-        }
-    }
-    .bubble {
-        $size: 17px;
-        position: absolute;
-        z-index: 1;
-        right: -15px;
-        top: 5px;
-        width: $size;
-        height: $size;
-        color: $txtColor;
-        line-height: $size;
-        font-size: 11px;
-        font-family: $baseFont;
-        background: $lightGreyColor;
-        @include border-radius($size);
-    }
-    .menu-item {
-        @extend %block;
-        position: relative;
-        text-align: center;
-        height: $itemHeight;
-        line-height: $itemHeight;
-        cursor: pointer;
-        overflow: hidden;
-        border-bottom: 1px solid $lightGreyColor;
-        @include transition(color 0.2s, background 0.2s, height 0.3s);
-        @include user-select(none);
-        i {
-            font-size: 21px;
-            line-height: inherit;
-            font-weight: normal;
-            &.ion-ios-eye-outline {
-                font-size: 23px;
-            }
-        }
-        &.disable {
-            opacity: 0.7;
-            @include pointer-events(none);
-        }
-        &:hover, &.active {
-            background: $lighterGreyColor;
-        }
-        &:active {
-            transition-duration: 0.1s;
-            background: $lightGreyColor;
-        }
-        &:first-child {
-            @include border-top-left-radius($baseRadius);
-            @include border-top-right-radius($baseRadius);
-        }
-        &:last-child {
-            border-bottom: 0;
-            @include border-bottom-left-radius($baseRadius);
-            @include border-bottom-right-radius($baseRadius);
-        }
-        &.preview-handle,
-        &.hotspots-handle {
-            color: $primaryColor;
-            .bubble {
-                color: #fff;
-                background: $primaryColor;
-            }
-            &.active {
-                @include sideHighlight($primaryColor);
-            }
-        }
-        &.comments-handle {
-            color: $dangerColor;
-            .bubble {
-                color: #fff;
-                background: $dangerColor;
-            }
-            &.active {
-                @include sideHighlight($dangerColor);
-            }
-        }
-        &.info-handle {
-            i {
-                font-size: 19px;
-            }
-        }
-        &.versions-handle {
-            i {
-                font-size: 20px;
-            }
-        }
-        &.visibility-handle {
-            height: auto;
-            font-size: 11px;
-            line-height: 22px;
-            font-weight: normal;
-            white-space: nowrap;
-            overflow: hidden;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            &:after {
-                content: attr(data-expanded-text);
-            }
-        }
-        &.comments-nav {
-            display: none;
-            height: auto;
-            line-height: 22px;
-            font-size: 11px;
-            color: $dangerColor;
-            background: $lighterGreyColor;
-            i {
-                font-size: inherit;
-                color: inherit;
-            }
-            .nav-handle {
-                width: 50%;
-                float: left;
-                cursor: pointer;
-                border-right: 1px solid $lightGreyColor;
-                @include transition(background 0.2s);
-                &:last-child {
-                    border-right: 0;
-                }
-                &:hover {
-                    background: $lightGreyColor;
-                }
-            }
-            .comments-mode & {
-                display: block;
-            }
-        }
-    }
-    .versions-select {
-        display: inline-block;
-        vertical-align: top;
-        width: 100%;
-        height: 100%;
-        border: 0;
-        margin: 0;
-        cursor: pointer;
-        padding: 0 5px;
-        color: $txtColor;
-        @include box-shadow(none);
-        @include border-radius(none);
-        @include transition(background 0.2s, color 0.2s);
-        &:hover {
-            background: $lighterGreyColor;
-        }
-    }
-    &.collapsed {
-        border-color: $successColor;
-        .menu-item {
-            border: 0;
-            height: 0px;
-        }
-        .visibility-handle {
-            height: auto;
-            display: block;
-            color: #fff;
-            background: $successColor;
-            @include border-radius($baseRadius);
-            &:after {
-                content: attr(data-collapsed-text);
-            }
-        }
-    }
-}
-
 /* ---- Screen edit container ---- */
 .version-slider {
     position: fixed;
@@ -229,16 +43,16 @@
     height: 100%;
     overflow: hidden;
     background: $lightGreyColor;
+    @include display-flex;
+    @include flex-direction(column);
     @include animation(tab-show 0.3s);
-    display: flex;
-    flex-direction: column;
     .version-slider-content {
         position: relative;
         z-index: 0;
         width: 100%;
         height: 100%;
-        flex: 1;
         overflow: hidden;
+        @include flex(1);
     }
     &.close-anim {
         @include animation(tab-hide 0.3s forwards);
@@ -311,6 +125,41 @@
         text-align: center;
         @include user-select(none);
         @include pointer-events(none);
+    }
+
+    // Slider panel toggle
+    .version-slider-panel-toggle {
+        position: absolute;
+        z-index: 999999;
+        right: 0px;
+        top: -1px;
+        padding: 5px 10px;
+        cursor: pointer;
+        line-height: 1;
+        font-size: 12px;
+        opacity: 0.8;
+        background: $lighterGreyColor;
+        border: 1px solid $greyColor;
+        @include user-select(none);
+        @include border-bottom-left-radius($baseRadius);
+        @include transition(background 0.2s, opacity 0.2s);
+        &:hover {
+            opacity: 1;
+            background: $lightGreyColor;
+        }
+        &:active {
+            opacity: 1;
+            transition-duration: 0.1s;
+            background: darken($lightGreyColor, 5%);
+        }
+        &:after {
+            content: attr(data-expanded-text);
+        }
+        .control-panel-collapsed & {
+            &:after {
+                content: attr(data-collapsed-text);
+            }
+        }
     }
 
     // Sliders
@@ -421,55 +270,10 @@
     }
 
     // Nav
-    .slider-nav-item {
-        $size: 50px;
-        position: absolute;
-        z-index: 2;
-        left: 0;
-        top: 50%;
-        width: $size;
-        height: $size;
-        margin-top: -($size / 2);
-        color: #fff;
-        font-size: 20px;
-        text-align: center;
-        line-height: $size - 2;
-        cursor: pointer;
-        opacity: 0.7;
-        background: $secondaryColor;
-        @include transition(border 0.2s, color 0.2s, opacity 0.2s, transform 0.2s);
-        i {
-            display: inline-block;
-            vertical-align: top;
-            line-height: inherit;
-            @include transition(transform 0.1s);
-        }
-        &.prev {
-            @include border-top-right-radius($baseRadius);
-            @include border-bottom-right-radius($baseRadius);
-        }
-        &.next {
-            left: auto;
-            right: 0;
-            @include border-top-left-radius($baseRadius);
-            @include border-bottom-left-radius($baseRadius);
-        }
-        &:hover,
-        &:active {
-            opacity: 1;
-            @include transform(translateX(0));
-        }
-        &:active {
-            i {
-                @include transform(scale(0.8));
-            }
-        }
-        .hotspots-mode &,
-        .preview-mode & {
-            background: $primaryColor;
-        }
-        .comments-mode & {
-            background: $dangerColor;
+    &.no-slides {
+        .slider-nav-handle {
+            opacity: 0.5;
+            @include pointer-events(none);
         }
     }
 

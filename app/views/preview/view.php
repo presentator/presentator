@@ -30,9 +30,9 @@ $this->title = $project->title;
 <div id="preview_wrapper" class="preview-wrapper <?= $grantedAccess ? 'active' : 'inactive' ?>"></div>
 
 <?php
-$this->registerJsFile('/js/pins.js');
-$this->registerJsFile('/js/screen-comments.view.js');
-$this->registerJsFile('/js/preview.view.js');
+$this->registerJsFile('/js/pins.js?v=1493403687');
+$this->registerJsFile('/js/screen-comments.view.js?v=1493403687');
+$this->registerJsFile('/js/preview.view.js?v=1493403687');
 $this->registerJs('
     var preview = new PreviewView({
         grantedAccess: ' . ($grantedAccess ? 'true' : 'false') . ',

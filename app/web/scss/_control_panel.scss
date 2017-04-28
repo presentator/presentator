@@ -1,0 +1,227 @@
+/* ---- Control panel ---- */
+.control-panel {
+    @include panel;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 0;
+    text-align: center;
+    .panel-content,
+    .panel-menu {
+        @extend %block;
+        @extend %clear-after;
+        position: relative;
+    }
+    .panel-content {
+        background: $lightGreyColor;
+    }
+    .panel-menu {
+        height: $controlPanelMenuHeight;
+        line-height: $controlPanelMenuHeight;
+        @include transition(height 0.2s, line-height 0.2s);
+    }
+
+    // Control items wrapper
+    .ctrl-wrapper {
+        display: inline-block;
+        vertical-align: top;
+        ul {
+            @extend %block;
+            @include clear-list;
+        }
+        i {
+            position: relative;
+            vertical-align: top;
+            line-height: inherit;
+            font-size: 16px;
+        }
+        .ctrl-item {
+            position: relative;
+            float: left;
+            clear: none;
+            min-width: 50px;
+            cursor: pointer;
+            text-align: center;
+            line-height: inherit;
+            @include transition(color 0.2s, background 0.2s);
+            &:hover, &.active {
+                background: $lighterGreyColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $lightGreyColor;
+            }
+            .inactive-icon {
+                display: inline-block;
+            }
+            .active-icon {
+                display: none;
+            }
+            &.active {
+                .inactive-icon {
+                    display: none;
+                }
+                .active-icon {
+                    display: inline-block;
+                }
+            }
+        }
+
+        // Sides
+        &.ctrl-left {
+            float: left;
+        }
+        &.ctrl-right {
+            float: right;
+        }
+        &.ctrl-center {
+            .ctrl-item {
+                min-width: 60px;
+                border-right: 1px solid $lightGreyColor;
+                &:first-child {
+                    border-left: 1px solid $lightGreyColor;
+                }
+            }
+            i {
+                font-size: 23px;
+            }
+        }
+    }
+
+    // Specific control items
+    .ctrl-item {
+        &.preview-handle,
+        &.hotspots-handle {
+            color: $primaryColor;
+            .bubble {
+                color: #fff;
+                background: $primaryColor;
+            }
+            &.active {
+                @include topHighlight($primaryColor);
+            }
+        }
+        &.comments-handle {
+            color: $dangerColor;
+            .bubble {
+                color: #fff;
+                background: $dangerColor;
+            }
+            &.active {
+                @include topHighlight($dangerColor);
+            }
+        }
+        &.screens-handle {
+            &.active {
+                background: none;
+            }
+             &:hover {
+                background: $lighterGreyColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $lightGreyColor;
+            }
+            i {
+                font-size: 21px;
+            }
+        }
+        &.info-handle {
+            i {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .bubble {
+        $size: 17px;
+        position: absolute;
+        z-index: 1;
+        left: 50%;
+        top: 5px;
+        width: $size;
+        height: $size;
+        color: $txtColor;
+        line-height: $size;
+        font-size: 11px;
+        font-family: $baseFont;
+        background: $lightGreyColor;
+        margin-left: 15px - ($size / 2);
+        @include border-radius($size);
+    }
+
+    // Dropdowns
+    .info-dropdown {
+        right: auto;
+        left: 0;
+        padding: 15px;
+        max-width: 500px;
+        white-space: nowrap;
+        cursor: default;
+        & > :first-child {
+            margin-top: 0;
+        }
+        & > :last-child {
+            margin-bottom: 0;
+        }
+        &:before {
+            right: auto;
+            left: 18px;
+        }
+        .title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 24px;
+            @include ellipsis;
+        }
+    }
+    .ctrl-item:hover .info-dropdown {
+        display: block;
+        @include show;
+        @include transform(translateY(0));
+    }
+    .project-user {
+        margin: 0;
+        padding: ($baseSpacing / 2) 0;
+        border-bottom: 1px solid $lightGreyColor;
+        &:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+        a {
+            text-decoration: none;
+            &:hover {
+                color: $primaryColor;
+            }
+        }
+        i {
+            vertical-align: middle;
+        }
+    }
+
+    // Custom selects
+    .select-field {
+        border: 0;
+        height: 100%;
+        line-height: inherit;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 20px;
+        background: none;
+        &:after {
+            right: 10px;
+        }
+    }
+    .select-dropdown {
+        line-height: 20px;
+        margin-top: 0;
+    }
+
+    // States/Layouts
+    &.expanded {
+        .panel-content {
+            display: block;
+        }
+    }
+}

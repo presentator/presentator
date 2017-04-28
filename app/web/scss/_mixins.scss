@@ -128,6 +128,26 @@
     }
 }
 
+@mixin display-flex {
+    display: -webkit-box;  // OLD - iOS 6-, Safari 3.1-6
+    display: -moz-box;     // OLD - Firefox 19- (buggy but mostly works)
+    display: -ms-flexbox;  // TWEENER - IE 10
+    display: -webkit-flex; // OLD Chrome
+    display: flex;         // NEW, Spec - Opera 12.1, Firefox 20+
+}
+
+@mixin flex($value...) {
+    -webkit-flex: $value; // Safari 6.1+
+    -ms-flex:     $value;    // IE 10
+    flex:         $value;
+}
+
+@mixin flex-direction($value...) {
+    -webkit-flex-direction: $value; // Safari 6.1+
+    -ms-flex-direction:     $value;    // IE 10
+    flex-direction:         $value;
+}
+
 @mixin clear-list {
     margin: 0;
     padding: 0;

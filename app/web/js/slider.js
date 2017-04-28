@@ -78,6 +78,7 @@
         }
 
         // Change slides
+        $slider.trigger('sliderChangeBefore', [$targetedSlide, $currentSlide, $slides]);
         if (animate && $currentSlide.length) {
             isAnimationStart = true;
 
@@ -97,6 +98,7 @@
             isAnimationStart = false;
             $slider.trigger('sliderChange', [$targetedSlide, $currentSlide, $slides]);
         }
+        $slider.trigger('sliderChangeAfter', [$targetedSlide, $currentSlide, $slides]);
     }
 
     var methods = {
@@ -153,6 +155,13 @@
                 // select the first slide by default
                 if (!$slider.find(settings.itemClass + '.active').length) {
                     changeSlide($slider, 0, false);
+                }
+
+                // add helper class if only 1 slide exist
+                if ($slider.find(settings.itemClass).length <= 1) {
+                    $slider.addClass('no-slides');
+                } else if ($slider.hasClass('no-slides')) {
+                    $slider.removeClass('no-slides');
                 }
 
                 $slider.trigger('sliderInit', [$slider.find(settings.itemClass + '.active'), $slider.find(settings.itemClass)]);

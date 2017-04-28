@@ -49,10 +49,6 @@ var PR = {
         'z':         90
     },
 
-    responsive: {
-        listBreakPoint: 1400
-    },
-
     /**
      * Encodes html special chars.
      * It is the opposite of `PR.htmlDecode`.
@@ -805,21 +801,24 @@ var PR = {
             return;
         }
 
-        $item.css({'transform': 'none', 'animation': 'none'}); // css scale affects `.offset()`
-        var itemPosition = $item.offset();
-        var itemWidth    = $item.outerWidth(true);
-        var itemHeight   = $item.outerHeight(true);
-        $item.css({'transform': '', 'animation': ''}); // reset
-
         var $popover      = $(popover);
         var popoverWidth  = $popover.outerWidth(true);
         var popoverHeight = $popover.outerHeight(true);
 
-        var viewWidth  = $(view || window).width();
-        var viewHeight = $(view || window).height();
+        var $view      = $(view || 'body');
+        var viewWidth  = $view.width();
+        var viewHeight = $view.height();
 
-        var cssSettings = {};
+        $item.css({'transform': 'none', 'animation': 'none'}); // css scale affects `.offset()`
+        var itemWidth    = $item.outerWidth(true);
+        var itemHeight   = $item.outerHeight(true);
+        var itemPosition = $item.offset();
+        // substract view position (required if the view container has `position:relative`)
+        itemPosition.top  = itemPosition.top - $view.position().top;
+        itemPosition.left = itemPosition.left - $view.position().left;
+        $item.css({'transform': '', 'animation': ''}); // reset
 
+        var cssSettings = {'maxHeight': 'none', 'overflow': 'visible'};
         var popoverArrowClass = '';
 
         // detect horizontal position
@@ -844,6 +843,11 @@ var PR = {
             // top
             popoverArrowClass += '-bottom'; // opposite
             cssSettings.top = itemPosition.top - popoverHeight + 40;
+            if (cssSettings.top < 0) {
+                cssSettings.top = 0;
+                cssSettings.maxHeight = $view.height();
+                cssSettings.overflow = 'auto';
+            }
         } else {
             // bottom
             popoverArrowClass += '-top'; // opposite
@@ -863,7 +867,7 @@ var PR = {
     horizontalAlign: function(item) {
         var $item = $(item);
         if (!$item.length) {
-            console.warn('Missing item element!');
+            // console.warn('Missing item element!');
             return;
         }
 
