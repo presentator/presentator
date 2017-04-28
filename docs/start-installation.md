@@ -31,14 +31,17 @@ To install and setup the application components you will need [Composer](https:/
     git clone https://github.com/ganigeorgiev/presentator.git
     ```
 
-2. Setup a vhost for the **app**, eg. `http://app.presentator.dev/` and point it to `/app/web`.
+2. Setup a vhost/server address for the **app**, eg. `http://app.presentator.dev/` and point it to `/app/web`.
 
-3. Setup a vhost for the **api**, eg. `http://api.presentator.dev/` and point it to `/api/web`.
+3. Setup a vhost/server address for the **api**, eg. `http://api.presentator.dev/` and point it to `/api/web`.
 
 4. Open a console terminal and execute:
     ```
+    # navigate to project root dir
     cd /path/to/my/project
 
+    # install vendor dependencies
+    composer global require "fxp/composer-asset-plugin:^1.3.1"
     composer install
 
     # only for development
