@@ -68,11 +68,15 @@
         }
 
         // Sides
-        &.ctrl-left {
-            float: left;
+        &.ctrl-left,
+        &.ctrl-right {
+            position: absolute;
+            left: 0;
+            top: 0;
         }
         &.ctrl-right {
-            float: right;
+            left: auto;
+            right: 0;
         }
         &.ctrl-center {
             .ctrl-item {
@@ -155,7 +159,7 @@
         right: auto;
         left: 0;
         padding: 15px;
-        max-width: 500px;
+        max-width: 400px;
         white-space: nowrap;
         cursor: default;
         & > :first-child {
