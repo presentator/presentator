@@ -804,7 +804,7 @@ var PR = {
         var $popover      = $(popover);
         var popoverWidth  = $popover.outerWidth(true);
         var popoverHeight = $popover.outerHeight(true);
-        $popover.css({'maxHeight': '', 'overflow': ''}); // reset
+        $popover.css({'maxHeight': '', 'overflowY': ''}); // reset
 
         var $view      = $(view || 'body');
         var viewWidth  = $view.width();
@@ -853,7 +853,7 @@ var PR = {
 
         if (cssSettings.top < 0) {
             cssSettings.top       = 0;
-            cssSettings.overflow  = 'auto';
+            cssSettings.overflowY = 'auto';
             cssSettings.maxHeight = $view.height();
         }
 
