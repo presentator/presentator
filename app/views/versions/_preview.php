@@ -75,7 +75,7 @@ $hasScreens = !empty($activeVersion->screens);
                                         <?= Html::encode($user->getIdentificator()) ?>
                                     </div>
                                     <div class="table-cell p-l-10 min-width">
-                                        <a href="mailto: <?= Html::encode($user->email) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Send email') ?>">
+                                        <a href="mailto: <?= Html::encode($user->email) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Send an email') ?>">
                                             <i class="ion ion-ios-email"></i>
                                         </a>
                                     </div>
