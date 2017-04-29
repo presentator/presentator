@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Project;
@@ -74,6 +75,13 @@ $hasScreens = !empty($activeVersion->screens);
                                     <div class="table-cell p-l-10 max-width name">
                                         <?= Html::encode($user->getIdentificator()) ?>
                                     </div>
+                                    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->email == $user->email): ?>
+                                        <div class="table-cell p-l-10 min-width">
+                                            <a href="<?= Url::to(['site/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>">
+                                                <i class="ion ion-android-home"></i>
+                                            </a>
+                                        </div>
+                                    <?php endif ?>
                                     <div class="table-cell p-l-10 min-width">
                                         <a href="mailto: <?= Html::encode($user->email) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Send an email') ?>">
                                             <i class="ion ion-ios-email"></i>

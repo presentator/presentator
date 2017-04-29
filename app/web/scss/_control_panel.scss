@@ -131,7 +131,7 @@
             }
         }
         &.info-handle {
-            i {
+            & > i {
                 font-size: 20px;
             }
         }
@@ -171,6 +171,12 @@
         &:before {
             right: auto;
             left: 18px;
+        }
+        i {
+            font-size: 20px;
+        }
+        i.ion-android-home {
+            font-size: 17px;
         }
         .title {
             margin: 0;
