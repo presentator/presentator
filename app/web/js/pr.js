@@ -804,6 +804,7 @@ var PR = {
         var $popover      = $(popover);
         var popoverWidth  = $popover.outerWidth(true);
         var popoverHeight = $popover.outerHeight(true);
+        $popover.css({'maxHeight': '', 'overflow': ''}); // reset
 
         var $view      = $(view || 'body');
         var viewWidth  = $view.width();
@@ -818,8 +819,9 @@ var PR = {
         itemPosition.left = itemPosition.left - $view.position().left;
         $item.css({'transform': '', 'animation': ''}); // reset
 
-        var cssSettings = {'maxHeight': 'none', 'overflow': 'visible'};
+        var cssSettings = {};
         var popoverArrowClass = '';
+
 
         // detect horizontal position
         if (itemPosition.left + itemWidth + popoverWidth > viewWidth) {
@@ -843,17 +845,17 @@ var PR = {
             // top
             popoverArrowClass += '-bottom'; // opposite
             cssSettings.top = itemPosition.top - popoverHeight + 40;
-            if (cssSettings.top < 0) {
-                cssSettings.top = 0;
-                cssSettings.maxHeight = $view.height();
-                cssSettings.overflow = 'auto';
-            }
         } else {
             // bottom
             popoverArrowClass += '-top'; // opposite
             cssSettings.top = itemPosition.top;
         }
 
+        if (cssSettings.top < 0) {
+            cssSettings.top       = 0;
+            cssSettings.overflow  = 'auto';
+            cssSettings.maxHeight = $view.height();
+        }
 
         $popover.css(cssSettings)
             .removeClass('left-top left-bottom right-top right-bottom')

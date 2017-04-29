@@ -6,14 +6,14 @@ use common\models\Screen;
 use common\components\helpers\CFileHelper;
 
 /**
- * $project              \common\models\Project
- * $activeVersion        \common\models\Version
- * $activeScreenId       integer|null
- * $allowComment         boolean
+ * $project        \common\models\Project
+ * $activeVersion  \common\models\Version
+ * $activeScreenId integer|null
+ * $allowComment   boolean
  */
 
-$activeScreenId       = isset($activeScreenId) ? $activeScreenId : null;
-$allowComment         = isset($allowComment) ? $allowComment : false;
+$activeScreenId = isset($activeScreenId) ? $activeScreenId : null;
+$allowComment   = isset($allowComment) ? $allowComment : false;
 
 if ($project->type == Project::TYPE_TABLET) {
     $projectTypeClass = 'tablet';
