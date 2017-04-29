@@ -305,7 +305,7 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
             var activeVersionPos       = ($(self.settings.versionsSelect).find('option:selected').index() || 0) + 1;
             var $previewThumbContainer = $(self.settings.previewThumbsContainer)
             var isPreviewThumbVisible  = false;
-            var previewThumbScroll     = 0;
+            var previewThumbScroll     = null;
             var $previewThumb;
 
             $slider.on('sliderChangeBefore', function(e, $activeSlide) {
@@ -314,7 +314,7 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                     .filter('[data-screen-id="' + $activeSlide.data('screen-id') + '"]').addClass('active');
 
                 isPreviewThumbVisible = $previewThumb.is(':visible');
-                previewThumbScroll    = 0; // reset
+                previewThumbScroll    = null; // reset
 
                 if (!$previewThumb.length) {
                     return;
@@ -329,11 +329,10 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                     previewThumbScroll = $previewThumbContainer.scrollLeft() + $previewThumb.position().left + $previewThumb.width() - self.$document.width() + 15;
                 } else if ($previewThumb.position().left < 0) {
                     previewThumbScroll = $previewThumbContainer.scrollLeft() + $previewThumb.position().left - 15;
-
                 }
 
                 // perform scroll (if needed)
-                if (previewThumbScroll > 0) {
+                if (previewThumbScroll !== null) {
                     if (isPreviewThumbVisible) {
                         $previewThumbContainer.stop(true, true).animate({'scrollLeft': previewThumbScroll}, 300);
                     } else {
