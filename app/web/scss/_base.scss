@@ -421,6 +421,7 @@ ul {
 .page-content {
     @extend %clear-after;
     position: relative;
+    display: block;
     z-index: auto;
     width: 100%;
     clear: both;
