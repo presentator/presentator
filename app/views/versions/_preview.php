@@ -46,7 +46,7 @@ $hasScreens = !empty($activeVersion->screens);
                             <figure class="featured">
                                 <img class="img lazy-load"
                                     alt="<?= Html::encode($screen->title) ?>"
-                                    data-src="<?= $screen->getThumbUrl('medium') ?>"
+                                    data-src="<?= $screen->getThumbUrl('small') ?>"
                                     data-priority="low"
                                 >
                             </figure>
