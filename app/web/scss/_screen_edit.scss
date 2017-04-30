@@ -208,6 +208,7 @@
                 font-size: 46px;
                 color: $greyColor;
                 font-family: $iconFont;
+                @include animation(primary-color-pulse 1.5s infinite linear);
             }
             // overlay
             &:after {
@@ -226,11 +227,9 @@
                     @include show;
                 }
             }
-            &.lazy-load-start:before {
-                @include animation(primary-color-pulse 1.5s infinite linear);
-            }
             &.loaded:before {
                 display: none;
+                @include animation(none);
             }
         }
         .hotspots-mode &,

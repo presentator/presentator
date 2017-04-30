@@ -62,12 +62,11 @@
             font-size: 40px;
             color: $greyColor;
             font-family: $iconFont;
-        }
-        &.lazy-load-start:after {
             @include animation(primary-color-pulse 1.5s infinite linear);
         }
         &.loaded:after {
             display: none;
+            @include animation(none);
         }
         img {
             display: block;
