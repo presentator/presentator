@@ -31,7 +31,7 @@ return array(
     'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'При нужда от допълнителна помощ, може да се свържеш с нас на {supportEmail}.',
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'Ако смяташ, че това съобщение е грешка или имаш нужда от допълнителна помощ, може да се свържеш с нас на {supportEmail}.',
     'Message' => 'Съобщение',
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => 'п.п. Ако не искаш да получавате повече подобни известия, може да изключиш опцията от настройките на профила си.',
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => 'п.п. Ако не искаш да получаваш повече подобни известия, може да изключиш опцията от настройките на профила си.',
     'Presentator.io Team' => 'Екипът на Presentator.io',
     'Reset password' => 'Смяна на парола',
     'Screen' => 'Екран',
