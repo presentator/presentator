@@ -971,8 +971,7 @@ var PR = {
 
         if ($scrollContainer.width() == $item.width()) {
             $scrollContainer.css({
-                'minWidth': $scrollContainer.width(),
-                'width':    'auto'
+                'width': 'auto'
             });
         }
     }
