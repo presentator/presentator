@@ -485,7 +485,7 @@ ScreenCommentsView.prototype.ensureTargetIsVisible = function (target) {
 ScreenCommentsView.prototype.updateCommentsCounter = function() {
     var total = this.getActiveScreenSliderItem().find(this.settings.commentTarget).length;
 
-    $(this.settings.commentsCounter).html(total);
+    $(this.settings.commentsCounter).text(total);
 };
 
 /**

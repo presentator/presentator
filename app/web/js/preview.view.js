@@ -264,8 +264,8 @@ PreviewView.prototype.updateSliderCaption = function() {
     var $activeSlide = $(self.settings.versionSliderItem + '.active');
 
     $caption.addClass('active');
-    $(self.settings.activeSlideTitleHolder).html($activeSlide.data('title'));
-    $(self.settings.activeSlideOrderHolder).html($activeSlide.index() + 1);
+    $(self.settings.activeSlideTitleHolder).text($activeSlide.data('title'));
+    $(self.settings.activeSlideOrderHolder).text($activeSlide.index() + 1);
 
     if (self.sliderCaptionTimeout) {
         clearTimeout(self.sliderCaptionTimeout);
