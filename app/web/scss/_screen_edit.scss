@@ -258,6 +258,10 @@
         @include user-select(none);
         .slider-item {
             display: none;
+            .hotspot-active &,
+            .comment-active & {
+                overflow: hidden;
+            }
             &.active {
                 display: inline-block;
                 @include animation(fade-in 0.4s);
