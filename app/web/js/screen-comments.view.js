@@ -444,6 +444,8 @@ ScreenCommentsView.prototype.loadCommentsList = function(primaryCommentId, callb
  * @param {Mixed} target
  */
 ScreenCommentsView.prototype.ensureTargetIsVisible = function (target) {
+    var self = this;
+
     // normalize target parameter
     var $target    = $(target);
     target         = $target.get(0);
@@ -452,13 +454,20 @@ ScreenCommentsView.prototype.ensureTargetIsVisible = function (target) {
         return;
     }
 
-    var targetTop     = 0;
-    var targetLeft    = 0;
-    var $scrollParent = $target.scrollParent();
+    var targetTop         = 0;
+    var targetLeft        = 0;
+    var oldParentOverflow = null;
+    var $scrollParent     = $target.closest(self.settings.versionSliderItem);
 
     if ($scrollParent.length) {
-        targetTop  = $target.position().top;
-        targetLeft = $target.position().left;
+        targetTop         = $target.position().top;
+        targetLeft        = $target.position().left;
+        oldParentOverflow = $scrollParent.css('overflow');
+
+        // scroll overflow should be enable to able to use `.scrollTop()`
+        if (oldParentOverflow === 'hidden') {
+            $scrollParent.css('overflow', 'auto');
+        }
 
         // horizontal
         if (
@@ -474,6 +483,11 @@ ScreenCommentsView.prototype.ensureTargetIsVisible = function (target) {
             ($scrollParent.height() + $scrollParent.scrollTop() < targetTop)
         ) {
             $scrollParent.scrollTop(targetTop - ($scrollParent.height() / 2));
+        }
+
+        // revert overflow changes
+        if (oldParentOverflow === 'hidden') {
+            $scrollParent.css('overflow', oldParentOverflow);
         }
     }
 };

@@ -215,9 +215,9 @@ $this->registerJsFile('/js/hotspots.js?v=1493403687');
 $this->registerJsFile('/js/pins.js?v=?v=1493403687');
 $this->registerJsFile('/js/project-view.view.js?v=1493403687');
 $this->registerJsFile('/js/version.view.js?v=1493403687');
-$this->registerJsFile('/js/screen-comments.view.js?v=1494076796');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1493403687');
-$this->registerJsFile('/js/screen.view.js?v=1494076796');
+$this->registerJsFile('/js/screen-comments.view.js?v=1494078353');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1494078353');
+$this->registerJsFile('/js/screen.view.js?v=1494078353');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",

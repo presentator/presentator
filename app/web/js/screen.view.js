@@ -608,11 +608,11 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
 
             self.$activeVersionSlider.find(self.settings.versionSliderItem).on('scroll', function(e) {
                 if ($body.hasClass('hotspot-active')) {
-                    // self.hotspotsView.repositionPopover();
-                    self.hotspotsView.deselectHotspot();
+                    self.hotspotsView.repositionPopover();
+                    // self.hotspotsView.deselectHotspot();
                 } else if ($body.hasClass('comment-active')) {
-                    // self.commentsView.repositionPopover();
-                    self.commentsView.deselectCommentTarget();
+                    self.commentsView.repositionPopover();
+                    // self.commentsView.deselectCommentTarget();
                 }
             });
 
