@@ -359,12 +359,11 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
             $slider.slider({nav: false});
 
-
-            $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {
-                if (self.$body.hasClass('comment-active')) {
-                    self.commentsView.deselectCommentTarget();
-                }
-            });
+            // $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {
+            //     if (self.$body.hasClass('comment-active')) {
+            //         self.commentsView.deselectCommentTarget();
+            //     }
+            // });
 
             // updates container width to prevent displaying unnecessary horizontal scrollbar
             if (!$slider.hasClass('desktop')) {

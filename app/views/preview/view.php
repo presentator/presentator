@@ -32,7 +32,7 @@ $this->title = $project->title;
 <?php
 $this->registerJsFile('/js/pins.js?v=1493403687');
 $this->registerJsFile('/js/screen-comments.view.js?v=1494078354');
-$this->registerJsFile('/js/preview.view.js?v=1494078353');
+$this->registerJsFile('/js/preview.view.js?v=1494078354');
 $this->registerJs('
     var preview = new PreviewView({
         grantedAccess: ' . ($grantedAccess ? 'true' : 'false') . ',
