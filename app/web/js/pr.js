@@ -957,5 +957,23 @@ var PR = {
         var end   = parts.pop();
 
         return parts.join(delimiter) + (delimiter) + '<strong>' + end + '</strong>';
+    },
+
+    /**
+     * Updates scroll container width to prevent displaying unnecessary horizontal scrollbar.
+     * @see https://github.com/ganigeorgiev/presentator/issues/23
+     * @param {String} item
+     * @param {String} scrollContainer
+     */
+    updateScrollContainerWidth: function(item, scrollContainer) {
+        var $item            = $(item);
+        var $scrollContainer = $(scrollContainer);
+
+        if ($scrollContainer.width() == $item.width()) {
+            $scrollContainer.css({
+                'minWidth': $scrollContainer.width(),
+                'width':    'auto'
+            });
+        }
     }
 };

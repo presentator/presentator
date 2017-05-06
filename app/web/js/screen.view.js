@@ -612,7 +612,14 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
                 } else if ($body.hasClass('comment-active')) {
                     self.commentsView.repositionPopover();
                 }
-            });
+            })
+
+            // updates container width to prevent displaying unnecessary horizontal scrollbar
+            if (!self.$activeVersionSlider.hasClass('desktop')) {
+                self.$activeVersionSlider.find('.hotspot-layer').on('load', function(e) {
+                    PR.updateScrollContainerWidth(this, $(this).closest(self.settings.versionSliderItem))
+                });
+            }
 
             self.activateHotspotsMode();
 

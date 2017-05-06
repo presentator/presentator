@@ -359,11 +359,19 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
             $slider.slider({nav: false});
 
+
             $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {
                 if (self.$body.hasClass('comment-active')) {
                     self.commentsView.deselectCommentTarget();
                 }
             });
+
+            // updates container width to prevent displaying unnecessary horizontal scrollbar
+            if (!$slider.hasClass('desktop')) {
+                $slider.find('.hotspot-layer').on('load', function(e) {
+                    PR.updateScrollContainerWidth(this, $(this).closest(self.settings.versionSliderItem))
+                });
+            }
 
             self.activatePreviewMode();
 
