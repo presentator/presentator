@@ -962,8 +962,8 @@ var PR = {
     /**
      * Updates scroll container width to prevent displaying unnecessary horizontal scrollbar.
      * @see https://github.com/ganigeorgiev/presentator/issues/23
-     * @param {String} item
-     * @param {String} scrollContainer
+     * @param {Mixed} item
+     * @param {Mixed} scrollContainer
      */
     updateScrollContainerWidth: function(item, scrollContainer) {
         var $item            = $(item);
