@@ -758,7 +758,7 @@ var PR = {
 
             if (!$cursorTooltip.hasClass('active')) {
                 $cursorTooltip.addClass('active');
-                $cursorTooltip.html($(this).data('cursor-tooltip'));
+                $cursorTooltip.text($(this).data('cursor-tooltip'));
 
                 if ($(this).data('cursor-tooltip-class')) {
                     $cursorTooltip.addClass($(this).data('cursor-tooltip-class'));
