@@ -612,7 +612,7 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
                 } else if ($body.hasClass('comment-active')) {
                     self.commentsView.repositionPopover();
                 }
-            })
+            });
 
             // updates container width to prevent displaying unnecessary horizontal scrollbar
             if (!self.$activeVersionSlider.hasClass('desktop')) {
