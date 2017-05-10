@@ -969,9 +969,16 @@ var PR = {
         var $item            = $(item);
         var $scrollContainer = $(scrollContainer);
 
+        if (!$scrollContainer.length) {
+            return; // nothing to do here
+        }
+
         if ($scrollContainer.width() == $item.width()) {
+            var scrollbarWidth = $scrollContainer[0].offsetWidth - $scrollContainer[0].clientWidth;
+
             $scrollContainer.css({
-                'width': 'auto'
+                // 'width': 'auto' // NB! Unfortunately works only in Chrome (http://stackoverflow.com/questions/39738265/firefox-displays-unnecessary-horizontal-scrollbar)
+                'width': $scrollContainer.width() + (scrollbarWidth || 0)
             });
         }
     }
