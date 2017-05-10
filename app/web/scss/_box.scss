@@ -68,16 +68,14 @@
             display: none;
             @include animation(none);
         }
+        @include v-align-helper;
         img {
-            display: block;
-            position: absolute;
+            display: inline-block;
+            vertical-align: middle;
             z-index: 1;
-            top: 50%;
-            left: 50%;
             height: auto;
             max-width: 100%;
             @include border-radius($baseRadius);
-            @include transform(translate(-50%, -50%));
             &.loaded {
                 @include animation(none);
             }
