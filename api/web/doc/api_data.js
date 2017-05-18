@@ -60,7 +60,7 @@ define({ "api": [
     "title": "01. Localizing response",
     "name": "localizations",
     "group": "Intro",
-    "description": "<p>Each API response could be localized with the <code>lang</code> GET parameter:</p> <pre><code>?lang=bg </code></pre> <p>Currently available language codes are: <code>bg</code>, <code>en</code>, <code>pt-br</code>, <code>pl</code>.</p> <p>If the <code>lang</code> parameter is not set, the API will try to detect it via <strong>GeoIP</strong>.</p>",
+    "description": "<p>Each API response could be localized with the <code>lang</code> GET parameter:</p> <pre><code>?lang=bg </code></pre> <p>Currently available language codes are: <code>bg</code>, <code>en</code>, <code>fr</code>, <code>pl</code>.</p> <p>If the <code>lang</code> parameter is not set, the API will try to detect it via <strong>GeoIP</strong>.</p>",
     "version": "0.0.0",
     "filename": "docs/apidoc-intro.js",
     "groupTitle": "Intro"
