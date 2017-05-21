@@ -144,9 +144,15 @@ class ScreensController extends AppController
             }
 
             if ($result) {
+                if (count($screens) > 1) {
+                    $message = Yii::t('app', 'Successfully deleted screens.');
+                } else {
+                    $message = Yii::t('app', 'Successfully deleted screen.');
+                }
+
                 return [
                     'success' => true,
-                    'message' => Yii::t('app', 'Successfully deleted screen(s).'),
+                    'message' => $message,
                 ];
             }
         }
@@ -327,9 +333,15 @@ class ScreensController extends AppController
             }
 
             if ($result) {
+                if (count($screens) > 1) {
+                    $message = Yii::t('app', 'Successfully moved screens.');
+                } else {
+                    $message = Yii::t('app', 'Successfully moved screen.');
+                }
+
                 return [
                     'success' => true,
-                    'message' => Yii::t('app', 'Successfully moved screen(s).'),
+                    'message' => $message,
                 ];
             }
         }
