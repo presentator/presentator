@@ -22,6 +22,7 @@ return array(
     '{projectTitle} preview' => 'Aperçu de {projectTitle}',
     'New comment' => 'Nouveau commentaire',
     'Registered with Facebook' => 'Enregistré avec Facebook',
+    'Password reset request' => 'Demande de réinitialisation de mot de passe',
     'Account activation' => 'Activation du compte',
     'A new comment was left for project "{projectTitle}".' => 'Un nouveau commentaire a été déposé pour le projet "{projectTitle}".',
     'Activate account' => 'Activer le compte',

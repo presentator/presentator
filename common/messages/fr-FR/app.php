@@ -138,7 +138,6 @@ return array(
     'Open link in new tab' => 'Ouvrir le lien dans un nouvel onglet',
     'Password' => 'Mot de passe',
     'Password confirm' => 'Confirmation du mot de passe',
-    'Password reset request' => 'Demande de réinitialisation de mot de passe',
     'Passwords don\'t match' => 'Les mots de passe ne correspondent pas',
     'Please contact us if you think this is a server error. Thank you.' => 'Merci de nous contacter si vous pensez qu\'il s\'agit d\'une erreur serveur.',
     'Please type the project password to invoke access.' => 'Merci d\'entrer le mot de passe du projet pour en demander l’accès.',
