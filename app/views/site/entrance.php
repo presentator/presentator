@@ -73,7 +73,7 @@ $this->title = Yii::t('app', 'Login');
             <?php if (Yii::$app->language === 'bg-BG'): ?>
                 <h5>Въведение</h5>
                 <p>
-                    Използвайки уеб сайта Presentator.io и всички услуги свързани с него, Вие се съгласявате със следните общи условия, включително и последващи промени по тях. Ако не сте съгласни с условията, моля не използвайте Presentator.io.
+                    Използвайки уеб сайта Presentator и всички услуги свързани с него, Вие се съгласявате със следните общи условия, включително и последващи промени по тях. Ако не сте съгласни с условията, моля не използвайте Presentator.
                 <p>
 
                 <h5>Условия</h5>
@@ -95,7 +95,7 @@ $this->title = Yii::t('app', 'Login');
                     Не гарантираме backup на Вашите данни. Ако решите да изтриете съдържанието, което сте качили (напр. изтриване на проект или версия), то ще бъде изтрито перманентно от нашите сървъри.
                 </p>
                 <p>
-                    Вашият имейл адрес се ползва единствено за осигуряване на достъп до услугите свързани с Presentator.io и получаването на отзиви относно Вашето съдържание.
+                    Вашият имейл адрес се ползва единствено за осигуряване на достъп до услугите свързани с Presentator и получаването на отзиви относно Вашето съдържание.
                 </p>
 
                 <h5>Публичност</h5>
@@ -107,7 +107,7 @@ $this->title = Yii::t('app', 'Login');
             <?php else: ?>
                 <h5>Intro</h5>
                 <p>
-                    By using the Presentator.io web site and all services related to it, you are agreeing to be bound by the following "Terms and conditions", including any subsequent changes or modifications to them. If you do not agree to these Terms, please do not access the Presentator website or services.
+                    By using the Presentator web site and all services related to it, you are agreeing to be bound by the following "Terms and conditions", including any subsequent changes or modifications to them. If you do not agree to these Terms, please do not access the Presentator website or services.
                 <p>
 
                 <h5>Conditions</h5>

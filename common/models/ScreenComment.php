@@ -264,9 +264,9 @@ class ScreenComment extends CActiveRecord
                     'user'    => $user,
                     'comment' => $this,
                 ])
-                ->setFrom(Yii::$app->params['noreplyEmail'])
+                ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
                 ->setTo($user->email)
-                ->setSubject('Presentator.io - ' . Yii::t('app', 'New comment'))
+                ->setSubject('Presentator - ' . Yii::t('app', 'New comment'))
                 ->send();
         }
 

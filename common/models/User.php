@@ -310,7 +310,7 @@ class User extends CActiveRecord implements IdentityInterface
 
         // token payload data
         $payload = [
-            'iss'       => 'Presentator.io API',
+            'iss'       => 'Presentator API',
             'iat'       => time(),
             'userId'    => $this->id,
             'userEmail' => $this->email,
@@ -351,7 +351,7 @@ class User extends CActiveRecord implements IdentityInterface
                 'user'  => $this,
                 'token' => $this->getActivationToken(),
             ])
-            ->setFrom(Yii::$app->params['noreplyEmail'])
+            ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
             ->setSubject(Yii::t('app', 'Account activation'))
             ->send();
@@ -366,9 +366,9 @@ class User extends CActiveRecord implements IdentityInterface
         return Yii::$app->mailer->compose('password_reset', [
                 'user' => $this,
             ])
-            ->setFrom(Yii::$app->params['noreplyEmail'])
+            ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject('Presentator.io - ' . Yii::t('app', 'Password reset request'))
+            ->setSubject('Presentator - ' . Yii::t('app', 'Password reset request'))
             ->send();
     }
 
@@ -383,9 +383,9 @@ class User extends CActiveRecord implements IdentityInterface
                 'user'     => $this,
                 'password' => $password,
             ])
-            ->setFrom(Yii::$app->params['noreplyEmail'])
+            ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject('Presentator.io - ' . Yii::t('app', 'Registered with Facebook'))
+            ->setSubject('Presentator - ' . Yii::t('app', 'Registered with Facebook'))
             ->send();
     }
 

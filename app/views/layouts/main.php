@@ -18,7 +18,7 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= $this->title ? (Html::encode($this->title) . ' - ') : '' ?>Presentator.io</title>
+    <title><?= $this->title ? (Html::encode($this->title) . ' - ') : '' ?>Presentator</title>
     <link href="/images/favicon.png?v=1492082737" rel="shortcut icon" type="image/png">
     <?php $this->head() ?>
 </head>

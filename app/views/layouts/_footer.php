@@ -4,12 +4,12 @@ use common\widgets\LanguageSwitch;
 <footer id="page_footer" class="page-footer">
     <div class="links">
         <ul class="separator-list">
-            <li><?= date('Y') ?> Presentator.io</li>
+            <li><?= date('Y') ?> Presentator</li>
             <li>
                 <?= LanguageSwitch::widget(); ?>
             </li>
 
-            <?php if (isset(Yii::$app->params['githubUrl'])): ?>
+            <?php if (!empty(Yii::$app->params['githubUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['githubUrl'] ?>" class="icon-link github-link" target="_blank">
                         <i class="ion ion-social-github"></i>
@@ -18,7 +18,7 @@ use common\widgets\LanguageSwitch;
                 </li>
             <?php endif ?>
 
-            <?php if (isset(Yii::$app->params['facebookUrl'])): ?>
+            <?php if (!empty(Yii::$app->params['facebookUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="icon-link fb-link" target="_blank">
                         <i class="ion ion-social-facebook"></i>
@@ -27,7 +27,7 @@ use common\widgets\LanguageSwitch;
                 </li>
             <?php endif ?>
 
-            <?php if (isset(Yii::$app->params['supportUsUrl'])): ?>
+            <?php if (!empty(Yii::$app->params['supportUsUrl'])): ?>
             <li>
                 <a href="<?= Yii::$app->params['supportUsUrl'] ?>" class="icon-link heart-link" target="_blank">
                     <i class="ion ion-heart"></i>

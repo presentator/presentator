@@ -96,7 +96,7 @@ return array(
     'General' => 'General',
     'Go to login page' => 'Go to login page',
     'Has unread comments' => 'Has unread comments',
-    'Hello and welcome to Presentator.io!' => 'Hello and welcome to Presentator.io!',
+    'Hello and welcome to Presentator!' => 'Hello and welcome to Presentator!',
     'Hide' => 'Hide',
     'Hotspots mode' => 'Hotspots mode',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>',

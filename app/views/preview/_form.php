@@ -10,7 +10,7 @@ use common\widgets\CActiveForm;
     'id' => 'project_access_form',
 ]); ?>
     <div class="info-block m-b-30">
-        <a href="" class="logo margin-bottom-30" target="_blank" title="Presentator.io">
+        <a href="" class="logo margin-bottom-30" target="_blank" title="Presentator">
             <img src="<?= Yii::getAlias('@web/images/logo_large.png') ?>" alt="Presentator logo">
         </a>
         <div class="clearfix m-b-15"></div>
@@ -19,7 +19,6 @@ use common\widgets\CActiveForm;
             <?= Yii::t('app', 'Please type the project password to invoke access.') ?>
         </p>
     </div>
-
 
     <?= $form->field($model, 'password', [
             'inputOptions' => [

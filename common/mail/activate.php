@@ -26,5 +26,5 @@ use yii\helpers\Html;
 </p>
 <p>
     <?= Yii::t('mail', 'Best Regards') ?>, <br>
-    <?= Yii::t('mail', 'Presentator.io Team') ?>
+    <?= Yii::t('mail', 'Presentator Team') ?>
 </p>

@@ -96,7 +96,7 @@ return array(
     'General' => 'Ogólny',
     'Go to login page' => 'Przejdź do ekranu logowania',
     'Has unread comments' => 'Nowe komentarze',
-    'Hello and welcome to Presentator.io!' => 'Witamy na Presentator.io!',
+    'Hello and welcome to Presentator!' => 'Witamy na Presentator!',
     'Hide' => 'Ukryj',
     'Hotspots mode' => 'Tryb obszarów aktywnych',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'Zapoznałem się i wyrażam zgodę na <a href="#" data-popup="#terms_popup">warunki korzystania z serwisu</a>',

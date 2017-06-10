@@ -183,10 +183,12 @@ use yii\helpers\Url;
                 <table style="width: 100%;">
                     <tr>
                         <td style="width: 50%; text-align: left;">
-                            <p>Presentator.io - Your designs deserve it!</p>
+                            <p>Presentator - Your designs deserve it!</p>
                         </td>
                         <td style="width: 50%; text-align: right;">
-                            <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="social-icon">Facebook</a>
+                            <?php if (!empty(Yii::$app->params['facebookUrl'])): ?>
+                                <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="social-icon">Facebook</a>
+                            <?php endif ?>
                             |
                             <a href="mailto:<?= Yii::$app->params['supportEmail'] ?>" class="social-icon"><?= Yii::$app->params['supportEmail'] ?></a>
                         </td>

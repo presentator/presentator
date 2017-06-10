@@ -142,9 +142,9 @@ class ProjectPreview extends CActiveRecord
         return Yii::$app->mailer->compose('project_preview', [
                 'preview' => $this,
             ])
-            ->setFrom(Yii::$app->params['noreplyEmail'])
+            ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($to)
-            ->setSubject('Presentator.io - ' . Yii::t('app', '{projectTitle} preview', ['projectTitle' => $this->project->title]))
+            ->setSubject('Presentator - ' . Yii::t('app', '{projectTitle} preview', ['projectTitle' => $this->project->title]))
             ->send();
     }
 }
