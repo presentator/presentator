@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Administrator discharge' => 'Освобождаване като администратор към проект',
+    'Administrator discharge' => 'Премахване на администраторски права към проект',
     'Administrator assignment' => 'Назначаване като администратор',
     '{projectTitle} preview' => '{projectTitle} преглед',
     'New comment' => 'Нов коментар',
