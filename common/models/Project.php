@@ -374,7 +374,7 @@ class Project extends CActiveRecord
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($user->email)
-            ->setSubject('Presentator - ' . Yii::t('app', 'Administrator assignment'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Administrator assignment'))
             ->send();
     }
 
@@ -391,7 +391,7 @@ class Project extends CActiveRecord
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($user->email)
-            ->setSubject('Presentator - ' . Yii::t('app', 'Administrator discharge'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Administrator discharge'))
             ->send();
     }
 }

@@ -17,6 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Administrator discharge' => 'Освобождаване като администратор към проект',
+    'Administrator assignment' => 'Назначаване като администратор',
+    '{projectTitle} preview' => '{projectTitle} преглед',
+    'New comment' => 'Нов коментар',
+    'Registered with Facebook' => 'Регистрирация с Facebook',
+    'Password reset request' => 'Заявка за смяна на парола',
+    'Account activation' => 'Активиране на профил',
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}"',
     'Activate account' => 'Активиране на профил',
     'Best Regards' => 'Поздрави',

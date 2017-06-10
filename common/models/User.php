@@ -353,7 +353,7 @@ class User extends CActiveRecord implements IdentityInterface
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject(Yii::t('app', 'Account activation'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Account activation'))
             ->send();
     }
 
@@ -368,7 +368,7 @@ class User extends CActiveRecord implements IdentityInterface
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject('Presentator - ' . Yii::t('app', 'Password reset request'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Password reset request'))
             ->send();
     }
 
@@ -385,7 +385,7 @@ class User extends CActiveRecord implements IdentityInterface
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject('Presentator - ' . Yii::t('app', 'Registered with Facebook'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Registered with Facebook'))
             ->send();
     }
 

@@ -17,6 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Administrator discharge' => 'Révocation d\'un administrateur',
+    'Administrator assignment' => 'Assignation d\'un administrateur',
+    '{projectTitle} preview' => 'Aperçu de {projectTitle}',
+    'New comment' => 'Nouveau commentaire',
+    'Registered with Facebook' => 'Enregistré avec Facebook',
+    'Account activation' => 'Activation du compte',
     'A new comment was left for project "{projectTitle}".' => 'Un nouveau commentaire a été déposé pour le projet "{projectTitle}".',
     'Activate account' => 'Activer le compte',
     'Best Regards' => 'Cordialement',

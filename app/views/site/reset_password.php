@@ -10,7 +10,7 @@ use common\widgets\LanguageSwitch;
  * @var $model \app\models\PasswordResetForm
  */
 
-$this->title = Yii::t('app', 'Password reset');
+$this->title = Yii::t('app', 'Reset password');
 ?>
 
 <?php $this->beginBlock('before_global_wrapper'); ?>

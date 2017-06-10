@@ -17,6 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Administrator discharge' => 'Administrator discharge',
+    'Administrator assignment' => 'Administrator assignment',
+    '{projectTitle} preview' => '{projectTitle} preview',
+    'New comment' => 'New comment',
+    'Registered with Facebook' => 'Registered with Facebook',
+    'Password reset request' => 'Password reset request',
+    'Account activation' => 'Account activation',
     'A new comment was left for project "{projectTitle}".' => 'A new comment was left for project "{projectTitle}".',
     'Activate account' => 'Activate account',
     'Best Regards' => 'Best Regards',
