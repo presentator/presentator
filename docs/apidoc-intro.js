@@ -35,7 +35,7 @@
  * @apiSampleRequest off
  * @apiGroup Intro
  * @apiDescription
-Welcome to Presentator.io API docs.
+Welcome to Presentator API docs.
 
 The API resources are separated in 5 groups:
 
