@@ -5,7 +5,7 @@ $controller = Yii::$app->controller->id;
 $action     = Yii::$app->controller->action->id;
 ?>
 <aside id="page_sidebar" class="page-sidebar">
-    <a href="<?= Url::home() ?>" class="logo">
+    <a href="<?= Url::to(['site/index']) ?>" class="logo">
         <img src="<?= Yii::getAlias('@web/images/logo.png') ?>?v=1492082790" alt=" Presentator logo">
     </a>
     <nav class="main-menu">

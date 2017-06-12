@@ -53,31 +53,31 @@ class LanguageSwitch extends Widget
         $result .= '<select id="language_select" class="language-select">';
 
         // language options
-        $result .= sprintf('<option value="%s" %s>%s</option>',
+        $result .= sprintf('<option value="%s" %s>BG | %s</option>',
             Url::current(['lang' => 'bg']),
             ($currentLang == 'bg-bg' ? 'selected' : ''),
             Yii::t('app', 'Bulgarian')
         );
-        $result .= sprintf('<option value="%s" %s>%s</option>',
+        $result .= sprintf('<option value="%s" %s>EN | %s</option>',
             Url::current(['lang' => 'en']),
             ($currentLang == 'en-us' ? 'selected' : ''),
             Yii::t('app', 'English')
         );
-        $result .= sprintf('<option value="%s" %s>%s</option>',
+        $result .= sprintf('<option value="%s" %s>PL | %s</option>',
             Url::current(['lang' => 'pl']),
             ($currentLang == 'pl-pl' ? 'selected' : ''),
             Yii::t('app', 'Polish')
         );
-        $result .= sprintf('<option value="%s" %s>%s</option>',
+        $result .= sprintf('<option value="%s" %s>FR | %s</option>',
             Url::current(['lang' => 'fr']),
             ($currentLang == 'fr-fr' ? 'selected' : ''),
             Yii::t('app', 'French')
         );
-        // $result .= sprintf('<option value="%s" %s>%s</option>',
-        //     Url::current(['lang' => 'pt-br']),
-        //     ($currentLang == 'pt-br' ? 'selected' : ''),
-        //     (Yii::t('app', 'Portuguese (Brazilian)'))
-        // );
+        $result .= sprintf('<option value="%s" %s>PT-BR | %s</option>',
+            Url::current(['lang' => 'pt-br']),
+            ($currentLang == 'pt-br' ? 'selected' : ''),
+            (Yii::t('app', 'Portuguese'))
+        );
 
         $result .= '</select>';
         $result .= '</div>';

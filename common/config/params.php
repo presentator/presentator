@@ -7,10 +7,11 @@ return [
 
     // short/url lang code => full lang code
     'languages' => [
-        'en' => 'en-US',
-        'bg' => 'bg-BG',
-        'pl' => 'pl-PL',
-        'fr' => 'fr-FR',
+        'en'    => 'en-US',
+        'bg'    => 'bg-BG',
+        'pl'    => 'pl-PL',
+        'fr'    => 'fr-FR',
+        'pt-br' => 'pt-BR',
     ],
 
     'publicUrl'        => '',
