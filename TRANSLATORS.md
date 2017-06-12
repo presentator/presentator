@@ -16,3 +16,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - Ben Cousin ([Bewod](https://www.transifex.com/user/profile/Bewod/))
 - Steven Mazelerat ([smaze](https://www.transifex.com/user/profile/smaze/))
+
+### Portuguese (Brazil)
+
+- Leandro Oliveira ([http://leandro.design](http://leandro.design))
