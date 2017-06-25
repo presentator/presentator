@@ -60,7 +60,11 @@ class ScreensController extends AppController
                 foreach ($screens as $screen) {
                     $screenIds[] = $screen->id;
 
-                    $listItemsHtml .= $this->renderPartial('/screens/_list_item', ['model' => $screen]);
+                    $listItemsHtml .= $this->renderPartial('/screens/_list_item', [
+                        'model'       => $screen,
+                        'lazyLoad'    => false,
+                        'createThumb' => false,
+                    ]);
                 }
 
                 return [
@@ -344,6 +348,44 @@ class ScreensController extends AppController
                     'message' => $message,
                 ];
             }
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
+     * Fetch and generate screen thumb via ajax.
+     * @param  integer     $id
+     * @param  null|string $thumbSize
+     * @return array
+     * @throws BadRequestHttpException For none ajax request
+     */
+    public function actionAjaxGetThumbs($id, $thumbSize = null)
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user   = Yii::$app->user->identity;
+        $screen = $user->findScreenById($id);
+        $sizes  = array_key_exists($thumbSize, Screen::THUMB_SIZES) ? [$thumbSize] : array_keys(Screen::THUMB_SIZES);
+
+        if ($screen) {
+            $thumbs = [];
+            foreach ($sizes as $size) {
+                $thumbs[$size] = $screen->getThumbUrl($size, true);
+            }
+
+            return [
+                'success' => true,
+                'thumbs'  => $thumbs,
+            ];
         }
 
         return [

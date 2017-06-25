@@ -131,6 +131,8 @@ return [
                 'admin/screens/ajax-save-hotspots'                               => 'screens/ajax-save-hotspots',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/screens/ajax-move-screens'       => 'screens/ajax-move-screens',
                 'admin/screens/ajax-move-screens'                                => 'screens/ajax-move-screens',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screens/ajax-get-thumbs'         => 'screens/ajax-get-thumbs',
+                'admin/screens/ajax-get-thumbs'                                  => 'screens/ajax-get-thumbs',
 
                 // Screen comments
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-create'       => 'screen-comments/ajax-create',

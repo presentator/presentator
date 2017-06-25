@@ -211,13 +211,13 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1493403687');
-$this->registerJsFile('/js/pins.js?v=?v=1493403687');
-$this->registerJsFile('/js/project-view.view.js?v=1493403687');
-$this->registerJsFile('/js/version.view.js?v=1493403687');
-$this->registerJsFile('/js/screen-comments.view.js?v=1494078354');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1494078353');
-$this->registerJsFile('/js/screen.view.js?v=1494078353');
+$this->registerJsFile('/js/hotspots.js?v=1498376955');
+$this->registerJsFile('/js/pins.js?v=?v=1498376955');
+$this->registerJsFile('/js/project-view.view.js?v=1498376955');
+$this->registerJsFile('/js/version.view.js?v=1498376955');
+$this->registerJsFile('/js/screen-comments.view.js?v=1498376955');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1498376955');
+$this->registerJsFile('/js/screen.view.js?v=1498376955');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",
@@ -242,6 +242,7 @@ $this->registerJs('
         ajaxUploadUrl:           "' . Url::to(['screens/ajax-upload']) .'",
         ajaxDeleteUrl:           "' . Url::to(['screens/ajax-delete']) .'",
         ajaxReorderUrl:          "' . Url::to(['screens/ajax-reorder']) .'",
+        ajaxGetThumbsUrl:        "' . Url::to(['screens/ajax-get-thumbs']) .'",
         ajaxMoveScreensUrl:      "' . Url::to(['screens/ajax-move-screens']) .'",
         ajaxGetScreensSliderUrl: "' . Url::to(['versions/ajax-get-screens-slider']) .'",
 

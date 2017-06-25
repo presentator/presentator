@@ -4,12 +4,19 @@ use yii\helpers\Html;
 /**
  * @var $model            \common\models\Screen
  * @var $newComments      integer
+ * @var $lazyLoad         boolean
  * @var $lazyLoadPriority string
+ * @var $createThumb      boolean
  */
 
 // Default values
-$newComments      = isset($newComments) ? $newComments : 0;
+$newComments      = isset($newComments)      ? $newComments      : 0;
+$lazyLoad         = isset($lazyLoad)         ? $lazyLoad         : true;
 $lazyLoadPriority = isset($lazyLoadPriority) ? $lazyLoadPriority : 'medium';
+$createThumb      = isset($createThumb)      ? $createThumb      : true;
+
+$url    = $model->getThumbUrl('medium', $createThumb);
+$hasImg = !empty(@getimagesize($url));
 ?>
 
 <div class="box screen-item" data-screen-id="<?= $model->id ?>">
@@ -21,7 +28,11 @@ $lazyLoadPriority = isset($lazyLoadPriority) ? $lazyLoadPriority : 'medium';
         <?php endif ?>
 
         <figure class="featured">
-            <img data-src="<?= $model->getThumbUrl('medium', true) ?>" class="img lazy-load" alt="<? Html::encode($model->title) ?>" data-priority="<?= $lazyLoadPriority ?>">
+            <?php if ($lazyLoad): ?>
+                <img data-src="<?= $url ?>" class="img lazy-load" alt="<?= Html::encode($model->title) ?>" data-priority="<?= $lazyLoadPriority ?>">
+            <?php else: ?>
+                <img src="<?= $hasImg ? $url : '' ?>" class="img" alt="<?= Html::encode($model->title) ?>">
+            <?php endif ?>
 
             <div class="featured-overlay"></div>
             <div class="overlay-item top-left">

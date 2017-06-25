@@ -433,7 +433,7 @@ class ScreensCest
         $I->amLoggedInAs(1002);
         $I->ensureAjaxPostActionAccess(['screens/ajax-move-screens']);
 
-        $I->amGoingTo('try to move screens to a version that is not from the same screens project or is not owned by the logged user');
+        $I->amGoingTo('try to move screens to a version that is owned by the logged user');
         $I->sendAjaxPostRequest(['screens/ajax-move-screens'], [
             'screenIds' => [1001, 1002],
             'versionId' => 1002,
@@ -445,6 +445,58 @@ class ScreensCest
         $screens = Screen::findAll(['id' => [1001, 1002]]);
         foreach ($screens as $screen) {
             $I->assertEquals($screen->versionId, 1002);
+        }
+    }
+
+
+    /* ===============================================================
+     * `ScreensController::actionAjaxGetThumbs()` tests
+     * ============================================================ */
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxGetThumbsFail(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely fetch and generate thumbnails');
+        $I->amLoggedInAs(1002);
+        $I->cantAccessAsGuest(['screens/ajax-get-thumbs', 'id' => 1003]);
+
+        $I->amGoingTo('try to generate thumb of screen that is not owned by the logged user');
+        $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], ['id' => 1003]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxGetThumbsSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully fetch and generate thumbnails');
+        $I->amLoggedInAs(1002);
+        $I->cantAccessAsGuest(['screens/ajax-get-thumbs', 'id' => 1001]);
+
+        $I->amGoingTo('try to fetch and generate specific thumb size of a screen that is owned by the logged user');
+        $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
+            'id'        => 1001,
+            'thumbSize' => 'medium'
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"thumbs":');
+        $I->seeResponseContains('"medium":');
+        $I->dontSeeResponseContains('"small":');
+
+        $I->amGoingTo('try to fetch and generate thumbs of a screen that is owned by the logged user');
+        $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
+            'id' => 1001,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"thumbs":');
+        foreach (Screen::THUMB_SIZES as $size => $settings) {
+            $I->seeResponseContains('"' . $size . '":');
         }
     }
 }

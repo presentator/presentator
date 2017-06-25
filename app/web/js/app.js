@@ -115,7 +115,10 @@ jQuery(function($) {
             }
         }, 500);
     }).ajaxSuccess(function (event, request, settings) {
-        PR.lazyLoad();
+        setTimeout(function() {
+            PR.lazyLoad();
+        }, 0); // reorder execution queue
+
         PR.colorPicker('.color-picker-input');
         $('.selectify-select').selectify();
 

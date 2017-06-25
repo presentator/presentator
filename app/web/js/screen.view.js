@@ -49,6 +49,7 @@ var ScreenView = function(data) {
         'ajaxSaveSettingsFormUrl': '/admin/screens/ajax-save-settings-form',
         'ajaxReorderUrl':          '/admin/screens/ajax-reorder',
         'ajaxMoveScreensUrl':      '/admin/screens/ajax-move-screens',
+        'ajaxGetThumbsUrl':        '/admin/screens/ajax-get-thumbs',
         'ajaxGetScreensSliderUrl': '/admin/versions/ajax-get-screens-slider',
 
         'hotspotsViewSettings': {},
@@ -430,7 +431,7 @@ ScreenView.prototype.initScreensDropzone = function() {
     var myDropzone = new Dropzone(self.settings.uploadContainer, {
         url:                   self.settings.ajaxUploadUrl,
         paramName:             'ScreensUploadForm[images]',
-        parallelUploads:       1,
+        parallelUploads:       5,
         uploadMultiple:        true,
         thumbnailWidth:        null,
         thumbnailHeight:       null,
@@ -483,18 +484,55 @@ ScreenView.prototype.initScreensDropzone = function() {
  * @param  {String|Object} container
  */
 ScreenView.prototype.insertScreens = function(screens, container) {
+    var self       = this;
     var $container = $(container || self.getActiveScreensWrapper());
 
+    var $screens = $(screens);
     // $container.find(this.settings.screenUploadHandle).before(screens);
-    $container.append(screens);
+    $container.append($screens);
 
-    PR.lazyLoad();
+    $screens.filter(self.settings.screenItem).each(function(i, screen) {
+        self.loadThumb(screen);
+    });
 
     if ($container.find(this.settings.screenItem).length) {
         $('#global_wrapper').stop(true, true).animate({
             'scrollTop': $('#global_wrapper').get(0).scrollHeight
         }, 300);
     }
+};
+
+/**
+ * Load (and generate if doesn't exist) screen thumb via ajax.
+ * @param  {String|Object} screen
+ * @param  {String}        thumbSize
+ */
+ScreenView.prototype.loadThumb = function(screen, thumbSize) {
+    thumbSize = thumbSize || 'medium';
+
+    var self    = this;
+    var $screen = $(screen);
+    var $img    = $screen.find('.img').hide();
+
+    if (!$screen.length || !$screen.data('screen-id') || !$img.length) {
+        console.warn('Missing screen item!');
+        return;
+    }
+
+    PR.AUTO_LOADER = false;
+
+
+    $.ajax({
+        url: self.settings.ajaxGetThumbsUrl,
+        type: 'GET',
+        data: {
+            'id': $screen.data('screen-id') || '',
+        },
+    }).done(function(response) {
+        if (response.success && response.thumbs && response.thumbs[thumbSize]) {
+            $img.show().addClass('lazy-load').attr('data-src', response.thumbs[thumbSize]);
+        }
+    });
 };
 
 /**

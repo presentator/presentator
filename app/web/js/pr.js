@@ -503,11 +503,13 @@ var PR = {
      * <img class="lazy-load" data-src="/my/image/path.png" data-priority="high">
      */
     lazyLoad: function(selector) {
+        selector = selector || '.lazy-load';
+
         var groups = {'high': [], 'medium': [], 'low': []};
 
         // build priority groups
         var priority = '';
-        $('.lazy-load:not(.loaded)').each(function(i, img) {
+        $(selector).not('.loaded').each(function(i, img) {
             var $img = $(img);
             $img.$parent = $img.parent();
             priority = $img.data('priority');
