@@ -16,9 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Project admins' => 'Administratorami projektu',
-    'Send an email' => 'Wyślij e-mail',
+return [
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(orientacja pozioma)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(orientacja pionowa)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(orientacja pozioma)</em>',
@@ -91,6 +89,7 @@ return array(
     'From' => 'Od',
     'From (email)' => 'Od (email)',
     'General' => 'Ogólny',
+    'German' => 'Niemiecki',
     'Go to login page' => 'Przejdź do ekranu logowania',
     'Has unread comments' => 'Nowe komentarze',
     'Hello and welcome to Presentator!' => 'Witamy na Presentator!',
@@ -145,6 +144,7 @@ return array(
     'Portuguese' => 'Portugalski',
     'Preview links' => 'Odnośniki podglądu',
     'Preview mode' => 'Tryb podglądu',
+    'Project admins' => 'Administratorami projektu',
     'Project preview links' => 'Odnośniki podglądu projektu',
     'Projects' => 'Projekty',
     'Receive an email when a new screen comment is added' => 'Powiadamiaj emailem, kiedy pojawi się nowy komentarz do ekranu',
@@ -163,6 +163,7 @@ return array(
     'Security' => 'Bezpieczeństwo',
     'Seen' => 'Widziany',
     'Send' => 'Wyślij',
+    'Send an email' => 'Wyślij e-mail',
     'Send project preview link' => 'Wyślij link podglądu projektu',
     'Separate multiple email addresses with comma' => 'Oddziel kilka adresów przecinkami',
     'Settings' => 'Ustawienia',
@@ -228,4 +229,4 @@ return array(
     'of' => 'z',
     'or' => 'lub',
     '{projectTitle} - Projects' => '{projectTitle} - Projekty',
-);
+];

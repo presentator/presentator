@@ -58,6 +58,11 @@ class LanguageSwitch extends Widget
             ($currentLang == 'bg-bg' ? 'selected' : ''),
             Yii::t('app', 'Bulgarian')
         );
+        $result .= sprintf('<option value="%s" %s>DE | %s</option>',
+            Url::current(['lang' => 'de']),
+            ($currentLang == 'de-de' ? 'selected' : ''),
+            Yii::t('app', 'German')
+        );
         $result .= sprintf('<option value="%s" %s>EN | %s</option>',
             Url::current(['lang' => 'en']),
             ($currentLang == 'en-us' ? 'selected' : ''),
