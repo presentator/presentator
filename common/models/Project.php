@@ -40,6 +40,8 @@ class Project extends CActiveRecord
         34 => [667, 375],
         35 => [412, 732],
         36 => [732, 712],
+                
+        99 => [412, 732] 
     ];
 
     /**
@@ -248,6 +250,7 @@ class Project extends CActiveRecord
             34 => Yii::t('app', '375x667 <em>(Landscape)</em>'),
             35 => Yii::t('app', '412x732 <em>(Portrait)</em>'),
             36 => Yii::t('app', '412x732 <em>(Landscape)</em>'),
+            99 => Yii::t('app', 'Fit to Screen <em>(Portrait)</em>'),
         ];
     }
 

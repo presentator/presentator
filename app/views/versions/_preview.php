@@ -28,6 +28,11 @@ $generalSlideStyles = [];
 if ($project->subtype) {
     $generalSlideStyles['width']  = Project::SUBTYPES[$project->subtype][0] . 'px';
     $generalSlideStyles['height'] = Project::SUBTYPES[$project->subtype][1] . 'px';
+
+    if($project->subtype == 99) {
+      $fitToScreen = true;
+      $generalSlideStyles['overflow'] = 'hidden';
+    }
 }
 
 $hasScreens = !empty($activeVersion->screens);
@@ -189,6 +194,7 @@ $hasScreens = !empty($activeVersion->screens);
                     ?>
                     <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
                         data-screen-id="<?= $screen->id ?>"
+                        <?php if($fitToScreen){ ?>data-fit-to-screen="true"<?php } ?>
                         data-alignment="<?= $align ?>"
                         data-title="<?= Html::encode($screen->title) ?>"
                         style="<?= Html::cssStyleFromArray(array_merge($generalSlideStyles, ['background' => $background])) ?>"
@@ -196,8 +202,10 @@ $hasScreens = !empty($activeVersion->screens);
                         <figure class="img-wrapper hotspot-layer-wrapper">
                             <img class="img lazy-load hotspot-layer"
                                 alt="<?= Html::encode($screen->title) ?>"
+                                <?php if($fitToScreen) { ?>style="width: 100%;height: 100%;overflow: hidden;"<?php }else{ ?>
                                 width="<?= $width ?>px"
                                 height="<?= $height ?>px"
+                                <?php } ?>
                                 data-src="<?= $screen->imageUrl ?>"
                                 data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                             >
