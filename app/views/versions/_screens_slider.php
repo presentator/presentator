@@ -27,6 +27,11 @@ $generalSlideStyles = [];
 if ($model->project->subtype) {
     $generalSlideStyles['width']  = Project::SUBTYPES[$model->project->subtype][0] . 'px';
     $generalSlideStyles['height'] = Project::SUBTYPES[$model->project->subtype][1] . 'px';
+    
+    if($model->project->subtype == 99) {
+      $fitToScreen = true;
+      $generalSlideStyles['overflow'] = 'hidden';
+    }
 }
 
 $isGuest = Yii::$app->user->isGuest;
@@ -100,6 +105,7 @@ $isGuest = Yii::$app->user->isGuest;
                 ?>
                 <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
                     data-screen-id="<?= $screen->id ?>"
+                    <?php if($fitToScreen){ ?>data-fit-to-screen="true"<?php } ?>
                     data-alignment="<?= $align ?>"
                     data-title="<?= Html::encode($screen->title) ?>"
                     style="<?= Html::cssStyleFromArray(array_merge($generalSlideStyles, ['background' => $background])) ?>"
@@ -107,10 +113,13 @@ $isGuest = Yii::$app->user->isGuest;
                     <figure class="img-wrapper hotspot-layer-wrapper">
                         <img class="img lazy-load hotspot-layer"
                             alt="<?= Html::encode($screen->title) ?>"
+                            <?php if($fitToScreen) { ?>style="width: 100%;height: 100%;overflow: hidden;"<?php }else{ ?>
                             width="<?= $width ?>px"
                             height="<?= $height ?>px"
+                            <?php } ?>
                             data-src="<?= $screen->imageUrl ?>"
                             data-priority="<?= $isActive ? 'high' : 'medium' ?>"
+                            
                         >
 
                         <!-- Hotspots -->
