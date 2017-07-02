@@ -26,7 +26,7 @@ $this->title = Yii::t('app', 'Settings');
             <button type="button" data-popup="#avatar_popup" class="btn btn-primary btn-ghost btn-sm m-l-5"><?= Yii::t('app', 'Change avatar') ?></button>
         </div>
         <div class="table-cell max-width p-l-10">
-            <a href="#" class="danger-link hint m-l-5 delete-avatar" data-action-confirm="<?= Yii::t('app', 'Do you really want to delete the user avatar?') ?>" <?= !$hasAvatar ? 'style="display: none"' : ''; ?>>
+            <a href="#" class="danger-link hint-link m-l-5 delete-avatar" data-action-confirm="<?= Yii::t('app', 'Do you really want to delete the user avatar?') ?>" <?= !$hasAvatar ? 'style="display: none"' : ''; ?>>
                 <i class="ion ion-trash-a"></i>
                 <span class="txt"><?= Yii::t('app', 'Delete avatar') ?></span>
             </a>
@@ -78,7 +78,7 @@ $this->title = Yii::t('app', 'Settings');
     </div>
 </div>
 
-<div id="avatar_popup" class="popup small" data-overlay-close="false">
+<div id="avatar_popup" class="popup popup-small" data-overlay-close="false">
     <div class="popup-content">
         <h3 class="popup-title text-center"><?= Yii::t('app', 'Avatar') ?></h3>
         <span class="popup-close close-icon"></span>

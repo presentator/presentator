@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use common\models\Version;
+use app\models\VersionForm;
 
 /**
  * Versions controller.
@@ -21,55 +22,11 @@ class VersionsController extends AppController
         $behaviors = parent::behaviors();
 
         $behaviors['verbs']['actions'] = [
-            'ajax-create' => ['post'],
-            'ajax-delete' => ['post'],
+            'ajax-delete'    => ['post'],
+            'ajax-save-form' => ['post'],
         ];
 
         return $behaviors;
-    }
-
-    /**
-     * Creates new Version model via ajax.
-     *
-     * NB! Requires the following post parameters:
-     * `projectId` - ID of the project to which will be attached the new version
-     *
-     * @return array
-     * @throws BadRequestHttpException For none ajax request
-     */
-    public function actionAjaxCreate()
-    {
-        if (!Yii::$app->request->isAjax) {
-            throw new BadRequestHttpException('Error Processing Request');
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $user      = Yii::$app->user->identity;
-        $projectId = Yii::$app->request->post('projectId', -1);
-        $project   = $user->findProjectById($projectId);
-
-        if ($project) {
-            $version = new Version;
-            $version->projectId = $project->id;
-
-            if ($version->save()) {
-                $navItemHtml     = $this->renderPartial('/versions/_nav_item', ['model' => $version]);
-                $contentItemHtml = $this->renderPartial('/versions/_content_item', ['model' => $version]);
-
-                return [
-                    'success'         => true,
-                    'navItemHtml'     => $navItemHtml,
-                    'contentItemHtml' => $contentItemHtml,
-                    'message'         => Yii::t('app', 'Successfully created new verion.'),
-                ];
-            }
-        }
-
-        return [
-            'success' => false,
-            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
-        ];
     }
 
     /**
@@ -115,6 +72,94 @@ class VersionsController extends AppController
     }
 
     /**
+     * Returns and renders version create/update form via ajax.
+     * @param  integer $id
+     * @return array
+     * @throws BadRequestHttpException For none ajax request
+     */
+    public function actionAjaxGetForm($projectId, $versionId = null)
+    {
+        if (!Yii::$app->request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user    = Yii::$app->user->identity;
+        $project = $user->findProjectById($projectId);
+
+        if ($project) {
+            $version = $project->findVersionById($versionId);
+
+            $model = new VersionForm($project, $version);
+
+            $this->layout = 'blank';
+
+            return [
+                'success'  => true,
+                'formHtml' => $this->render('_form', ['model' => $model]),
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
+     * Saves version create/update form via ajax.
+     * @return array
+     * @throws BadRequestHttpException For none ajax request
+     */
+    public function actionAjaxSaveForm($projectId)
+    {
+        $request = Yii::$app->request;
+
+        if (!$request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user    = Yii::$app->user->identity;
+        $project = $user->findProjectById($projectId);
+
+        if ($project) {
+            $version  = $project->findVersionById($request->post('versionId', -1));
+            $model    = new VersionForm($project, $version);
+            $isUpdate = $model->isUpdate();
+
+            if ($model->load($request->post()) && $model->save()) {
+                $navItemHtml = $this->renderPartial('_nav_item', ['model' => $model->version]);
+
+                if ($isUpdate) {
+                    $message         = Yii::t('app', 'Successfully saved changes.');
+                    $contentItemHtml = '';
+                } else {
+                    $message         = Yii::t('app', 'Successfully created new verion.');
+                    $contentItemHtml = $this->renderPartial('_content_item', ['model' => $model->version]);
+                }
+
+                return [
+                    'success'         => true,
+                    'isUpdate'        => $isUpdate,
+                    'version'         => $model->version->toArray(),
+                    'navItemHtml'     => $navItemHtml,
+                    'contentItemHtml' => $contentItemHtml,
+                    'message'         => $message,
+                ];
+            }
+
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
      * Generates and returns screens slider html.
      * @param  integer `versionId`          ID of the version to load.
      * @param  null|integer `screenId`      Optional parameter to mark the specific screen as active.
@@ -135,7 +180,7 @@ class VersionsController extends AppController
         if ($version) {
             Version::eagerLoad($version->screens, ['screenComments.loginUserRel']);
             $unreadCommentTargets = $this->getUnreadCommentTargets($version);
-            $screensSliderHtml    = $this->renderPartial('/versions/_screens_slider', [
+            $screensSliderHtml    = $this->renderPartial('_screens_slider', [
                 'model'                => $version,
                 'activeScreenId'       => $screenId,
                 'unreadCommentTargets' => $unreadCommentTargets,

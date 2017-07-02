@@ -16,7 +16,7 @@ trait ProjectQueryTrait
     {
         return Version::find()
             ->where([
-                'id'         => $versionId,
+                'id'        => $versionId,
                 'projectId' => $this->id,
             ])
             ->one();

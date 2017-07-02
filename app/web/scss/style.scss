@@ -22,12 +22,13 @@
 
 @import 'box';
 
-// plugins start
 @import 'selectify';
+
 @import 'tabs';
+
 @import 'context_menu';
+
 @import 'popup';
-// plugins END
 
 @import 'hotspots';
 
@@ -46,5 +47,7 @@
 @import 'screen_edit';
 
 @import 'preview';
+
+@import 'project_sidebar';
 
 @import 'custom';

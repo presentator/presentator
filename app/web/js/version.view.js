@@ -3,35 +3,32 @@ var VersionView = function(data) {
 
     var defaults = {
         // selectors
-        'navList':      '#versions_list',
-        'navItem':      '.version-item',
-        'deleteHandle': '.version-delete',
-        'createHandle': '#version_create',
-
+        'navList':        '#versions_list',
+        'navItem':        '.version-item',
+        'deleteHandle':   '.version-delete',
+        'editHandle':     '.version-edit',
+        'createHandle':   '#version_create',
+        'versionPopup':   '#version_popup',
         'versionTabs':    '#version_screens_tabs',
         'screensWrapper': '.version-screens',
 
-        'versionSlidersWrapper': '#version_sliders',
-        'versionSlider':         '.version-slider',
-
-        // texts
-        'confirmDeleteText': 'Do you really want to deleted the selected version and all of its screens?',
-        'confirmCreateText': 'Do you really want to create a new version?',
-
         // urls
-        'ajaxCreateUrl': '/versions/ajax-create',
-        'ajaxDeleteUrl': '/versions/ajax-delete',
+        'ajaxGetFormUrl':  '/versions/ajax-get-form',
+        'ajaxSaveFormUrl': '/versions/ajax-save-form',
+        'ajaxCreateUrl':   '/versions/ajax-create',
+        'ajaxDeleteUrl':   '/versions/ajax-delete',
     };
 
     this.settings = $.extend({}, defaults, data);
 
     // commonly used selectors
-    this.$navList               = $(this.settings.navList);
-    this.$versionTabs           = $(this.settings.versionTabs);
-    this.$versionSlidersWrapper = $(this.settings.versionSlidersWrapper);
+    this.$navList      = $(this.settings.navList);
+    this.$versionPopup = $(this.settings.versionPopup);
+    this.$versionTabs  = $(this.settings.versionTabs);
 
-    this.createXHR = null;
-    this.deleteXHR = null;
+    this.generalXHR = null;
+    this.createXHR  = null;
+    this.deleteXHR  = null;
 
     this.init();
 };
@@ -53,9 +50,16 @@ VersionView.prototype.init = function() {
     $document.on('click.pr.versionView', self.settings.createHandle, function(e) {
         e.preventDefault();
 
-        if (window.confirm(self.settings.confirmCreateText)) {
-            self.createVersion($(this).data('project-id'));
-        }
+        self.getVersionForm();
+    });
+
+    // Edit version handle
+    $document.off('click.pr.versionView', self.settings.navItem + ' ' + self.settings.editHandle);
+    $document.on('click.pr.versionView', self.settings.navItem + ' ' + self.settings.editHandle, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.getVersionForm($(this).closest(self.settings.navItem).data('version-id'));
     });
 
     // Delete version handle
@@ -64,14 +68,9 @@ VersionView.prototype.init = function() {
         e.preventDefault();
         e.stopPropagation();
 
-        var $navItem = $(this).closest(self.settings.navItem);
-        $navItem.addClass('danger-highlight');
-
-        if (window.confirm(self.settings.confirmDeleteText)) {
-            self.deleteVersion($navItem.data('version-id'));
+        if (window.confirm($(this).data('confirm-text') || 'Do you really want to delete the version?')) {
+            self.deleteVersion($(this).data('version-id'));
         }
-
-        $navItem.removeClass('danger-highlight');
     });
 
     // Activate version handle
@@ -125,7 +124,7 @@ VersionView.prototype.getLastNavItem = function() {
 };
 
 /**
- * Takes care for switching to the active project version.
+ * Switch the current active project version.
  * @param {Mixed} version version item selector or version id
  */
 VersionView.prototype.activateVersion = function(version) {
@@ -156,38 +155,81 @@ VersionView.prototype.activateVersion = function(version) {
 };
 
 /**
- * Creates new version via ajax.
- * @param {Number} projectId
+ * Fetch and populate version form popup.
+ * @param {null|Number} versionId
  */
-VersionView.prototype.createVersion = function(projectId) {
+VersionView.prototype.getVersionForm = function(versionId) {
     var self = this;
 
-    PR.abortXhr(self.createXHR);
-    self.createXHR = $.ajax({
-        url:  self.settings.ajaxCreateUrl,
-        type: 'POST',
+    PR.abortXhr(self.generalXHR);
+    self.generalXHR = $.ajax({
+        url:  self.settings.ajaxGetFormUrl,
+        type: 'GET',
         data: {
-            'projectId': projectId
-        },
+            'versionId': versionId || '',
+        }
+    }).done(function(response) {
+        if (response.success && response.formHtml) {
+            self.$versionPopup.find('.popup-content .content').first().html(response.formHtml);
+            PR.openPopup(self.$versionPopup);
+
+            var $form = self.$versionPopup.find('form');
+
+            $form.on('beforeSubmit', function(e) {
+                self.submitVersionForm(this);
+
+                return false;
+            });
+        }
+    });
+};
+
+/**
+ * Takes care for submitting the version form via ajax.
+ * @param {String|Object} form
+ */
+VersionView.prototype.submitVersionForm = function(form) {
+    var self = this;
+
+    var $form = $(form);
+    if (!$form.length) {
+        console.warn('Missing version form.');
+        return;
+    }
+
+    PR.abortXhr(self.generalXHR);
+    self.generalXHR = $.ajax({
+        url:  self.settings.ajaxSaveFormUrl,
+        type: 'POST',
+        data: $form.serialize(),
     }).done(function(response) {
         if (response.success) {
+            PR.closePopup(self.$versionPopup);
+
+            var $navItem = $();
             if (response.navItemHtml) {
-                self.$navList.append(response.navItemHtml);
+                if (response.isUpdate && response.version) {
+                    $navItem = self.getNavItem(response.version.id);
+                    $navItem.replaceWith(response.navItemHtml);
+                } else {
+                    self.$navList.append(response.navItemHtml);
+                    $navItem = self.getLastNavItem();
+                }
             }
 
             if (response.contentItemHtml) {
                 self.$versionTabs.children('.tabs-content').append(response.contentItemHtml);
             }
 
-            if (response.sliderHtml) {
-                self.$versionSlidersWrapper.append(response.sliderHtml)
-            }
-
-            self.activateVersion(self.getLastNavItem());
-
             self.checkIsOnlyOneVersion();
 
-            $(document).trigger('versionCreated', [self.getLastNavItem()]);
+            if (response.isUpdate) {
+                $(document).trigger('versionUpdated', [$navItem]);
+            } else {
+                self.activateVersion($navItem);
+
+                $(document).trigger('versionCreated', [$navItem]);
+            }
         }
     });
 };
@@ -199,6 +241,13 @@ VersionView.prototype.createVersion = function(projectId) {
 VersionView.prototype.deleteVersion = function(versionId) {
     var self = this;
 
+    var $navItem = self.getNavItem(versionId)
+    if (!$navItem) {
+        console.warn('Missing version nav item.');
+        return;
+    }
+
+
     PR.abortXhr(self.deleteXHR);
     self.deleteXHR = $.ajax({
         url:  self.settings.ajaxDeleteUrl,
@@ -208,7 +257,7 @@ VersionView.prototype.deleteVersion = function(versionId) {
         },
     }).done(function(response) {
         if (response.success) {
-            var $navItem = self.getNavItem(versionId)
+            PR.closePopup();
 
             $navItem.addClass('anim-start').delay(400).queue(function(next) {
                 if ($navItem.hasClass('active')) {
@@ -225,7 +274,6 @@ VersionView.prototype.deleteVersion = function(versionId) {
                 self.checkIsOnlyOneVersion();
 
                 $(document).trigger('versionDeleted');
-
 
                 next();
             });

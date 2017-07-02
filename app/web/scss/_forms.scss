@@ -437,13 +437,8 @@ input[type="radio"] {
         top: 0;
         font-size: 12px;
         color: $txtColor;
-        opacity: 0.7;
         cursor: pointer;
         text-decoration: none;
-        @include transition(color 0.2s, opacity 0.2s);
-        &:hover {
-            opacity: 1;
-        }
         &:active {
             transition-duration: 0.1s;
             color: darken($txtColor, 10%);

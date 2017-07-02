@@ -109,6 +109,19 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
     </div>
 </div>
 
+<!-- Version edit popup -->
+<div id="version_popup" class="popup popup-small">
+    <div class="popup-content">
+        <h3 class="popup-title"><?= Yii::t('app', 'Version settings') ?></h3>
+        <span class="popup-close close-icon"></span>
+        <div class="content">
+            <form action="">
+
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Links popup -->
 <div id="links_popup" class="popup">
     <div class="popup-content">
@@ -174,7 +187,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Screens upload popup -->
-<div id="screens_upload_popup" class="popup small" data-overlay-close="false">
+<div id="screens_upload_popup" class="popup popup-small" data-overlay-close="false">
     <div class="popup-content">
         <h3 class="popup-title text-center"><?= Yii::t('app', 'Screens upload') ?></h3>
         <span class="popup-close close-icon"></span>
@@ -257,11 +270,10 @@ $this->registerJs('
             ajaxCommentsListUrl:  "' . Url::to(['screen-comments/ajax-get-comments']) .'"
         },
         versionViewSettings: {
-            confirmDeleteText: "' . Yii::t('app', 'Do you really want to deleted the selected version and all of its screens?') . '",
-            confirmCreateText: "' . Yii::t('app', 'Do you really want to create a new version?') . '",
-
-            ajaxCreateUrl: "' . Url::to(['versions/ajax-create']) .'",
-            ajaxDeleteUrl: "' . Url::to(['versions/ajax-delete']) .'"
+            ajaxGetFormUrl:  "' . Url::to(['versions/ajax-get-form', 'projectId' => $project->id]) .'",
+            ajaxSaveFormUrl: "' . Url::to(['versions/ajax-save-form', 'projectId' => $project->id]) .'",
+            ajaxCreateUrl:   "' . Url::to(['versions/ajax-create']) .'",
+            ajaxDeleteUrl:   "' . Url::to(['versions/ajax-delete']) .'"
         }
     });
 ', View::POS_READY, 'projects-js');

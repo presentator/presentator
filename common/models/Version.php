@@ -6,11 +6,12 @@ use yii2tech\ar\position\PositionBehavior;
 /**
  * Version AR model.
  *
- * @property integer $id
- * @property string  $projectId
- * @property integer $order
- * @property integer $createdAt
- * @property integer $updatedAt
+ * @property integer     $id
+ * @property string      $projectId
+ * @property null|string $title
+ * @property integer     $order
+ * @property integer     $createdAt
+ * @property integer     $updatedAt
  *
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */

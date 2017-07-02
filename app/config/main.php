@@ -109,10 +109,12 @@ return [
                 'admin/projects/ajax-remove-admin'                                       => 'projects/ajax-remove-admin',
 
                 // Versions
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/versions/ajax-create'             => 'versions/ajax-create',
-                'admin/versions/ajax-create'                                      => 'versions/ajax-create',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/versions/ajax-delete'             => 'versions/ajax-delete',
                 'admin/versions/ajax-delete'                                      => 'versions/ajax-delete',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/versions/ajax-get-form'           => 'versions/ajax-get-form',
+                'admin/versions/ajax-get-form'                                    => 'versions/ajax-get-form',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/versions/ajax-save-form'          => 'versions/ajax-save-form',
+                'admin/versions/ajax-save-form'                                   => 'versions/ajax-save-form',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/versions/ajax-get-screens-slider' => 'versions/ajax-get-screens-slider',
                 'admin/versions/ajax-get-screens-slider'                          => 'versions/ajax-get-screens-slider',
 

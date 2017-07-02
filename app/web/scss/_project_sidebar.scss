@@ -1,0 +1,160 @@
+.project-sidebar {
+    @extend %clear-after;
+    position: fixed;
+    left: $sidebarWidth;
+    top: 0;
+    z-index: 2;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    width: $projectSidebarWidth;
+    background: $lighterGreyColor;
+    border-right: 1px solid $greyColor;
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        width: 100%;
+        height: 158px;
+    }
+    .btn {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .meta {
+        @extend %block;
+        @extend %clear-after;
+        padding: $baseSpacing;
+        background: #fff;
+        border-bottom: 1px solid $greyColor;
+        .item {
+            position: relative;
+            color: $primaryColor;
+        }
+    }
+    .project-delete-link {
+        display: inline-block;
+        vertical-align: top;
+        text-decoration: none;
+        color: $dangerColor;
+        font-size: 13px;
+        line-height: 1;
+        opacity: 0.5;
+        margin: 15px 0 0;
+        @include transition(opacity 0.2s, transform 0.2s);
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    // Tabs/Menu nav
+    .nav {
+        @extend %block;
+        @extend %clear-after;
+        overflow: hidden;
+        counter-reset: versionsCounter;
+        ul {
+            @extend %block;
+            @include clear-list;
+            li {
+                @extend %block;
+            }
+        }
+        .nav-item {
+            @extend %block;
+            position: relative;
+            cursor: pointer;
+            padding: 12px ($baseSpacing + 20px) 12px $baseSpacing;
+            text-align: left;
+            border-bottom: 1px solid $greyColor;
+            counter-increment: versionsCounter;
+            background: $lighterGreyColor;
+            @include transition(background 0.2s, color 0.2s);
+            @include user-select(none);
+            &:after {
+                // counter
+                content: counter(versionsCounter);
+                display: inline-block;
+                @include transition(opacity 0.3s, visibility 0.3s);
+                @include animation(scale-entrance 0.4s 1);
+            }
+            &.has-title:after {
+                display: none;
+                content: none;
+            }
+            .txt {
+                display: inline-block;
+                vertical-align: top;
+                @include ellipsis;
+            }
+            &:hover {
+                background: $lightGreyColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: darken($lightGreyColor, 2%);
+            }
+            &.active {
+                color: $successColor;
+                background: $lightGreyColor;
+            }
+            &.anim-start {
+                @include transition(margin-top 0.4s);
+                margin-top: -49px;
+                z-index: -1;
+            }
+            &.anim-start,
+            &.anim-start ~ .nav-item {
+                &:after {
+                    @include animation(scale-exit 0.4s 1);
+                }
+            }
+        }
+        .ctrl-bar {
+            $height: 25px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            height: $height;
+            line-height: $height;
+            margin-top: -($height / 2);
+            font-size: 14px;
+            color: $greyColor;
+            cursor: pointer;
+            text-decoration: none;
+            @include transition(color 0.2s, opacity 0.3s, visibility 0.3s, transform 0.3s);
+            @include transform(translateY(10px));
+            @include hide;
+            .ctrl-item {
+                line-height: inherit;
+                font-size: inherit;
+                display: inline-block;
+                vertical-align: top;
+                height: 100%;
+                width: $height;
+                text-align: center;
+                font-size: 14px;
+                @include border-radius($height);
+            }
+            &:hover {
+                color: $dangerColor;
+                @include transform(scale(1.3));
+            }
+            &:active {
+                transition-duration: 0.1s;
+                color: darken($dangerColor, 10%);
+            }
+        }
+        .nav-item:hover {
+            .ctrl-bar {
+                @include show;
+                @include transform(translateY(0));
+            }
+        }
+    }
+}

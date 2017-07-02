@@ -65,7 +65,7 @@ $this->title = Yii::t('app', 'Login');
         </div>
     </div>
 </div>
-<div id="terms_popup" class="popup large">
+<div id="terms_popup" class="popup popup-large">
     <div class="popup-content">
         <h3 class="popup-title"><?= Yii::t('app', 'Terms and Conditions') ?></h3>
         <span class="popup-close close-icon"></span>

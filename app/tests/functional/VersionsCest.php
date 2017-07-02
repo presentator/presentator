@@ -13,6 +13,7 @@ use common\tests\fixtures\UserProjectRelFixture;
 use common\tests\fixtures\UserScreenCommentRelFixture;
 use common\models\User;
 use common\models\Version;
+use common\models\Project;
 
 /**
  * VersionsController functional tests.
@@ -63,28 +64,61 @@ class VersionsCest
     }
 
     /* ===============================================================
-     * `VersionsController::actionAjaxCreate()` tests
+     * `VersionsController::actionAjaxGetForm()` tests
      * ============================================================ */
     /**
      * @param FunctionalTester $I
      */
-    public function ajaxCreateFail(FunctionalTester $I)
+    public function ajaxGetFormFail(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely fetch version form');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxGetActionAccess(['versions/ajax-get-form', 'projectId' => 1001]);
+
+        $I->amGoingTo('try with a version belonging to a project that is not owned by the logged user');
+        $I->sendAjaxGetRequest(['versions/ajax-get-form', 'projectId' => 1004]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxGetFormSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully fetch version form');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxGetActionAccess(['versions/ajax-get-form', 'projectId' => 1001]);
+        $I->sendAjaxGetRequest(['versions/ajax-get-form', 'projectId' => 1001]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"formHtml":');
+    }
+
+    /* ===============================================================
+     * `VersionsController::actionAjaxGetForm()` tests
+     * ============================================================ */
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxSaveFormCreateFail(FunctionalTester $I)
     {
         $oldCount = Version::find()->count();
 
-        $I->wantTo('Falsely create a new version');
+        $I->wantTo('Falsely save create version form');
         $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['versions/ajax-create']);
+        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 12345]);
 
         $I->amGoingTo('try with a missing or invalid project ID');
-        $I->sendAjaxPostRequest(['versions/ajax-create'], ['projectId' => 12345]);
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 12345], []);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
         $I->dontSeeRecordsCountChange(Version::className(), $oldCount);
 
         $I->amGoingTo('try with a project that is not owned by the logged user');
-        $I->sendAjaxPostRequest(['versions/ajax-create'], ['projectId' => 1003]);
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1003]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
@@ -94,20 +128,81 @@ class VersionsCest
     /**
      * @param FunctionalTester $I
      */
-    public function ajaxCreateSuccess(FunctionalTester $I)
+    public function ajaxSaveFormCreateSuccess(FunctionalTester $I)
     {
         $oldCount = Version::find()->count();
 
         $I->wantTo('Successfully create a new version');
         $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['versions/ajax-create']);
-        $I->sendAjaxPostRequest(['versions/ajax-create'], ['projectId' => 1001]);
+        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 1001]);
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1001], [
+            'VersionForm' => [
+                'title' => 'TEST_TITLE'
+            ],
+        ]);
+
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
         $I->seeResponseContains('"message":');
+        $I->seeResponseContains('"isUpdate":false');
+        $I->seeResponseContains('"version":');
         $I->seeResponseContains('"navItemHtml":');
         $I->seeResponseContains('"contentItemHtml":');
         $I->seeRecordsCountChange(Version::className(), $oldCount, 1);
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxSaveFormUpdateFail(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely save update version form');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 12345]);
+
+        $I->amGoingTo('try with a missing or invalid project ID');
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 12345], []);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with a version belonging to a project that is not owned by the logged user');
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1003], [
+            'versionId' => 1001,
+            'VersionForm' => [
+                'title'     => 'TEST_TITLE'
+            ],
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxSaveFormUpdateSuccess(FunctionalTester $I)
+    {
+        $oldCount = Version::find()->count();
+
+        $I->wantTo('Successfully create a new version');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 1001]);
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1001], [
+            'versionId' => 1001,
+            'VersionForm' => [
+                'title' => 'TEST_TITLE'
+            ],
+        ]);
+
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"message":');
+        $I->seeResponseContains('"isUpdate":true');
+        $I->seeResponseContains('"version":');
+        $I->seeResponseContains('"navItemHtml":');
+        $I->seeResponseContains('"contentItemHtml":');
+        $I->dontSeeRecordsCountChange(Version::className(), $oldCount);
     }
 
     /* ===============================================================
