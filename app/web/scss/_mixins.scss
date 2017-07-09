@@ -4,6 +4,7 @@
     -o-transform:      $value;
     transform:         $value;
 }
+
 @mixin transform-origin ($value) {
     -webkit-transform-origin: $value;
     -moz-transform-origin:    $value;
@@ -22,6 +23,12 @@
     -webkit-animation: $value;
     -moz-animation:    $value;
     animation:         $value;
+}
+
+@mixin appearance ($value) {
+    -moz-appearance:    $value;
+    -webkit-appearance: $value;
+    appearance:         $value;
 }
 
 // border-radius

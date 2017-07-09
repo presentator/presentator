@@ -113,8 +113,8 @@ $this->title = Yii::t('app', 'Settings');
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js');
-$this->registerJsFile('/js/profile.view.js');
+$this->registerJsFile('/js/hotspots.js?v=1499582249');
+$this->registerJsFile('/js/profile.view.js?v=1499582249');
 $this->registerJs('
     var profileView = new ProfileView({
         tempAvatarUploadUrl: "' . Url::to(['users/ajax-temp-avatar-upload']) . '",

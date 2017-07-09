@@ -25,15 +25,29 @@
     .ctrl-wrapper {
         display: inline-block;
         vertical-align: top;
+        height: 100%;
         ul {
-            @extend %block;
             @include clear-list;
+            display: inline-block;
+            vertical-align: top;
+            height: inherit;
         }
         i {
             position: relative;
             vertical-align: top;
             line-height: inherit;
             font-size: 16px;
+        }
+        select {
+            width: auto;
+            min-width: 60px;
+            border: 0;
+            height: 100%;
+            padding-right: 30px;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIwLjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0LjkgMTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQuOSAxMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM0NDQ0NDQ7fQo8L3N0eWxlPgo8dGl0bGU+YXJyb3dzPC90aXRsZT4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIxLjQsNC43IDIuNSwzLjIgMy41LDQuNyAiLz4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIzLjUsNS4zIDIuNSw2LjggMS40LDUuMyAiLz4KPC9zdmc+Cg==) no-repeat 98% 50%;
+            background-size: 15px;
+            @include appearance(none);
+            @include border-radius(0);
         }
         .ctrl-item {
             position: relative;
@@ -42,6 +56,7 @@
             min-width: 50px;
             cursor: pointer;
             text-align: center;
+            height: inherit;
             line-height: inherit;
             @include transition(color 0.2s, background 0.2s);
             &:hover, &.active {
@@ -219,19 +234,41 @@
         padding-bottom: 0;
         padding-right: 20px;
         background: none;
+        max-width: 210px;
         &:after {
             right: 10px;
         }
     }
     .select-dropdown {
-        line-height: 20px;
         margin-top: 0;
+        width: auto;
+        min-width: 100%;
+        max-width: 210px;
+        line-height: 20px;
+        white-space: nowrap;
+        .option {
+            @include ellipsis;
+        }
     }
 
     // States/Layouts
     &.expanded {
         .panel-content {
             display: block;
+        }
+    }
+
+    @media screen and (max-width: 480px)  {
+        .ctrl-item.info-handle {
+            display: none;
+        }
+        .select-field {
+            max-width: 100px;
+        }
+        .select-dropdown {
+            max-width: none;
+            position: fixed;
+            top: auto;
         }
     }
 }
