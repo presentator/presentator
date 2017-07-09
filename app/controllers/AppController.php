@@ -63,4 +63,16 @@ class AppController extends Controller
 
         return parent::beforeAction($action);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function goBack($defaultUrl = null)
+    {
+        if (empty($defaultUrl)) {
+            $defaultUrl = ['site/index'];
+        }
+
+        return parent::goBack($defaultUrl);
+    }
 }

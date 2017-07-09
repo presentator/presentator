@@ -3,14 +3,15 @@ var VersionView = function(data) {
 
     var defaults = {
         // selectors
-        'navList':        '#versions_list',
-        'navItem':        '.version-item',
-        'deleteHandle':   '.version-delete',
-        'editHandle':     '.version-edit',
-        'createHandle':   '#version_create',
-        'versionPopup':   '#version_popup',
-        'versionTabs':    '#version_screens_tabs',
-        'screensWrapper': '.version-screens',
+        'navList':            '#versions_list',
+        'navItem':            '.version-item',
+        'deleteHandle':       '.version-delete',
+        'editHandle':         '.version-edit',
+        'createHandle':       '#version_create',
+        'versionEditPopup':   '#version_edit_popup',
+        'versionCreatePopup': '#version_create_popup',
+        'versionTabs':        '#version_screens_tabs',
+        'screensWrapper':     '.version-screens',
 
         // urls
         'ajaxGetFormUrl':  '/versions/ajax-get-form',
@@ -22,9 +23,10 @@ var VersionView = function(data) {
     this.settings = $.extend({}, defaults, data);
 
     // commonly used selectors
-    this.$navList      = $(this.settings.navList);
-    this.$versionPopup = $(this.settings.versionPopup);
-    this.$versionTabs  = $(this.settings.versionTabs);
+    this.$navList            = $(this.settings.navList);
+    this.$versionEditPopup   = $(this.settings.versionEditPopup);
+    this.$versionCreatePopup = $(this.settings.versionCreatePopup);
+    this.$versionTabs        = $(this.settings.versionTabs);
 
     this.generalXHR = null;
     this.createXHR  = null;
@@ -159,7 +161,8 @@ VersionView.prototype.activateVersion = function(version) {
  * @param {null|Number} versionId
  */
 VersionView.prototype.getVersionForm = function(versionId) {
-    var self = this;
+    var self   = this;
+    var $popup = versionId ? self.$versionEditPopup : self.$versionCreatePopup;
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
@@ -170,12 +173,10 @@ VersionView.prototype.getVersionForm = function(versionId) {
         }
     }).done(function(response) {
         if (response.success && response.formHtml) {
-            self.$versionPopup.find('.popup-content .content').first().html(response.formHtml);
-            PR.openPopup(self.$versionPopup);
+            $popup.find('.popup-content .content').first().html(response.formHtml);
+            PR.openPopup($popup);
 
-            var $form = self.$versionPopup.find('form');
-
-            $form.on('beforeSubmit', function(e) {
+            $popup.find('form').on('beforeSubmit', function(e) {
                 self.submitVersionForm(this);
 
                 return false;
@@ -204,7 +205,7 @@ VersionView.prototype.submitVersionForm = function(form) {
         data: $form.serialize(),
     }).done(function(response) {
         if (response.success) {
-            PR.closePopup(self.$versionPopup);
+            PR.closePopup();
 
             var $navItem = $();
             if (response.navItemHtml) {

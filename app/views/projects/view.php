@@ -110,15 +110,20 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Version edit popup -->
-<div id="version_popup" class="popup popup-small">
+<div id="version_edit_popup" class="popup popup-small">
     <div class="popup-content">
-        <h3 class="popup-title"><?= Yii::t('app', 'Version settings') ?></h3>
+        <h3 class="popup-title"><?= Yii::t('app', 'Edit version') ?></h3>
         <span class="popup-close close-icon"></span>
-        <div class="content">
-            <form action="">
+        <div class="content"></div>
+    </div>
+</div>
 
-            </form>
-        </div>
+<!-- Version create popup -->
+<div id="version_create_popup" class="popup popup-small">
+    <div class="popup-content">
+        <h3 class="popup-title"><?= Yii::t('app', 'Create version') ?></h3>
+        <span class="popup-close close-icon"></span>
+        <div class="content"></div>
     </div>
 </div>
 
@@ -224,13 +229,13 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1499582249');
-$this->registerJsFile('/js/pins.js?v=1499582249');
-$this->registerJsFile('/js/project-view.view.js?v=1499582249');
-$this->registerJsFile('/js/version.view.js?v=1499582249');
-$this->registerJsFile('/js/screen-comments.view.js?v=1499582249');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1499582249');
-$this->registerJsFile('/js/screen.view.js?v=1499582249');
+$this->registerJsFile('/js/hotspots.js?v=1499601723');
+$this->registerJsFile('/js/pins.js?v=1499601723');
+$this->registerJsFile('/js/project-view.view.js?v=1499601723');
+$this->registerJsFile('/js/version.view.js?v=1499601723');
+$this->registerJsFile('/js/screen-comments.view.js?v=1499601723');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1499601723');
+$this->registerJsFile('/js/screen.view.js?v=1499601723');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",

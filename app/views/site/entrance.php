@@ -142,7 +142,7 @@ $this->title = Yii::t('app', 'Login');
 </div>
 
 <?php
-$this->registerJsFile('/js/entrance.view.js?v=1499582249');
+$this->registerJsFile('/js/entrance.view.js?v=1499601723');
 $this->registerJs('
     var entrance = new EntranceView();
 ', View::POS_READY, 'entrance-js');

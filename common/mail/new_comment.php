@@ -41,5 +41,5 @@ $replyUrl = Yii::$app->mainUrlManager->createUrl([
 </p>
 
 <p class="hint">
-    <?= Yii::t('mail', "P.S. If you don't want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.") ?>
+    <?= Yii::t('mail', "P.S. If you don't want to receive any comments notifications, you could update your preferences at your Presentator account settings page.") ?>
 </p>

@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => '',
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => '@@P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.@@',
     'A new comment was left for project "{projectTitle}".' => 'A new comment was left for project "{projectTitle}".',
     'Account activation' => 'Account activation',
     'Activate account' => 'Activate account',
@@ -38,6 +36,7 @@ return [
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.',
     'Message' => 'Message',
     'New comment' => 'New comment',
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.',
     'Password reset request' => 'Password reset request',
     'Presentator Team' => 'Presentator Team',
     'Registered with Facebook' => 'Registered with Facebook',
