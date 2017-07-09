@@ -16,7 +16,9 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
+    'Project admins' => 'Administradores do projeto',
+    'Send an email' => 'Envie um email',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Paisagem)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Retrato)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Paisagem)</em>',
@@ -89,7 +91,6 @@ return [
     'From' => 'De',
     'From (email)' => 'De (email)',
     'General' => 'Geral',
-    'German' => 'Alemão',
     'Go to login page' => 'Ir para página de login',
     'Has unread comments' => 'Você tem comentários não lidos',
     'Hello and welcome to Presentator!' => 'Olá. Bem-vindo ao Presentator!',
@@ -144,7 +145,6 @@ return [
     'Portuguese' => 'Português',
     'Preview links' => 'Links de visualização',
     'Preview mode' => 'Modo de visualização',
-    'Project admins' => 'Administradores do projeto',
     'Project preview links' => 'Links de visualização do projeto',
     'Projects' => 'Projetos',
     'Receive an email when a new screen comment is added' => 'Receba um email quando um novo comentário de tela for adicionado',
@@ -163,7 +163,6 @@ return [
     'Security' => 'Segurança',
     'Seen' => 'Visualizado',
     'Send' => 'Enviar',
-    'Send an email' => 'Envie um email',
     'Send project preview link' => 'Enviar link de visualização de projeto',
     'Separate multiple email addresses with comma' => 'Separe múltiplos endereços de email usando vírgula',
     'Settings' => 'Configurações',
@@ -229,4 +228,4 @@ return [
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projetos',
-];
+);

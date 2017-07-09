@@ -16,7 +16,9 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
+    'Project admins' => 'Администратори',
+    'Send an email' => 'Изпрати мейл',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Landscape)</em>',
@@ -89,7 +91,6 @@ return [
     'From' => 'От',
     'From (email)' => 'От (email)',
     'General' => 'Общи',
-    'German' => 'Немски',
     'Go to login page' => 'Към страницата за вход',
     'Has unread comments' => 'Непрочетени коментари',
     'Hello and welcome to Presentator!' => 'Здравей и добре дошъл в Presentator',
@@ -144,7 +145,6 @@ return [
     'Portuguese' => 'Португалски',
     'Preview links' => 'URL адреси за преглед',
     'Preview mode' => 'Режим Преглед',
-    'Project admins' => 'Администратори',
     'Project preview links' => 'URL адреси за преглед',
     'Projects' => 'Проекти',
     'Receive an email when a new screen comment is added' => 'Изпращане на email при нов коментар',
@@ -163,7 +163,6 @@ return [
     'Security' => 'Сигурност',
     'Seen' => 'Да',
     'Send' => 'Изпрати',
-    'Send an email' => 'Изпрати мейл',
     'Send project preview link' => 'Изпрати линк за преглед',
     'Separate multiple email addresses with comma' => 'За повече от един имейл използвай запетая',
     'Settings' => 'Настройки',
@@ -229,4 +228,4 @@ return [
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-];
+);

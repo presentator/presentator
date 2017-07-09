@@ -16,7 +16,9 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
+    'Project admins' => 'Project admins',
+    'Send an email' => 'Send an email',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Landscape)</em>',
@@ -89,7 +91,6 @@ return [
     'From' => 'From',
     'From (email)' => 'From (email)',
     'General' => 'General',
-    'German' => 'German',
     'Go to login page' => 'Go to login page',
     'Has unread comments' => 'Has unread comments',
     'Hello and welcome to Presentator!' => 'Hello and welcome to Presentator!',
@@ -144,7 +145,6 @@ return [
     'Portuguese' => 'Portuguese',
     'Preview links' => 'Preview links',
     'Preview mode' => 'Preview mode',
-    'Project admins' => 'Project admins',
     'Project preview links' => 'Project preview links',
     'Projects' => 'Projects',
     'Receive an email when a new screen comment is added' => 'Receive an email when a new screen comment is added',
@@ -163,7 +163,6 @@ return [
     'Security' => 'Security',
     'Seen' => 'Seen',
     'Send' => 'Send',
-    'Send an email' => 'Send an email',
     'Send project preview link' => 'Send project preview link',
     'Separate multiple email addresses with comma' => 'Separate multiple email addresses with comma',
     'Settings' => 'Settings',
@@ -229,4 +228,4 @@ return [
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-];
+);
