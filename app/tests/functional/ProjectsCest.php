@@ -251,6 +251,8 @@ class ProjectsCest
                 'subtype'             => 123,
                 'isPasswordProtected' => 1,
                 'password'            => '',
+                'autoScale'           => 'invalid_value',
+                'retinaScale'         => 'invalid_value',
             ],
         ]);
         $I->seeResponseCodeIs(200);
@@ -275,6 +277,8 @@ class ProjectsCest
                 'subtype'             => 21,
                 'isPasswordProtected' => 1,
                 'password'            => '123456',
+                'autoScale'           => false,
+                'retinaScale'         => false,
             ],
         ]);
         $I->seeResponseCodeIs(200);

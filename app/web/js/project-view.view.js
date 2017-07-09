@@ -127,47 +127,6 @@ ProjectView.prototype.init = function() {
 };
 
 /**
- * Bind subtype field toggles.
- */
-ProjectView.prototype.subtypeToggle = function() {
-    var self = this;
-
-    var defaultSubtypes      = self.$subtypeSelect.data('default');
-    var $customSubtypeSelect = self.$subtypeSelect.closest('.custom-select');
-    var $activeSubtypes;
-
-    var toggle = function (typeVal) {
-        $activeSubtypes = $customSubtypeSelect.find('.option').hide()
-            .filter('[data-group="' + typeVal + '"]').show();
-
-        if (!$activeSubtypes.length) {
-            self.$subtypeSelect.closest('.form-group').stop(true, true).slideUp(300);
-        } else {
-            if ($activeSubtypes.filter('.active').length) {
-                self.$subtypeSelect.selectify('select', $activeSubtypes.filter('.active').data('value'));
-            } else if (defaultSubtypes[typeVal]) {
-                self.$subtypeSelect.selectify('select', defaultSubtypes[typeVal]);
-            } else {
-                self.$subtypeSelect.selectify('select', $activeSubtypes.first().data('value'));
-            }
-
-            self.$subtypeSelect.closest('.form-group').stop(true, true).slideDown(300);
-        }
-    };
-
-    self.$typeSelect.on('change', function() {
-        toggle($(this).val());
-    });
-    self.$typeSelect.closest('form').on('reset', function() {
-        setTimeout(function() {
-            toggle(self.$typeSelect.filter(':checked').val());
-        }, 50); // @see yiiactiveform.js:431
-    });
-
-    toggle(self.$typeSelect.filter(':checked').val());
-};
-
-/**
  * Handles sending project share email via ajax.
  * @param {String|Object|Null} form
  */
@@ -224,6 +183,9 @@ ProjectView.prototype.getUpdateForm = function() {
 
             // Subtypes toggle handler
             PR.bindSubtypesToggle($form.find(self.settings.typeSelect), $form.find(self.settings.subtypeSelect), false);
+
+            // Scales toggle handler
+            PR.bindScalesToggle($form.find(self.settings.typeSelect));
 
             // Project update
             $form.on('beforeSubmit', function(e) {

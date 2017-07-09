@@ -13,10 +13,10 @@ class CActiveField extends ActiveField
     /**
      * inheritdoc
      */
-    public $checkboxTemplate = "{input}{label}{error}{hint}";
+    public $checkboxTemplate = "{input}{label}{hint}{error}";
 
     /**
      * inheritdoc
      */
-    public $radioTemplate = "{input}{label}{error}{hint}";
+    public $radioTemplate = "{input}{label}{hint}{error}";
 }

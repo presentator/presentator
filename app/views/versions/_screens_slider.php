@@ -11,7 +11,7 @@ use common\components\helpers\CFileHelper;
  * $unreadCommentTargets array
  */
 
-// default values
+// set default values
 $unreadCommentTargets = isset($unreadCommentTargets) ? $unreadCommentTargets : [];
 $activeScreenId       = isset($activeScreenId) ? $activeScreenId : null;
 
@@ -24,7 +24,7 @@ if ($model->project->type == Project::TYPE_TABLET) {
 }
 
 $generalSlideStyles = [];
-if ($model->project->subtype) {
+if ($model->project->subtype && !empty(Project::SUBTYPES[$model->project->subtype])) {
     $generalSlideStyles['width']  = Project::SUBTYPES[$model->project->subtype][0] . 'px';
     $generalSlideStyles['height'] = Project::SUBTYPES[$model->project->subtype][1] . 'px';
 }
@@ -63,7 +63,6 @@ $isGuest = Yii::$app->user->isGuest;
         </nav>
     </div>
 
-
     <div class="version-slider-content">
         <div class="close-handle-wrapper">
             <span class="close-handle close-screen-edit"><i class="ion ion-ios-close-empty"></i></span>
@@ -95,10 +94,14 @@ $isGuest = Yii::$app->user->isGuest;
                         list($width, $height) = getimagesize(CFileHelper::getPathFromUrl($screen->imageUrl));
                     }
 
+                    // scaling
+                    $scaleFactor = $model->project->getScaleFactor($width);
+
                     // hotspots
                     $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
                 ?>
                 <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
+                    data-scale-factor="<?= $scaleFactor ?>"
                     data-screen-id="<?= $screen->id ?>"
                     data-alignment="<?= $align ?>"
                     data-title="<?= Html::encode($screen->title) ?>"
@@ -107,8 +110,8 @@ $isGuest = Yii::$app->user->isGuest;
                     <figure class="img-wrapper hotspot-layer-wrapper">
                         <img class="img lazy-load hotspot-layer"
                             alt="<?= Html::encode($screen->title) ?>"
-                            width="<?= $width ?>px"
-                            height="<?= $height ?>px"
+                            width="<?= $width / $scaleFactor ?>px"
+                            height="<?= $height / $scaleFactor ?>px"
                             data-src="<?= $screen->imageUrl ?>"
                             data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                         >
@@ -120,7 +123,7 @@ $isGuest = Yii::$app->user->isGuest;
                                     class="hotspot"
                                     data-context-menu="#hotspot_context_menu"
                                     data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
-                                    style="width: <?= Html::encode(ArrayHelper::getValue($spot, 'width', 0)); ?>px; height: <?= Html::encode(ArrayHelper::getValue($spot, 'height', 0)); ?>px; top: <?= Html::encode(ArrayHelper::getValue($spot, 'top', 0)); ?>px; left: <?= Html::encode(ArrayHelper::getValue($spot, 'left', 0)); ?>px"
+                                    style="width: <?= (float) (ArrayHelper::getValue($spot, 'width', 0) / $scaleFactor); ?>px; height: <?= (float) (ArrayHelper::getValue($spot, 'height', 0) / $scaleFactor); ?>px; top: <?= (float) (ArrayHelper::getValue($spot, 'top', 0) / $scaleFactor); ?>px; left: <?= (float) (ArrayHelper::getValue($spot, 'left', 0) / $scaleFactor); ?>px"
                                 >
                                     <span class="remove-handle context-menu-ignore"><i class="ion ion-trash-a"></i></span>
                                     <span class="resize-handle context-menu-ignore"></span>
@@ -131,10 +134,10 @@ $isGuest = Yii::$app->user->isGuest;
                         <!-- Comment targets -->
                         <div id="comment_targets_list" class="comment-targets-list">
                             <?php foreach ($screen->screenComments as $comment): ?>
-                                <?php if (!$comment->replyTo): ?>
+                                <?php if (!$comment->replyTo): // we make use of the already eager loaded screenComments relation ?>
                                     <div class="comment-target <?= (in_array($comment->id, $unreadCommentTargets)) ? 'unread' : '' ?>"
                                         data-comment-id="<?= $comment->id ?>"
-                                        style="left: <?= Html::encode($comment->posX) ?>px; top: <?= Html::encode($comment->posY) ?>px;"
+                                        style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
                                     ></div>
                                 <?php endif ?>
                             <?php endforeach ?>

@@ -60,6 +60,9 @@ ProjectIndex.prototype.init = function() {
     // Subtypes toggle handler
     PR.bindSubtypesToggle(self.$typeSelect, self.$subtypeSelect);
 
+    // Scales toggle handler
+    PR.bindScalesToggle(self.$typeSelect);
+
     // Load more projects
     $document.on('click', self.settings.loadMoreProjectsHandle, function(e) {
         e.preventDefault();
