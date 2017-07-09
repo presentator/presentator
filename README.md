@@ -1,9 +1,10 @@
 Presentator [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 ======================================================================
 
+![img](docs/interface.png)
+
 [Presentator](https://presentator.io) is design presentation and collaboration platform.
 Its main goal is to enable web designers to create simple dynamic prototypes and to speed up the client feedback.
-
 
 ## Getting started
 - [Installation](docs/start-installation.md)
