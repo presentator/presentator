@@ -16,9 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
-    'Create version' => 'Създаване на версия',
-    'Edit version' => 'Редактиране на версия',
+return array(
+    'Auto scale/fit the uploaded screen to the device width.' => 'Автоматично преоразмеряване на по-големите екрани до ширината на устройството.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -64,6 +63,7 @@ return [
     'Create new project' => 'Създай нов проект',
     'Create new version' => 'Създаване на нова версия',
     'Create project' => 'Създай проект',
+    'Create version' => 'Създаване на версия',
     'Custom URL' => 'URL адрес',
     'Dashboard' => 'Табло',
     'Date' => 'Дата',
@@ -82,12 +82,13 @@ return [
     'Duplicate' => 'Копиране',
     'Duplicate on screen' => 'Копиране към екран',
     'Edit project' => 'Редакция',
+    'Edit version' => 'Редактиране на версия',
     'Email' => 'Имейл',
     'English' => 'Английски',
     'Enter with Facebook' => 'Вход с Facebook',
     'Error' => 'Грешка',
     'First name' => 'Име',
-    'For 2x pixel density designs.' => 'За дизайни правени на 2-ти по-голяма резолюция.',
+    'For 2x pixel density designs.' => 'За екрани експортнати в 2x по-голяма резолюция.',
     'For {projectType}' => 'За {projectType}',
     'Forgotten password' => 'Забравена парола',
     'Forgotten password?' => 'Забравена парола?',
@@ -237,4 +238,4 @@ return [
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-];
+);

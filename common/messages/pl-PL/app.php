@@ -16,9 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
-    'Create version' => 'Utwórz wersję',
-    'Edit version' => 'Edytuj wersję',
+return array(
+    'Auto scale/fit the uploaded screen to the device width.' => 'Skalowanie automatyczne/dopasowanie przesłanego ekranu do szerokości urządzenia.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(orientacja pozioma)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(orientacja pionowa)</em>',
@@ -64,6 +63,7 @@ return [
     'Create new project' => 'Dodaj nowy projekt',
     'Create new version' => 'Utwórz nową wersję',
     'Create project' => 'Dodaj projekt',
+    'Create version' => 'Utwórz wersję',
     'Custom URL' => 'Adres URL',
     'Dashboard' => 'Pulpit',
     'Date' => 'Data',
@@ -82,6 +82,7 @@ return [
     'Duplicate' => 'Kopiuj',
     'Duplicate on screen' => 'Kopiuj na ekranie',
     'Edit project' => 'Edytuj projekt',
+    'Edit version' => 'Edytuj wersję',
     'Email' => 'Email',
     'English' => 'Angielski',
     'Enter with Facebook' => 'Wejdź przez Facebooka',
@@ -237,4 +238,4 @@ return [
     'of' => 'z',
     'or' => 'lub',
     '{projectTitle} - Projects' => '{projectTitle} - Projekty',
-];
+);

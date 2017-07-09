@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'A new comment was left for project "{projectTitle}".' => 'A new comment was left for project "{projectTitle}".',
     'Account activation' => 'Account activation',
     'Activate account' => 'Activate account',
@@ -51,4 +51,4 @@ return [
     'You are no longer an administrator to project "{projectTitle}".' => 'You are no longer an administrator to project "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'You have successfully registered via Facebook.',
     '{projectTitle} preview' => '{projectTitle} preview',
-];
+);

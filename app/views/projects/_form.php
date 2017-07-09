@@ -85,7 +85,7 @@ if ($isNewRecord) {
                     ]
                 ])
                 ->checkbox()
-                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="Auto scale/fit the uploaded screen to the device width."></i>', [
+                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'Auto scale/fit the uploaded screen to the device width.') . '"></i>', [
                     'tag'   => 'span',
                     'class' => 'hint-inline-block',
                 ]);
