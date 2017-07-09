@@ -64,6 +64,7 @@ class VersionForm extends Model
     {
         return [
             [['title'], 'string', 'max' => 100],
+            [['title'], 'filter', 'filter' => 'strip_tags'],
         ];
     }
 

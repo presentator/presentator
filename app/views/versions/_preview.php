@@ -101,7 +101,13 @@ $hasScreens = !empty($activeVersion->screens);
                             <li id="panel_versions_handle" class="ctrl-item versions-handle" data-cursor-tooltip="<?= Yii::t('app', 'Change versions') ?>">
                                 <select class="versions-select selectify-select">
                                     <?php foreach ($project->versions as $i => $version): ?>
-                                        <option value="<?= $version->id ?>" <?= $version->id === $activeVersion->id ? 'selected' : '' ?>>v.<?= $i + 1 ?></option>
+                                        <option value="<?= $version->id ?>" <?= $version->id === $activeVersion->id ? 'selected' : '' ?>>
+                                            <?php if ($version->title): ?>
+                                                <?= Html::encode($version->title) ?>
+                                            <?php else: ?>
+                                                v.<?= $i + 1 ?>
+                                            <?php endif ?>
+                                        </option>
                                     <?php endforeach ?>
                                 </select>
                             </li>
@@ -144,7 +150,13 @@ $hasScreens = !empty($activeVersion->screens);
                     <p><?= Yii::t('app', 'Choose another version') ?></p>
                     <select class="versions-select selectify-select">
                         <?php foreach ($project->versions as $i => $version): ?>
-                            <option value="<?= $version->id ?>" <?= $version->id === $activeVersion->id ? 'selected' : '' ?>>v.<?= $i + 1 ?></option>
+                            <option value="<?= $version->id ?>" <?= $version->id === $activeVersion->id ? 'selected' : '' ?>>
+                                <?php if ($version->title): ?>
+                                    <?= Html::encode($version->title) ?>
+                                <?php else: ?>
+                                    v.<?= $i + 1 ?>
+                                <?php endif ?>
+                            </option>
                         <?php endforeach ?>
                     </select>
                 <?php endif ?>

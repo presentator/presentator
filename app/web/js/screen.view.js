@@ -324,8 +324,10 @@ ScreenView.prototype.populateBulkVersionsSelect = function() {
                 return true;
             }
 
-            var versionId = $(container).data('version-id');
-            self.$bulkVersionsSelect.append('<option value="' + versionId + '" data-version-id="' + versionId + '">' + self.settings.versionOptionText + ' ' + (i + 1) + '</option>');
+            var versionId    = $(container).data('version-id');
+            var versionTitle = $(container).data('version-title') || (self.settings.versionOptionText + ' ' + (i + 1));
+
+            self.$bulkVersionsSelect.append('<option value="' + versionId + '" data-version-id="' + versionId + '">' + versionTitle + '</option>');
         });
     } else {
         self.$bulkVersionsSelect.prop('disabled', true);

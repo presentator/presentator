@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+
 /**
  * $model            \common\models\Version
  * $isActive         boolean
@@ -15,6 +17,7 @@ $lazyLoadPriority = isset($lazyLoadPriority) ? $lazyLoadPriority : 'medium';
 <div id="version_screens_<?= $model->id ?>"
     class="tab-item version-screens screens-list <?= $isActive ? 'active' : '' ?>"
     data-version-id="<?= $model->id ?>"
+    data-version-title="<?= $model->title ? Html::encode($model->title) : ''; ?>"
 >
     <div data-popup="#screens_upload_popup" class="box action-box primary disable-sort">
         <div class="content">

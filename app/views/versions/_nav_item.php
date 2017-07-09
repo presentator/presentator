@@ -18,6 +18,7 @@ if ($model->title) {
     data-version-id="<?= $model->id ?>"
     data-project-id="<?= $model->projectId ?>"
     <?php if ($model->title): ?>
+    data-version-title="<?= $title ?>"
     title="<?= $title ?>"
     <?php endif; ?>
 >
