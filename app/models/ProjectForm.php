@@ -44,6 +44,18 @@ class ProjectForm extends Model
     public $changePassword = false;
 
     /**
+     * Auto scale flag for mobile and tablet Project types.
+     * @var boolean
+     */
+    public $autoScale = false;
+
+    /**
+     * Retina scale flag for desktop Project types.
+     * @var boolean
+     */
+    public $retinaScale = false;
+
+    /**
      * Project model to update
      * @var null|Project
      */
@@ -75,6 +87,8 @@ class ProjectForm extends Model
             'password'            => Yii::t('app', 'Password'),
             'isPasswordProtected' => Yii::t('app', 'Is password protected (optional)'),
             'changePassword'      => Yii::t('app', 'Change password'),
+            'autoScale'           => Yii::t('app', 'Auto rescale'),
+            'retinaScale'         => Yii::t('app', '2x (Retina) rescale'),
         ];
     }
 
@@ -86,7 +100,7 @@ class ProjectForm extends Model
         return [
             [['title', 'type'], 'required'],
             [['title', 'password'], 'string', 'max' => 255],
-            [['isPasswordProtected', 'changePassword'], 'boolean'],
+            [['isPasswordProtected', 'changePassword', 'autoScale', 'retinaScale'], 'boolean'],
             ['type', 'in', 'range' => array_keys(Project::getTypeLabels())],
             ['subtype', 'validateSubtypeRange'],
             ['subtype', 'required', 'when' => function ($model) {
@@ -158,6 +172,14 @@ class ProjectForm extends Model
         } else {
             $this->isPasswordProtected = false;
         }
+
+        $this->autoScale   = false;
+        $this->retinaScale = false;
+        if ($project->scaleFactor == Project::AUTO_SCALE_FACTOR) {
+            $this->autoScale   = true;
+        } elseif ($project->scaleFactor == Project::RETINA_SCALE_FACTOR) {
+            $this->retinaScale = true;
+        }
     }
 
     /**
@@ -174,8 +196,12 @@ class ProjectForm extends Model
 
             if ($this->type != Project::TYPE_DESKTOP) {
                 $project->subtype = $this->subtype;
+
+                $project->scaleFactor = $this->autoScale ? Project::AUTO_SCALE_FACTOR : Project::DEFAULT_SCALE_FACTOR;
             } else {
                 $project->subtype = null;
+
+                $project->scaleFactor = $this->retinaScale ? Project::RETINA_SCALE_FACTOR : Project::DEFAULT_SCALE_FACTOR;
             }
 
             if ($this->isPasswordProtected) {

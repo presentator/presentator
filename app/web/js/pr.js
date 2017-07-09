@@ -157,6 +157,22 @@ var PR = {
     },
 
     /**
+     * Checks if value exists in array.
+     * @param  {Array} array
+     * @param  {Mixed} value
+     * @return {Array}
+     */
+    inArray: function(array, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == value) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
      * Checks if `item` is valid function/closure.
      * @param  {Mixed} item
      * @return {Boolean}
@@ -344,16 +360,27 @@ var PR = {
      * ```
      */
     visibilityToggle: function() {
-        var $target;
+        var $input, $target;
         function toggle(input, animation) {
-            $target = $($(input).data('toggle'));
+            $input  = $(input);
+            $target = $($input.data('toggle'));
 
-            animation = typeof animation !== 'undefined' ? animation : 350;
+            if (typeof animation === 'undefined') {
+                animation = typeof $input.data('toggle-animation') !== 'undefined' ? $input.data('toggle-animation') : 350;
+            }
 
             if ($(input).is(':checked')) {
-                $target.stop(true, true).slideDown(animation);
+                if (!animation) {
+                    $target.show();
+                } else {
+                    $target.stop(true, true).slideDown(animation);
+                }
             } else {
-                $target.stop(true, true).slideUp(animation);
+                if (!animation) {
+                    $target.hide();
+                } else {
+                    $target.stop(true, true).slideUp(animation);
+                }
             }
         }
 
@@ -365,12 +392,17 @@ var PR = {
         // set init values
         $('input[data-toggle]').each(function(i, input) {
             toggle(input, 0);
-            $(input).closest('form').off('reset.pr.visibilityToggle');
-            $(input).closest('form').on('reset.pr.visibilityToggle', function() {
-                setTimeout(function() {
-                    toggle(input, 0);
-                }, 50); // @see yiiactiveform.js:431
-            });
+
+            if (!$(input).closest('form').data('reset-toggle-binded')) {
+                $(input).closest('form')
+                    .data('reset-toggle-binded', true)
+                    .off('reset.pr.visibilityToggle')
+                    .on('reset.pr.visibilityToggle', function() {
+                        setTimeout(function() {
+                            toggle(input, 0);
+                        }, 50); // @see yiiactiveform.js:431
+                    });
+            }
         });
     },
 
@@ -503,6 +535,7 @@ var PR = {
      * <img class="lazy-load" data-src="/my/image/path.png" data-priority="high">
      */
     lazyLoad: function(selector) {
+        var self = this;
         selector = selector || '.lazy-load';
 
         var groups = {'high': [], 'medium': [], 'low': []};
@@ -544,7 +577,7 @@ var PR = {
             } else {
                 $.each(groups[priorities[0]], function(i, $img) {
                     if ($img.data('nocache')) {
-                        $img.attr('src', PR.nocacheUrl($img.data('src')));
+                        $img.attr('src', self.nocacheUrl($img.data('src')));
                     } else {
                         $img.attr('src', $img.data('src'));
                     }
@@ -944,6 +977,49 @@ var PR = {
         });
 
         toggle($typeSelect.filter(':checked').val(), animationOnInit);
+    },
+
+    /**
+     * Common helper to toggle project form scales based on "data-scale-group" attribute.
+     * @see 'ProjectIndex.init()'
+     * @see `ProjectView.init()`
+     * @param {Mixed} typeSelect
+     * @param {Mixed} scales
+     */
+    bindScalesToggle: function(typeSelect, scales) {
+        var self = this;
+        var $typeSelect = $(typeSelect);
+        var $scales     = $(scales || '[data-scale-group]');
+
+        function toggle(typeVal) {
+            var scaleGroup = 0;
+
+            $scales.hide();
+
+            $scales.filter(function() {
+                scaleGroup = $(this).data('scale-group');
+                if (self.isArray(scaleGroup)) {
+                    return self.inArray(scaleGroup, typeVal);
+                } else {
+                    return scaleGroup == typeVal;
+                }
+            }).show();
+        }
+
+        $typeSelect.off('change.pr.scaleToggle')
+            .on('change.pr.scaleToggle', function() {
+                toggle($(this).val());
+            });
+
+        $typeSelect.closest('form')
+            .off('reset.pr.scaleToggle')
+            .on('reset.pr.scaleToggle', function() {
+                setTimeout(function() {
+                    toggle($typeSelect.filter(':checked').val());
+                }, 50); // @see yiiactiveform.js:431
+            });
+
+        toggle($typeSelect.filter(':checked').val());
     },
 
     /**

@@ -25,7 +25,7 @@ if ($project->type == Project::TYPE_TABLET) {
 }
 
 $generalSlideStyles = [];
-if ($project->subtype) {
+if ($project->subtype && !empty(Project::SUBTYPES[$project->subtype])) {
     $generalSlideStyles['width']  = Project::SUBTYPES[$project->subtype][0] . 'px';
     $generalSlideStyles['height'] = Project::SUBTYPES[$project->subtype][1] . 'px';
 }
@@ -184,10 +184,14 @@ $hasScreens = !empty($activeVersion->screens);
                             list($width, $height) = getimagesize(CFileHelper::getPathFromUrl($screen->imageUrl));
                         }
 
+                        // scaling
+                        $scaleFactor = $project->getScaleFactor($width);
+
                         // hotspots
                         $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
                     ?>
                     <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
+                        data-scale-factor="<?= $scaleFactor ?>"
                         data-screen-id="<?= $screen->id ?>"
                         data-alignment="<?= $align ?>"
                         data-title="<?= Html::encode($screen->title) ?>"
@@ -196,8 +200,8 @@ $hasScreens = !empty($activeVersion->screens);
                         <figure class="img-wrapper hotspot-layer-wrapper">
                             <img class="img lazy-load hotspot-layer"
                                 alt="<?= Html::encode($screen->title) ?>"
-                                width="<?= $width ?>px"
-                                height="<?= $height ?>px"
+                                width="<?= $width / $scaleFactor ?>px"
+                                height="<?= $height / $scaleFactor ?>px"
                                 data-src="<?= $screen->imageUrl ?>"
                                 data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                             >
@@ -208,7 +212,7 @@ $hasScreens = !empty($activeVersion->screens);
                                     <div id="<?= Html::encode($id) ?>"
                                         class="hotspot"
                                         data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
-                                        style="width: <?= Html::encode($spot['width']); ?>px; height: <?= Html::encode($spot['height']); ?>px; top: <?= Html::encode($spot['top']); ?>px; left: <?= Html::encode($spot['left']); ?>px"
+                                        style="width: <?= (float) (ArrayHelper::getValue($spot, 'width', 0) / $scaleFactor); ?>px; height: <?= (float) (ArrayHelper::getValue($spot, 'height', 0) / $scaleFactor); ?>px; top: <?= (float) (ArrayHelper::getValue($spot, 'top', 0) / $scaleFactor); ?>px; left: <?= (float) (ArrayHelper::getValue($spot, 'left', 0) / $scaleFactor); ?>px"
                                     >
                                     </div>
                                 <?php endforeach ?>
@@ -219,7 +223,7 @@ $hasScreens = !empty($activeVersion->screens);
                                 <?php foreach ($screen->primaryScreenComments as $comment): ?>
                                     <div class="comment-target"
                                         data-comment-id="<?= $comment->id ?>"
-                                        style="left: <?= Html::encode($comment->posX) ?>px; top: <?= Html::encode($comment->posY) ?>px;"
+                                        style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
                                     ></div>
                                 <?php endforeach ?>
                             </div>

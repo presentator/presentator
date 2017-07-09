@@ -2,8 +2,8 @@ var ScreenHotspotsView = function(data) {
     data = data || {};
 
     var defaults = {
-        'versionSlider':      '.version-slider',
-        'versionSliderItem':  '.slider-item',
+        'versionSlider':     '.version-slider',
+        'versionSliderItem': '.slider-item',
 
         'hotspotPopover':         '#hotspot_popover',
         'hotspotPopoverScreen':   '.hotspot-popover-screen',
@@ -296,7 +296,7 @@ ScreenHotspotsView.prototype.getActiveScreenSliderItem = function() {
  * @return {Object}
  */
 ScreenHotspotsView.prototype.getHotspotsCoordinates = function(screenId) {
-    var self = this;
+    var self   = this;
     var result = {};
 
     var $screenSliderItem = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
@@ -304,6 +304,8 @@ ScreenHotspotsView.prototype.getHotspotsCoordinates = function(screenId) {
         console.warn('Missing screen slider item with id ' + screenId);
         return result;
     }
+
+    var scaleFactor = $screenSliderItem.data('scale-factor') || 1;
 
     var position = {};
     var $hotspot = null;
@@ -319,10 +321,10 @@ ScreenHotspotsView.prototype.getHotspotsCoordinates = function(screenId) {
         }
 
         result[$hotspot.attr('id')] = {
-            'left':   position.left,
-            'top':    position.top,
-            'width':  $hotspot.outerWidth(true),
-            'height': $hotspot.outerHeight(true),
+            'left':   position.left * scaleFactor,
+            'top':    position.top * scaleFactor,
+            'width':  $hotspot.outerWidth(true) * scaleFactor,
+            'height': $hotspot.outerHeight(true) * scaleFactor,
             'link':   $hotspot.data('link')
         };
     });

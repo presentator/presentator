@@ -32,8 +32,8 @@ if ($isNewRecord) {
             ->radioList($typesList, [
                 'class' => ['row'],
                 'item' => function($index, $label, $name, $checked, $value) {
-                    $radioId = 'project_type_' . $value;
                     $label   = Yii::t('app', 'For {projectType}', ['projectType' => $label]);
+                    $radioId = 'project_type_' . $value;
 
                     if ($value == Project::TYPE_TABLET) {
                         $icon = '<i class="ion ion-ipad"></i>';
@@ -76,11 +76,39 @@ if ($isNewRecord) {
             ])
             ->label(false);
         ?>
+
+        <?=
+            $form->field($model, 'autoScale', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'data-scale-group' => [Project::TYPE_MOBILE, Project::TYPE_TABLET]
+                    ]
+                ])
+                ->checkbox()
+                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="Auto scale/fit the uploaded screen to the device width."></i>', [
+                    'tag'   => 'span',
+                    'class' => 'hint-inline-block',
+                ]);
+        ?>
+
+        <?=
+            $form->field($model, 'retinaScale', [
+                    'options' => [
+                        'class' => 'form-group',
+                        'data-scale-group' => Project::TYPE_DESKTOP
+                    ]
+                ])
+                ->checkbox()
+                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'For 2x pixel density designs.') . '"></i>', [
+                    'tag'   => 'span',
+                    'class' => 'hint-inline-block',
+                ]);
+        ?>
     </div>
 
     <?=
         $form->field($model, 'isPasswordProtected', ['options' => ['class' => 'form-group m-b-20']])
-        ->checkbox(['data-toggle' => '#password_block'])
+            ->checkbox(['data-toggle' => '#password_block'])
     ?>
     <div class="block" id="password_block">
         <?php
@@ -90,9 +118,10 @@ if ($isNewRecord) {
             }
         ?>
         <div class="block" id="password_field_wrapper">
-            <?= $form->field($model, 'password', ['options' => ['class' => 'form-group m-b-20']])
-                ->passwordInput(['placeholder' => Yii::t('app', 'Type your password here...')])
-                ->label(false)
+            <?=
+                $form->field($model, 'password', ['options' => ['class' => 'form-group m-b-20']])
+                    ->passwordInput(['placeholder' => Yii::t('app', 'Type your password here...')])
+                    ->label(false)
             ?>
         </div>
     </div>

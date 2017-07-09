@@ -312,6 +312,26 @@ class ProjectTest extends \Codeception\Test\Unit
         verify('Receiver email should match', $message->getTo())->hasKey($user->email);
     }
 
+    /**
+     * `Project::getScaleFactor()` method test.
+     */
+    public function testGetScaleFactor()
+    {
+        $this->specify('Calculate auto scale factor based on subtype width', function() {
+            $model = Project::findOne(1003);
+
+            verify('Should return the default scale factor', $model->getScaleFactor(50))->equals(Project::DEFAULT_SCALE_FACTOR);
+            verify('Should calculate the scale factor (passed width is larger than the subtype one)', $model->getScaleFactor(1000))
+                ->equals(1000 / Project::SUBTYPES[$model->subtype][0]);
+        });
+
+        $this->specify('Return custom scale factor (not auto scale)', function() {
+            $model = Project::findOne(1002);
+
+            verify('Should return the Project model scale factor value', $model->getScaleFactor(1000))->equals(0.5);
+        });
+    }
+
     /* ===============================================================
      * Relations
      * ============================================================ */

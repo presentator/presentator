@@ -93,7 +93,9 @@ class ProjectFormTest extends \Codeception\Test\Unit
 
             verify('Model title should match', $model->title)->equals('Lorem ipsum title');
             verify('Model type should match', $model->type)->equals(Project::TYPE_DESKTOP);
-            verify('Model subtype should match', $model->subtype)->null();
+            verify('Model subtype should be null', $model->subtype)->null();
+            verify('Model autoScale should be false', $model->autoScale)->false();
+            verify('Model retinaScale should be true', $model->retinaScale)->true();
             verify('Model should not be password protected', $model->isPasswordProtected)->false();
         });
 
@@ -105,6 +107,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
             verify('Model title should match', $model->title)->equals('Lorem ipsum title');
             verify('Model type should match', $model->type)->equals(Project::TYPE_TABLET);
             verify('Model subtype should match', $model->subtype)->equals(21);
+            verify('Model autoScale should be false', $model->autoScale)->false();
+            verify('Model retinaScale should be false', $model->retinaScale)->false();
             verify('Model should be password protected', $model->isPasswordProtected)->true();
         });
     }
@@ -121,6 +125,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
                 'type'                => 0,
                 'subtype'             => 0,
                 'isPasswordProtected' => true,
+                'retinaScale'         => 'invalid_value',
+                'autoScale'           => 'invalid_value',
             ]);
 
             $result = $model->save($user);
@@ -130,6 +136,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
             verify('Type error message should be set', $model->errors)->hasKey('type');
             verify('Subtype error message should not be set because not valid type is set', $model->errors)->hasntKey('subtype');
             verify('Password error message should be set', $model->errors)->hasKey('password');
+            verify('AutoScale error message should be set', $model->errors)->hasKey('autoScale');
+            verify('RetinaScale error message should be set', $model->errors)->hasKey('retinaScale');
         });
 
         $this->specify('Success create attempt', function() use ($user) {
@@ -138,6 +146,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
                 'type'                => Project::TYPE_DESKTOP,
                 'isPasswordProtected' => true,
                 'password'            => '123456',
+                'autoScale'           => true,
+                'retinaScale'         => true,
             ]);
 
             $result = $model->save($user);
@@ -146,6 +156,7 @@ class ProjectFormTest extends \Codeception\Test\Unit
             verify('Model should return instance of Project', $result)->isInstanceOf(Project::className());
             verify('Project title should be set', $result->title)->equals('My new project title');
             verify('Project type should be set', $result->type)->equals(Project::TYPE_DESKTOP);
+            verify('Project scaleFactor should be set', $result->scaleFactor)->equals(Project::RETINA_SCALE_FACTOR);
             verify('Project subtype should not be set', $result->subtype)->null();
             verify('Project passwordHash should be set', $result->passwordHash)->notEmpty();
         });
@@ -165,6 +176,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
                 'subtype'             => 31,
                 'isPasswordProtected' => true,
                 'changePassword'      => true,
+                'retinaScale'         => false,
+                'autoScale'           => 'invalid_value',
             ]);
 
             $result = $model->save();
@@ -176,6 +189,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
             verify('Type error message should not be set', $model->errors)->hasntKey('type');
             verify('Subtype error message should be set', $model->errors)->hasKey('subtype');
             verify('Password error message should be set', $model->errors)->hasKey('password');
+            verify('AutoScale error message should be set', $model->errors)->hasKey('autoScale');
+            verify('RetinaScale error message should not be set', $model->errors)->hasntKey('retinaScale');
             verify('Project title should not be changed', $project->title)->equals('Lorem ipsum title');
             verify('Project subtype should not be changed', $project->subtype)->notEquals(31);
         });
@@ -186,6 +201,8 @@ class ProjectFormTest extends \Codeception\Test\Unit
                 'type'                => Project::TYPE_MOBILE,
                 'subtype'             => 31,
                 'isPasswordProtected' => false,
+                'retinaScale'         => true,
+                'autoScale'           => true,
             ]);
 
             $result = $model->save();
@@ -195,6 +212,7 @@ class ProjectFormTest extends \Codeception\Test\Unit
             verify('Model should returns instance of Project', $result)->isInstanceOf(Project::className());
             verify('Model should not has any errors', $model->errors)->isEmpty();
             verify('Project title should be changed', $project->title)->equals('My new project title');
+            verify('Project scaleFactor should be set', $result->scaleFactor)->equals(Project::AUTO_SCALE_FACTOR);
             verify('Project type should be changed', $project->type)->equals(Project::TYPE_MOBILE);
             verify('Project subtype should be changed', $project->subtype)->equals(31);
             verify('Project passwordHash should not be set', $project->passwordHash)->isEmpty();

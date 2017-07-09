@@ -474,6 +474,16 @@ input[type="radio"] {
     font-size: 13px;
     line-height: 16px;
 }
+.hint-inline-block {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+    line-height: 1;
+    i {
+        font-size: 18px;
+        line-height: 21px;
+    }
+}
 
 /* ---- Search form ---- */
 .search-form {

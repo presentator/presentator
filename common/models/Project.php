@@ -12,6 +12,7 @@ use common\components\helpers\CArrayHelper;
  * @property string  $title
  * @property integer $type
  * @property integer $subtype
+ * @property float   $scaleFactor
  * @property string  $passwordHash
  * @property integer $createdAt
  * @property integer $updatedAt
@@ -41,6 +42,11 @@ class Project extends CActiveRecord
         35 => [412, 732],
         36 => [732, 712],
     ];
+
+    // Predefined scale factors
+    const DEFAULT_SCALE_FACTOR = 1;
+    const AUTO_SCALE_FACTOR    = 0;
+    const RETINA_SCALE_FACTOR  = 2;
 
     /**
      * Stores generated project preview urls.
@@ -393,5 +399,29 @@ class Project extends CActiveRecord
             ->setTo($user->email)
             ->setSubject('Presentator - ' . Yii::t('mail', 'Administrator discharge'))
             ->send();
+    }
+
+    /**
+     * Returns resolved model scale factor based on screen width.
+     * @param  integer|float $width
+     * @return integer|float
+     */
+    public function getScaleFactor($width = 0)
+    {
+        $scaleFactor = self::DEFAULT_SCALE_FACTOR;
+
+        if ($this->scaleFactor != self::AUTO_SCALE_FACTOR) {
+            // Custom scale factor
+            $scaleFactor = $this->scaleFactor;
+        } elseif (
+            $this->subtype &&                            // has defined subtype
+            !empty(self::SUBTYPES[$this->subtype][0]) && // has subtype width
+            $width > self::SUBTYPES[$this->subtype][0]   // the base size is larger than the subtype one
+        )  {
+            // Auto scale factor
+            $scaleFactor = $width / self::SUBTYPES[$this->subtype][0];
+        }
+
+        return $scaleFactor;
     }
 }

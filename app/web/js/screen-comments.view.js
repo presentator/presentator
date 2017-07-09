@@ -215,19 +215,25 @@ ScreenCommentsView.prototype.repositionPopover = function(item) {
 ScreenCommentsView.prototype.createCommentTarget = function(target, message, from, screenId, callback) {
     var self = this;
 
+    var $screen;
     if (!screenId) {
-        screenId = self.getActiveScreenSliderItem().data('screen-id');
+        $screen  = self.getActiveScreenSliderItem();
+        screenId = $screen.data('screen-id');
+    } else {
+        $screen = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
     }
 
     var $target = $(target);
+
+    var scaleFactor = $screen.data('scale-factor') || 1;
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
         url: self.settings.ajaxCommentCreateUrl,
         type: 'POST',
         data: {
-            'posX':     $target.position().left,
-            'posY':     $target.position().top,
+            'posX':     $target.position().left * scaleFactor,
+            'posY':     $target.position().top * scaleFactor,
             'screenId': screenId,
             'message':  message,
             'from':     from
