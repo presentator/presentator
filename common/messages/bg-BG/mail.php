@@ -16,16 +16,14 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Administrator discharge' => 'Премахване на администраторски права към проект',
-    'Administrator assignment' => 'Назначаване като администратор',
-    '{projectTitle} preview' => '{projectTitle} преглед',
-    'New comment' => 'Нов коментар',
-    'Registered with Facebook' => 'Регистрирация с Facebook',
-    'Password reset request' => 'Заявка за смяна на парола',
-    'Account activation' => 'Активиране на профил',
+return [
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => '',
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => '@@п.п. Ако не искаш да получаваш повече подобни известия, може да изключиш опцията от настройките на профила си.@@',
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}"',
+    'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
+    'Administrator assignment' => 'Назначаване като администратор',
+    'Administrator discharge' => 'Премахване на администраторски права към проект',
     'Best Regards' => 'Поздрави',
     'Click on the button below for detail view and other options:' => 'Кликни на бутона по-долу за детайлен преглед и други опции:',
     'Click on the button below to activate your account:' => 'Кликни на бутона по-долу, за да активираш профила си:',
@@ -39,8 +37,10 @@ return array(
     'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'При нужда от допълнителна помощ, може да се свържеш с нас на {supportEmail}.',
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'Ако смяташ, че това съобщение е грешка или имаш нужда от допълнителна помощ, може да се свържеш с нас на {supportEmail}.',
     'Message' => 'Съобщение',
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'п.п. Ако не искаш да получаваш повече подобни известия, може да изключиш опцията от настройките на профила си.',
+    'New comment' => 'Нов коментар',
+    'Password reset request' => 'Заявка за смяна на парола',
     'Presentator Team' => 'Екипът на Presentator',
+    'Registered with Facebook' => 'Регистрирация с Facebook',
     'Reset password' => 'Смяна на парола',
     'Screen' => 'Екран',
     'Thank you for registering to {appLink}.' => 'Благодарим ти за регистрацията в {appLink}.',
@@ -51,4 +51,5 @@ return array(
     'You are invited to review the design for "{projectTitle}".' => 'Поканен си да разгледаш дизайна на "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Успешна регистрация чрез Facebook.',
-);
+    '{projectTitle} preview' => '{projectTitle} преглед',
+];

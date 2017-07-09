@@ -16,16 +16,14 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Administrator discharge' => 'Zwolnienie administratora',
-    'Administrator assignment' => 'Przydzielanie administratora',
-    '{projectTitle} preview' => 'Podgląd {projectTitle}',
-    'New comment' => 'Nowy komentarz',
-    'Registered with Facebook' => 'Rejestracja poprzez Facebooka',
-    'Password reset request' => 'Żądanie zresetowania hasła',
-    'Account activation' => 'Aktywacja konta',
+return [
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => '',
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => '@@P.S. Jeśli nie chcesz otrzymywać więcej powiadomień o komentarzach, możesz wyłączyć je w ustawieniach konta na stronie Presentator.@@',
     'A new comment was left for project "{projectTitle}".' => 'Dodano nowy komentarz do projektu "{projectTitle}".',
+    'Account activation' => 'Aktywacja konta',
     'Activate account' => 'Aktywuj konto',
+    'Administrator assignment' => 'Przydzielanie administratora',
+    'Administrator discharge' => 'Zwolnienie administratora',
     'Best Regards' => 'Pozdrawiamy',
     'Click on the button below for detail view and other options:' => 'Kliknij przycisk poniżej, aby zobaczyć widok szczegółowy i pozostałe opcje:',
     'Click on the button below to activate your account:' => 'Kliknij przycisk poniżej, aby aktywować swoje konto:',
@@ -39,8 +37,10 @@ return array(
     'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'Jeśli potrzebujesz dalszej pomocy, skontaktuj się z nami pod adresem {supportEmail}.',
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'Jeśli uważasz, że ta wiadomość została wysłana do Ciebie przez pomyłkę lub potrzebujesz dalszej pomocy, skontaktuj się z nami pod adresem {supportEmail}.',
     'Message' => 'Wiadomość',
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. Jeśli nie chcesz otrzymywać więcej powiadomień o komentarzach, możesz wyłączyć je w ustawieniach konta na stronie Presentator.',
+    'New comment' => 'Nowy komentarz',
+    'Password reset request' => 'Żądanie zresetowania hasła',
     'Presentator Team' => 'Zespół Presentator',
+    'Registered with Facebook' => 'Rejestracja poprzez Facebooka',
     'Reset password' => 'Zresetuj hasło',
     'Screen' => 'Ekran',
     'Thank you for registering to {appLink}.' => 'Dziękujemy za rejestrację w {appLink}.',
@@ -51,4 +51,5 @@ return array(
     'You are invited to review the design for "{projectTitle}".' => 'Zostałeś poproszony o recenzję projektu "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Nie jesteś już administratorem projektu "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Zarejestrowałeś się pomyślnie za pomocą serwisu Facebook.',
-);
+    '{projectTitle} preview' => 'Podgląd {projectTitle}',
+];

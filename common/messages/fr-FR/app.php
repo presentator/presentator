@@ -16,9 +16,17 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Project admins' => 'Projets administrateurs',
-    'Send an email' => 'Envoyer un message',
+return [
+    '2x (Retina) rescale' => '',
+    'Auto rescale' => '',
+    'Create new version' => '',
+    'Delete version' => '',
+    'For 2x pixel density designs.' => '',
+    'German' => '',
+    'Spanish' => '',
+    'Version settings' => '',
+    'Version title (optional)' => '',
+    'Do you really want to create a new version?' => '@@Souhaitez-vous vraiment créer une nouvelle version?@@',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Paysage)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Paysage)</em>',
@@ -69,7 +77,6 @@ return array(
     'Delete project' => 'Supprimer le projet',
     'Delete selected' => 'Supprimer la sélection',
     'Desktop' => 'Bureau',
-    'Do you really want to create a new version?' => 'Souhaitez-vous vraiment créer une nouvelle version?',
     'Do you really want to delete project {projectTitle}?' => 'Souhaitez-vous vraiment supprimer le projet {projectTitle}?',
     'Do you really want to delete the selected screen?' => 'Souhaitez-vous vraiment supprimer l\'écran sélectionné?',
     'Do you really want to delete the selected screens?' => 'Souhaitez-vous vraiment supprimer les écrans sélectionnés?',
@@ -145,6 +152,7 @@ return array(
     'Portuguese' => 'Portugais',
     'Preview links' => 'Lien de prévisualisation',
     'Preview mode' => 'Mode aperçu',
+    'Project admins' => 'Projets administrateurs',
     'Project preview links' => 'Lien de prévisualisation du projet',
     'Projects' => 'Projets',
     'Receive an email when a new screen comment is added' => 'Recevoir un email lorsqu\'un nouveau commentaire est ajouté.',
@@ -163,6 +171,7 @@ return array(
     'Security' => 'Sécurité',
     'Seen' => 'Vu',
     'Send' => 'Envoyé',
+    'Send an email' => 'Envoyer un message',
     'Send project preview link' => 'Envoyer un lien de prévisualisation du projet',
     'Separate multiple email addresses with comma' => 'Séparer les adresses emails par une virgule',
     'Settings' => 'Configuration',
@@ -228,4 +237,4 @@ return array(
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projets',
-);
+];

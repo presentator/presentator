@@ -16,9 +16,17 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Project admins' => 'Project admins',
-    'Send an email' => 'Send an email',
+return [
+    '2x (Retina) rescale' => '',
+    'Auto rescale' => '',
+    'Create new version' => '',
+    'Delete version' => '',
+    'For 2x pixel density designs.' => '',
+    'German' => '',
+    'Spanish' => '',
+    'Version settings' => '',
+    'Version title (optional)' => '',
+    'Do you really want to create a new version?' => '@@Do you really want to create a new version?@@',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Landscape)</em>',
@@ -69,7 +77,6 @@ return array(
     'Delete project' => 'Delete project',
     'Delete selected' => 'Delete selected',
     'Desktop' => 'Desktop',
-    'Do you really want to create a new version?' => 'Do you really want to create a new version?',
     'Do you really want to delete project {projectTitle}?' => 'Do you really want to delete project {projectTitle}?',
     'Do you really want to delete the selected screen?' => 'Do you really want to delete the selected screen?',
     'Do you really want to delete the selected screens?' => 'Do you really want to delete the selected screens?',
@@ -145,6 +152,7 @@ return array(
     'Portuguese' => 'Portuguese',
     'Preview links' => 'Preview links',
     'Preview mode' => 'Preview mode',
+    'Project admins' => 'Project admins',
     'Project preview links' => 'Project preview links',
     'Projects' => 'Projects',
     'Receive an email when a new screen comment is added' => 'Receive an email when a new screen comment is added',
@@ -163,6 +171,7 @@ return array(
     'Security' => 'Security',
     'Seen' => 'Seen',
     'Send' => 'Send',
+    'Send an email' => 'Send an email',
     'Send project preview link' => 'Send project preview link',
     'Separate multiple email addresses with comma' => 'Separate multiple email addresses with comma',
     'Settings' => 'Settings',
@@ -228,4 +237,4 @@ return array(
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-);
+];

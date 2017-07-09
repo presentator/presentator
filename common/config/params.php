@@ -13,6 +13,7 @@ return [
         'fr'    => 'fr-FR',
         'pt-br' => 'pt-BR',
         'de'    => 'de-DE',
+        'es'    => 'es-ES',
     ],
 
     'publicUrl'        => '',

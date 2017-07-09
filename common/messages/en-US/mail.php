@@ -16,16 +16,14 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Administrator discharge' => 'Administrator discharge',
-    'Administrator assignment' => 'Administrator assignment',
-    '{projectTitle} preview' => '{projectTitle} preview',
-    'New comment' => 'New comment',
-    'Registered with Facebook' => 'Registered with Facebook',
-    'Password reset request' => 'Password reset request',
-    'Account activation' => 'Account activation',
+return [
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator.io account settings page.' => '',
+    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => '@@P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.@@',
     'A new comment was left for project "{projectTitle}".' => 'A new comment was left for project "{projectTitle}".',
+    'Account activation' => 'Account activation',
     'Activate account' => 'Activate account',
+    'Administrator assignment' => 'Administrator assignment',
+    'Administrator discharge' => 'Administrator discharge',
     'Best Regards' => 'Best Regards',
     'Click on the button below for detail view and other options:' => 'Click on the button below for detail view and other options:',
     'Click on the button below to activate your account:' => 'Click on the button below to activate your account:',
@@ -39,8 +37,10 @@ return array(
     'If you need any further help don\'t hesitate to contact us at {supportEmail}.' => 'If you need any further help don\'t hesitate to contact us at {supportEmail}.',
     'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.' => 'If you think that this message is a mistake or you need any further help, don\'t hesitate to contact us at {supportEmail}.',
     'Message' => 'Message',
-    'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.',
+    'New comment' => 'New comment',
+    'Password reset request' => 'Password reset request',
     'Presentator Team' => 'Presentator Team',
+    'Registered with Facebook' => 'Registered with Facebook',
     'Reset password' => 'Reset password',
     'Screen' => 'Screen',
     'Thank you for registering to {appLink}.' => 'Thank you for registering to {appLink}.',
@@ -51,4 +51,5 @@ return array(
     'You are invited to review the design for "{projectTitle}".' => 'You are invited to review the design for "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'You are no longer an administrator to project "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'You have successfully registered via Facebook.',
-);
+    '{projectTitle} preview' => '{projectTitle} preview',
+];

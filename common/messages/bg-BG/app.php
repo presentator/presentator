@@ -16,9 +16,17 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Project admins' => 'Администратори',
-    'Send an email' => 'Изпрати мейл',
+return [
+    '2x (Retina) rescale' => '',
+    'Auto rescale' => '',
+    'Create new version' => '',
+    'Delete version' => '',
+    'For 2x pixel density designs.' => '',
+    'German' => '',
+    'Spanish' => '',
+    'Version settings' => '',
+    'Version title (optional)' => '',
+    'Do you really want to create a new version?' => '@@Създаване на нова версия?@@',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Landscape)</em>',
@@ -69,7 +77,6 @@ return array(
     'Delete project' => 'Изтрий проекта',
     'Delete selected' => 'Изтрий избраните',
     'Desktop' => 'Десктоп',
-    'Do you really want to create a new version?' => 'Създаване на нова версия?',
     'Do you really want to delete project {projectTitle}?' => 'Наистина ли искаш да изтриеш проект {projectTitle}?',
     'Do you really want to delete the selected screen?' => 'Наистина ли искаш да изтриеш избрания екран?',
     'Do you really want to delete the selected screens?' => 'Наистина ли искаш да изтриеш избраните екрани',
@@ -145,6 +152,7 @@ return array(
     'Portuguese' => 'Португалски',
     'Preview links' => 'URL адреси за преглед',
     'Preview mode' => 'Режим Преглед',
+    'Project admins' => 'Администратори',
     'Project preview links' => 'URL адреси за преглед',
     'Projects' => 'Проекти',
     'Receive an email when a new screen comment is added' => 'Изпращане на email при нов коментар',
@@ -163,6 +171,7 @@ return array(
     'Security' => 'Сигурност',
     'Seen' => 'Да',
     'Send' => 'Изпрати',
+    'Send an email' => 'Изпрати мейл',
     'Send project preview link' => 'Изпрати линк за преглед',
     'Separate multiple email addresses with comma' => 'За повече от един имейл използвай запетая',
     'Settings' => 'Настройки',
@@ -228,4 +237,4 @@ return array(
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-);
+];
