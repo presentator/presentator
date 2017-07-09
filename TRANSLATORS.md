@@ -10,13 +10,28 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 - Bizley ([http://bizley.pl](http://bizley.pl))
 
+
 ### French
 
-- Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
-- Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - Ben Cousin ([Bewod](https://www.transifex.com/user/profile/Bewod/))
+- Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - Steven Mazelerat ([smaze](https://www.transifex.com/user/profile/smaze/))
+- Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
+
 
 ### Portuguese (Brazil)
 
 - Leandro Oliveira ([http://leandro.design](http://leandro.design))
+
+
+### Spanish
+
+- Alexandru Catalin Trandafir ([atrandafir](https://www.transifex.com/user/profile/atrandafir/))
+- Antonela Debiasi ([holantonela1](https://www.transifex.com/user/profile/holantonela1/))
+- Dani Catalan ([danicatalan](https://www.transifex.com/user/profile/danicatalan/))
+- Georgi Svetoslavov ([ghs](https://www.transifex.com/user/profile/ghs/))
+
+
+### German
+
+- Dave ([MDXDave](https://www.transifex.com/user/profile/MDXDave/))

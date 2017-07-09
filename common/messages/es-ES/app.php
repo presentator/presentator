@@ -104,7 +104,7 @@ return array(
     'Hotspots mode' => 'Modo Hotspots',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'He leído y estoy de acuerdo con los <a href="#" data-popup="#terms_popup">Términos y Condiciones</a>',
     'Invalid HEX color code.' => 'Código HEX no válido.',
-    'Invalid format.' => 'Formato no válido',
+    'Invalid format.' => 'Formato no válido.',
     'Invalid login credentials.' => 'Datos de acceso no válidos.',
     'Invalid old password.' => 'Contraseña anterior no válida.',
     'Invalid password.' => 'Contraseña no valida.',
