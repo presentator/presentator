@@ -12,6 +12,7 @@ return [
         'pl'    => 'pl-PL',
         'fr'    => 'fr-FR',
         'pt-br' => 'pt-BR',
+        'de'    => 'de-DE',
     ],
 
     'publicUrl'        => '',

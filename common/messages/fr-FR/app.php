@@ -16,9 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Project admins' => 'Projets administrateurs',
-    'Send an email' => 'Envoyer un message',
+return [    
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Paysage)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
     '375x667 <em>(Landscape)</em>' => '375x667 <em>(Paysage)</em>',
@@ -91,6 +89,7 @@ return array(
     'From' => 'De',
     'From (email)' => 'De (email)',
     'General' => 'Général',
+    'German' => 'Allemand',
     'Go to login page' => 'Aller à la page d\'authentification',
     'Has unread comments' => 'Possède des commentaires non lus',
     'Hello and welcome to Presentator!' => 'Bonjour et bienvenue sur Presentator!',
@@ -145,6 +144,7 @@ return array(
     'Portuguese' => 'Portugais',
     'Preview links' => 'Lien de prévisualisation',
     'Preview mode' => 'Mode aperçu',
+    'Project admins' => 'Projets administrateurs',
     'Project preview links' => 'Lien de prévisualisation du projet',
     'Projects' => 'Projets',
     'Receive an email when a new screen comment is added' => 'Recevoir un email lorsqu\'un nouveau commentaire est ajouté.',
@@ -163,6 +163,7 @@ return array(
     'Security' => 'Sécurité',
     'Seen' => 'Vu',
     'Send' => 'Envoyé',
+    'Send an email' => 'Envoyer un message',
     'Send project preview link' => 'Envoyer un lien de prévisualisation du projet',
     'Separate multiple email addresses with comma' => 'Séparer les adresses emails par une virgule',
     'Settings' => 'Configuration',
@@ -228,4 +229,4 @@ return array(
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projets',
-);
+];
