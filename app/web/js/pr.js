@@ -1059,5 +1059,44 @@ var PR = {
                 'width': $scrollContainer.width() + (scrollbarWidth || 0)
             });
         }
+    },
+
+    /**
+     * Set or Remove a query parameter via HTML5 History API.
+     *
+     * @param {String}  name     Parameter name
+     * @param {Mixed}   value    Parameter value (set to `null` to remove the parameter)
+     * @param {Boolean} keepHash Whether to keep the current hash string.
+     */
+    setQueryParam: function(name, value, keepHash) {
+        if (!this.isObject(window.history) || !this.isFunction(window.history.pushState)) {
+            return;
+        }
+
+        var params = yii.getQueryParams(window.location.search);
+
+        if (value === null) {
+            // remove
+            delete params[name];
+        } else {
+            // set
+            params[name] = value;
+        }
+
+        // build query string
+        var queryStr = '';
+        $.each(params, function(paramName, paramValue) {
+            if (queryStr) {
+                queryStr += '&';
+            }
+
+            queryStr += (encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue));
+        });
+        queryStr = queryStr ? ('?' + queryStr) : '';
+
+        var hashStr = keepHash ? window.location.hash : '';
+        var newUrl  = window.location.protocol + '//' + window.location.host + window.location.pathname + queryStr + hashStr;
+
+        window.history.replaceState({path: newUrl}, '', newUrl);
     }
 };

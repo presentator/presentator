@@ -59,9 +59,20 @@ var PreviewView = function(data) {
         'ajaxCommentsListUrl':  this.settings.ajaxCommentsListUrl,
     });
 
+    // query param keys
+    this.VERSION_PARAM = 'v';
+    this.SCREEN_PARAM  = 's';
+    this.MODE_PARAM    = 'm';
+
+    // mode query param values
+    this.MODE_PREVIEW  = 'preview';
+    this.MODE_COMMENTS = 'comments';
+
+    // @deprecated Will be removed in 2.0.0 release!
     this.versionHashPattern  = /^v\d+$/;
     this.screenHashPattern   = /^s\d+$/;
     this.combinedHashPattern = /^v\d+-s\d+$/;
+    // ---
 
     this.init();
 };
@@ -202,6 +213,8 @@ PreviewView.prototype.init = function() {
 };
 
 /**
+ * @deprecated Will be removed in 2.0.0 release!
+ *
  * Gets mapped navigation hash props.
  * @return {Object}
  */
@@ -233,6 +246,8 @@ PreviewView.prototype.getHashNav = function() {
 };
 
 /**
+ * @deprecated Will be removed in 2.0.0 release!
+ *
  * Sets mapped navigation hash props.
  * @param integer versionPos Version position counter
  * @param integer screenPos  Screen position counter
@@ -285,8 +300,10 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
     var self       = this;
     var mappedHash = self.getHashNav();
 
-    versionPos = versionPos || mappedHash.versionPos || 0;
-    screenPos  = screenPos  || mappedHash.screenPos  || 1;
+    var queryParams = yii.getQueryParams(window.location.search);
+
+    versionPos = versionPos || queryParams[self.VERSION_PARAM] || mappedHash.versionPos || 0;
+    screenPos  = screenPos  || queryParams[self.SCREEN_PARAM]  || mappedHash.screenPos  || 1;
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
@@ -352,18 +369,13 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
                 self.commentsView.updateCommentsCounter();
 
-                self.setHashNav(activeVersionPos, $activeSlide.index() + 1);
+                PR.setQueryParam(self.VERSION_PARAM, activeVersionPos);
+                PR.setQueryParam(self.SCREEN_PARAM, $activeSlide.index() + 1);
 
                 self.updateSliderCaption();
             });
 
             $slider.slider({nav: false});
-
-            // $slider.find(self.settings.versionSliderItem).on('scroll', function(e) {
-            //     if (self.$body.hasClass('comment-active')) {
-            //         self.commentsView.deselectCommentTarget();
-            //     }
-            // });
 
             // updates container width to prevent displaying unnecessary horizontal scrollbar
             if (!$slider.hasClass('desktop')) {
@@ -372,7 +384,11 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 });
             }
 
-            self.activatePreviewMode();
+            if (queryParams[self.MODE_PARAM] === self.MODE_COMMENTS) {
+                self.activateCommentsMode();
+            } else {
+                self.activatePreviewMode();
+            }
 
             if (screenPos > 1) {
                 $slider.slider('goTo', screenPos - 1, false);
@@ -483,6 +499,8 @@ PreviewView.prototype.activatePreviewMode = function() {
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', '');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', '');
 
+    PR.setQueryParam(this.MODE_PARAM, this.MODE_PREVIEW);
+
     this.commentsView.disable();
 };
 
@@ -495,6 +513,8 @@ PreviewView.prototype.activateCommentsMode = function() {
     $(this.settings.commentsModeHandle).addClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', 'comments-mode-tooltip');
+
+    PR.setQueryParam(this.MODE_PARAM, this.MODE_COMMENTS);
 
     this.commentsView.enable();
 };
