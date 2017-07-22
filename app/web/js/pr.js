@@ -1038,12 +1038,49 @@ var PR = {
     },
 
     /**
+     * Get the current scrollbar width of an element.
+     * @param  {Mixed}  scrollContainer
+     * @param  {String} visibilityClass Class to toggle if scrollContainer element is hidden.
+     * @return {Number}
+     */
+    getScrollbarWidth: function(scrollContainer, visibilityClass) {
+        visibilityClass = visibilityClass || 'active';
+
+        var $scrollContainer = $(scrollContainer);
+        var isInitVisible    = visibilityClass ? $scrollContainer.hasClass(visibilityClass) : $scrollContainer.is(':visible');
+        var scrollbarWidth   = 0;
+
+        // show hidden scroll container
+        if (!isInitVisible) {
+            if (visibilityClass) {
+                $scrollContainer.addClass(visibilityClass);
+            } else {
+                $scrollContainer.show();
+            }
+        }
+
+        scrollbarWidth = $scrollContainer[0].offsetWidth - $scrollContainer[0].clientWidth;
+
+        // revert scroll container visibility changes
+        if (!isInitVisible) {
+            if (visibilityClass) {
+                $scrollContainer.removeClass(visibilityClass);
+            } else {
+                $scrollContainer.hide();
+            }
+        }
+
+        return scrollbarWidth;
+    },
+
+    /**
      * Updates scroll container width to prevent displaying unnecessary horizontal scrollbar.
      * @see https://github.com/ganigeorgiev/presentator/issues/23
-     * @param {Mixed} item
-     * @param {Mixed} scrollContainer
+     * @param {Mixed}  item
+     * @param {Mixed}  scrollContainer
+     * @param {String} visibilityClass Class to toggle if scrollContainer element is hidden.
      */
-    updateScrollContainerWidth: function(item, scrollContainer) {
+    updateScrollContainerWidth: function(item, scrollContainer, visibilityClass) {
         var $item            = $(item);
         var $scrollContainer = $(scrollContainer);
 
@@ -1052,7 +1089,7 @@ var PR = {
         }
 
         if ($scrollContainer.width() == $item.width()) {
-            var scrollbarWidth = $scrollContainer[0].offsetWidth - $scrollContainer[0].clientWidth;
+            var scrollbarWidth = this.getScrollbarWidth($scrollContainer, visibilityClass);
 
             $scrollContainer.css({
                 // 'width': 'auto' // NB! Unfortunately works only in Chrome (http://stackoverflow.com/questions/39738265/firefox-displays-unnecessary-horizontal-scrollbar)
