@@ -1044,7 +1044,7 @@ var PR = {
      * @return {Number}
      */
     getScrollbarWidth: function(scrollContainer, visibilityClass) {
-        visibilityClass = visibilityClass || 'active';
+        visibilityClass = typeof visibilityClass !== 'undefined' ? visibilityClass : 'active';
 
         var $scrollContainer = $(scrollContainer);
         var isInitVisible    = visibilityClass ? $scrollContainer.hasClass(visibilityClass) : $scrollContainer.is(':visible');
