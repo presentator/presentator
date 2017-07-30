@@ -34,4 +34,4 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 ### German
 
-- Dave ([MDXDave](https://www.transifex.com/user/profile/MDXDave/))
+- Dave ([https://mdxdave.de](https://mdxdave.de))
