@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Successfully updated comment position.' => 'Successfully updated comment position.',
     'Auto scale/fit the uploaded screen to the device width.' => 'Auto scale/fit the uploaded screen to the device width.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',

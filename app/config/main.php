@@ -137,12 +137,14 @@ return [
                 'admin/screens/ajax-get-thumbs'                                  => 'screens/ajax-get-thumbs',
 
                 // Screen comments
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-create'       => 'screen-comments/ajax-create',
-                'admin/screen-comments/ajax-create'                                => 'screen-comments/ajax-create',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-delete'       => 'screen-comments/ajax-delete',
-                'admin/screen-comments/ajax-delete'                                => 'screen-comments/ajax-delete',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-get-comments' => 'screen-comments/ajax-get-comments',
-                'admin/screen-comments/ajax-get-comments'                          => 'screen-comments/ajax-get-comments',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-create'          => 'screen-comments/ajax-create',
+                'admin/screen-comments/ajax-create'                                   => 'screen-comments/ajax-create',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-delete'          => 'screen-comments/ajax-delete',
+                'admin/screen-comments/ajax-delete'                                   => 'screen-comments/ajax-delete',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-get-comments'    => 'screen-comments/ajax-get-comments',
+                'admin/screen-comments/ajax-get-comments'                             => 'screen-comments/ajax-get-comments',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-position-update' => 'screen-comments/ajax-position-update',
+                'admin/screen-comments/ajax-position-update'                          => 'screen-comments/ajax-position-update',
 
                 // Preview
                 '/<lang:\w{2}-\w{2}|\w{2}>/<slug:[\w\-]+>'                   => 'preview/view',

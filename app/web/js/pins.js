@@ -243,6 +243,9 @@ Pins.prototype.keepInside = function(item) {
 Pins.prototype.enable = function(type) {
     type = type || 'all';
 
+    this.enableCreate = false;
+    this.enableDrag   = false;
+
     if (type === 'all') {
         this.enableCreate = true;
         this.enableDrag   = true;
@@ -259,6 +262,9 @@ Pins.prototype.enable = function(type) {
  */
 Pins.prototype.disable = function(type) {
     type = type || 'all';
+
+    this.enableCreate = true;
+    this.enableDrag   = true;
 
     if (type === 'all') {
         this.enableCreate = false;

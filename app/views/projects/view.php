@@ -229,13 +229,13 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1499601723');
-$this->registerJsFile('/js/pins.js?v=1499601723');
-$this->registerJsFile('/js/project-view.view.js?v=1499601723');
-$this->registerJsFile('/js/version.view.js?v=1499601723');
-$this->registerJsFile('/js/screen-comments.view.js?v=1499601723');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1499601723');
-$this->registerJsFile('/js/screen.view.js?v=1499601723');
+$this->registerJsFile('/js/hotspots.js?v=1501430497');
+$this->registerJsFile('/js/pins.js?v=1501430497');
+$this->registerJsFile('/js/project-view.view.js?v=1501430497');
+$this->registerJsFile('/js/version.view.js?v=1501430497');
+$this->registerJsFile('/js/screen-comments.view.js?v=1501430497');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1501430497');
+$this->registerJsFile('/js/screen.view.js?v=1501430497');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",
@@ -269,10 +269,10 @@ $this->registerJs('
             ajaxSaveHotspotsUrl: "' . Url::to(['screens/ajax-save-hotspots']) .'"
         },
         commentsViewSettings: {
-            ajaxCommentCreateUrl: "' . Url::to(['screen-comments/ajax-create']) .'",
-            ajaxCommentReplyUrl:  "' . Url::to(['screen-comments/ajax-reply']) .'",
-            ajaxCommentDeleteUrl: "' . Url::to(['screen-comments/ajax-delete']) .'",
-            ajaxCommentsListUrl:  "' . Url::to(['screen-comments/ajax-get-comments']) .'"
+            ajaxCommentCreateUrl:         "' . Url::to(['screen-comments/ajax-create']) .'",
+            ajaxCommentDeleteUrl:         "' . Url::to(['screen-comments/ajax-delete']) .'",
+            ajaxCommentsListUrl:          "' . Url::to(['screen-comments/ajax-get-comments']) .'",
+            ajaxCommentPositionUpdateUrl: "' . Url::to(['screen-comments/ajax-position-update']) .'"
         },
         versionViewSettings: {
             ajaxGetFormUrl:  "' . Url::to(['versions/ajax-get-form', 'projectId' => $project->id]) .'",

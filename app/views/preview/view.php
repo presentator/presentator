@@ -30,18 +30,22 @@ $this->title = $project->title;
 <div id="preview_wrapper" class="preview-wrapper <?= $grantedAccess ? 'active' : 'inactive' ?>"></div>
 
 <?php
-$this->registerJsFile('/js/pins.js?v=1499601723');
-$this->registerJsFile('/js/screen-comments.view.js?v=1499601723');
-$this->registerJsFile('/js/preview.view.js?v=1499601723');
+$this->registerJsFile('/js/pins.js?v=1501430497');
+$this->registerJsFile('/js/screen-comments.view.js?v=1501430497');
+$this->registerJsFile('/js/preview.view.js?v=1501430497');
 $this->registerJs('
     var preview = new PreviewView({
         grantedAccess: ' . ($grantedAccess ? 'true' : 'false') . ',
 
+        // comments settings
+        commentsViewSettings: {
+            enableDrag:           false,
+            ajaxCommentCreateUrl: "' . Url::to(['screen-comments/ajax-create', 'previewSlug'       => $preview->slug]) .'",
+            ajaxCommentsListUrl:  "' . Url::to(['screen-comments/ajax-get-comments', 'previewSlug' => $preview->slug]) .'"
+        },
+
         // ajax urls
         ajaxInvokeAccessUrl:  "' . Url::to(['preview/ajax-invoke-access', 'slug' => $preview->slug]) .'",
-        ajaxCommentCreateUrl: "' . Url::to(['screen-comments/ajax-create', 'previewSlug' => $preview->slug]) .'",
-        ajaxCommentReplyUrl:  "' . Url::to(['screen-comments/ajax-reply', 'previewSlug' => $preview->slug]) .'",
-        ajaxCommentsListUrl:  "' . Url::to(['screen-comments/ajax-get-comments', 'previewSlug' => $preview->slug]) .'",
 
         // texts
         commentsTooltipText: "' . Yii::t('app', 'Click to leave a comment') . '"

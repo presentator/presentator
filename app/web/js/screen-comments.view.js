@@ -2,6 +2,7 @@ var ScreenCommentsView = function(data) {
     data = data || {};
 
     var defaults = {
+        'enableDrag': true,
         'unreadCommentsNotification': '.comments-notification',
 
         'versionSlider':     '.version-slider',
@@ -21,12 +22,13 @@ var ScreenCommentsView = function(data) {
         'commentTargetsList':      '#comment_targets_list',
         'commentsCounter':         '.comments-counter',
 
-        'ajaxCommentCreateUrl': '/screen-comments/ajax-create',
-        'ajaxCommentDeleteUrl': '/screen-comments/ajax-delete',
-        'ajaxCommentsListUrl':  '/screen-comments/ajax-get-comments',
+        'ajaxCommentCreateUrl':         '/screen-comments/ajax-create',
+        'ajaxCommentDeleteUrl':         '/screen-comments/ajax-delete',
+        'ajaxCommentsListUrl':          '/screen-comments/ajax-get-comments',
+        'ajaxCommentPositionUpdateUrl': '/screen-comments/ajax-position-update',
 
         'confirmCommentTargetDeleteText': 'Do you really want to delete the selected comment target and all its replies?',
-        'confirmCommentReplyDeleteText': 'Do you really want to delete the comment reply?',
+        'confirmCommentReplyDeleteText':  'Do you really want to delete the comment reply?',
     };
 
     this.settings = $.extend({}, defaults, data);
@@ -64,6 +66,10 @@ ScreenCommentsView.prototype.init = function() {
     // Comment target drag/move
     $document.on('dragEnd.pins', function(e, $target) {
         self.repositionPopover($target);
+
+        if (!$target.data('isNew')) {
+            self.updateCommentTargetPosition($target);
+        }
     });
 
     // Comment target click
@@ -328,6 +334,49 @@ ScreenCommentsView.prototype.removeComment = function(commentId, callback) {
 };
 
 /**
+ * Updates a commen target position via ajax.
+ * @param {Object}      target
+ * @param {Number}      screenId
+ * @param {Function}    callback
+ * @param {null|Number} screenId Attach the comment to a specific screen.
+ */
+ScreenCommentsView.prototype.updateCommentTargetPosition = function(target, screenId, callback) {
+    var self = this;
+
+    if (!self.settings.enableDrag) {
+        return;
+    }
+
+    var $screen;
+    if (!screenId) {
+        $screen  = self.getActiveScreenSliderItem();
+        screenId = $screen.data('screen-id');
+    } else {
+        $screen = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
+    }
+
+    var $target = $(target);
+
+    var scaleFactor = $screen.data('scale-factor') || 1;
+
+    PR.abortXhr(self.generalXHR);
+    self.generalXHR = $.ajax({
+        url: self.settings.ajaxCommentPositionUpdateUrl,
+        type: 'POST',
+        data: {
+            'commentId': $target.data('comment-id'),
+            'posX':      $target.position().left * scaleFactor,
+            'posY':      $target.position().top * scaleFactor
+        }
+    }).done(function(response) {
+        if (PR.isFunction(callback)) {
+            callback(response);
+        }
+    });
+};
+
+
+/**
  * Marks a comment target/pin as selected.
  * @param {Mixed} target
  * @param {Mixed} commentListItem Id or comment element to auto scroll to.
@@ -528,7 +577,7 @@ ScreenCommentsView.prototype.updateUnreadCommentsNotification = function(screenI
  * Enables comment targets/pins actions.
  */
 ScreenCommentsView.prototype.enable = function() {
-    this.pinsInst.enable('create');
+    this.pinsInst.enable(this.settings.enableDrag ? 'all' : 'create');
 };
 
 /**
@@ -537,4 +586,3 @@ ScreenCommentsView.prototype.enable = function() {
 ScreenCommentsView.prototype.disable = function() {
     this.pinsInst.disable();
 };
-

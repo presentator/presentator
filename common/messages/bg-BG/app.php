@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Successfully updated comment position.' => 'Позицията на коментара бе обновена успешно.',
     'Auto scale/fit the uploaded screen to the device width.' => 'Автоматично преоразмеряване на по-големите екрани до ширината на устройството.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',

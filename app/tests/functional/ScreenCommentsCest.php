@@ -338,4 +338,64 @@ class ScreenCommentsCest
         $I->seeResponseContains('"commentsListHtml":');
         $I->seeRecord(UserScreenCommentRel::className(), ['userId' => 1002, 'screenCommentId' => 1001, 'isRead' => UserScreenCommentRel::IS_READ_TRUE]);
     }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxPositionUpdateFail(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely update a screen comments target position');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-position-update'], ['commentId' => 1001], false);
+
+        $I->amGoingTo('try with a primary comment from a screen not owned by the logged user');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
+            'commentId' => 1006,
+            'posX'      => 200,
+            'posY'      => 0,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with a secondary/reply comment');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
+            'commentId' => 1003,
+            'posX'      => 100,
+            'posY'      => 60,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with a invalid position values');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
+            'commentId' => 1001,
+            'posX'      => 100,
+            'posY'      => -100,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxPositionUpdateSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully update a screen comments target position');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-position-update'], ['commentId' => 1001], false);
+
+        $I->amGoingTo('try with a primary comment');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
+            'commentId' => 1001,
+            'posX'      => 200,
+            'posY'      => 0,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeRecord(ScreenComment::className(), ['id' => 1001, 'posX' => 200, 'posY' => 0]);
+    }
 }

@@ -274,4 +274,48 @@ class ScreenCommentFormTest extends \Codeception\Test\Unit
             verify('Comment posY should match with the primary comment', $result->posY)->equals($primaryComment->posY);
         });
     }
+
+
+    /**
+     * `ScreenCommentForm::updatePosition()` method test.
+     */
+    public function testUpdatePosition()
+    {
+        $rel = User::findOne(1001);
+
+        $this->specify('Error update attempt', function() use ($rel) {
+            $comment = ScreenComment::findOne(1001);
+
+            $model = new ScreenCommentForm($rel, [
+                'scenario' => ScreenCommentForm::SCENARIO_POSITION_UPDATE,
+                'posX'     => 'invalid_value',
+                'posY'     => -100,
+            ]);
+
+            $result = $model->updatePosition($comment);
+
+            verify('Model should not update', $result)->false();
+            verify('posX error message should be set', $model->errors)->hasKey('posX');
+            verify('posY error message should be set', $model->errors)->hasKey('posY');
+        });
+
+        $this->specify('Correct reply id attempt', function() use ($rel) {
+            $comment = ScreenComment::findOne(1001);
+
+            $model = new ScreenCommentForm($rel, [
+                'scenario' => ScreenCommentForm::SCENARIO_POSITION_UPDATE,
+                'posX'     => 15,
+                'posY'     => 0,
+            ]);
+
+            $result = $model->updatePosition($comment);
+
+            $comment->refresh();
+
+            verify('Model should update successfully', $result)->true();
+            verify('Model should not have any errors', $model->errors)->isEmpty();
+            verify('Comment posX should match', $comment->posX)->equals(15);
+            verify('Comment posY should match', $comment->posY)->equals(0);
+        });
+    }
 }

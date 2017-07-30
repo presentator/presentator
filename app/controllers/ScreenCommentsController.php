@@ -29,8 +29,9 @@ class ScreenCommentsController extends AppController
         ];
 
         $behaviors['verbs']['actions'] = [
-            'ajax-delete' => ['post'],
-            'ajax-create' => ['post'],
+            'ajax-delete'          => ['post'],
+            'ajax-create'          => ['post'],
+            'ajax-position-update' => ['post'],
         ];
 
         return $behaviors;
@@ -165,6 +166,48 @@ class ScreenCommentsController extends AppController
             return [
                 'success'          => true,
                 'commentsListHtml' => $commentsListHtml,
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
+     * Updates comment target position via ajax.
+     *
+     * NB! Requires the following post parameters:
+     * `commentId` - ID of the comment model
+     * `posX`      - Horizontal position value
+     * `posY`      - Vertical position value
+     *
+     * @return array
+     */
+    public function actionAjaxPositionUpdate()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user      = Yii::$app->user->identity;
+        $commentId = $request->post('commentId', -1);
+        $comment   = $user->findScreenCommentById($commentId);
+
+        $model = new ScreenCommentForm($user, ['scenario' => ScreenCommentForm::SCENARIO_POSITION_UPDATE]);
+
+        if (
+            $comment &&
+            $model->load($request->post(), '') &&
+            $model->updatePosition($comment)
+        ) {
+            return [
+                'success' => true,
+                'message' => Yii::t('app', 'Successfully updated comment position.'),
             ];
         }
 

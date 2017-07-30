@@ -15,8 +15,9 @@ use common\models\ScreenComment;
  */
 class ScreenCommentForm extends Model
 {
-    const SCENARIO_PREVIEW = 'scenarioPreview';
-    const SCENARIO_USER    = 'scenarioUser';
+    const SCENARIO_PREVIEW         = 'scenarioPreview';
+    const SCENARIO_USER            = 'scenarioUser';
+    const SCENARIO_POSITION_UPDATE = 'scenarioPositionUpdate';
 
     /**
      * @var integer
@@ -78,7 +79,7 @@ class ScreenCommentForm extends Model
         return [
             ['from', 'required', 'on' => self::SCENARIO_PREVIEW],
             ['from', 'email'],
-            [['posX', 'posY'], 'number'],
+            [['posX', 'posY'], 'number', 'min' => 0],
             [['posX', 'posY', 'screenId'], 'required', 'when' => function ($model) {
                 if ($model->replyTo) {
                     return false;
@@ -109,6 +110,10 @@ class ScreenCommentForm extends Model
 
         $scenarios[self::SCENARIO_PREVIEW] = [
             'screenId', 'replyTo', 'posX', 'posY', 'message', 'from',
+        ];
+
+        $scenarios[self::SCENARIO_POSITION_UPDATE] = [
+            'posX', 'posY',
         ];
 
         return $scenarios;
@@ -186,5 +191,22 @@ class ScreenCommentForm extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Takes care for updating primary ScreenComment target position.
+     * @param  ScreenComment $comment
+     * @return boolean
+     */
+    public function updatePosition(ScreenComment $comment)
+    {
+        if ($this->validate() && !$comment->replyTo) {
+            $comment->posX = (int) $this->posX;
+            $comment->posY = (int) $this->posY;
+
+            return $comment->save();
+        }
+
+        return false;
     }
 }

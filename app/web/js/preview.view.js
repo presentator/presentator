@@ -29,10 +29,7 @@ var PreviewView = function(data) {
         'prevSlideHandle':        '#slider_prev_handle',
 
         // screen comments
-        'ajaxCommentCreateUrl': '/screen-comments/ajax-create',
-        'ajaxCommentReplyUrl':  '/screen-comments/ajax-reply',
-        'ajaxCommentDeleteUrl': '/screen-comments/ajax-delete',
-        'ajaxCommentsListUrl':  '/screen-comments/ajax-get-comments',
+        'commentsViewSettings': {},
 
         // ajax urls
         'ajaxInvokeAccessUrl': '',
@@ -52,12 +49,7 @@ var PreviewView = function(data) {
 
     this.generalXHR = null;
 
-    this.commentsView = new ScreenCommentsView({
-        'ajaxCommentCreateUrl': this.settings.ajaxCommentCreateUrl,
-        'ajaxCommentReplyUrl':  this.settings.ajaxCommentReplyUrl,
-        'ajaxCommentDeleteUrl': this.settings.ajaxCommentDeleteUrl,
-        'ajaxCommentsListUrl':  this.settings.ajaxCommentsListUrl,
-    });
+    this.commentsView = new ScreenCommentsView(this.settings.commentsViewSettings);
 
     // query param keys
     this.VERSION_PARAM = 'v';
