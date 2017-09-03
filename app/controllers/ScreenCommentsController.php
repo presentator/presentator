@@ -32,6 +32,7 @@ class ScreenCommentsController extends AppController
             'ajax-delete'          => ['post'],
             'ajax-create'          => ['post'],
             'ajax-position-update' => ['post'],
+            'ajax-status-update'   => ['post'],
         ];
 
         return $behaviors;
@@ -208,6 +209,47 @@ class ScreenCommentsController extends AppController
             return [
                 'success' => true,
                 'message' => Yii::t('app', 'Successfully updated comment position.'),
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
+     * Updates comment target position via ajax.
+     *
+     * NB! Requires the following post parameters:
+     * `commentId` - ID of the comment model
+     * `status`    - Status of the comment model to set
+     *
+     * @return array
+     */
+    public function actionAjaxStatusUpdate()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user      = Yii::$app->user->identity;
+        $commentId = $request->post('commentId', -1);
+        $comment   = $user->findScreenCommentById($commentId);
+
+        $model = new ScreenCommentForm($user, ['scenario' => ScreenCommentForm::SCENARIO_STATUS_UPDATE]);
+
+        if (
+            $comment &&
+            $model->load($request->post(), '') &&
+            $model->updateStatus($comment)
+        ) {
+            return [
+                'success' => true,
+                'message' => Yii::t('app', 'Successfully updated comment status.'),
             ];
         }
 

@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
  * @property string  $message
  * @property integer $posX
  * @property integer $posY
+ * @property integer $status
  * @property integer $createdAt
  * @property integer $updatedAt
  *
@@ -21,12 +22,28 @@ use yii\helpers\ArrayHelper;
  */
 class ScreenComment extends CActiveRecord
 {
+    // Model statuses (@see `self::getStatusLabels()`)
+    const STATUS_PENDING  = 0;
+    const STATUS_RESOLVED = 1;
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return '{{%screenComment}}';
+    }
+
+    /**
+     * Returns ScreenComment status labels.
+     * @return array
+     */
+    public static function getStatusLabels()
+    {
+        return [
+            self::STATUS_PENDING  => Yii::t('app', 'Pending'),
+            self::STATUS_RESOLVED => Yii::t('app', 'Resolved'),
+        ];
     }
 
     /**
@@ -135,6 +152,7 @@ class ScreenComment extends CActiveRecord
         // copy primary comment fields
         $this->replyTo  = $primaryComment->id;
         $this->screenId = $primaryComment->screenId;
+        $this->status   = $primaryComment->status;
         $this->posX     = $primaryComment->posX;
         $this->posY     = $primaryComment->posY;
 

@@ -267,6 +267,22 @@
     &:active { background: rgba($color, 0.1); }
 }
 
+@mixin form-group-check-coloring($color) {
+    input[type="checkbox"],
+    input[type="radio"] {
+        & ~ label {
+            &:after {
+                color: $color;
+            }
+        }
+        &:checked ~ label {
+            &:before {
+                border-color: $color;
+            }
+        }
+    }
+}
+
 // @todo remove
 @mixin sideHighlight($color, $height: 15px, $width: 3px) {
     &:after {

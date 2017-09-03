@@ -275,17 +275,15 @@ class ScreenCommentFormTest extends \Codeception\Test\Unit
         });
     }
 
-
     /**
      * `ScreenCommentForm::updatePosition()` method test.
      */
     public function testUpdatePosition()
     {
-        $rel = User::findOne(1001);
+        $rel     = User::findOne(1001);
+        $comment = ScreenComment::findOne(1001);
 
-        $this->specify('Error update attempt', function() use ($rel) {
-            $comment = ScreenComment::findOne(1001);
-
+        $this->specify('Error position update attempt', function() use ($rel, $comment) {
             $model = new ScreenCommentForm($rel, [
                 'scenario' => ScreenCommentForm::SCENARIO_POSITION_UPDATE,
                 'posX'     => 'invalid_value',
@@ -299,9 +297,7 @@ class ScreenCommentFormTest extends \Codeception\Test\Unit
             verify('posY error message should be set', $model->errors)->hasKey('posY');
         });
 
-        $this->specify('Correct reply id attempt', function() use ($rel) {
-            $comment = ScreenComment::findOne(1001);
-
+        $this->specify('Success position update attempt', function() use ($rel, $comment) {
             $model = new ScreenCommentForm($rel, [
                 'scenario' => ScreenCommentForm::SCENARIO_POSITION_UPDATE,
                 'posX'     => 15,
@@ -316,6 +312,45 @@ class ScreenCommentFormTest extends \Codeception\Test\Unit
             verify('Model should not have any errors', $model->errors)->isEmpty();
             verify('Comment posX should match', $comment->posX)->equals(15);
             verify('Comment posY should match', $comment->posY)->equals(0);
+        });
+    }
+
+    /**
+     * `ScreenCommentForm::updateStatus()` method test.
+     */
+    public function testUpdateStatus()
+    {
+        $rel     = User::findOne(1001);
+        $comment = ScreenComment::findOne([
+            'id'     => 1001,
+            'status' => ScreenComment::STATUS_PENDING
+        ]);
+
+        $this->specify('Error status update attempt', function() use ($rel, $comment) {
+            $model = new ScreenCommentForm($rel, [
+                'scenario' => ScreenCommentForm::SCENARIO_STATUS_UPDATE,
+                'status'   => -1,
+            ]);
+
+            $result = $model->updateStatus($comment);
+
+            verify('Model should not update', $result)->false();
+            verify('status error message should be set', $model->errors)->hasKey('status');
+        });
+
+        $this->specify('Success status update attempt', function() use ($rel, $comment) {
+            $model = new ScreenCommentForm($rel, [
+                'scenario' => ScreenCommentForm::SCENARIO_STATUS_UPDATE,
+                'status'   => ScreenComment::STATUS_RESOLVED,
+            ]);
+
+            $result = $model->updateStatus($comment);
+
+            $comment->refresh();
+
+            verify('Model should update successfully', $result)->true();
+            verify('Model should not have any errors', $model->errors)->isEmpty();
+            verify('Comment status should match', $comment->status)->equals(ScreenComment::STATUS_RESOLVED);
         });
     }
 }

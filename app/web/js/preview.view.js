@@ -358,13 +358,15 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 PR.horizontalAlign($activeSlide);
 
                 self.commentsView.deselectCommentTarget();
-
                 self.commentsView.updateCommentsCounter();
+                self.commentsView.updateResolvedCommentsCounter();
+                self.commentsView.checkResolvedCommentsToggle();
 
                 PR.setQueryParam(self.VERSION_PARAM, activeVersionPos);
                 PR.setQueryParam(self.SCREEN_PARAM, $activeSlide.index() + 1);
 
                 self.updateSliderCaption();
+
             });
 
             $slider.slider({nav: false});

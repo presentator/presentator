@@ -272,7 +272,8 @@ $this->registerJs('
             ajaxCommentCreateUrl:         "' . Url::to(['screen-comments/ajax-create']) .'",
             ajaxCommentDeleteUrl:         "' . Url::to(['screen-comments/ajax-delete']) .'",
             ajaxCommentsListUrl:          "' . Url::to(['screen-comments/ajax-get-comments']) .'",
-            ajaxCommentPositionUpdateUrl: "' . Url::to(['screen-comments/ajax-position-update']) .'"
+            ajaxCommentPositionUpdateUrl: "' . Url::to(['screen-comments/ajax-position-update']) .'",
+            ajaxCommentStatusUpdateUrl:   "' . Url::to(['screen-comments/ajax-status-update']) .'"
         },
         versionViewSettings: {
             ajaxGetFormUrl:  "' . Url::to(['versions/ajax-get-form', 'projectId' => $project->id]) .'",

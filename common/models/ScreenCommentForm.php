@@ -18,6 +18,7 @@ class ScreenCommentForm extends Model
     const SCENARIO_PREVIEW         = 'scenarioPreview';
     const SCENARIO_USER            = 'scenarioUser';
     const SCENARIO_POSITION_UPDATE = 'scenarioPositionUpdate';
+    const SCENARIO_STATUS_UPDATE   = 'scenarioStatusUpdate';
 
     /**
      * @var integer
@@ -48,6 +49,11 @@ class ScreenCommentForm extends Model
      * @var float
      */
     public $posY;
+
+    /**
+     * @var integer
+     */
+    public $status;
 
     /**
      * @var User|Project
@@ -94,6 +100,8 @@ class ScreenCommentForm extends Model
             }],
             ['screenId', 'validateScreenId'],
             ['replyTo', 'validateReplyTo'],
+            ['status', 'required', 'on' => self::SCENARIO_STATUS_UPDATE],
+            ['status', 'in', 'range' => array_keys(ScreenComment::getStatusLabels())],
         ];
     }
 
@@ -114,6 +122,10 @@ class ScreenCommentForm extends Model
 
         $scenarios[self::SCENARIO_POSITION_UPDATE] = [
             'posX', 'posY',
+        ];
+
+        $scenarios[self::SCENARIO_STATUS_UPDATE] = [
+            'status',
         ];
 
         return $scenarios;
@@ -194,15 +206,39 @@ class ScreenCommentForm extends Model
     }
 
     /**
-     * Takes care for updating primary ScreenComment target position.
+     * Updates primary ScreenComment position coordinates.
      * @param  ScreenComment $comment
      * @return boolean
      */
     public function updatePosition(ScreenComment $comment)
     {
-        if ($this->validate() && !$comment->replyTo) {
+        if (
+            $this->scenario === self::SCENARIO_POSITION_UPDATE &&
+            $this->validate() &&
+            !$comment->replyTo
+        ) {
             $comment->posX = (int) $this->posX;
             $comment->posY = (int) $this->posY;
+
+            return $comment->save();
+        }
+
+        return false;
+    }
+
+    /**
+     * Updates primary ScreenComment status.
+     * @param  ScreenComment $comment
+     * @return boolean
+     */
+    public function updateStatus(ScreenComment $comment)
+    {
+        if (
+            $this->scenario === self::SCENARIO_STATUS_UPDATE &&
+            $this->validate() &&
+            !$comment->replyTo
+        ) {
+            $comment->status = $this->status;
 
             return $comment->save();
         }

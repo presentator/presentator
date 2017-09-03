@@ -227,6 +227,8 @@ ScreenView.prototype.init = function() {
         self.hotspotsView.deselectHotspot();
         self.commentsView.deselectCommentTarget();
         self.commentsView.updateCommentsCounter();
+        self.commentsView.updateResolvedCommentsCounter();
+        self.commentsView.checkResolvedCommentsToggle();
     });
 
     // Screen settings

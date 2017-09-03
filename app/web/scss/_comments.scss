@@ -29,35 +29,61 @@
     &.new {
         @include animation(scale-entrance 0.3s linear);
     }
-    &.remove-start {
-        @include animation(scale-exit 0.3s linear forwards);
-    }
     &.unread {
         background: $warningColor;
         @include animation(unread-comment-pulse 1.2s linear infinite);
-        &:hover {
-            background: darken($warningColor, 5%);
-        }
+        &:hover,
         &:active {
             background: darken($warningColor, 5%);
+        }
+    }
+    &.resolved {
+        background: $successColor;
+        @include hide;
+        @include box-shadow(0px 0px 0px 0px rgba($successColor, 0.3));
+        &:hover {
+            background: darken($successColor, 5%);
+            @include box-shadow(0px 0px 0px 3px rgba($successColor, 0.3));
+        }
+        &:active {
+            @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.3));
+        }
+        .show-resolved & {
+            @include show;
+            @include animation(scale-entrance 0.3s linear);
         }
     }
     &.selected {
         z-index: 3;
-        background: $successColor;
-        @include animation(none);
-        @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+        background: $dangerColor;
+        @include animation(none !important);
+        @include box-shadow(0px 0px 0px 5px rgba($dangerColor, 0.4));
         &:hover,
         &:active {
-            background: $successColor;
-            @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+            background: $dangerColor;
+            @include box-shadow(0px 0px 0px 5px rgba($dangerColor, 0.4));
         }
+        &.resolved {
+            background: $successColor;
+            @include show;
+            @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+            &:hover,
+            &:active {
+                background: $successColor;
+                @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
+            }
+        }
+    }
+    &.remove-start {
+        display: block;
+        @include show;
+        @include animation(scale-exit 0.3s linear forwards !important);
     }
     .hotspots-mode & {
         @include hide;
         @include pointer-events(none);
     }
-    .comments-mode & {
+    .comments-mode &:not(.resolved) {
         @include show;
     }
 }
@@ -72,8 +98,17 @@
     }
 }
 
+// Resolved comments toggle
+.resolved-comments-toggle-wrapper {
+    display: none;
+    .comments-mode & {
+        display: block;
+    }
+}
+
 /* ---- Comment popover ---- */
 .comment-popover {
+    $commentPadding: 20px;
     position: absolute;
     z-index: 3;
     left: 0;
@@ -83,9 +118,20 @@
     display: none;
     margin: 0 15px;
     @include pointer-events(none);
+
+    // Status bar
+    .status-bar {
+        padding: 10px $commentPadding;
+        background: $lighterGreyColor;
+        border-bottom: 1px solid $lightGreyColor;
+        .form-group {
+            margin: 0;
+            line-height: 1;
+        }
+    }
+
     // comment item
     .comment {
-        $commentPadding: 20px;
         $avatarSize: 40px;
         @extend %block;
         position: relative;
@@ -96,6 +142,9 @@
         @include transition(background 0.2s, box-shadow 1s);
         @include border-top-left-radius($baseRadius);
         @include border-top-right-radius($baseRadius);
+        &:last-child {
+            border-bottom: 0px;
+        }
         .content {
             margin-top: 15px;
         }
@@ -169,6 +218,7 @@
         position: relative;
         padding: 0 $btnWidth 0 20px;
         background: $lighterGreyColor;
+        border-top: 1px solid $lightGreyColor;
         @include border-radius($baseRadius);
         .reply-input {
             width: 100%;
@@ -180,6 +230,7 @@
             border: 0;
             border-bottom: 1px solid $lightGreyColor;
             @include box-shadow(none);
+            @include placeholder(lighten($txtColor, 15%));
             &:focus {
                 @include box-shadow(none);
                 color: $txtColor;
@@ -216,7 +267,7 @@
         @extend %block;
         overflow-x: hidden;
         overflow-y: auto;
-        max-height: 360px;
+        max-height: 358px;
         & ~ .reply-form {
             @include border-top-left-radius(0);
             @include border-top-right-radius(0);
@@ -237,5 +288,10 @@
         display: block;
         @include pointer-events(none);
         @include animation(popover-hide 0.2s forwards);
+    }
+    .preview-page & {
+        .comment-status-bar {
+            display: none !important;
+        }
     }
 }

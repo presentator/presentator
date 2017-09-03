@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Project;
 use common\models\Screen;
+use common\models\ScreenComment;
 use common\components\helpers\CFileHelper;
 
 /**
@@ -134,6 +135,15 @@ $hasScreens = !empty($activeVersion->screens);
 
             <div class="ctrl-wrapper ctrl-right">
                 <ul>
+                    <li class="ctrl-item resolved-comments-toggle-wrapper">
+                        <div class="form-group">
+                            <input type="checkbox" id="resolved_comments_toggle">
+                            <label for="resolved_comments_toggle">
+                                <span class="txt"><?= Yii::t('app', 'Show resolved') ?></span>
+                                (<span class="resolved-comments-counter">0</span>)
+                            </label>
+                        </div>
+                    </li>
                     <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-android-arrow-forward"></i></li>
                 </ul>
             </div>
@@ -234,7 +244,9 @@ $hasScreens = !empty($activeVersion->screens);
                             <!-- Comment targets -->
                             <div id="comment_targets_list" class="comment-targets-list">
                                 <?php foreach ($screen->primaryScreenComments as $comment): ?>
-                                    <div class="comment-target"
+                                    <?php $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED; ?>
+
+                                    <div class="comment-target <?= $isResolved ? 'resolved' : '' ?>"
                                         data-comment-id="<?= $comment->id ?>"
                                         style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
                                     ></div>

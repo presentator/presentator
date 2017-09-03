@@ -3,6 +3,13 @@ use yii\helpers\Html;
 ?>
 
 <div id="comment_popover" class="popover comment-popover">
+    <div class="status-bar comment-status-bar">
+        <div class="form-group form-group-sm check-success">
+            <input type="checkbox" id="resolve_comment_checkbox">
+            <label for="resolve_comment_checkbox"><?= Yii::t('app', 'mark as resolved') ?></label>
+        </div>
+    </div>
+
     <div id="comments_list" class="comments-wrapper"></div>
 
     <form id="comment_form" class="reply-form">

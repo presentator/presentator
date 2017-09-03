@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Project;
 use common\models\Screen;
+use common\models\ScreenComment;
 use common\components\helpers\CFileHelper;
 
 /**
@@ -57,6 +58,15 @@ $isGuest = Yii::$app->user->isGuest;
 
             <div class="ctrl-wrapper ctrl-right">
                 <ul>
+                    <li class="ctrl-item resolved-comments-toggle-wrapper">
+                        <div class="form-group">
+                            <input type="checkbox" id="resolved_comments_toggle">
+                            <label for="resolved_comments_toggle">
+                                <span class="txt"><?= Yii::t('app', 'Show resolved') ?></span>
+                                (<span class="resolved-comments-counter">0</span>)
+                            </label>
+                        </div>
+                    </li>
                     <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-android-arrow-forward"></i></li>
                 </ul>
             </div>
@@ -135,7 +145,11 @@ $isGuest = Yii::$app->user->isGuest;
                         <div id="comment_targets_list" class="comment-targets-list">
                             <?php foreach ($screen->screenComments as $comment): ?>
                                 <?php if (!$comment->replyTo): // we make use of the already eager loaded screenComments relation ?>
-                                    <div class="comment-target <?= (in_array($comment->id, $unreadCommentTargets)) ? 'unread' : '' ?>"
+                                    <?php
+                                        $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED;
+                                        $isUnread   = in_array($comment->id, $unreadCommentTargets);
+                                    ?>
+                                    <div class="comment-target <?= $isResolved ? 'resolved' : '' ?> <?= $isUnread ? 'unread' : '' ?>"
                                         data-comment-id="<?= $comment->id ?>"
                                         style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
                                     ></div>

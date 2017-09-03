@@ -276,7 +276,7 @@ input, textarea, select {
     background: #fff;
     @include border-radius($baseRadius);
     @include transition(color 0.2s, background 0.2s, border 0.2s, box-shadow 0.3s);
-    @include placeholder(lighten($greyColor, 0.2%));
+    @include placeholder(lighten($txtColor, 20%));
     &:focus {
         color: darken($txtColor, 20%);
         @include box-shadow(0px 2px 8px 0px rgba(44, 75, 137, 0.15));
@@ -367,6 +367,7 @@ input[type="radio"] {
         height: 1px;
         -webkit-appearance: none;
         & ~ label {
+            position: relative;
             display: inline-block;
             vertical-align: top;
             cursor: pointer;
@@ -388,7 +389,7 @@ input[type="radio"] {
                 border: 1px solid $greyColor;
                 background: #fff;
                 @include border-radius($baseRadius);
-                @include transition(background 0.2s, border 0.2s, transform 0.2s);
+                @include transition(background 0.2s, border 0.2s, transform 0.1s);
             }
             &:after {
                 content: "\f122";
@@ -454,6 +455,42 @@ input[type="radio"] {
         textarea {
             height: 80px;
         }
+        input[type="checkbox"],
+        input[type="radio"] {
+            & ~ label {
+                $checkSize: 18px;
+                min-height: $checkSize;
+                line-height: $checkSize;
+                padding-left: $checkSize + 8px;
+                &:before {
+                    width: $checkSize;
+                    height: $checkSize;
+                }
+                &:after {
+                    font-size: 12px;
+                    width: $checkSize;
+                    height: $checkSize;
+                    line-height: $checkSize;
+                }
+            }
+        }
+    }
+
+    // colored checkbox/radio
+    &.check-success {
+        @include form-group-check-coloring($successColor);
+    }
+    &.check-danger {
+        @include form-group-check-coloring($dangerColor);
+    }
+    &.check-warning {
+        @include form-group-check-coloring($warningColor);
+    }
+    &.check-primary {
+        @include form-group-check-coloring($primaryColor);
+    }
+    &.check-secondary {
+        @include form-group-check-coloring($secondaryColor);
     }
 
     // States

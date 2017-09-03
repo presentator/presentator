@@ -145,6 +145,8 @@ return [
                 'admin/screen-comments/ajax-get-comments'                             => 'screen-comments/ajax-get-comments',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-position-update' => 'screen-comments/ajax-position-update',
                 'admin/screen-comments/ajax-position-update'                          => 'screen-comments/ajax-position-update',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/screen-comments/ajax-status-update'   => 'screen-comments/ajax-status-update',
+                'admin/screen-comments/ajax-status-update'                            => 'screen-comments/ajax-status-update',
 
                 // Preview
                 '/<lang:\w{2}-\w{2}|\w{2}>/<slug:[\w\-]+>'                   => 'preview/view',

@@ -368,7 +368,7 @@ class ScreenCommentsCest
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
 
-        $I->amGoingTo('try with a invalid position values');
+        $I->amGoingTo('try with an invalid position values');
         $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
             'commentId' => 1001,
             'posX'      => 100,
@@ -397,5 +397,61 @@ class ScreenCommentsCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
         $I->seeRecord(ScreenComment::className(), ['id' => 1001, 'posX' => 200, 'posY' => 0]);
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxStatusUpdateFail(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely update a screen comments status');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-status-update'], ['commentId' => 1001], false);
+
+        $I->amGoingTo('try with a primary comment from a screen not owned by the logged user');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
+            'commentId' => 1006,
+            'status'    => ScreenComment::STATUS_PENDING,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with a secondary/reply comment');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
+            'commentId' => 1003,
+            'status'    => ScreenComment::STATUS_PENDING,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with an invalid status value');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
+            'commentId' => 1001,
+            'status'    => -1
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxStatusUpdateSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully update a screen comment status');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-status-update'], ['commentId' => 1001], false);
+
+        $I->amGoingTo('change primary comment status from pending to resolved');
+        $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
+            'commentId' => 1001,
+            'status'    => ScreenComment::STATUS_RESOLVED,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeRecord(ScreenComment::className(), ['id' => 1001, 'status' => ScreenComment::STATUS_RESOLVED]);
     }
 }
