@@ -39,7 +39,6 @@
     }
     &.resolved {
         background: $successColor;
-        @include hide;
         @include box-shadow(0px 0px 0px 0px rgba($successColor, 0.3));
         &:hover {
             background: darken($successColor, 5%);
@@ -47,10 +46,6 @@
         }
         &:active {
             @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.3));
-        }
-        .show-resolved & {
-            @include show;
-            @include animation(scale-entrance 0.3s linear);
         }
     }
     &.selected {
@@ -65,7 +60,6 @@
         }
         &.resolved {
             background: $successColor;
-            @include show;
             @include box-shadow(0px 0px 0px 5px rgba($successColor, 0.4));
             &:hover,
             &:active {
@@ -83,8 +77,15 @@
         @include hide;
         @include pointer-events(none);
     }
-    .comments-mode &:not(.resolved) {
+    .comments-mode & {
         @include show;
+        &.resolved {
+            @include hide;
+        }
+    }
+    .comments-mode.show-resolved &.resolved {
+        @include show;
+        @include animation(scale-entrance 0.3s linear);
     }
 }
 // Targets list
