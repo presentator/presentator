@@ -225,14 +225,6 @@ ScreenCommentsView.prototype.init = function() {
             self.showResolvedComments();
         }
     });
-    // self.$document.on('change', self.settings.resolvedCommentsToggle, function(e) {
-    //     e.preventDefault();
-    //     if ($(this).is(':checked')) {
-    //         self.showResolvedComments();
-    //     } else {
-    //         self.hideResolvedComments();
-    //     }
-    // });
 };
 
 /**
@@ -485,14 +477,13 @@ ScreenCommentsView.prototype.showResolvedComments = function() {
 ScreenCommentsView.prototype.hideResolvedComments = function() {
     var self = this;
 
+    self.$body.removeClass('show-resolved');
     PR.cookies.setItem(self.RESOLVED_COMMENTS_TOGGLE_STORAGE_KEY, 0);
     $(self.settings.resolvedCommentsToggle).prop('checked', false);
 
     this.getActiveScreenSliderItem().find(this.settings.commentTarget + '.resolved')
         .addClass('remove-start').stop(true, true).delay(350).queue(function (next) {
             $(this).removeClass('remove-start');
-
-            self.$body.removeClass('show-resolved');
 
             self.updateCommentsCounter();
 
