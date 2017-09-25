@@ -7,7 +7,8 @@ use yii\helpers\Url;
  * @var $newComments integer
  */
 
-$newComments = isset($newComments) ? $newComments : 0;
+$newComments       = isset($newComments) ? $newComments : 0;
+$hasFeaturedScreen = !empty($model->featuredScreen);
 ?>
 <div class="box">
     <div class="content">
@@ -26,8 +27,8 @@ $newComments = isset($newComments) ? $newComments : 0;
                 <div class="item"><?= Yii::t('app', 'Screens') ?>: <?= count($model->screens) ?></div>
             </div>
         </div>
-        <figure class="featured">
-            <?php if ($model->featuredScreen): ?>
+        <figure class="featured <?= !$hasFeaturedScreen ? 'no-image' : '' ?>">
+            <?php if ($hasFeaturedScreen): ?>
                 <img data-src="<?= $model->featuredScreen->getThumbUrl('medium') ?>" class="lazy-load" data-priority="high" alt="<?= Html::encode($model->featuredScreen->title) ?>">
             <?php endif ?>
 

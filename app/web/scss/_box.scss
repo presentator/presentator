@@ -64,9 +64,11 @@
             font-family: $iconFont;
             @include animation(primary-color-pulse 1.5s infinite linear);
         }
+        &.no-image:after {
+            @include animation(none);
+        }
         &.loaded:after {
             display: none;
-            @include animation(none);
         }
         @include v-align-helper;
         img {
