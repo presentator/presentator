@@ -5,6 +5,10 @@ return [
     'showCredits'      => true,
     'maxUploadSize'    => 15,
 
+    // whether to purge processed MailQueue records on success
+    // @see `console\controllers\MailsController::actionProcess()`
+    'purgeSentMails' => true,
+
     // short/url lang code => full lang code
     'languages' => [
         'en'    => 'en-US',

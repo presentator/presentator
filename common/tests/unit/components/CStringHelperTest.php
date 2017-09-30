@@ -48,4 +48,42 @@ class CStringHelperTest extends \Codeception\Test\Unit
             verify(CStringHelper::autoTypecast('test'))->equals('test');
         });
     }
+
+    /**
+     * `CStringHelper::parseAddresses()` method test.
+     */
+    public function testParseAddresses()
+    {
+        $this->specify('Parse an empty addresses list string', function() {
+            $result = CStringHelper::parseAddresses('');
+
+            verify('No addresses should be found', $result)->equals([]);
+        });
+
+        $this->specify('Parse single address with name', function() {
+            $result = CStringHelper::parseAddresses('John Doe <john.doe@presentator.io>');
+
+            verify('Addresses count should match', $result)->count(1);
+            verify('Addresses count should match', $result)->hasKey('john.doe@presentator.io');
+            verify('Addresses count should match', $result['john.doe@presentator.io'])->equals('John Doe');
+        });
+
+        $this->specify('Parse single address without name', function() {
+            $result = CStringHelper::parseAddresses('test@presentator.io');
+
+            verify('Addresses count should match', $result)->count(1);
+            verify('Addresses count should match', $result)->hasKey('test@presentator.io');
+            verify('Addresses count should match', $result['test@presentator.io'])->equals(null);
+        });
+
+        $this->specify('Parse addresses list string with 2_ addresses', function() {
+            $result = CStringHelper::parseAddresses('John Doe <john.doe@presentator.io>, test@presentator.io');
+
+            verify('Addresses count should match', $result)->count(2);
+            verify('Addresses count should match', $result)->hasKey('john.doe@presentator.io');
+            verify('Addresses count should match', $result)->hasKey('test@presentator.io');
+            verify('Addresses count should match', $result['john.doe@presentator.io'])->equals('John Doe');
+            verify('Addresses count should match', $result['test@presentator.io'])->equals(null);
+        });
+    }
 }

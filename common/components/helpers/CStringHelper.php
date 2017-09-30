@@ -36,4 +36,49 @@ class CStringHelper extends StringHelper
 
         return $value;
     }
+
+    /**
+     * Parses an address string as defined in RFC2822.
+     * NB! This method doesn't check whether the address is valid or not.
+     * For more complete RFC2822 coverage see `imap_rfc822_parse_adrlist`.
+     *
+     * @example
+     * ```php
+     * CStringHelper::parseAddresses('John Doe <john.doe@presentator.io>, test@presentator.io');
+     *
+     * // sample result:
+     * [
+     *     'john.doe@presentator.io' => 'John Doe',
+     *     'test@presentator.io' => null
+     * ]
+     * ```
+     * @param  string $addressesString
+     * @return array
+     */
+    public static function parseAddresses($addressesString)
+    {
+        $parsed    = [];
+        $addresses = explode(',', $addressesString);
+
+
+        foreach ($addresses as $address) {
+            $split = explode(' <', trim($address));
+
+            if (trim($split[0]) === '') {
+                continue;
+            }
+
+            if (!empty($split[1])) { // eg. John Doe <john.doe@presentator.io>
+                $name = trim($split[0]);
+                $addr = rtrim($split[1], '>');
+            } else { // eg. test@presentator.io
+                $name = null;
+                $addr = $split[0];
+            }
+
+            $parsed[$addr] = $name;
+        }
+
+        return $parsed;
+    }
 }

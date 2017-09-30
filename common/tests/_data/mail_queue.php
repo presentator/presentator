@@ -1,0 +1,53 @@
+<?php
+use \common\models\MailQueue;
+
+return [
+    [
+        'id'        => 1001,
+        'from'      => null,
+        'to'        => 'test@presentator.io',
+        'cc'        => null,
+        'bcc'       => null,
+        'subject'   => 'Test subject',
+        'body'      => '<p>Test</p>',
+        'status'    => MailQueue::STATUS_PENDING,
+        'createdAt' => 1488526395,
+        'updatedAt' => 1488526395,
+    ],
+    [
+        'id'        => 1002,
+        'from'      => null,
+        'to'        => 'test@presentator.io',
+        'cc'        => null,
+        'bcc'       => null,
+        'subject'   => 'Test subject',
+        'body'      => '<p>Test</p>',
+        'status'    => MailQueue::STATUS_SENT,
+        'createdAt' => 1488526394,
+        'updatedAt' => 1488526394,
+    ],
+    [
+        'id'        => 1003,
+        'from'      => 'John Doe <test1@presentator.io>',
+        'to'        => 'Lorem Ipsum <test2@presentator.io>',
+        'cc'        => 'testCc@presentator.io, CC2 <testCc2@presentator.io>',
+        'bcc'       => 'testBcc@presentator.io',
+        'subject'   => 'Test subject',
+        'body'      => '<p>Test</p>',
+        'status'    => MailQueue::STATUS_PENDING,
+        'createdAt' => 1488526391,
+        'updatedAt' => 1488526391,
+    ],
+    [
+        'id'        => 1004,
+        'from'      => 'John Doe <test1@presentator.io>',
+        'to'        => 'Lorem Ipsum <test2@presentator.io>',
+        'cc'        => 'testCc@presentator.io',
+        'bcc'       => null,
+        'subject'   => 'Test subject',
+        'body'      => '<p>Lorem Ipsum</p>',
+        'status'    => MailQueue::STATUS_SENT,
+        'createdAt' => 1488526391,
+        'updatedAt' => 1488526391,
+    ],
+];
