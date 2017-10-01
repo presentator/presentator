@@ -53,6 +53,11 @@ class UserForm extends Model
     public $notifications;
 
     /**
+     * @var boolean
+     */
+    public $mentions;
+
+    /**
      * @var User
      */
     private $user;
@@ -83,6 +88,7 @@ class UserForm extends Model
             'newPassword'        => Yii::t('app', 'New password'),
             'newPasswordConfirm' => Yii::t('app', 'New password confirmation'),
             'notifications'      => Yii::t('app', 'Receive an email when a new screen comment is added'),
+            'mentions'           => Yii::t('app', 'Receive an email when someone mentions you'),
         ];
     }
 
@@ -92,7 +98,7 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            [['changePassword', 'notifications'], 'boolean'],
+            [['changePassword', 'notifications', 'mentions'], 'boolean'],
             ['newPassword', 'string', 'min' => 4, 'max' => 255],
             ['newPasswordConfirm', 'compare', 'compareAttribute'=>'newPassword', 'message'=> Yii::t('app', "Passwords don't match")],
             [['firstName', 'lastName'], 'filter', 'filter' => function ($value) {
@@ -136,11 +142,12 @@ class UserForm extends Model
      */
     public function loadUser(User $user)
     {
-        $this->user = $user;
+        $this->user          = $user;
         $this->firstName     = $this->user->firstName;
         $this->lastName      = $this->user->lastName;
         $this->email         = $this->user->email;
         $this->notifications = $this->user->getSetting(User::NOTIFICATIONS_SETTING_KEY, true);
+        $this->mentions      = $this->user->getSetting(User::MENTIONS_SETTING_KEY, true);
     }
 
     /**
@@ -154,6 +161,7 @@ class UserForm extends Model
             $user->firstName = $this->firstName;
             $user->lastName  = $this->lastName;
             $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
+            $user->setSetting(User::MENTIONS_SETTING_KEY, $this->mentions ? true : false);
 
             if ($this->changePassword) {
                 $user->setPassword($this->newPassword);

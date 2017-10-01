@@ -43,6 +43,11 @@ class UserForm extends Model
     public $notifications = true;
 
     /**
+     * @var boolean
+     */
+    public $mentions = true;
+
+    /**
      * @var User
      */
     private $user;
@@ -65,7 +70,7 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            [['notifications'], 'boolean'],
+            [['notifications', 'mentions'], 'boolean'],
             ['newPassword', 'string', 'min' => 4, 'max' => 255],
             ['newPasswordConfirm', 'compare', 'compareAttribute'=>'newPassword', 'message'=> Yii::t('app', "Passwords don't match")],
             [['firstName', 'lastName'], 'filter', 'filter' => function ($value) {
@@ -115,6 +120,7 @@ class UserForm extends Model
             $user->firstName = $this->firstName;
             $user->lastName  = $this->lastName;
             $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
+            $user->setSetting(User::MENTIONS_SETTING_KEY, $this->mentions ? true : false);
 
             if ($this->newPassword) {
                 $user->setPassword($this->newPassword);

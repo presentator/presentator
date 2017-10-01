@@ -56,6 +56,12 @@ $this->title = Yii::t('app', 'Settings');
                 </div>
             </div>
 
+            <div class="row">
+                <div class="cols-12">
+                    <?= $form->field($userForm, 'mentions')->checkbox() ?>
+                </div>
+            </div>
+
             <h6 class="faded"><?= Yii::t('app', 'Security') ?></h6>
             <?= $form->field($userForm, 'changePassword')->checkbox(['data-toggle' => '#change_password_block']) ?>
             <div class="row" id="change_password_block">

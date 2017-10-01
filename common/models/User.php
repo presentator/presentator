@@ -38,6 +38,7 @@ class User extends CActiveRecord implements IdentityInterface
     const THUMB_QUALITY = 100;
 
     const NOTIFICATIONS_SETTING_KEY = 'notifications';
+    const MENTIONS_SETTING_KEY      = 'mentions';
 
     /**
      * @inheritdoc
