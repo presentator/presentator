@@ -11,6 +11,7 @@ use common\models\ScreenComment;
 use common\models\ProjectPreview;
 use common\models\UserProjectRel;
 use common\tests\fixtures\UserFixture;
+use common\tests\fixtures\UserSettingFixture;
 use common\tests\fixtures\ProjectFixture;
 use common\tests\fixtures\VersionFixture;
 use common\tests\fixtures\ScreenFixture;
@@ -42,6 +43,10 @@ class ProjectTest extends \Codeception\Test\Unit
                 'class'    => UserFixture::className(),
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
+            'userSetting' => [
+                'class'    => UserSettingFixture::className(),
+                'dataFile' => codecept_data_dir() . 'user_setting.php',
+            ],
             'project' => [
                 'class'    => ProjectFixture::className(),
                 'dataFile' => codecept_data_dir() . 'project.php',
@@ -70,6 +75,31 @@ class ProjectTest extends \Codeception\Test\Unit
     }
 
     /**
+     * Helper to check mentions result items schema.
+     * @param array $result
+     */
+    protected function checkMentionResultItems(array $result)
+    {
+        // check result item fields
+        foreach ($result as $item) {
+            verify('Each result item should have an email key', $item)->hasKey('email');
+            verify('Each result item should have a firstName key', $item)->hasKey('firstName');
+            verify('Each result item should have a lastName key', $item)->hasKey('lastName');
+            verify('Each result item should have a userId key', $item)->hasKey('userId');
+
+            // if the user is guest
+            $user = User::findOne(['email' => $item['email']]);
+            if (!$user) {
+                verify('userId should not be set for guests', $item['userId'])->null();
+            } else {
+                verify('userId should match with the user one', $item['userId'])->equals($user['id']);
+                verify('firstName should match with the user one', $item['firstName'])->equals($user['firstName']);
+                verify('lastName should match with the user one', $item['lastName'])->equals($user['lastName']);
+            }
+        }
+    }
+
+    /**
      * `Project::setPassword()` method test.
      */
     public function testSetPassword()
@@ -87,11 +117,11 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1002);
 
-        $this->specify('INVALID project password', function() use ($project) {
+        $this->specify('INVALID project password', function () use ($project) {
             verify($project->validatePassword('invalid-password'))->false();
         });
 
-        $this->specify('VALID project password', function() use ($project) {
+        $this->specify('VALID project password', function () use ($project) {
             verify($project->validatePassword('123456'))->true();
         });
     }
@@ -495,17 +525,17 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1001);
 
-        $this->specify('Nonexisting version', function() use ($project) {
+        $this->specify('Nonexisting version', function () use ($project) {
             $version = $project->findVersionById(0);
             verify($version)->null();
         });
 
-        $this->specify('Existing version from a different project', function() use ($project) {
+        $this->specify('Existing version from a different project', function () use ($project) {
             $version = $project->findVersionById(1003);
             verify($version)->null();
         });
 
-        $this->specify('Existing version from the current project', function() use ($project) {
+        $this->specify('Existing version from the current project', function () use ($project) {
             $version = $project->findVersionById(1001);
             verify($version)->isInstanceOf(Version::className());
         });
@@ -518,22 +548,22 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1001);
 
-        $this->specify('Valid ActiveQuery object', function() use ($project) {
+        $this->specify('Valid ActiveQuery object', function () use ($project) {
             $query = $project->findScreensQuery([1001, 1002]);
             verify($query)->isInstanceOf(ActiveQuery::className());
         });
 
-        $this->specify('Nonexisting screen(s)', function() use ($project) {
+        $this->specify('Nonexisting screen(s)', function () use ($project) {
             $screens = $project->findScreensQuery(12345)->all();
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens from a different project', function() use ($project) {
+        $this->specify('Existing screens from a different project', function () use ($project) {
             $screens = $project->findScreensQuery([1003])->all();
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens from the current project', function() use ($project) {
+        $this->specify('Existing screens from the current project', function () use ($project) {
             $screens = $project->findScreensQuery([1001, 1002])->all();
             verify(count($screens))->equals(2);
         });
@@ -547,17 +577,17 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1001);
 
-        $this->specify('Nonexisting screen', function() use ($project) {
+        $this->specify('Nonexisting screen', function () use ($project) {
             $screen = $project->findScreenById(0);
             verify($screen)->null();
         });
 
-        $this->specify('Existing screen from a different project', function() use ($project) {
+        $this->specify('Existing screen from a different project', function () use ($project) {
             $screen = $project->findScreenById(1003);
             verify($screen)->null();
         });
 
-        $this->specify('Existing screen from the current project', function() use ($project) {
+        $this->specify('Existing screen from the current project', function () use ($project) {
             $screen = $project->findScreenById(1001);
             verify($screen)->isInstanceOf(Screen::className());
         });
@@ -571,17 +601,17 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1001);
 
-        $this->specify('Nonexisting comment', function() use ($project) {
+        $this->specify('Nonexisting comment', function () use ($project) {
             $comment = $project->findScreenCommentById(0);
             verify($comment)->null();
         });
 
-        $this->specify('Existing comment from a screen owned by a different user', function() use ($project) {
+        $this->specify('Existing comment from a screen owned by a different user', function () use ($project) {
             $comment = $project->findScreenCommentById(1004);
             verify($comment)->null();
         });
 
-        $this->specify('Existing comment from a screen owned by the current user', function() use ($project) {
+        $this->specify('Existing comment from a screen owned by the current user', function () use ($project) {
             $comment = $project->findScreenCommentById(1001);
             verify($comment)->isInstanceOf(ScreenComment::className());
         });
@@ -595,15 +625,53 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1001);
 
-        $this->specify('Nonexisting ProjectPreview model', function() use ($project) {
+        $this->specify('Nonexisting ProjectPreview model', function () use ($project) {
             $preview = $project->findPreviewByType('invalid_type');
             verify($preview)->null();
         });
 
-        $this->specify('Existing ProjectPreview model', function() use ($project) {
+        $this->specify('Existing ProjectPreview model', function () use ($project) {
             $preview = $project->findPreviewByType(ProjectPreview::TYPE_VIEW_AND_COMMENT);
-            verify('The model must be instance of ProjectPreview', $preview)->isInstanceOf(ProjectPreview::className());
+            verify('The model must be an instance of ProjectPreview', $preview)->isInstanceOf(ProjectPreview::className());
             verify('The model must has the correct type', $preview->type)->equals(ProjectPreview::TYPE_VIEW_AND_COMMENT);
+        });
+    }
+
+    /**
+     * `Project::findAllCommenters()` method test.
+     */
+    public function testFindAllCommenters()
+    {
+        $project = Project::findOne(1003);
+
+        $this->specify('With mention user setting check', function () use ($project) {
+            $result = $project->findAllCommenters();
+
+
+            verify('The result should be an array', is_array($result))->true();
+            verify('Result count should match', $result)->count(2);
+            verify('Guest email should exist', $result)->hasKey('loremipsum@presentator.io');
+            verify('Registered User email should exist', $result)->hasKey('test3@presentator.io');
+            $this->checkMentionResultItems($result);
+        });
+
+        $this->specify('Without mention user setting check', function () use ($project) {
+            $result = $project->findAllCommenters(false);
+
+            verify('The result should be an array', is_array($result))->true();
+            verify('Result count should match', $result)->count(3);
+            verify('Guest email should exist', $result)->hasKey('loremipsum@presentator.io');
+            verify('Registered User email should exist', $result)->hasKey('test3@presentator.io');
+            verify('Registered User email should exist', $result)->hasKey('test5@presentator.io');
+            $this->checkMentionResultItems($result);
+        });
+
+        $this->specify('Try to find all commenters for a project without any comments', function () {
+            $project = Project::findOne(1004);
+            $result = $project->findAllCommenters();
+
+            verify('The result should be an array', is_array($result))->true();
+            verify('Should not found any mention users', $result)->count(0);
         });
     }
 }

@@ -201,7 +201,7 @@ class UserTest extends \Codeception\Test\Unit
     public function testGetUserSettings()
     {
         $this->specify('User WITHOUT related UserSetting models', function() {
-            $user  = User::findOne(1005);
+            $user  = User::findOne(1006);
             $query = $user->getUserSettings();
 
             verify($query)->isInstanceOf(ActiveQuery::className());
@@ -215,7 +215,7 @@ class UserTest extends \Codeception\Test\Unit
 
             verify($query)->isInstanceOf(ActiveQuery::className());
             verify('Should be hasMany relation', $query->multiple)->true();
-            verify('Query result should not be empty array', $user->userSettings)->count(1);
+            verify('Query result should not be empty array', $user->userSettings)->count(2);
             foreach ($user->userSettings as $model) {
                 verify($model)->isInstanceOf(UserSetting::className());
             }
@@ -360,9 +360,9 @@ class UserTest extends \Codeception\Test\Unit
 
             verify($query)->isInstanceOf(ActiveQuery::className());
             verify('Should be hasMany relation', $query->multiple)->true();
-            verify('Query result should not be empty array', $user->screenComments)->count(3);
+            verify('Query result should not be empty array', $user->screenComments)->count(4);
 
-            $validIds = [1004, 1005, 1006];
+            $validIds = [1004, 1005, 1006, 1007];
             foreach ($user->screenComments as $model) {
                 verify($model)->isInstanceOf(ScreenComment::className());
                 verify('Should be a comment owned by the user', in_array($model->id, $validIds))->true();

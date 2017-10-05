@@ -80,4 +80,54 @@ trait ProjectQueryTrait
             ])
             ->one();
     }
+
+    /**
+     * Returns array list with info for all project commenters (email, first name, etc.).
+     * @param  boolean $checkMentionSetting Whether to exclude registered users with uncheck mention setting.
+     * @return array
+     */
+    public function findAllCommenters($checkMentionSetting = true)
+    {
+        $query = ScreenComment::find()
+            ->distinct()
+            ->select([
+                'email'     => ScreenComment::tableName() . '.from',
+                'firstName' => User::tableName() . '.firstName',
+                'lastName'  => User::tableName() . '.lastName',
+                'userId'    => User::tableName() . '.id',
+            ])
+            ->innerJoinWith('screen.project', false)
+            ->leftJoin(
+                User::tableName(),
+                sprintf('%s.email = %s.from', User::tableName(), ScreenComment::tableName())
+            )
+            ->where([
+                Project::tableName() . '.id'   => $this->id,
+            ])
+            ->indexBy('email')
+        ;
+
+        if ($checkMentionSetting) {
+            $query->leftJoin(
+                UserSetting::tableName(),
+                sprintf('%s.userId = %s.id', UserSetting::tableName(), User::tableName())
+            )
+            ->andWhere([
+                'or',
+                [
+                    // registered users
+                    UserSetting::tableName() . '.settingName'  => User::MENTIONS_SETTING_KEY,
+                    UserSetting::tableName() . '.settingValue' => 'true',
+                ],
+                [
+                    // guests
+                    UserSetting::tableName() . '.settingName'  => null,
+                    UserSetting::tableName() . '.settingValue' => null,
+                ],
+            ]);
+        }
+
+        return $query->asArray()
+            ->all();
+    }
 }
