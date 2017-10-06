@@ -365,8 +365,6 @@ class Project extends CActiveRecord
         return false;
     }
 
-    /* Emails
-    --------------------------------------------------------------- */
     /**
      * Sends an information email to an user when is assigned as a project administrator.
      * @param  User $user
