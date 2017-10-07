@@ -1,5 +1,5 @@
 <?php
-namespace common\tests\unit\components;
+namespace common\tests\unit\components\helpers;
 
 use Yii;
 use common\components\helpers\GeoIPHelper;

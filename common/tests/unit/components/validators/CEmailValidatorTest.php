@@ -1,5 +1,5 @@
 <?php
-namespace common\tests\unit\components;
+namespace common\tests\unit\components\validators;
 
 use common\components\validators\CEmailValidator;
 

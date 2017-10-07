@@ -1,5 +1,5 @@
 <?php
-namespace common\tests\unit\components;
+namespace common\tests\unit\components\helpers;
 
 use common\components\helpers\CStringHelper;
 
