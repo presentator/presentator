@@ -2,9 +2,10 @@
 namespace common\tests\unit\models;
 
 use Yii;
+use Swift_Message;
 use common\models\MailQueue;
 use common\tests\fixtures\MailQueueFixture;
-use common\components\helpers\CStringHelper;
+use common\components\helpers\EmailHelper;
 
 /**
  * MailQueue AR model tests.
@@ -31,6 +32,132 @@ class MailQueueTest extends \Codeception\Test\Unit
                 'dataFile' => codecept_data_dir() . 'mail_queue.php',
             ],
         ]);
+    }
+
+    /**
+     * Helper method to check whether an email message has valid mail queue data.
+     *
+     * @param MailQueue     $model   MailQueue model to check
+     * @param Swift_Message $message Message instance
+     */
+    protected function checkMailQueueMessage(MailQueue $model, Swift_Message $message)
+    {
+        $to    = EmailHelper::stringToArray($model->to);
+        $from  = EmailHelper::stringToArray($model->from);
+        $cc    = EmailHelper::stringToArray($model->cc);
+        $bcc   = EmailHelper::stringToArray($model->bcc);
+
+        foreach ($to as $email => $name) {
+            verify('Mail sender should match', $message->getTo())->hasKey($email);
+            verify('Mail sender name should match', $message->getTo()[$email])->equals($name);
+        }
+
+        if (!$from) {
+            verify('Mail sender should match', $message->getFrom())->hasKey(Yii::$app->params['noreplyEmail']);
+            verify('Mail sender name should match', $message->getFrom()[Yii::$app->params['noreplyEmail']])->equals('Presentator');
+        } else {
+            foreach ($from as $email => $name) {
+                verify('Mail sender should match', $message->getFrom())->hasKey($email);
+                verify('Mail sender name should match', $message->getFrom()[$email])->equals($name);
+            }
+        }
+
+        if (!$cc) {
+            verify('Mail cc should not be set', $message->getCc())->isEmpty();
+        } else {
+            foreach ($cc as $email => $name) {
+                verify('Mail cc should match', $message->getCc())->hasKey($email);
+                verify('Mail cc name should match', $message->getCc()[$email])->equals($name);
+            }
+        }
+
+        if (!$bcc) {
+            verify('Mail bcc should not be set', $message->getBcc())->isEmpty();
+        } else {
+            foreach ($bcc as $email => $name) {
+                verify('Mail bcc should match', $message->getBcc())->hasKey($email);
+                verify('Mail bcc name should match', $message->getBcc()[$email])->equals($name);
+            }
+        }
+
+        verify('Mail subject should match', $message->getSubject())->equals($model->subject);
+
+        $body         = $message->getBody();
+        $bodyChildren = $message->getChildren();
+        if (empty($body) && !empty($bodyChildren)) {
+            $parts = [];
+
+            foreach ($bodyChildren as $child) {
+                $parts[$child->getContentType()] = $child->getBody();
+            }
+
+            if (!empty($parts['text/html'])) {
+                $body = $parts['text/html'];
+            } elseif (!empty($parts['text/plain'])) {
+                $body = $parts['text/plain'];
+            }
+        }
+
+        verify('Mail body should match', $body)->equals($model->body);
+    }
+
+    /**
+     * Test model validation rules.
+     */
+    public function testValidationRules()
+    {
+        $this->specify('Validate required fields', function() {
+            $model = new MailQueue();
+
+            $result = $model->save();
+
+            verify('Save method should not succeed', $result)->false();
+            verify('From error message should not be set', $model->errors)->hasntKey('from');
+            verify('Cc error message should not be set', $model->errors)->hasntKey('cc');
+            verify('Bcc error message should not be set', $model->errors)->hasntKey('bcc');
+            verify('Status error message should not be set', $model->errors)->hasntKey('status');
+            verify('To error message should be set', $model->errors)->hasKey('to');
+            verify('Subject error message should be set', $model->errors)->hasKey('subject');
+            verify('Body error message should be set', $model->errors)->hasKey('body');
+        });
+
+        $this->specify('Validate field values format', function() {
+            $model          = new MailQueue();
+            $model->to      = 'invalid_email, test@presentator.io';
+            $model->from    = '123456@presentator';
+            $model->cc      = 'Lorem Ipsum test@presentator.io';
+            $model->bcc     = 'John Doe <test@presentator.io>, invalid_email';
+            $model->status  = -1;
+            $model->subject = 'test subject';
+            $model->body    = 'test body';
+
+            $result = $model->save();
+
+            verify('Save method should not succeed', $result)->false();
+            verify('From error message should be set', $model->errors)->hasKey('from');
+            verify('Cc error message should be set', $model->errors)->hasKey('cc');
+            verify('Bcc error message should be set', $model->errors)->hasKey('bcc');
+            verify('Status error message should be set', $model->errors)->hasKey('status');
+            verify('To error message should be set', $model->errors)->hasKey('to');
+            verify('Subject error message should not be set', $model->errors)->hasntKey('subject');
+            verify('Body error message should not be set', $model->errors)->hasntKey('body');
+        });
+
+        $this->specify('Success create attempt', function() {
+            $model          = new MailQueue();
+            $model->to      = 'test@presentator.io';
+            $model->from    = 'test1@presentator.io, John Doe <test2@presentator.io>';
+            $model->cc      = 'test3@presentator.io';
+            $model->bcc     = 'Lorem Ipsum <test4@presentator.io>';
+            $model->status  = MailQueue::STATUS_PENDING;
+            $model->subject = 'test subject';
+            $model->body    = 'test body';
+
+            $result = $model->save();
+
+            verify('Save method should succeed', $result)->true();
+            verify('Model errors should not be set', $model->errors)->isEmpty();
+        });
     }
 
     /**
@@ -203,52 +330,87 @@ class MailQueueTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Helper method to check whether an email message has valid mail queue data.
-     *
-     * @param integer $model   MailQueue model to check
-     * @param string  $message
+     * `MailQueue::createByMessage()` method test.
      */
-    protected function checkMailQueueMessage(MailQueue $model, $message)
+    public function testCreateByMessage()
     {
-        $to    = CStringHelper::parseAddresses($model->to);
-        $from  = CStringHelper::parseAddresses($model->from);
-        $cc    = CStringHelper::parseAddresses($model->cc);
-        $bcc   = CStringHelper::parseAddresses($model->bcc);
+        $this->specify('Succcessfully create MailQueue record from a Message instance with text body', function() {
+            $message = Yii::$app->mailer->compose()
+                ->setFrom(['test@presentator.io' => null])
+                ->setTo([
+                    'test1@presentator.io' => 'John Doe',
+                    'test2@presentator.io' => null,
+                    'test3@presentator.io' => 'Lorem Ipsum',
+                ])
+                ->setSubject('Test text body subject')
+                ->setTextBody('Test text body')
+            ;
 
-        foreach ($to as $email => $name) {
-            verify('Mail sender should match', $message->getTo())->hasKey($email);
-            verify('Mail sender name should match', $message->getTo()[$email])->equals($name);
-        }
+            $beforeMailQueueCount = MailQueue::find()->count();
+            $result               = MailQueue::createByMessage($message);
+            $afterMailQueueCount  = MailQueue::find()->count();
 
-        if (!$from) {
-            verify('Mail sender should match', $message->getFrom())->hasKey(Yii::$app->params['noreplyEmail']);
-            verify('Mail sender name should match', $message->getFrom()[Yii::$app->params['noreplyEmail']])->equals('Presentator');
-        } else {
-            foreach ($from as $email => $name) {
-                verify('Mail sender should match', $message->getFrom())->hasKey($email);
-                verify('Mail sender name should match', $message->getFrom()[$email])->equals($name);
-            }
-        }
+            verify('The create method should succeed', $result)->true();
+            verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
 
-        if (!$cc) {
-            verify('Mail cc should not be set', $message->getCc())->isEmpty();
-        } else {
-            foreach ($cc as $email => $name) {
-                verify('Mail cc should match', $message->getCc())->hasKey($email);
-                verify('Mail cc name should match', $message->getCc()[$email])->equals($name);
-            }
-        }
+            $model = MailQueue::findOne(['subject' => 'Test text body subject']);
+            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+        });
 
-        if (!$bcc) {
-            verify('Mail bcc should not be set', $message->getBcc())->isEmpty();
-        } else {
-            foreach ($bcc as $email => $name) {
-                verify('Mail bcc should match', $message->getBcc())->hasKey($email);
-                verify('Mail bcc name should match', $message->getBcc()[$email])->equals($name);
-            }
-        }
+        $this->specify('Succcessfully create MailQueue record from a Message instance with html body', function() {
+            $message = Yii::$app->mailer->compose()
+                ->setFrom([
+                    'test@presentator.io' => null,
+                ])
+                ->setTo([
+                    'test1@presentator.io' => null,
+                ])
+                ->setCc([
+                    'test2@presentator.io' => 'Lorem Ipsum',
+                ])
+                ->setBcc([
+                    'test3@presentator.io' => 'John Doe',
+                ])
+                ->setSubject('Test html body subject')
+                ->setHtmlBody('<p>Test html body</p>')
+            ;
 
-        verify('Mail subject should match', $message->getSubject())->equals($model->subject);
-        verify('Mail body should match', $message->getBody())->equals($model->body);
+            $beforeMailQueueCount = MailQueue::find()->count();
+            $result               = MailQueue::createByMessage($message);
+            $afterMailQueueCount  = MailQueue::find()->count();
+
+            verify('The create method should succeed', $result)->true();
+            verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
+
+            $model = MailQueue::findOne(['subject' => 'Test html body subject']);
+            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+        });
+
+        $this->specify('Succcessfully create MailQueue record from a Message instance with text and html body', function() {
+            $message = Yii::$app->mailer->compose()
+                ->setFrom([
+                    'test@presentator.io' => null,
+                ])
+                ->setTo([
+                    'test1@presentator.io' => null,
+                ])
+                ->setBcc([
+                    'test3@presentator.io' => 'John Doe',
+                ])
+                ->setSubject('Test text/html body subject')
+                ->setTextBody('Test text body')
+                ->setHtmlBody('<p>Test html body</p>')
+            ;
+
+            $beforeMailQueueCount = MailQueue::find()->count();
+            $result               = MailQueue::createByMessage($message);
+            $afterMailQueueCount  = MailQueue::find()->count();
+
+            verify('The create method should succeed', $result)->true();
+            verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
+
+            $model = MailQueue::findOne(['subject' => 'Test text/html body subject']);
+            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+        });
     }
 }

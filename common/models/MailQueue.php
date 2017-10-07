@@ -2,9 +2,14 @@
 namespace common\models;
 
 use Yii;
-use common\components\helpers\CStringHelper;
+use yii\swiftmailer\Message;
+use common\components\helpers\EmailHelper;
+use common\components\validators\CEmailValidator;
 
 /**
+ * @todo Attachments support
+ * @todo Multiple body content types (eg. text/plain and text/html)
+ *
  * MailQueue AR model.
  *
  * @property integer     $id
@@ -39,8 +44,8 @@ class MailQueue extends CActiveRecord
     public function rules()
     {
         return [
-            [['from', 'to'], 'email', 'allowName' => true],
             [['to', 'subject', 'body'], 'required'],
+            [['from', 'to', 'cc', 'bcc'], CEmailValidator::className()],
             ['status', 'default', 'value' => static::STATUS_PENDING],
             ['status', 'in', 'range' => [static::STATUS_PENDING, static::STATUS_SENT]],
         ];
@@ -70,12 +75,12 @@ class MailQueue extends CActiveRecord
     public function send()
     {
         if ($this->from) {
-            $from = CStringHelper::parseAddresses($this->from);
+            $from = EmailHelper::stringToArray($this->from);
         } else {
             $from = [Yii::$app->params['noreplyEmail'] => 'Presentator'];
         }
 
-        $to = CStringHelper::parseAddresses($this->to);
+        $to = EmailHelper::stringToArray($this->to);
 
         $mail = Yii::$app->mailer->compose()
             ->setFrom($from)
@@ -85,13 +90,13 @@ class MailQueue extends CActiveRecord
         ;
 
         if (!empty($this->cc)) {
-            $cc = CStringHelper::parseAddresses($this->cc);
+            $cc = EmailHelper::stringToArray($this->cc);
 
             $mail->setCc($cc);
         }
 
         if (!empty($this->bcc)) {
-            $bcc = CStringHelper::parseAddresses($this->bcc);
+            $bcc = EmailHelper::stringToArray($this->bcc);
 
             $mail->setBcc($this->bcc);
         }
@@ -144,5 +149,47 @@ class MailQueue extends CActiveRecord
             ->offset($offset)
             ->limit($limit)
             ->all();
+    }
+
+    /**
+     * Create new MailQueue record by Message instance.
+     * @param  Message $message
+     * @return boolean
+     */
+    public static function createByMessage(Message $message)
+    {
+        $to      = EmailHelper::arrayToString((array) $message->getTo());
+        $from    = EmailHelper::arrayToString((array) $message->getFrom());
+        $cc      = EmailHelper::arrayToString((array) $message->getCc());
+        $bcc     = EmailHelper::arrayToString((array) $message->getBcc());
+        $subject = $message->getSubject();
+
+        // extract mail body
+        $body         = $message->getSwiftMessage()->getBody();
+        $bodyChildren = $message->getSwiftMessage()->getChildren();
+        if (empty($body) && !empty($bodyChildren)) {
+            $parts = [];
+
+            foreach ($bodyChildren as $child) {
+                $parts[$child->getContentType()] = $child->getBody();
+            }
+
+            if (!empty($parts['text/html'])) {
+                $body = $parts['text/html'];
+            } elseif (!empty($parts['text/plain'])) {
+                $body = $parts['text/plain'];
+            }
+        }
+
+        $model          = new MailQueue();
+        $model->from    = $from;
+        $model->to      = $to;
+        $model->cc      = $cc;
+        $model->bcc     = $bcc;
+        $model->subject = $subject;
+        $model->body    = $body;
+        $model->status  = self::STATUS_PENDING;
+
+        return $model->save();
     }
 }
