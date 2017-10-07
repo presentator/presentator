@@ -44,10 +44,10 @@ class EmailHelper
 
             if (!empty($split[1])) { // eg. John Doe <john.doe@presentator.io>
                 $name = trim($split[0]);
-                $addr = rtrim($split[1], '>');
+                $addr = trim(rtrim($split[1], '>'));
             } else { // eg. test@presentator.io
                 $name = null;
-                $addr = $split[0];
+                $addr = trim($split[0]);
             }
 
             $parsed[$addr] = $name;
@@ -62,7 +62,7 @@ class EmailHelper
      * @example
      * ```php
      * MailHelper::arrayToString([
-     *     'john.doe@presentator.io' => John Doe,
+     *     'john.doe@presentator.io' => 'John Doe',
      *     'test@presentator.io' => null
      * ]);
      *
@@ -79,7 +79,7 @@ class EmailHelper
         $pieces = [];
 
         foreach ($arr as $email => $name) {
-            $pieces[] = $name ? sprintf('%s <%s>', $name, $email) : $email;
+            $pieces[] = $name ? sprintf('%s <%s>', trim($name), trim($email)) : trim($email);
         }
 
         return implode(', ', $pieces);
