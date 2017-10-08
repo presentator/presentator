@@ -64,7 +64,8 @@ module.exports = function(grunt) {
                     report: 'none',
                 },
                 files: {
-                    /* @todo v2.0 concatenate common js files...
+                    /*
+                    @todo v2.0 concatenate common js files...
                     'app/web/js/all.min.js': [
                     ]
                     */
