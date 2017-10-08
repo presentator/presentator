@@ -297,15 +297,19 @@ class Project extends CActiveRecord
 
     /**
      * Returns an absolute project preview link url.
-     * @param  string $type ProjectPreview type.
+     * @param  string $type   ProjectPreview type.
+     * @param  array  $params Additional query params to be passed to the generated url.
      * @return string
      */
-    public function getPreviewUrl($type)
+    public function getPreviewUrl($type, array $params = [])
     {
         if (!isset($this->previewUrls[$type])) {
             $previews = CArrayHelper::map($this->previews, 'type', 'slug');
             if (isset($previews[$type])) {
-                $this->previewUrls[$type] = Yii::$app->urlManager->createAbsoluteUrl(['preview/view', 'slug' => $previews[$type]]);
+                $params['slug'] = $previews[$type];
+                array_unshift($params, 'preview/view');
+
+                $this->previewUrls[$type] = Yii::$app->urlManager->createAbsoluteUrl($params);
             } else {
                 $this->previewUrls[$type] = '#';
             }

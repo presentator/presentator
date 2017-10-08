@@ -75,31 +75,6 @@ class ProjectTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Helper to check mentions result items schema.
-     * @param array $result
-     */
-    protected function checkMentionResultItems(array $result)
-    {
-        // check result item fields
-        foreach ($result as $item) {
-            verify('Each result item should have an email key', $item)->hasKey('email');
-            verify('Each result item should have a firstName key', $item)->hasKey('firstName');
-            verify('Each result item should have a lastName key', $item)->hasKey('lastName');
-            verify('Each result item should have a userId key', $item)->hasKey('userId');
-
-            // if the user is guest
-            $user = User::findOne(['email' => $item['email']]);
-            if (!$user) {
-                verify('userId should not be set for guests', $item['userId'])->null();
-            } else {
-                verify('userId should match with the user one', $item['userId'])->equals($user['id']);
-                verify('firstName should match with the user one', $item['firstName'])->equals($user['firstName']);
-                verify('lastName should match with the user one', $item['lastName'])->equals($user['lastName']);
-            }
-        }
-    }
-
-    /**
      * `Project::setPassword()` method test.
      */
     public function testSetPassword()
@@ -229,16 +204,24 @@ class ProjectTest extends \Codeception\Test\Unit
     {
         $this->specify('Project with missing preview type', function() {
             $project = Project::findOne(1002);
-            $url = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMMENT);
+            $url     = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMMENT);
 
             verify('Generated url should match', $url)->equals('#');
         });
 
         $this->specify('Project with existing preview type', function() {
             $project = Project::findOne(1002);
-            $url = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW);
+            $url     = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW);
 
             verify('Url should contains the preview slug', $url)->contains('BAgePG5c');
+        });
+
+        $this->specify('Project with existing preview type and additional query params', function() {
+            $project = Project::findOne(1002);
+            $url = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW, ['_custom_param' => 'lorem']);
+
+            verify('Url should contains the preview slug', $url)->contains('BAgePG5c');
+            verify('Url should contains the additional param', $url)->contains('_custom_param=lorem');
         });
     }
 
@@ -652,7 +635,7 @@ class ProjectTest extends \Codeception\Test\Unit
             verify('Result count should match', $result)->count(2);
             verify('Guest email should exist', $result)->hasKey('loremipsum@presentator.io');
             verify('Registered User email should exist', $result)->hasKey('test3@presentator.io');
-            $this->checkMentionResultItems($result);
+            $this->tester->checkMentionResultItems($result);
         });
 
         $this->specify('Without mention user setting check', function () use ($project) {
@@ -663,7 +646,7 @@ class ProjectTest extends \Codeception\Test\Unit
             verify('Guest email should exist', $result)->hasKey('loremipsum@presentator.io');
             verify('Registered User email should exist', $result)->hasKey('test3@presentator.io');
             verify('Registered User email should exist', $result)->hasKey('test5@presentator.io');
-            $this->checkMentionResultItems($result);
+            $this->tester->checkMentionResultItems($result);
         });
 
         $this->specify('Try to find all commenters for a project without any comments', function () {
