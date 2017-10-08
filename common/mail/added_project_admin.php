@@ -18,7 +18,7 @@ $name = $user->getFullName();
     <?= Yii::t('mail', 'Click on the button below to explore the project:') ?>
 </p>
 <p style="text-align: center;">
-    <a href="<?= $projectUrl ?>" class="btn"><?= Yii::t('mail', 'Explore project') ?></a><br>
+    <a href="<?= $projectUrl ?>" class="btn"><?= Yii::t('mail', 'Explore project') ?></a><br/>
     <a href="<?= $projectUrl ?>" class="hint"><?= $projectUrl ?></a>
 </p>
 <p>
@@ -27,6 +27,6 @@ $name = $user->getFullName();
     ]) ?>
 </p>
 <p>
-    <?= Yii::t('mail', 'Best Regards') ?>, <br>
+    <?= Yii::t('mail', 'Best Regards') ?>, <br/>
     <?= Yii::t('mail', 'Presentator Team') ?>
 </p>
