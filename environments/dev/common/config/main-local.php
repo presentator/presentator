@@ -9,10 +9,10 @@ return [
             'charset'  => 'utf8',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => 'common\components\swiftmailer\CMailer',
             'viewPath' => '@common/mail',
             'useFileTransport' => true,
-            // send all mails to a file by default. You have to set
+            // send all mails to a file/db by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             // eg.
