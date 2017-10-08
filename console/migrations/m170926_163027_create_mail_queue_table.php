@@ -21,7 +21,7 @@ class m170926_163027_create_mail_queue_table extends Migration
         }
 
         $this->createTable('{{%mailQueue}}', [
-            'id'        => $this->primaryKey(),
+            'id'        => $this->bigPrimaryKey(),
             'from'      => $this->string(),
             'to'        => $this->string()->notNull(),
             'cc'        => $this->string(),
