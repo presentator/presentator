@@ -196,7 +196,14 @@ class ScreenCommentForm extends Model
                     }
                 }
 
-                $comment->sendAdminsEmail($excludeUserIds);
+                $mentions = $comment->extractMentionUsers();
+                if (!empty($mentions)) {
+                    // notify only the mention users
+                    $comment->sendMentionUsersEmail($mentions);
+                } else {
+                    // otherwise notify all project admins that are signed to those kind of mails.
+                    $comment->sendAdminsEmail($excludeUserIds);
+                }
 
                 return $comment;
             }

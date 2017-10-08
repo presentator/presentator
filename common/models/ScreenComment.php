@@ -260,7 +260,70 @@ class ScreenComment extends CActiveRecord
     }
 
     /**
-     * Sends emails to all project admin to notify with the current model info to a specific project admin.
+     * Extracts mention user emails from the comment message (or a custom string).
+     * @param  $message
+     * @return array
+     */
+    public function extractMentionUsers($message = '')
+    {
+        $message = $message ? $message : $this->message;
+        $result  = [];
+        $matches = [];
+        $pattern = '/(?<=\s|^)[@+]([a-z0-9._@]+)/i';
+        preg_match_all($pattern, $message, $matches);
+
+        $projectCommenters = $this->screen->project->findAllCommenters();
+
+        // filter mentioned users with the project commenters
+        if (!empty($matches[1]) && !empty($projectCommenters)) {
+            foreach ($projectCommenters as $commenter) {
+                if (in_array($commenter['email'], $matches[1])) {
+                    $result[$commenter['email']] = $commenter;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Sends email to all mention users with info for the current comment model.
+     * @see `self::extractMentionUsers()`
+     * @param  array $mentions
+     * @return boolean
+     */
+    public function sendMentionUsersEmail(array $mentions = [])
+    {
+        $result = true;
+
+        if (empty($mentions)) {
+            $mentions = $this->extractMentionUsers();
+        }
+        unset($mentions[$this->from]);
+
+        $projectCommenters = $this->screen->project->findAllCommenters();
+
+        foreach ($mentions as $mention) {
+            if (!isset($mention['email']) || !isset($projectCommenters[$mention['email']])
+            ) {
+                continue;
+            }
+
+            $result = $result && Yii::$app->mailer->compose('mention', [
+                    'comment' => $this,
+                    'mention' => $mention,
+                ])
+                ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
+                ->setTo($mention['email'])
+                ->setSubject('Presentator - ' . Yii::t('mail', 'You have been mentioned in a comment'))
+                ->send();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Sends email to all project admin with info for the current comment model.
      * @param  integer|array $exclude User id(s) to exclude.
      * @return boolean
      */
