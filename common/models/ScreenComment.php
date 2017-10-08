@@ -304,7 +304,9 @@ class ScreenComment extends CActiveRecord
         $projectCommenters = $this->screen->project->findAllCommenters();
 
         foreach ($mentions as $mention) {
-            if (!isset($mention['email']) || !isset($projectCommenters[$mention['email']])
+            if (
+                !isset($mention['email']) ||
+                !isset($projectCommenters[$mention['email']])
             ) {
                 continue;
             }
