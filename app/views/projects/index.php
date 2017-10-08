@@ -87,7 +87,7 @@ $this->title = Yii::t('app', 'Projects');
 </div>
 
 <?php
-$this->registerJsFile('/js/project-index.view.js?v=1504451899');
+$this->registerJsFile('/js/project-index.view.js?v=1507457981');
 $this->registerJs('
     var projectIndex = new ProjectIndex({
         ajaxLoadProjectsUrl:   "' . Url::to(['projects/ajax-load-more']) . '",

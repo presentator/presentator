@@ -19,6 +19,8 @@ use app\models\ProjectShareForm;
  */
 class ProjectsController extends AppController
 {
+    use MentionsTrait;
+
     const ITEMS_PER_PAGE = 14;
 
     /**
@@ -95,12 +97,15 @@ class ProjectsController extends AppController
         }
         $commentCounters = $user->countUnreadCommentsByScreens($screenIds);
 
+        $mentionsList = $this->getMentionsList($project);
+
         $shareForm = new ProjectShareForm($project);
 
         return $this->render('view', [
             'project'         => $project,
             'shareForm'       => $shareForm,
             'commentCounters' => $commentCounters,
+            'mentionsList'    => $mentionsList,
         ]);
     }
 

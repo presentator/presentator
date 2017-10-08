@@ -28,6 +28,7 @@ class AppAsset extends AssetBundle
         'js/context-menu.js',
         'js/selectify.js',
         'js/tabs.js',
+        'js/mention.js',
         'js/slider.js',
         'js/app.js',
     ];

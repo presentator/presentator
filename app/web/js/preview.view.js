@@ -390,6 +390,10 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
 
             self.$accessFormWrapper.removeClass('active').addClass('inactive');
             self.$previewWrapper.removeClass('inactive').addClass('active');
+
+            if (self.commentsView && response.mentionsList) {
+                self.commentsView.settings.mentionsList = response.mentionsList;
+            }
         } else if (response.errors) {
             $.each(response.errors, function(name, errors) {
                 self.$accessForm.yiiActiveForm('updateAttribute', 'projectaccessform-' + name, errors);

@@ -108,11 +108,13 @@ class PreviewCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
         $I->seeResponseContains('"previewHtml":');
+        $I->seeResponseContains('"mentionsList":');
 
         $I->amGoingTo('try accessing a protected preview (project with password)');
         $I->sendAjaxPostRequest(['preview/ajax-invoke-access', 'slug' => 'BAgePG5c'], ['ProjectAccessForm[password]' => 123456]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
         $I->seeResponseContains('"previewHtml":');
+        $I->seeResponseContains('"mentionsList":');
     }
 }

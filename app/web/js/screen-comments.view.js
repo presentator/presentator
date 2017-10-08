@@ -3,6 +3,7 @@ var ScreenCommentsView = function(data) {
 
     var defaults = {
         // params
+        'mentionsList':   [],
         'statusPending':  0,
         'statusResolved': 1,
         'enableDrag':     true,
@@ -97,7 +98,7 @@ ScreenCommentsView.prototype.init = function() {
     });
 
     // Delete comment
-    self.$document.on('click', self.settings.commentDeleteHandle, function(e) {
+    self.$document.on('click', self.settings.commentDeleteHandle, function (e) {
         e.preventDefault();
 
         var $item = $(this).closest('[data-comment-id]');
@@ -112,7 +113,7 @@ ScreenCommentsView.prototype.init = function() {
     });
 
     // Comment form submit
-    self.$document.on('submit', self.settings.commentForm, function(e) {
+    self.$document.on('submit', self.settings.commentForm, function (e) {
         e.preventDefault();
         var $form          = $(this);
         var $fromInput     = $form.find(self.settings.commentFormFromInput);
@@ -162,9 +163,18 @@ ScreenCommentsView.prototype.init = function() {
         return false;
     });
 
-    // Deselect on ouside click
+    // submit comment form on enter message textarea key press
+    self.$document.on('keydown', self.settings.commentFormMessageInput, function (e) {
+        if (e.which == PR.keys.enter && !e.shiftKey && !e.ctrlKey) {
+            e.preventDefault();
+
+            $(this).closest('form').submit();
+        }
+    });
+
+    // Deselect on outside click
     var $activeComment;
-    self.$document.on('mousedown touchend', function(e) {
+    self.$document.on('mousedown touchend', function (e) {
         if (self.$body.hasClass('comment-active')) {
             $activeComment = self.getActiveScreenSliderItem().find(self.settings.commentTarget + '.selected');
 
@@ -187,7 +197,7 @@ ScreenCommentsView.prototype.init = function() {
     });
 
     // Deselect on esc
-    self.$document.on('keydown', function(e) {
+    self.$document.on('keydown', function (e) {
         if (e.which == PR.keys.esc && self.$body.hasClass('comment-active')) {
             $activeComment = self.getActiveScreenSliderItem().find(self.settings.commentTarget + '.selected');
             self.deselectCommentTarget();
@@ -205,7 +215,7 @@ ScreenCommentsView.prototype.init = function() {
     });
 
     // Mark comment as resolved/pending
-    self.$document.on('change', self.settings.resolveCommentCheckbox, function(e) {
+    self.$document.on('change', self.settings.resolveCommentCheckbox, function (e) {
         $activeComment = self.getActiveScreenSliderItem().find(self.settings.commentTarget + '.selected');
 
         if ($(this).is(':checked')) {
@@ -217,7 +227,7 @@ ScreenCommentsView.prototype.init = function() {
 
     // Resolved comments toggle
     self.checkResolvedCommentsToggle();
-    self.$document.on('click', self.settings.resolvedCommentsToggleWrapper, function(e) {
+    self.$document.on('click', self.settings.resolvedCommentsToggleWrapper, function (e) {
         e.preventDefault();
         if (self.$body.hasClass('show-resolved')) {
             self.hideResolvedComments();
@@ -545,6 +555,7 @@ ScreenCommentsView.prototype.selectCommentTarget = function (target, scrollToCom
         }
     };
 
+    // handle status bar visibility
     if ($target.data('isNew')) {
         $(self.settings.commentPopoverStatusBar).hide();
 
@@ -558,6 +569,12 @@ ScreenCommentsView.prototype.selectCommentTarget = function (target, scrollToCom
             }
         });
     }
+
+    // mentions list init
+    $(self.settings.commentFormMessageInput).mention({
+        'mentionsList': self.settings.mentionsList,
+        'missingText':  ''
+    });
 };
 
 /**

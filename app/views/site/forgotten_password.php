@@ -58,7 +58,7 @@ $this->title = Yii::t('app', 'Forgotten password');
 </div>
 
 <?php
-$this->registerJsFile('/js/entrance.view.js?v=1499601723');
+$this->registerJsFile('/js/entrance.view.js?v=1507457981');
 $this->registerJs('
     var entrance = new EntranceView();
 ', View::POS_READY, 'entrance-js');

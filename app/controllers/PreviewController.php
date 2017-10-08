@@ -16,6 +16,8 @@ use app\models\ProjectAccessForm;
  */
 class PreviewController extends AppController
 {
+    use MentionsTrait;
+
     const SESSION_ACCESS_VAR = 'projectAccessVar';
 
     /**
@@ -106,15 +108,20 @@ class PreviewController extends AppController
                 }
 
                 if ($activeVersion) {
+                    $allowComment = $preview->type == ProjectPreview::TYPE_VIEW_AND_COMMENT;
+
                     $previewHtml = $this->renderPartial('/versions/_preview', [
                         'project'       => $project,
                         'activeVersion' => $activeVersion,
-                        'allowComment'  => $preview->type == ProjectPreview::TYPE_VIEW_AND_COMMENT,
+                        'allowComment'  => $allowComment,
                     ]);
 
+                    $mentionsList = $allowComment ? $this->getMentionsList($project) : [];
+
                     return [
-                        'success'     => true,
-                        'previewHtml' => $previewHtml,
+                        'success'      => true,
+                        'previewHtml'  => $previewHtml,
+                        'mentionsList' => $mentionsList,
                     ];
                 }
             }

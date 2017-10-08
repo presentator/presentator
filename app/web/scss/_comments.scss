@@ -232,6 +232,9 @@
             border-bottom: 1px solid $lightGreyColor;
             @include box-shadow(none);
             @include placeholder(lighten($txtColor, 15%));
+            &.message-input {
+                height: 76px;
+            }
             &:focus {
                 @include box-shadow(none);
                 color: $txtColor;
@@ -260,6 +263,12 @@
             &:hover {
                 color: lighten($successColor, 5%);
             }
+        }
+        .mention-list {
+            position: absolute;
+            z-index: 9999;
+            left: 0;
+            top: 100%;
         }
     }
 

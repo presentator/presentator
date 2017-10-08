@@ -19,8 +19,8 @@ use yii\helpers\Html;
             <?php else: ?>
                 <input type="hidden" id="comment_form_from_input" class="reply-input from-input" value="<?= Html::encode(Yii::$app->user->identity->email) ?>">
             <?php endif ?>
-            <input type="text" id="comment_form_message_input" class="reply-input message-input" placeholder="<?= Yii::t('app', 'Write a comment...') ?>" autocomplete="off">
+            <textarea id="comment_form_message_input" class="reply-input message-input" placeholder="<?= Yii::t('app', 'Write a comment...') ?>" autocomplete="off"></textarea>
         </div>
-        <button class="reply-btn"><i class="ion ion-forward"></i></button>
+        <button class="reply-btn" title="<?= Yii::t('app', 'Send') ?>"><i class="ion ion-forward"></i></button>
     </form>
 </div>

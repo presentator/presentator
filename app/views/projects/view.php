@@ -10,6 +10,7 @@ use common\components\helpers\CStringHelper;
  * @var $projects        \common\models\Project[]
  * @var $shareForm       \app\models\ProjectShareForm
  * @var $commentCounters integer
+ * @var $mentionsList    array
  */
 
 $this->title = Yii::t('app', '{projectTitle} - Projects', ['projectTitle' => Html::encode($project->title)]);
@@ -229,13 +230,13 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1504455245');
-$this->registerJsFile('/js/pins.js?v=1504455245');
-$this->registerJsFile('/js/project-view.view.js?v=1504455245');
-$this->registerJsFile('/js/version.view.js?v=1504455245');
-$this->registerJsFile('/js/screen-comments.view.js?v=1504455245');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1504455245');
-$this->registerJsFile('/js/screen.view.js?v=1504455245');
+$this->registerJsFile('/js/hotspots.js?v=1507457981');
+$this->registerJsFile('/js/pins.js?v=1507457981');
+$this->registerJsFile('/js/project-view.view.js?v=1507457981');
+$this->registerJsFile('/js/version.view.js?v=1507457981');
+$this->registerJsFile('/js/screen-comments.view.js?v=1507457981');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1507457981');
+$this->registerJsFile('/js/screen.view.js?v=1507457981');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",
@@ -269,6 +270,7 @@ $this->registerJs('
             ajaxSaveHotspotsUrl: "' . Url::to(['screens/ajax-save-hotspots']) .'"
         },
         commentsViewSettings: {
+            mentionsList:                 ' . json_encode($mentionsList). ',
             ajaxCommentCreateUrl:         "' . Url::to(['screen-comments/ajax-create']) .'",
             ajaxCommentDeleteUrl:         "' . Url::to(['screen-comments/ajax-delete']) .'",
             ajaxCommentsListUrl:          "' . Url::to(['screen-comments/ajax-get-comments']) .'",

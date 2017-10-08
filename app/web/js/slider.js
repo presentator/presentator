@@ -109,7 +109,7 @@
                 settings = $slider.data('pr.slider');
 
                 if (typeof settings !== 'undefined') {
-                    methods.destroy.call(wrapper, options); // reset on reinit
+                    methods.destroy.call(slider); // reset on reinit
                 }
 
                 settings = $.extend({}, defaults, options);

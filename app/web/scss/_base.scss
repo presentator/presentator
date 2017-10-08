@@ -12,8 +12,8 @@ body {
     height: 100%;
     min-height: 100vh;
     min-width: $pageMinWidth;
-    color:      $txtColor;
-    font-size: 14px;
+    color: $txtColor;
+    font-size: $baseFontSize;
     line-height: 24px;
     font-weight: normal;
     font-family: $baseFont;
@@ -570,14 +570,14 @@ ul {
         left: 50%;
         top: 50%;
         font-family: $iconFont;
-        font-size: 14px;
+        font-size: $baseFontSize;
         color: inherit;
         @include transform(translate(-50%, -50%));
     }
     &[data-txt]:before {
         content: attr(data-txt);
         font-family: $baseFont;
-        font-size: 14px;
+        font-size: $baseFontSize;
         font-weight: normal;
         text-transform: uppercase;
     }
@@ -686,7 +686,7 @@ ul {
     top: 100%;
     right: 0;
     margin-top: 0;
-    font-size: 14px;
+    font-size: $baseFontSize;
     line-height: 24px;
     color: $txtColor;
     text-align: left;
@@ -814,7 +814,7 @@ ul {
         min-width: 55px;
         vertical-align: top;
         cursor: pointer;
-        font-size: 14px;
+        font-size: $baseFontSize;
         line-height: inherit;
         border-right: 1px solid $greyColor;
         text-align: center;
@@ -898,7 +898,7 @@ ul {
         right: 0;
         top: -18px;
         color: #fff;
-        font-size: 14px;
+        font-size: $baseFontSize;
         line-height: 1;
         cursor: pointer;
         text-decoration: none;
@@ -1005,7 +1005,7 @@ ul {
 /* ---- Social links ---- */
 .facebook-link,
 .google-link {
-    font-size: 14px;
+    font-size: $baseFontSize;
     text-decoration: none;
     i {
         font-size: 19px;
