@@ -8,6 +8,7 @@ use yii\base\NotSupportedException;
 use yii\base\InvalidParamException;
 use common\components\helpers\CArrayHelper;
 use common\components\helpers\CFileHelper;
+use common\components\swiftmailer\CMessage;
 use common\components\JWT;
 use Imagine\Image\Box;
 use yii\imagine\Image;
@@ -348,14 +349,21 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function sendActivationEmail()
     {
-        return Yii::$app->mailer->compose('activate', [
+        $message = Yii::$app->mailer->compose('activate', [
                 'user'  => $this,
                 'token' => $this->getActivationToken(),
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
             ->setSubject('Presentator - ' . Yii::t('mail', 'Account activation'))
-            ->send();
+        ;
+
+        // force direct send
+        if ($message instanceof CMessage) {
+            $message->useMailQueue(false);
+        }
+
+        return $message->send();
     }
 
     /**
@@ -364,13 +372,20 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function sendPasswordResetEmail()
     {
-        return Yii::$app->mailer->compose('password_reset', [
+        $message = Yii::$app->mailer->compose('password_reset', [
                 'user' => $this,
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
             ->setSubject('Presentator - ' . Yii::t('mail', 'Password reset request'))
-            ->send();
+        ;
+
+        // force direct send
+        if ($message instanceof CMessage) {
+            $message->useMailQueue(false);
+        }
+
+        return $message->send();
     }
 
     /**
@@ -380,14 +395,21 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function sendFacebookRegisterEmail($password)
     {
-        return Yii::$app->mailer->compose('fb_register', [
+        $message = Yii::$app->mailer->compose('fb_register', [
                 'user'     => $this,
                 'password' => $password,
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
             ->setSubject('Presentator - ' . Yii::t('mail', 'Registered with Facebook'))
-            ->send();
+        ;
+
+        // force direct send
+        if ($message instanceof CMessage) {
+            $message->useMailQueue(false);
+        }
+
+        return $message->send();
     }
 
     /* File upload

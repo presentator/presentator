@@ -5,6 +5,7 @@ use Yii;
 use yii\swiftmailer\Message;
 use common\components\helpers\EmailHelper;
 use common\components\validators\CEmailValidator;
+use common\components\swiftmailer\CMessage;
 
 /**
  * @todo Attachments support
@@ -82,26 +83,31 @@ class MailQueue extends CActiveRecord
 
         $to = EmailHelper::stringToArray($this->to);
 
-        $mail = Yii::$app->mailer->compose()
+        $message = Yii::$app->mailer->compose()
             ->setFrom($from)
             ->setTo($to)
             ->setSubject($this->subject)
             ->setHtmlBody($this->body)
         ;
 
+        // force direct send
+        if ($message instanceof CMessage) {
+            $message->useMailQueue(false);
+        }
+
         if (!empty($this->cc)) {
             $cc = EmailHelper::stringToArray($this->cc);
 
-            $mail->setCc($cc);
+            $message->setCc($cc);
         }
 
         if (!empty($this->bcc)) {
             $bcc = EmailHelper::stringToArray($this->bcc);
 
-            $mail->setBcc($this->bcc);
+            $message->setBcc($this->bcc);
         }
 
-        return $mail->send();
+        return $message->send();
     }
 
     /**
