@@ -105,13 +105,13 @@ class MailsCest
     {
         $I->wantTo('test action sleep argument');
 
-        $beforeActionTime = time();
+        $beforeActionTime = microtime(true);
         $controller       = new MailsController('mails', Yii::$app);
-        $result           = $controller->runAction('process', [2, 1]);
-        $afterActionTime  = time();
+        $result           = $controller->runAction('process', [2, 500]);
+        $afterActionTime  = microtime(true);
 
         $I->seeEmailIsSent(2);
         verify('Action should complete normally', $result)->equals(MailsController::EXIT_CODE_NORMAL);
-        verify('Action execution should take atleast 2sec (mails * sleep)', $afterActionTime - $beforeActionTime)->greaterOrEquals(2);
+        verify('Action execution should take atleast 1sec (mails * miliseconds)', $afterActionTime - $beforeActionTime)->greaterOrEquals(1);
     }
 }

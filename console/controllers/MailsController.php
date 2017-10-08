@@ -25,11 +25,11 @@ class MailsController extends Controller
      * php yii mails/process 50
      * ```
      *
-     * @param  integer $limit Total number of mails to process.
-     * @param  integer $sleep Interval in seconds to wait before processing new mail.
+     * @param  integer $limit    Total number of mails to process.
+     * @param  integer $throttle Interval in miliseconds to wait before processing new mail.
      * @return integer
      */
-    public function actionProcess($limit = 15, $sleep = 1)
+    public function actionProcess($limit = 15, $throttle = 500)
     {
         $mails      = MailQueue::findMails(MailQueue::STATUS_PENDING, (int) $limit);
         $totalMails = count($mails);
@@ -49,8 +49,8 @@ class MailsController extends Controller
                     $successMails++;
                 }
 
-                if ($sleep > 0) {
-                    sleep($sleep);
+                if ($throttle > 0) {
+                    usleep($throttle * 1000);
                 }
 
                 Console::updateProgress($i+1, $totalMails);
