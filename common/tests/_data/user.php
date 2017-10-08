@@ -29,7 +29,7 @@ return [
     [
         'id'                 => 1003,
         'email'              => 'test3@presentator.io',
-        'firstName'          => '',
+        'firstName'          => 'John',
         'lastName'           => '',
         'authKey'            => 'prevWUG47dCVkj1aplzhpXEnDhf-2G3pR',
         'passwordHash'       => '$2a$06$bVu5ROFjksz.0nj3AMQR0OZOvVniJaNsNkJCivYbqUvj7htjX60Ke', // 123456
@@ -67,7 +67,19 @@ return [
         'email'              => 'test6@presentator.io',
         'firstName'          => 'John',
         'lastName'           => 'Doe',
-        'authKey'            => 'GplzVkpEnDhteXh-sWU47dC1a2j3pLfj',
+        'authKey'            => 'GplznDhteXh-sWU47dC1a2j3pLfVkpEj',
+        'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
+        'passwordResetToken' => null,
+        'status'             => User::STATUS_ACTIVE,
+        'createdAt'          => 1488526394,
+        'updatedAt'          => 1488526394,
+    ],
+    [
+        'id'                 => 1007,
+        'email'              => 'test7@presentator.io',
+        'firstName'          => '',
+        'lastName'           => '',
+        'authKey'            => 'GpXhdWU47dC1a2j3pLfjlzVkpEnDhte',
         'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
         'passwordResetToken' => null,
         'status'             => User::STATUS_ACTIVE,

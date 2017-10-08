@@ -2,10 +2,8 @@
 namespace common\tests\unit\models;
 
 use Yii;
-use Swift_Message;
 use common\models\MailQueue;
 use common\tests\fixtures\MailQueueFixture;
-use common\components\helpers\EmailHelper;
 
 /**
  * MailQueue AR model tests.
@@ -32,73 +30,6 @@ class MailQueueTest extends \Codeception\Test\Unit
                 'dataFile' => codecept_data_dir() . 'mail_queue.php',
             ],
         ]);
-    }
-
-    /**
-     * Helper method to check whether an email message has valid mail queue data.
-     *
-     * @param MailQueue     $model   MailQueue model to check
-     * @param Swift_Message $message Message instance
-     */
-    protected function checkMailQueueMessage(MailQueue $model, Swift_Message $message)
-    {
-        $to    = EmailHelper::stringToArray($model->to);
-        $from  = EmailHelper::stringToArray($model->from);
-        $cc    = EmailHelper::stringToArray($model->cc);
-        $bcc   = EmailHelper::stringToArray($model->bcc);
-
-        foreach ($to as $email => $name) {
-            verify('Mail sender should match', $message->getTo())->hasKey($email);
-            verify('Mail sender name should match', $message->getTo()[$email])->equals($name);
-        }
-
-        if (!$from) {
-            verify('Mail sender should match', $message->getFrom())->hasKey(Yii::$app->params['noreplyEmail']);
-            verify('Mail sender name should match', $message->getFrom()[Yii::$app->params['noreplyEmail']])->equals('Presentator');
-        } else {
-            foreach ($from as $email => $name) {
-                verify('Mail sender should match', $message->getFrom())->hasKey($email);
-                verify('Mail sender name should match', $message->getFrom()[$email])->equals($name);
-            }
-        }
-
-        if (!$cc) {
-            verify('Mail cc should not be set', $message->getCc())->isEmpty();
-        } else {
-            foreach ($cc as $email => $name) {
-                verify('Mail cc should match', $message->getCc())->hasKey($email);
-                verify('Mail cc name should match', $message->getCc()[$email])->equals($name);
-            }
-        }
-
-        if (!$bcc) {
-            verify('Mail bcc should not be set', $message->getBcc())->isEmpty();
-        } else {
-            foreach ($bcc as $email => $name) {
-                verify('Mail bcc should match', $message->getBcc())->hasKey($email);
-                verify('Mail bcc name should match', $message->getBcc()[$email])->equals($name);
-            }
-        }
-
-        verify('Mail subject should match', $message->getSubject())->equals($model->subject);
-
-        $body         = $message->getBody();
-        $bodyChildren = $message->getChildren();
-        if (empty($body) && !empty($bodyChildren)) {
-            $parts = [];
-
-            foreach ($bodyChildren as $child) {
-                $parts[$child->getContentType()] = $child->getBody();
-            }
-
-            if (!empty($parts['text/html'])) {
-                $body = $parts['text/html'];
-            } elseif (!empty($parts['text/plain'])) {
-                $body = $parts['text/plain'];
-            }
-        }
-
-        verify('Mail body should match', $body)->equals($model->body);
     }
 
     /**
@@ -195,7 +126,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             $result = $model->send();
 
             $this->tester->seeEmailIsSent(1);
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
 
         $this->specify('Send mail model with defined from, cc and bcc emails', function() {
@@ -204,7 +135,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             $result = $model->send();
 
             $this->tester->seeEmailIsSent();
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
     }
 
@@ -231,7 +162,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             $this->tester->seeEmailIsSent();
             verify('Process method should succeed', $result)->true();
             verify('Model should be deleted', MailQueue::findOne($model->id))->null();
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
 
         $this->specify('Process pending mail record and purge on success', function() {
@@ -242,7 +173,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             $this->tester->seeEmailIsSent();
             verify('Process method should succeed', $result)->true();
             verify('Model should be deleted', MailQueue::findOne($model->id))->null();
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
     }
 
@@ -275,7 +206,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             verify('Process method should succeed', $result)->true();
             verify('Model should not be deleted', $afterProcessModel)->notEmpty();
             verify('Model status should not be changed', $afterProcessModel->status)->equals($model->status);
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
 
         $this->specify('Process pending mail record and mark as sent on success', function() {
@@ -289,7 +220,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             verify('Process method should succeed', $result)->true();
             verify('Model should not be deleted', $afterProcessModel)->notEmpty();
             verify('Model status should be changed', $afterProcessModel->status)->equals(MailQueue::STATUS_SENT);
-            $this->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $this->tester->grabLastSentEmail()->getSwiftMessage());
         });
     }
 
@@ -354,7 +285,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
 
             $model = MailQueue::findOne(['subject' => 'Test text body subject']);
-            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $message->getSwiftMessage());
         });
 
         $this->specify('Succcessfully create MailQueue record from a Message instance with html body', function() {
@@ -383,7 +314,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
 
             $model = MailQueue::findOne(['subject' => 'Test html body subject']);
-            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $message->getSwiftMessage());
         });
 
         $this->specify('Succcessfully create MailQueue record from a Message instance with text and html body', function() {
@@ -410,7 +341,7 @@ class MailQueueTest extends \Codeception\Test\Unit
             verify('New MailQueue record should be created', $afterMailQueueCount)->equals($beforeMailQueueCount + 1);
 
             $model = MailQueue::findOne(['subject' => 'Test text/html body subject']);
-            $this->checkMailQueueMessage($model, $message->getSwiftMessage());
+            $this->tester->checkMailQueueMessage($model, $message->getSwiftMessage());
         });
     }
 }

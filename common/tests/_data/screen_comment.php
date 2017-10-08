@@ -82,7 +82,7 @@ return [
         'replyTo'   => 1005,
         'screenId'  => 1004,
         'from'      => 'test5@presentator.io',
-        'message'   => 'Comment reply 2',
+        'message'   => '+test3@presentator.io @loremipsum@presentator.io +nonproject@presentator.io test message',
         'posX'      => 100,
         'posY'      => 50,
         'status'    => ScreenComment::STATUS_PENDING,

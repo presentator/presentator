@@ -105,7 +105,7 @@ class UserTest extends \Codeception\Test\Unit
         });
 
         $this->specify('User WITHOUT first and last name', function() {
-            $user = User::findOne(1003);
+            $user = User::findOne(1007);
             verify('Empty string', $user->getFullName())->equals('');
         });
     }
@@ -124,10 +124,10 @@ class UserTest extends \Codeception\Test\Unit
         });
 
         $this->specify('User WITHOUT first and last name', function() {
-            $user = User::findOne(1003);
-            verify('User email as fallback for missing first name', $user->getIdentificator('firstName'))->equals('test3@presentator.io');
-            verify('User email as fallback for missing last name', $user->getIdentificator('lastName'))->equals('test3@presentator.io');
-            verify('User email as fallback for missing first and last name', $user->getIdentificator(null))->equals('test3@presentator.io');
+            $user = User::findOne(1007);
+            verify('User email as fallback for missing first name', $user->getIdentificator('firstName'))->equals('test7@presentator.io');
+            verify('User email as fallback for missing last name', $user->getIdentificator('lastName'))->equals('test7@presentator.io');
+            verify('User email as fallback for missing first and last name', $user->getIdentificator(null))->equals('test7@presentator.io');
         });
     }
 
@@ -726,7 +726,7 @@ class UserTest extends \Codeception\Test\Unit
             $search = '@presentator.io';
             $users  = User::searchUsers($search, [], true);
 
-            verify('Should found 4 active user', $users)->count(5);
+            verify('Users count should match', $users)->count(6);
             foreach ($users as $user) {
                 verify('Should contains the search keyword', $user->email)->contains($search);
             }
@@ -743,7 +743,7 @@ class UserTest extends \Codeception\Test\Unit
             $search = '@presentator.io';
             $users  = User::searchUsers($search, [1004, 1005], true);
 
-            verify('Users count should match', $users)->count(3);
+            verify('Users count should match', $users)->count(4);
             foreach ($users as $user) {
                 verify('Should contains the search keyword', $user->email)->contains($search);
             }

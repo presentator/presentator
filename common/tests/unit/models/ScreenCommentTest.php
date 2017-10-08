@@ -6,6 +6,7 @@ use yii\db\ActiveQuery;
 use common\models\User;
 use common\models\Screen;
 use common\models\ScreenComment;
+use common\models\ProjectPreview;
 use common\models\UserScreenCommentRel;
 use common\tests\fixtures\UserFixture;
 use common\tests\fixtures\ProjectFixture;
@@ -88,7 +89,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testGetReplies()
     {
-        $this->specify('ScreenComment model WITHOUT reply comments', function() {
+        $this->specify('ScreenComment model WITHOUT reply comments', function () {
             $model = ScreenComment::findOne(1004);
             $query = $model->getReplies();
 
@@ -97,7 +98,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Query result should be an empty array', $model->replies)->isEmpty();
         });
 
-        $this->specify('ScreenComment model WITH reply comments', function() {
+        $this->specify('ScreenComment model WITH reply comments', function () {
             $model = ScreenComment::findOne(1002);
             $query = $model->getReplies();
 
@@ -116,7 +117,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testGetPrimaryComment()
     {
-        $this->specify('Try to get primary comment of a primary ScreenComment model', function() {
+        $this->specify('Try to get primary comment of a primary ScreenComment model', function () {
             $model = ScreenComment::findOne(1002);
             $query = $model->getPrimaryComment();
 
@@ -125,7 +126,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Query result should be null', $model->primaryComment)->null();
         });
 
-        $this->specify('Try to get primary comment of a reply ScreenComment model', function() {
+        $this->specify('Try to get primary comment of a reply ScreenComment model', function () {
             $model = ScreenComment::findOne(1003);
             $query = $model->getPrimaryComment();
 
@@ -141,7 +142,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testGetUserRels()
     {
-        $this->specify('ScreenComment model WITHOUT UserScreenCommentRel models', function() {
+        $this->specify('ScreenComment model WITHOUT UserScreenCommentRel models', function () {
             $model = ScreenComment::findOne(1003);
             $query = $model->getUserRels();
 
@@ -150,7 +151,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Query result should be an empty array', $model->userRels)->isEmpty();
         });
 
-        $this->specify('ScreenComment model WITH UserScreenCommentRel models', function() {
+        $this->specify('ScreenComment model WITH UserScreenCommentRel models', function () {
             $model = ScreenComment::findOne(1004);
             $query = $model->getUserRels();
 
@@ -169,7 +170,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testGetLoginUserRel()
     {
-        $this->specify('No logged in user', function() {
+        $this->specify('No logged in user', function () {
             $model = ScreenComment::findOne(1003);
             $query = $model->getLoginUserRel();
 
@@ -178,7 +179,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Query result should be null', $model->loginUserRel)->null();
         });
 
-        $this->specify('Logged in user', function() {
+        $this->specify('Logged in user', function () {
             $user  = User::findOne(1003);
             Yii::$app->user->login($user);
 
@@ -197,7 +198,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testGetFromUser()
     {
-        $this->specify('User does not exist', function() {
+        $this->specify('User does not exist', function () {
             $model = ScreenComment::findOne(1001);
             $query = $model->getFromUser();
 
@@ -206,7 +207,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Query result should be null', $model->fromUser)->null();
         });
 
-        $this->specify('User exists', function() {
+        $this->specify('User exists', function () {
             $model = ScreenComment::findOne(1005);
             $query = $model->getFromUser();
 
@@ -253,7 +254,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
      */
     public function testMarkAsRead()
     {
-        $this->specify('Create new UserCommentRel model', function() {
+        $this->specify('Create new UserCommentRel model', function () {
             $user    = User::findOne(1002);
             $comment = ScreenComment::findOne(1003);
             $rel     = UserScreenCommentRel::findOne(['userId' => $user->id, 'screenCommentId' => $comment->id]);
@@ -270,7 +271,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             verify('Comment id should match', $rel->screenCommentId)->equals($comment->id);
         });
 
-        $this->specify('Update existing UserCommentRel model', function() {
+        $this->specify('Update existing UserCommentRel model', function () {
             $user    = User::findOne(1003);
             $comment = ScreenComment::findOne(1004);
             $rel     = UserScreenCommentRel::findOne(['userId' => $user->id, 'screenCommentId' => $comment->id]);
@@ -293,12 +294,12 @@ class ScreenCommentTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1003);
 
-        $this->specify('Check unread comment', function() use ($user) {
+        $this->specify('Check unread comment', function () use ($user) {
             $comment = ScreenComment::findOne(1004);
             verify('Should not be read', $comment->isRead($user))->false();
         });
 
-        $this->specify('Check read comment', function() use ($user) {
+        $this->specify('Check read comment', function () use ($user) {
             $comment = ScreenComment::findOne(1005);
             verify('Should be read', $comment->isRead($user))->true();
         });
@@ -310,11 +311,11 @@ class ScreenCommentTest extends \Codeception\Test\Unit
     public function testIsReadByLoginUser()
     {
         $comment = ScreenComment::findOne(1004);
-        $this->specify('Non logged in user', function() use ($comment) {
+        $this->specify('Non logged in user', function () use ($comment) {
             verify('Should be read', $comment->isReadByLoginUser())->true();
         });
 
-        $this->specify('Logged in user read comment', function() use ($comment) {
+        $this->specify('Logged in user read comment', function () use ($comment) {
             $user = User::findOne(1003);
             Yii::$app->user->login($user);
 
@@ -323,11 +324,105 @@ class ScreenCommentTest extends \Codeception\Test\Unit
     }
 
     /**
+     * `ScreenComment::extractMentionUsers()` method test.
+     */
+    public function testExtractMentionUsers()
+    {
+        $model = ScreenComment::findOne(1007);
+
+        $this->specify('Extract mention users from a comment message', function () use ($model) {
+            $result = $model->extractMentionUsers();
+
+            verify('Result should be an array', is_array($result))->true();
+            verify('Should extract 2 mention users', $result)->count(2);
+            verify('Result key should exist', $result)->hasKey('test3@presentator.io');
+            verify('Result key should exist', $result)->hasKey('loremipsum@presentator.io');
+            verify('Result key should not exist', $result)->hasntKey('nonproject@presentator.io');
+            $this->tester->checkMentionResultItems($result);
+        });
+
+        $this->specify('Extract mention users from a custom message', function () use ($model) {
+            $result = $model->extractMentionUsers('+test3@presentator.io custom message +nonProject@presentator.io');
+
+            verify('Result should be an array', is_array($result))->true();
+            verify('Should extract 1 mention users', $result)->count(1);
+            verify('Result key should exist', $result)->hasKey('test3@presentator.io');
+            verify('Result key should not exist', $result)->hasntKey('nonproject@presentator.io');
+            $this->tester->checkMentionResultItems($result);
+        });
+
+        $this->specify('Check result if no valid mention users are found', function () use ($model) {
+            $result = $model->extractMentionUsers('custom message +nonProject@presentator.io');
+
+            verify('Result should be an array', is_array($result))->true();
+            verify('Should not found any valid mention user', $result)->count(0);
+        });
+    }
+
+    /**
+     * `ScreenComment::sendMentionUsersEmail()` method test.
+     */
+    public function testSendMentionUsersEmail()
+    {
+        $model      = ScreenComment::findOne(1007);
+        $sentEmails = 0;
+
+        $this->specify('Extract mention users from a comment message and send them an email', function () use ($model, &$sentEmails) {
+            $result = $model->sendMentionUsersEmail();
+
+            verify('Method should succeed', $result)->true();
+
+            $sentEmails = 2;
+            $this->tester->seeEmailIsSent($sentEmails);
+
+            $validEmails = ['test3@presentator.io', 'loremipsum@presentator.io'];
+            $emails = $this->tester->grabSentEmails();
+            foreach ($emails as $email) {
+                $message = $email->getSwiftMessage();
+                verify('Sender email should match', $message->getFrom())->hasKey(Yii::$app->params['noreplyEmail']);
+                verify('Receiver email should be in range', $validEmails)->contains(key($message->getTo()));
+                verify('Body should contains a preview url', current($message->getChildren())->getBody())->contains(
+                    $model->screen->project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMMENT, ['m' => 'comments'])
+                );
+            }
+        });
+
+        $this->specify('Extract mention users from a custom message and send them an email', function () use ($model, &$sentEmails) {
+            $result = $model->sendMentionUsersEmail([
+                'test3@presentator.io' => [
+                    'email'     => 'test3@presentator.io',
+                    'userId'    => 1003,
+                    'firstName' => 'John',
+                    'lastName'  => null,
+                ],
+                'nonproject@presentator.io' => [ // should not send an email since it is not a project commenter
+                    'email'     => 'nonproject@presentator.io',
+                    'userId'    => null,
+                    'firstName' => null,
+                    'lastName'  => null,
+                ]
+            ]);
+
+            verify('Method should succeed', $result)->true();
+
+            $sentEmails += 1;
+            $this->tester->seeEmailIsSent($sentEmails);
+
+            $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
+            verify('Sender email should match', $message->getFrom())->hasKey(Yii::$app->params['noreplyEmail']);
+            verify('Receiver email should match', $message->getTo())->hasKey('test3@presentator.io');
+            verify('Body should contains a preview url', current($message->getChildren())->getBody())->contains(
+                $model->screen->project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMMENT, ['m' => 'comments'])
+            );
+        });
+    }
+
+    /**
      * `ScreenComment::sendAdminsEmail()` method test.
      */
     public function testSendAdminsEmail()
     {
-        $this->specify('Send preview email WITHOUT user exclude', function() {
+        $this->specify('Send preview email WITHOUT user exclude', function () {
             $model       = ScreenComment::findOne(1004);
             $validEmails = ['test3@presentator.io', 'test4@presentator.io'];
 
@@ -352,7 +447,7 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Send preview email WITH user exclude', function() {
+        $this->specify('Send preview email WITH user exclude', function () {
             $model       = ScreenComment::findOne(1004);
             $validEmails = ['test3@presentator.io', 'test4@presentator.io'];
 
