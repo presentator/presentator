@@ -30,7 +30,7 @@ To run only `app` tests, navigate to the `app` dir and execute:
 # run unit and functional tests
 /path/to/project/vendor/bin/codecept run
 
-# run only unit tests
+# run only unit/integration tests
 /path/to/project/vendor/bin/codecept run unit
 
 # run only functional tests
@@ -44,7 +44,7 @@ To run only `api` tests, navigate to the `api` dir and execute:
 # run unit and functional tests
 /path/to/project/vendor/bin/codecept run
 
-# run only unit tests
+# run only unit/integration tests
 /path/to/project/vendor/bin/codecept run unit
 
 # run only functional tests
