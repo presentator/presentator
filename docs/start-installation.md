@@ -36,9 +36,9 @@ To install and setup the application components you will need [Composer](https:/
 3. Setup a vhost/server address for the **api**, eg. `http://api.presentator.dev/` and point it to `/api/web`.
 
 4. Open a console terminal and execute:
-    ```
+    ```bash
     # navigate to project root dir
-    cd /path/to/my/project
+    cd /path/to/project
 
     # install vendor dependencies
     composer global require "fxp/composer-asset-plugin:^1.3.1"
@@ -51,8 +51,8 @@ To install and setup the application components you will need [Composer](https:/
     > For production `npm` command is optional but it is required if you want to change the API docs and app assets.
 
 5. Execute the `init` command and select the appropriate environment.
-    ```
-    php /path/to/my/project/init
+    ```bash
+    php /path/to/project/init
     ```
 
 6. Adjust applications required params in `common/config/params-local.php`.
@@ -60,8 +60,8 @@ To install and setup the application components you will need [Composer](https:/
 7. Create a new database and adjust the `components['db']` configuration in `common/config/main-local.php` accordingly.
 
 8. Open a console terminal and apply migrations.
-    ```
-    php /path/to/my/project/yii migrate
+    ```bash
+    php /path/to/project/yii migrate
     ```
 
 That is! Now you should be able to access the previously created vhosts.
@@ -85,7 +85,7 @@ To optimize the performance of the service you could schedule the following cron
     Setup your crontab to run the `php yii mails/process` console command, eg.:
     ```bash
         # process 50 mails at every 5 minutes
-        */5 * * * * php /var/path/to/project/yii mails/process 50
+        */5 * * * * php /path/to/project/yii mails/process 50
     ```
     > Check `console\controllers\MailsController::actionProcess()` for all available command arguments.
 
