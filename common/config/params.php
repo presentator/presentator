@@ -5,8 +5,13 @@ return [
     'showCredits'      => true,
     'maxUploadSize'    => 15,
 
+    // whether to store the mails that need to be send in MailQueue table
+    // and use a cron job to process them or send them directly on runtime
+    // @see `common\components\swiftmailer\CMessage`
+    'useMailQueue' => false,
+
     // whether to purge processed MailQueue records on success
-    // @see `console\controllers\MailsController::actionProcess()`
+    // @see `\console\controllers\MailsController::actionProcess()`
     'purgeSentMails' => true,
 
     // short/url lang code => full lang code
