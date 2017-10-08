@@ -18,7 +18,7 @@
  */
 return [
     'You have been mentioned in a comment' => '',
-    'You have been mentioned in a comment for project "{projectTitle}" .' => '',
+    'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'A new comment was left for project "{projectTitle}".' => 'Ein neuer Kommentar wurde zum Projekt "{projectTitle}" hinterlassen.',
     'Account activation' => 'Kontoaktivierung',
     'Activate account' => 'Konto aktivieren',

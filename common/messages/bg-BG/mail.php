@@ -18,8 +18,8 @@
  */
 return [
     'You have been mentioned in a comment' => 'Споменаване в коментар',
-    'You have been mentioned in a comment for project "{projectTitle}" .' => 'Твоят потребител беше споментат в коментар към проект "{projectTitle}"',
-    'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}"',
+    'You have been mentioned in a comment for project "{projectTitle}".' => 'Споменат си в коментар към проект "{projectTitle}."',
+    'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}".',
     'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
     'Administrator assignment' => 'Назначаване като администратор',

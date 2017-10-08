@@ -13,7 +13,7 @@ $previewUrl = $comment->screen->project->getPreviewUrl(ProjectPreview::TYPE_VIEW
 
 <p><?= Yii::t('mail', 'Hello') ?><?= !empty($mention['firstName']) ? (' ' . Html::encode($mention['firstName'])) : '' ?>,</p>
 
-<p><?= Yii::t('mail', 'You have been mentioned in a comment for project "{projectTitle}" .', ['projectTitle' => Html::encode($comment->screen->project->title)]) ?><p>
+<p><?= Yii::t('mail', 'You have been mentioned in a comment for project "{projectTitle}".', ['projectTitle' => Html::encode($comment->screen->project->title)]) ?><p>
 
 <p class="emphasis">
     <b><?= Yii::t('mail', 'Screen') ?></b>: <?= Html::encode($comment->screen->title) ?><br/>
