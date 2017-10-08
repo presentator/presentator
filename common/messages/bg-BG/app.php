@@ -16,9 +16,13 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Successfully updated comment position.' => 'Позицията на коментара бе обновена успешно.',
-    'Auto scale/fit the uploaded screen to the device width.' => 'Автоматично преоразмеряване на по-големите екрани до ширината на устройството.',
+return [
+    'Pending' => 'Очаква преглед',
+    'Receive an email when someone mentions you' => 'Получаване на email при споменаване в коментар',
+    'Resolved' => 'Одобрен',
+    'Show resolved' => 'Покажи разрешените',
+    'Successfully updated comment status.' => 'Успешно обновяване на статуса на коментара.',
+    'mark as resolved' => 'маркирай като разрешен',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -39,6 +43,7 @@ return array(
     'All screens' => 'Всички екрани',
     'Allow to read and leave comments' => 'Разрешаване на оставянето на коментари',
     'Auto rescale' => 'Автомачно преоразмеряване',
+    'Auto scale/fit the uploaded screen to the device width.' => 'Автоматично преоразмеряване на по-големите екрани до ширината на устройството.',
     'Avatar' => 'Аватар',
     'Back to all projects' => 'Назад към всички проекти',
     'Back to homepage' => 'Начална страница',
@@ -155,7 +160,7 @@ return array(
     'Project admins' => 'Администратори',
     'Project preview links' => 'URL адреси за преглед',
     'Projects' => 'Проекти',
-    'Receive an email when a new screen comment is added' => 'Изпращане на email при нов коментар',
+    'Receive an email when a new screen comment is added' => 'Получаване на email при нов коментар',
     'Register' => 'Регистрация',
     'Reset password' => 'Смяна на парола',
     'Reset selection' => 'Деселектирай',
@@ -194,6 +199,7 @@ return array(
     'Successfully sent!' => 'Успешно изпратена заяка!',
     'Successfully shared.' => 'Заявката е изпратена успешно.',
     'Successfully updated avatar.' => 'Аватарът е записан успешно.',
+    'Successfully updated comment position.' => 'Позицията на коментара бе обновена успешно.',
     'Successfully updated profile settings.' => 'Настройките на профила бяха обновени успешно.',
     'Successfully updated project settings.' => 'Настройките на проекта бяха обновени успешно.',
     'Support us' => 'Подкрепи ни',
@@ -239,4 +245,4 @@ return array(
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-);
+];

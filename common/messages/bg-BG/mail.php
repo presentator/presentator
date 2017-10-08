@@ -16,7 +16,9 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
+    'You have been mentioned in a comment' => 'Споменаване в коментар',
+    'You have been mentioned in a comment for project "{projectTitle}" .' => 'Твоят потребител беше споментат в коментар към проект "{projectTitle}"',
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}"',
     'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
@@ -51,4 +53,4 @@ return array(
     'You are no longer an administrator to project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Успешна регистрация чрез Facebook.',
     '{projectTitle} preview' => '{projectTitle} преглед',
-);
+];

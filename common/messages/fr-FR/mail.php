@@ -16,7 +16,9 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
+    'You have been mentioned in a comment' => '',
+    'You have been mentioned in a comment for project "{projectTitle}" .' => '',
     'A new comment was left for project "{projectTitle}".' => 'Un nouveau commentaire a été déposé pour le projet "{projectTitle}".',
     'Account activation' => 'Activation du compte',
     'Activate account' => 'Activer le compte',
@@ -51,4 +53,4 @@ return array(
     'You are no longer an administrator to project "{projectTitle}".' => 'Vous n\'êtes désormais plus administrateur du projet "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Vous vous êtes bien authentifiés via Facebook.',
     '{projectTitle} preview' => 'Aperçu de {projectTitle}',
-);
+];

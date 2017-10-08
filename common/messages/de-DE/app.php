@@ -16,9 +16,13 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Successfully updated comment position.' => 'Erfolgreich aktualisierte Position.',
-    'Auto scale/fit the uploaded screen to the device width.' => 'Automatische Skalierung/Passe den Screen an die Breite des Geräts an.',
+return [
+    'Pending' => '',
+    'Receive an email when someone mentions you' => '',
+    'Resolved' => '',
+    'Show resolved' => '',
+    'Successfully updated comment status.' => '',
+    'mark as resolved' => '',
     '2x (Retina) rescale' => '2x (Retina) Neuskalierung',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -39,6 +43,7 @@ return array(
     'All screens' => 'Alle Screens',
     'Allow to read and leave comments' => 'Erlaube das Lesen und Hinterlassen von Kommentaren',
     'Auto rescale' => 'Auto rescale',
+    'Auto scale/fit the uploaded screen to the device width.' => 'Automatische Skalierung/Passe den Screen an die Breite des Geräts an.',
     'Avatar' => 'Avatar',
     'Back to all projects' => 'Zurück zur Projektübersicht',
     'Back to homepage' => 'Zurück zur Startseite',
@@ -194,6 +199,7 @@ return array(
     'Successfully sent!' => 'Erfolgreich versendet!',
     'Successfully shared.' => 'Erfolgreich geteilt.',
     'Successfully updated avatar.' => 'Avatar wurde erfolgreich gespeichert.',
+    'Successfully updated comment position.' => 'Erfolgreich aktualisierte Position.',
     'Successfully updated profile settings.' => 'Profil wurde erfolgreich gespeichert.',
     'Successfully updated project settings.' => 'Projekt wurde erfolgreich gespeichert.',
     'Support us' => 'Unterstütze uns',
@@ -239,4 +245,4 @@ return array(
     'of' => 'von',
     'or' => 'oder',
     '{projectTitle} - Projects' => '{projectTitle} - Projekte',
-);
+];
