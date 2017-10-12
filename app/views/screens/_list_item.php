@@ -27,7 +27,7 @@ $hasImg = !empty(@getimagesize($url));
             </div>
         <?php endif ?>
 
-        <figure class="featured">
+        <figure class="featured with-overlay-panel">
             <?php if ($lazyLoad): ?>
                 <img data-src="<?= $url ?>" class="img lazy-load" alt="<?= Html::encode($model->title) ?>" data-priority="<?= $lazyLoadPriority ?>">
             <?php else: ?>
@@ -46,11 +46,6 @@ $hasImg = !empty(@getimagesize($url));
                     <i class="ion ion-android-more-horizontal" data-bind="clickToggle" data-target=".dropdown-menu" data-class="active" data-isolate="parent"></i>
                     <div class="dropdown-menu small compact">
                         <ul>
-<!--
-                            <li>
-                                <a href="#"><?= Yii::t('app', 'Move') ?></a>
-                            </li>
--->
                             <li>
                                 <a href="#" class="danger-link screen-delete"><?= Yii::t('app', 'Delete') ?></a>
                             </li>
@@ -64,5 +59,13 @@ $hasImg = !empty(@getimagesize($url));
                 </span>
             </div>
         </figure>
+
+        <div class="overlay-panel">
+            <h3 class="title title-sm">
+                <span class="default-link open-screen-edit screen-title" title="<?= Html::encode($model->title) ?>">
+                    <?= Html::encode($model->title) ?>
+                </span>
+            </h3>
+        </div>
     </div>
 </div>

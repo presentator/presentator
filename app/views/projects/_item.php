@@ -18,16 +18,7 @@ $hasFeaturedScreen = !empty($model->featuredScreen);
             </div>
         <?php endif ?>
 
-        <div class="overlay-panel">
-            <h3 class="title">
-                <a href="<?= Url::to(['projects/view', 'id' => $model->id]) ?>"><?= Html::encode($model->title) ?></a>
-            </h3>
-            <div class="meta">
-                <div class="item"><?= Yii::t('app', 'Versions') ?>: <?= count($model->versions) ?></div>
-                <div class="item"><?= Yii::t('app', 'Screens') ?>: <?= count($model->screens) ?></div>
-            </div>
-        </div>
-        <figure class="featured <?= !$hasFeaturedScreen ? 'no-image' : '' ?>">
+        <figure class="featured with-overlay-panel <?= !$hasFeaturedScreen ? 'no-image' : '' ?>">
             <?php if ($hasFeaturedScreen): ?>
                 <img data-src="<?= $model->featuredScreen->getThumbUrl('medium') ?>" class="lazy-load" data-priority="high" alt="<?= Html::encode($model->featuredScreen->title) ?>">
             <?php endif ?>
@@ -64,5 +55,15 @@ $hasFeaturedScreen = !empty($model->featuredScreen);
                 </a>
             </div>
         </figure>
+
+        <div class="overlay-panel">
+            <h3 class="title">
+                <a href="<?= Url::to(['projects/view', 'id' => $model->id]) ?>"><?= Html::encode($model->title) ?></a>
+            </h3>
+            <div class="meta">
+                <div class="item"><?= Yii::t('app', 'Versions') ?>: <?= count($model->versions) ?></div>
+                <div class="item"><?= Yii::t('app', 'Screens') ?>: <?= count($model->screens) ?></div>
+            </div>
+        </div>
     </div>
 </div>

@@ -77,6 +77,7 @@ $isGuest = Yii::$app->user->isGuest;
         <div class="close-handle-wrapper">
             <span class="close-handle close-screen-edit"><i class="ion ion-ios-close-empty"></i></span>
         </div>
+
         <div class="slider-items">
             <?php foreach ($model->screens as $i => $screen): ?>
                 <?php

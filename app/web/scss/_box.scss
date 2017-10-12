@@ -13,14 +13,6 @@
     &:hover, &:active {
         @include box-shadow(0px 3px 10px 0px rgba(44, 75, 137, 0.3));
     }
-    & > .content {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        text-decoration: none;
-    }
 
     // Pin
     .pin {
@@ -168,6 +160,17 @@
                 color: $primaryColor;
             }
         }
+
+        // with overlay panel layout
+        &.with-overlay-panel {
+            border-bottom: 0;
+            @include border-bottom-right-radius(0);
+            @include border-bottom-left-radius(0);
+            img, .featured-overlay {
+                @include border-bottom-right-radius(0);
+                @include border-bottom-left-radius(0);
+            }
+        }
     }
 
     // hover and bulk selected states
@@ -204,27 +207,28 @@
         left: 0;
         bottom: 0;
         text-align: left;
-        padding: 15px 20px;
+        padding: 13px 20px 15px;
         background: #fff;
         border-top: 1px solid $lightGreyColor;
         @include border-bottom-left-radius($baseRadius);
         @include border-bottom-right-radius($baseRadius);
-        & ~ .featured {
-            height: calc(100% - 70px);
-        }
         .title {
             @extend %block;
             max-width: 100%;
             padding: 0;
             margin: 0 0 15px;
-            font-size: 15px;
-            line-height: 1;
+            font-size: $baseFontSize + 1;
+            line-height: normal;
             font-weight: normal;
             color: $txtColor;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            a {
+            &.title-sm {
+                font-size: $baseFontSize;
+            }
+            a, .default-link {
+                cursor: pointer;
                 max-width: 100%;
                 text-decoration: none;
                 color: $txtColor;
@@ -256,6 +260,34 @@
                     display: none;
                 }
             }
+        }
+        & > :first-child {
+            margin-top: 0;
+        }
+        & > :last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    & > .content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        @include display-flex;
+        @include flex-direction(column);
+        .overlay-panel,
+        .featured {
+            position: relative;
+            left: auto;
+            bottom: auto;
+            right: auto;
+            top: auto;
+        }
+        .featured {
+            height: 100%;
         }
     }
 

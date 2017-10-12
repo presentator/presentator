@@ -13,6 +13,7 @@ var ScreenView = function(data) {
         'screenItem':         '.screen-item',
         'screenDeleteHandle': '.screen-delete',
         'screenUploadHandle': '.action-box',
+        'screenTitlteHolder': '.screen-title',
 
         // bulk
         'bulkPanel':          '#screens_bulk_panel',
@@ -752,9 +753,13 @@ ScreenView.prototype.saveSettingsForm = function(form, screenId) {
             }, 580); // animations delay
 
             var $sliderItem = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
+            var encodedTitle = PR.htmlEncode(response.settings.title);
 
             // update screen title
-            PR.setData($sliderItem, 'title', PR.htmlEncode(response.settings.background));
+            PR.setData($sliderItem, 'title', PR.htmlEncode(encodedTitle));
+            $('[data-screen-id="' + screenId + '"]').find(self.settings.screenTitlteHolder)
+                .text(encodedTitle)
+                .attr('title', PR.htmlEncode(encodedTitle));
 
             // update alignment
             PR.setData($sliderItem, 'alignment', response.settings.alignment);
