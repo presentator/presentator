@@ -755,11 +755,11 @@ ScreenView.prototype.saveSettingsForm = function(form, screenId) {
             var $sliderItem = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
             var encodedTitle = PR.htmlEncode(response.settings.title);
 
-            // update screen title
-            PR.setData($sliderItem, 'title', PR.htmlEncode(encodedTitle));
+            // update screen title across all placeholders
+            PR.setData('[data-screen-id="' + screenId + '"]', 'title', encodedTitle);
             $('[data-screen-id="' + screenId + '"]').find(self.settings.screenTitlteHolder)
-                .text(encodedTitle)
-                .attr('title', PR.htmlEncode(encodedTitle));
+                .attr('title', encodedTitle)
+                .text(encodedTitle);
 
             // update alignment
             PR.setData($sliderItem, 'alignment', response.settings.alignment);
