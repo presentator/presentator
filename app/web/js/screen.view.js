@@ -753,13 +753,12 @@ ScreenView.prototype.saveSettingsForm = function(form, screenId) {
             }, 580); // animations delay
 
             var $sliderItem = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
-            var encodedTitle = PR.htmlEncode(response.settings.title);
 
             // update screen title across all placeholders
-            PR.setData('[data-screen-id="' + screenId + '"]', 'title', encodedTitle);
+            PR.setData('[data-screen-id="' + screenId + '"]', 'title', PR.htmlEncode(response.settings.title));
             $('[data-screen-id="' + screenId + '"]').find(self.settings.screenTitlteHolder)
-                .attr('title', encodedTitle)
-                .text(encodedTitle);
+                .attr('title', PR.htmlEncode(response.settings.title))
+                .text(response.settings.title);
 
             // update alignment
             PR.setData($sliderItem, 'alignment', response.settings.alignment);
