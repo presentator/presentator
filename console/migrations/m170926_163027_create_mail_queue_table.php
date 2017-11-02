@@ -12,7 +12,7 @@ class m170926_163027_create_mail_queue_table extends Migration
     /**
      * @inheritdoc
      */
-    public function up()
+    public function safeUp()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -37,7 +37,7 @@ class m170926_163027_create_mail_queue_table extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
+    public function safeDown()
     {
         $this->dropTable('{{%mailQueue}}');
     }
