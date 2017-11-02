@@ -93,7 +93,7 @@
 
                 $content.css('height', ''); // unset height
 
-                $wrapper.trigger('tabChange.pr', [tabContentId]);
+                $wrapper.trigger('tabChange.pr', [tabContentId, $targetTab]);
             }
         });
 
