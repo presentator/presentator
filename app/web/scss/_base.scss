@@ -51,6 +51,7 @@ p {
 }
 
 a, .default-link {
+    cursor: pointer;
     color: inherit;
     text-decoration: underline;
     @include transition(color 0.2s, background 0.2s);
