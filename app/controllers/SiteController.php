@@ -4,8 +4,9 @@ namespace app\controllers;
 use Yii;
 use yii\base\Exception;
 use yii\base\ErrorException;
-use yii\web\BadRequestHttpException;
 use yii\base\InvalidParamException;
+use yii\db\IntegrityException;
+use yii\web\BadRequestHttpException;
 use yii\helpers\ArrayHelper;
 use app\models\LoginForm;
 use app\models\RegisterForm;
@@ -31,7 +32,15 @@ class SiteController extends AppController
         $behaviors = parent::behaviors();
 
         $behaviors['access']['rules'][] = [
-            'actions' => ['entrance', 'auth', 'activation', 'forgotten-password', 'reset-password', 'error'],
+            'actions' => [
+                'entrance',
+                'auth',
+                'activation',
+                'forgotten-password',
+                'reset-password',
+                'change-email',
+                'error',
+            ],
             'allow' => true,
         ];
 
@@ -224,6 +233,30 @@ class SiteController extends AppController
         return $this->render('reset_password', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Change user email action.
+     * @param  string $email New email to set
+     * @param  string $token Email change token
+     * @return string
+     * @throws BadRequestHttpException
+     */
+    public function actionChangeEmail($email, $token)
+    {
+        $user = User::findByEmailChangeToken($token);
+
+        try {
+            if (!$user || !$user->changeEmail($email)) {
+                throw new BadRequestHttpException('Wrong or expired email change token.');
+            }
+        } catch (IntegrityException $e) {
+            throw new BadRequestHttpException('The email ' . $email . ' seems to be already registered.');
+        }
+
+        Yii::$app->session->setFlash('success', Yii::t('app', 'Your email address was successfully changed!'));
+
+        return $this->redirect(['site/index']);
     }
 
     /**

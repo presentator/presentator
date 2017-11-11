@@ -11,7 +11,7 @@ $replyUrl = Yii::$app->mainUrlManager->createUrl([
     'id'             => $comment->screen->project->id,
     'screen'         => $comment->screen->id,
     'comment_target' => ($comment->replyTo ? $comment->replyTo : $comment->id),
-    'reply_to'       => $comment->id
+    'reply_to'       => $comment->id,
 ], true);
 ?>
 

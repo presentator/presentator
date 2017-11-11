@@ -53,6 +53,8 @@ return [
                 'forgotten-password'                               => 'site/forgotten-password',
                 '<lang:\w{2}-\w{2}|\w{2}>/reset-password'          => 'site/reset-password',
                 'reset-password'                                   => 'site/reset-password',
+                '<lang:\w{2}-\w{2}|\w{2}>/change-email'            => 'site/change-email',
+                'change-email'                                     => 'site/change-email',
                 '<lang:\w{2}-\w{2}|\w{2}>/<slug:[\w\-]+>'          => 'preview/view',
                 '<slug:[\w\-]+>'                                   => 'preview/view',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/projects/<id:\d+>' => 'projects/view',

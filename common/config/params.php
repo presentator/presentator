@@ -32,6 +32,7 @@ return [
     'noreplyEmail'             => 'no-reply@example.com',
     'supportEmail'             => 'support@example.com',
     'passwordResetTokenExpire' => 3600,
+    'emailChangeTokenExpire'   => 3600,
     'rememberMeDuration'       => 3600 * 24 * 30,
 
     'facebookUrl'  => 'https://www.facebook.com/presentator.io',

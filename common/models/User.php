@@ -20,6 +20,7 @@ use yii\imagine\Image;
  * @property string  $email
  * @property string  $passwordHash
  * @property string  $passwordResetToken
+ * @property string  $emailChangeToken
  * @property string  $authKey
  * @property integer $status
  * @property integer $createdAt
@@ -67,7 +68,12 @@ class User extends CActiveRecord implements IdentityInterface
     {
         $fields = parent::fields();
 
-        unset($fields['authKey'], $fields['passwordHash'], $fields['passwordResetToken']);
+        unset(
+            $fields['authKey'],
+            $fields['passwordHash'],
+            $fields['passwordResetToken'],
+            $fields['emailChangeToken']
+        );
 
         $fields['avatar'] = function ($model, $field) {
             $url = $model->getAvatarUrl(true);
@@ -234,6 +240,24 @@ class User extends CActiveRecord implements IdentityInterface
     /* Passwords, tokens, etc.
     --------------------------------------------------------------- */
     /**
+     * Checks whether a timestamp token is valid (is not expired).
+     * @param  string  $token  Token with timestamp to validate
+     * @param  integer $expire Expire interval in seconds
+     * @return boolean
+     */
+    public static function isTimestampTokenValid($token, $expire = null)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = $expire ? $expire : 3600;
+
+        return ($timestamp + $expire) >= time();
+    }
+
+    /**
      * Finds user by password reset token.
      * @param string $token
      * @return static|null
@@ -257,14 +281,9 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public static function isPasswordResetTokenValid($token)
     {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = CArrayHelper::getValue(Yii::$app->params, 'passwordResetTokenExpire', 3600);
 
-        return ($timestamp + $expire) >= time();
+        return self::isTimestampTokenValid($token, $expire);
     }
 
     /**
@@ -300,6 +319,75 @@ class User extends CActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->passwordResetToken = null;
+    }
+
+    /**
+     * Generates new email change token
+     * @param string $newEmail
+     */
+    public function generateEmailChangeToken($newEmail)
+    {
+        $this->emailChangeToken = md5($newEmail) . '_' . time();
+    }
+
+    /**
+     * Removes email change token
+     */
+    public function removeEmailChangeToken()
+    {
+        $this->emailChangeToken = null;
+    }
+
+    /**
+     * Finds out if password reset token is valid.
+     * @param  string $token
+     * @return boolean
+     */
+    public static function isEmailChangeTokenValid($token)
+    {
+        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 3600);
+
+        return self::isTimestampTokenValid($token, $expire);
+    }
+
+    /**
+     * Finds user by email change token.
+     * @param string $token
+     * @return null|static
+     */
+    public static function findByEmailChangeToken($token)
+    {
+        if (!static::isEmailChangeTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'emailChangeToken' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Changes user email address (with `emailChangeToken` check)
+     * @param  string $newEmail Must be included in `emailChangeToken` hash
+     * @return boolean
+     */
+    public function changeEmail($newEmail)
+    {
+        $hashedEmail = strstr($this->emailChangeToken, '_', true);
+
+        if (
+            static::isEmailChangeTokenValid($this->emailChangeToken) && // token is not expired
+            $hashedEmail === md5($newEmail) // the same email asddress as the hashed part
+        ) {
+            $this->email = $newEmail;
+
+            $this->removeEmailChangeToken();
+
+            return $this->save();
+        }
+
+        return false;
     }
 
     /**
@@ -378,6 +466,30 @@ class User extends CActiveRecord implements IdentityInterface
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
             ->setSubject('Presentator - ' . Yii::t('mail', 'Password reset request'))
+        ;
+
+        // force direct send
+        if ($message instanceof CMessage) {
+            $message->useMailQueue(false);
+        }
+
+        return $message->send();
+    }
+
+    /**
+     * Sends email change request email to the current user model.
+     * @param  string $newEmail
+     * @return boolean
+     */
+    public function sendEmailChangeEmail($newEmail)
+    {
+        $message = Yii::$app->mailer->compose('email_change', [
+                'user'     => $this,
+                'newEmail' => $newEmail,
+            ])
+            ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
+            ->setTo($newEmail)
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Email change request'))
         ;
 
         // force direct send
