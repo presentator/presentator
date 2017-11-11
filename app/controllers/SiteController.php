@@ -248,7 +248,7 @@ class SiteController extends AppController
 
         try {
             if (!$user || !$user->changeEmail($email)) {
-                throw new BadRequestHttpException('Wrong or expired email change token.');
+                throw new BadRequestHttpException('Invalid or expired email change token.');
             }
         } catch (IntegrityException $e) {
             throw new BadRequestHttpException('The email ' . $email . ' seems to be already registered.');
