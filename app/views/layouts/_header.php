@@ -12,7 +12,7 @@ use yii\helpers\Url;
 
     <?php if (!Yii::$app->user->isGuest): ?>
         <div class="profile" data-bind="clickToggle" data-target="#profile_dropdown_menu">
-            <span class="name"><?= Html::encode(Yii::$app->user->identity->getIdentificator()) ?></span>
+            <span class="name user-identificator"><?= Html::encode(Yii::$app->user->identity->getIdentificator()) ?></span>
             <figure class="avatar">
                 <img data-src="<?= Yii::$app->user->identity->getAvatarUrl(true) ?>" data-nocache="1" class="lazy-load avatar-img" alt="Avatar">
             </figure>
