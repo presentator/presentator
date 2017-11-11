@@ -15,7 +15,7 @@ $this->title = $name;
 <div class="table-wrapper full-vh-height">
     <div class="table-cell text-center">
         <div class="site-error panel panel-md padded">
-            <a href="<?= Url::home() ?>" class="logo">
+            <a href="<?= Url::home() ?>">
                 <img src="/images/logo_large.png" alt="Presentator logo">
             </a>
             <div class="clearfix m-b-15"></div>
