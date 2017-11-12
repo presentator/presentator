@@ -27,7 +27,7 @@ Keep your tests always up to date. If a class, or functionality is deleted, corr
 Contains Unit and Functional tests for all `app` application models and actions.
 To run only `app` tests, navigate to the `app` dir and execute:
 ```
-# run unit and functional tests
+# run unit/integration and functional tests
 /path/to/project/vendor/bin/codecept run
 
 # run only unit/integration tests
@@ -41,7 +41,7 @@ To run only `app` tests, navigate to the `app` dir and execute:
 Contains Unit and REST tests for all `api` application models and actions.
 To run only `api` tests, navigate to the `api` dir and execute:
 ```
-# run unit and functional tests
+# run unit/integration and functional tests
 /path/to/project/vendor/bin/codecept run
 
 # run only unit/integration tests
