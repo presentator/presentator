@@ -254,7 +254,7 @@ class SiteController extends AppController
             throw new BadRequestHttpException('The email ' . $email . ' seems to be already registered.');
         }
 
-        Yii::$app->session->setFlash('success', Yii::t('app', 'Your email address was successfully updated!'));
+        Yii::$app->session->setFlash('success', Yii::t('app', 'Your email address was successfully updated.'));
 
         return $this->redirect(['site/index']);
     }

@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Confirm email address change' => '',
+    'Email change request' => '',
+    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
     'You have been mentioned in a comment' => '',
     'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'A new comment was left for project "{projectTitle}".' => 'Ein neuer Kommentar wurde zum Projekt "{projectTitle}" hinterlassen.',

@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You have been mentioned in a comment' => 'You have been mentioned in a comment',
-    'You have been mentioned in a comment for project "{projectTitle}".' => 'You have been mentioned in a comment for project "{projectTitle}".',
+    'Confirm email address change' => 'Confirm email address change',
+    'Email change request' => 'Email change request',
+    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.',
     'A new comment was left for project "{projectTitle}".' => 'A new comment was left for project "{projectTitle}".',
     'Account activation' => 'Account activation',
     'Activate account' => 'Activate account',
@@ -51,6 +52,8 @@ return [
     'You are assigned as admin to project "{projectTitle}".' => 'You are assigned as admin to project "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'You are invited to review the design for "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'You are no longer an administrator to project "{projectTitle}".',
+    'You have been mentioned in a comment' => 'You have been mentioned in a comment',
+    'You have been mentioned in a comment for project "{projectTitle}".' => 'You have been mentioned in a comment for project "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'You have successfully registered via Facebook.',
     '{projectTitle} preview' => '{projectTitle} preview',
 ];

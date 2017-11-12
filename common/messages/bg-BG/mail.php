@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You have been mentioned in a comment' => 'Споменаване в коментар',
-    'You have been mentioned in a comment for project "{projectTitle}".' => 'Споменат си в коментар към проект "{projectTitle}."',
+    'Confirm email address change' => 'Потвърди смяната на имейл адреса',
+    'Email change request' => 'Промяна на имейл адреса',
+    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'Получихме запитване за смяна на имейл адреса на профила ти в Presentator от {oldEmail} на {newEmail}.',
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}".',
     'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
@@ -51,6 +52,8 @@ return [
     'You are assigned as admin to project "{projectTitle}".' => 'Назначен си като администатор към проект "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'Поканен си да разгледаш дизайна на "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
+    'You have been mentioned in a comment' => 'Споменаване в коментар',
+    'You have been mentioned in a comment for project "{projectTitle}".' => 'Споменат си в коментар към проект "{projectTitle}."',
     'You have successfully registered via Facebook.' => 'Успешна регистрация чрез Facebook.',
     '{projectTitle} preview' => '{projectTitle} преглед',
 ];
