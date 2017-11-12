@@ -1,9 +1,12 @@
-var ProfileView = function(data) {
+var ProfileView = function (data) {
     data = data || {};
 
     var defaults = {
         'maxUploadSize': 15,
 
+        // avatar form selectors
+        'avatarImg':           '.avatar-img',
+        'cropHotspot':         '#crop_hotspot',
         'avatarPopup':         '#avatar_popup',
         'uploadContainer':     '#upload_container',
         'previewContainer':    '#preview_container',
@@ -12,12 +15,22 @@ var ProfileView = function(data) {
         'saveAvatarHandle':    '#persist_avatar',
         'deleteAvatarHandle':  '.delete-avatar',
 
-        'avatarImg':   '.avatar-img',
-        'cropHotspot': '#crop_hotspot',
+        // setting forms
+        'userIdentificator':     '.user-identificator',
+        'userTabs':              '#user_tabs',
+        'notificationsForm':     '#user_notifications_form',
+        'passwordForm':          '#user_password_form',
+        'profileForm':           '#user_profile_form',
+        'emailField':            '#userprofileform-email',
+        'emailConfirmFormGroup': '.field-userprofileform-password',
 
-        'tempAvatarUploadUrl': '/account/temp-avatar-upload',
-        'saveAvatarUrl':       '/account/avatar-save',
-        'deleteAvatarUrl':     '/account/avatar-delete'
+        // ajax urls
+        'ajaxNotificationsSaveUrl': '/account/ajax-notifications-save',
+        'ajaxPasswordSaveUrl':      '/account/ajax-password-save',
+        'ajaxProfielSaveUrl':       '/account/ajax-profile-save',
+        'ajaxTempAvatarUploadUrl':  '/account/temp-avatar-upload',
+        'ajaxSaveAvatarUrl':        '/account/avatar-save',
+        'ajaxDeleteAvatarUrl':      '/account/avatar-delete'
     };
 
     this.settings = $.extend({}, defaults, data);
@@ -29,47 +42,56 @@ var ProfileView = function(data) {
     this.$previewImg          = $(this.settings.previewImg);
     this.$cropHotspot         = $(this.settings.cropHotspot);
 
-    this.init();
+    this.$userTabs              = $(this.settings.userTabs);
+    this.$notificationsForm     = $(this.settings.notificationsForm);
+    this.$passwordForm          = $(this.settings.passwordForm);
+    this.$profileForm           = $(this.settings.profileForm);
+    this.$emailField            = $(this.settings.emailField);
+    this.$emailConfirmFormGroup = $(this.settings.emailConfirmFormGroup);
 
+    this.saveFormXHR     = null;
     this.saveAvatarXHR   = null;
     this.deleteAvatarXHR = null;
+
+    this.hotspotsInst = null;
+
+    this.init();
 };
 
 /**
  * Init method
  */
-ProfileView.prototype.init = function() {
-    var self = this;
+ProfileView.prototype.init = function () {
+    var self      = this;
+    var $document = $(document);
 
+    /* Avatar
+    --------------------------------------------------------------- */
     self.tempAvatarUpload();
 
-    $(document).on('click', self.settings.saveAvatarHandle, function(e) {
+    $document.off('click.profileview', self.settings.saveAvatarHandle);
+    $document.on('click.profileview', self.settings.saveAvatarHandle, function (e) {
         e.preventDefault();
 
         self.saveAvatar();
     });
 
-    $(document).on('click', self.settings.deleteAvatarHandle, function(e) {
+    $document.off('click.profileview', self.settings.deleteAvatarHandle);
+    $document.on('click.profileview', self.settings.deleteAvatarHandle, function (e) {
         e.preventDefault();
 
         self.deleteAvatar();
     });
 
-    var hotspotsInst = new Hotspots({
-        drawContainer: '.preview-image-wrapper',
-        drawLayer:     '.preview-image',
-        maxHotspots:   1,
-        squareScale:   true,
-        minWidth:      100,
-        minHeight:     100
-    });
-    hotspotsInst.init();
+    self.initAvatarCrop();
 
-    self.$previewImg.on('load', function() {
+    self.$previewImg.off('load.profileview');
+    self.$previewImg.on('load.profileview', function () {
         self.repositionCrop();
     });
 
-    self.$avatarPopup.on('popupOpen', function(e) {
+    self.$avatarPopup.off('popupOpen.profileview');
+    self.$avatarPopup.on('popupOpen.profileview', function (e) {
         if (self.$previewImg.data('preview-url')) {
             // reset preview image
             self.$previewImg.attr('src', PR.nocacheUrl(self.$previewImg.data('preview-url'))).show();
@@ -79,12 +101,86 @@ ProfileView.prototype.init = function() {
 
         self.repositionCrop();
     });
+
+    /* User settings
+    --------------------------------------------------------------- */
+    self.$userTabs.tabs();
+    self.$userTabs.off('tabChange.pr');
+    self.$userTabs.on('tabChange.pr', function (e, tabContentId, $tabContent) {
+        $tabContent = $tabContent || $();
+        var $form   = $tabContent.find('form');
+
+        if ($form.length && $form.data('yiiActiveForm')) {
+            $form.yiiActiveForm('resetForm'); // reset form errors
+        }
+    });
+
+    self.$notificationsForm.off('beforeSubmit.profileview');
+    self.$notificationsForm.on('beforeSubmit.profileview', function (e) {
+        self.saveNotificationsForm();
+
+        return false;
+    });
+
+    self.$passwordForm.off('beforeSubmit.profileview');
+    self.$passwordForm.on('beforeSubmit.profileview', function (e) {
+        self.savePasswordForm();
+
+        return false;
+    });
+
+    self.$profileForm.off('beforeSubmit.profileview');
+    self.$profileForm.on('beforeSubmit.profileview', function (e) {
+        self.saveProfileForm();
+
+        return false;
+    });
+
+    // Toggle email confirm form group
+    // ---
+    var emailChangeTrottle = null;
+    self.$emailField.off('input.profileview change.profileview');
+    self.$emailField.on('input.profileview change.profileview', function (e) {
+        if (emailChangeTrottle) {
+            clearTimeout(emailChangeTrottle);
+            emailChangeTrottle = null;
+        }
+
+        emailChangeTrottle = setTimeout(function () {
+            self.toggleEmailConfirmFormGroup();
+        }, 250);
+    });
+
+    self.$profileForm.off('reset.profileview');
+    self.$profileForm.on('reset.profileview', function (e) {
+        setTimeout(function () {
+            self.toggleEmailConfirmFormGroup();
+        }, 0); // reorder execution queue
+    });
+
+    self.toggleEmailConfirmFormGroup();
 };
+
+/**
+ * Init avatar crop container.
+ */
+ProfileView.prototype.initAvatarCrop = function () {
+    this.hotspotsInst = new Hotspots({
+        drawContainer: '.preview-image-wrapper',
+        drawLayer:     '.preview-image',
+        maxHotspots:   1,
+        squareScale:   true,
+        minWidth:      100,
+        minHeight:     100
+    });
+
+    this.hotspotsInst.init();
+}
 
 /**
  * Sets default dimensions to the crop hotspot elem.
  */
-ProfileView.prototype.repositionCrop = function() {
+ProfileView.prototype.repositionCrop = function () {
     var self = this;
 
     if (!self.$cropHotspot.length || !self.$previewImg.length) {
@@ -117,12 +213,12 @@ ProfileView.prototype.repositionCrop = function() {
 /**
  * Handles temp avatar upload.
  */
-ProfileView.prototype.tempAvatarUpload = function() {
+ProfileView.prototype.tempAvatarUpload = function () {
     var self = this;
 
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone(self.settings.uploadContainer, {
-        url:                   self.settings.tempAvatarUploadUrl,
+        url:                   self.settings.ajaxTempAvatarUploadUrl,
         paramName:             'AvatarForm[avatar]',
         uploadMultiple:        false,
         thumbnailWidth:        null,
@@ -135,17 +231,17 @@ ProfileView.prototype.tempAvatarUpload = function() {
         maxFilesize:           self.settings.maxUploadSize
     });
 
-    myDropzone.on('sending', function(file, xhr, formData) {
+    myDropzone.on('sending', function (file, xhr, formData) {
         formData.append(yii.getCsrfParam(), yii.getCsrfToken());
         self.$uploadContainer.show().addClass('loading');
     });
 
-    myDropzone.on('complete', function(file, xhr, formData) {
+    myDropzone.on('complete', function (file, xhr, formData) {
         self.$uploadContainer.removeClass('loading');
         myDropzone.removeAllFiles(true);
     });
 
-    myDropzone.on('success', function(file, response) {
+    myDropzone.on('success', function (file, response) {
         if (response.success) {
             self.$uploadContainer.hide();
             self.$previewContainer.show();
@@ -158,14 +254,14 @@ ProfileView.prototype.tempAvatarUpload = function() {
         PR.addNotification(response.message, response.success ? 'success' : 'danger');
     });
 
-    $(document).on('deleteAvatar', function(e) {
+    $(document).on('deleteAvatar', function (e) {
         myDropzone.removeAllFiles(true);
         self.$previewImg.attr('src', '').data('preview-url', '');
         self.$uploadContainer.show();
         self.$previewContainer.hide();
     });
 
-    $(document).on('click.profileView', self.settings.previewRemoveHandle, function(e) {
+    $(document).on('click.profileView', self.settings.previewRemoveHandle, function (e) {
         e.preventDefault();
 
         myDropzone.removeAllFiles(true);
@@ -178,7 +274,7 @@ ProfileView.prototype.tempAvatarUpload = function() {
 /**
  * Saves avatar and generate thumb according to the crop dimensions.
  */
-ProfileView.prototype.saveAvatar = function() {
+ProfileView.prototype.saveAvatar = function () {
     var self = this;
 
     var ratio = self.$previewImg.get(0).naturalWidth / self.$previewImg.width();
@@ -193,13 +289,13 @@ ProfileView.prototype.saveAvatar = function() {
 
     PR.abortXhr(self.saveAvatarXHR);
     self.saveAvatarXHR = $.ajax({
-        url: self.settings.saveAvatarUrl,
+        url: self.settings.ajaxSaveAvatarUrl,
         type: 'POST',
         data: {
             'crop':   crop,
             'isTemp': isTemp ? 1 : 0,
         },
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success) {
             PR.closePopup(self.$avatarPopup);
 
@@ -217,14 +313,14 @@ ProfileView.prototype.saveAvatar = function() {
 /**
  * Delete avatar and its thumb via ajax.
  */
-ProfileView.prototype.deleteAvatar = function() {
+ProfileView.prototype.deleteAvatar = function () {
     var self = this;
 
     PR.abortXhr(self.deleteAvatarXHR);
     self.deleteAvatarXHR = $.ajax({
-        url: self.settings.deleteAvatarUrl,
+        url: self.settings.ajaxDeleteAvatarUrl,
         type: 'POST',
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success) {
             PR.closePopup(self.$avatarPopup);
 
@@ -234,4 +330,91 @@ ProfileView.prototype.deleteAvatar = function() {
             $(document).trigger('deleteAvatar');
         }
     });
+};
+
+/**
+ * Generic method to persist form data via ajax.
+ * @param {Mixed}    form
+ * @param {String}   action
+ * @param {Function} callback
+ */
+ProfileView.prototype.saveForm = function (form, action, callback) {
+    var self  = this;
+    var $form = $(form);
+
+    action = action || $form.attr('action');
+
+    PR.abortXhr(self.saveFormXHR);
+    self.saveFormXHR = $.ajax({
+        url: action,
+        type: 'POST',
+        data: $form.serialize()
+    }).done(function (response) {
+        if (response.success) {
+            PR.saveFormState($form);
+
+            $form.removeClass('is-dirty');
+        } else if (response.errors) {
+            $form.yiiActiveForm('updateMessages', response.errors, true);
+        }
+
+        if (PR.isFunction(callback)) {
+            callback(response);
+        }
+    });
+};
+
+/**
+ * Persist user notifications form data.
+ */
+ProfileView.prototype.saveNotificationsForm = function () {
+    this.saveForm(
+        this.$notificationsForm,
+        this.settings.ajaxNotificationsSaveUrl
+    );
+};
+
+/**
+ * Persist user password form data.
+ */
+ProfileView.prototype.savePasswordForm = function () {
+    var self = this;
+
+    self.saveForm(
+        self.$passwordForm,
+        self.settings.ajaxPasswordSaveUrl,
+        function (response) {
+            if (response.success) {
+                self.$passwordForm.get(0).reset();
+            }
+        }
+    );
+};
+
+/**
+ * Persist user profile form data.
+ */
+ProfileView.prototype.saveProfileForm = function () {
+    var self = this;
+
+    self.saveForm(
+        self.$profileForm,
+        self.settings.ajaxProfielSaveUrl,
+        function (response) {
+            if (response.userIdentificator) {
+                $(self.settings.userIdentificator).text(response.userIdentificator);
+            }
+        }
+    );
+};
+
+/**
+ * Takes care for toggling the visibility of email confirm form group container.
+ */
+ProfileView.prototype.toggleEmailConfirmFormGroup = function () {
+    if (this.$emailField.val() !== this.$emailField.data('original-email')) {
+        this.$emailConfirmFormGroup.removeClass('hidden');
+    } else {
+        this.$emailConfirmFormGroup.addClass('hidden');
+    }
 };

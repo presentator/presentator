@@ -43,6 +43,9 @@ class UsersCest
         $I->seeResponseCodeIs(200);
         $I->seeCurrentUrlEquals(['users/settings']);
         $I->see('Settings');
+        $I->seeElement('#user_profile_form');
+        $I->seeElement('#user_password_form');
+        $I->seeElement('#user_notifications_form');
     }
 
     /**

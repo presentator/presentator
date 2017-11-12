@@ -112,12 +112,24 @@ jQuery(function ($) {
     });
 
     // set "dirty" state on form field change
-    $document.on('change', 'form', function (e) {
-        $(this).addClass('is-dirty');
+    var changeTrottle = null;
+    $document.on('input change', 'form', function (e) {
+        var $form = $(this);
+
+        if (changeTrottle) {
+            clearTimeout(changeTrottle);
+            changeTrottle = null;
+        }
+
+        changeTrottle = setTimeout(function () {
+            $form.addClass('is-dirty');
+        }, 250);
     });
 
     // clear "dirty" state on form reset
     $document.on('reset', 'form', function (e) {
+        clearTimeout(changeTrottle);
+
         $(this).removeClass('is-dirty');
     });
 

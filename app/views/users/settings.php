@@ -4,10 +4,12 @@ use yii\helpers\Url;
 use common\widgets\CActiveForm;
 
 /**
- * @var $this       \yii\web\View
- * @var $user       \common\models\User
- * @var $userForm   \app\models\SettingsForm
- * @var $avatarForm \app\models\AvatarForm
+ * @var $this              \yii\web\View
+ * @var $user              \common\models\User
+ * @var $avatarForm        \app\models\AvatarForm
+ * @var $profileForm       \app\models\UserProfileForm
+ * @var $passwordForm      \app\models\UserPasswordForm
+ * @var $notificationsForm \app\models\UserNotificationsForm
  */
 
 $hasAvatar = !empty($user->getAvatarUrl());
@@ -35,52 +37,28 @@ $this->title = Yii::t('app', 'Settings');
 
     <div class="clearfix m-b-30"></div>
 
-    <div class="panel padded">
-        <?php $form = CActiveForm::begin(); ?>
-            <h6 class="faded"><?= Yii::t('app', 'General') ?></h6>
-            <div class="row">
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'email', ['inputOptions' => ['disabled' => 'disabled']]) ?>
-                </div>
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'firstName') ?>
-                </div>
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'lastName') ?>
-                </div>
+    <div class="panel">
+        <div id="user_tabs" class="block tabs p-t-25">
+            <div class="tabs-header">
+                <div class="tab-item active" data-target="#user_profile"><span class="txt"><?= Yii::t('app', 'Profile') ?></span></div>
+                <div class="tab-item" data-target="#user_password"><span class="txt"><?= Yii::t('app', 'Password') ?></span></div>
+                <div class="tab-item" data-target="#user_notifications"><span class="txt"><?= Yii::t('app', 'Notifications') ?></span></div>
             </div>
 
-            <div class="row">
-                <div class="cols-12">
-                    <?= $form->field($userForm, 'notifications')->checkbox() ?>
+            <div class="tabs-content">
+                <div id="user_profile" class="tab-item active">
+                    <?= $this->render('_profile_form', ['model' => $profileForm]) ?>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="cols-12">
-                    <?= $form->field($userForm, 'mentions')->checkbox() ?>
+                <div id="user_password" class="tab-item">
+                    <?= $this->render('_password_form', ['model' => $passwordForm]) ?>
                 </div>
-            </div>
 
-            <h6 class="faded"><?= Yii::t('app', 'Security') ?></h6>
-            <?= $form->field($userForm, 'changePassword')->checkbox(['data-toggle' => '#change_password_block']) ?>
-            <div class="row" id="change_password_block">
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'oldPassword')->passwordInput() ?>
-                </div>
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'newPassword')->passwordInput() ?>
-                </div>
-                <div class="cols-4">
-                    <?= $form->field($userForm, 'newPasswordConfirm')->passwordInput() ?>
+                <div id="user_notifications" class="tab-item">
+                    <?= $this->render('_notifications_form', ['model' => $notificationsForm]) ?>
                 </div>
             </div>
-
-            <hr class="m-t-0">
-            <div class="block text-center">
-                <button class="btn btn-primary btn-cons"><?= Yii::t('app', 'Save changes') ?></button>
-            </div>
-        <?php CActiveForm::end(); ?>
+        </div>
     </div>
 </div>
 
@@ -123,8 +101,11 @@ $this->registerJsFile('/js/hotspots.js?v=1507457981');
 $this->registerJsFile('/js/profile.view.js?v=1507457981');
 $this->registerJs('
     var profileView = new ProfileView({
-        tempAvatarUploadUrl: "' . Url::to(['users/ajax-temp-avatar-upload']) . '",
-        saveAvatarUrl:       "' . Url::to(['users/ajax-avatar-save']) . '",
-        deleteAvatarUrl:     "' . Url::to(['users/ajax-avatar-delete']) . '"
+        ajaxNotificationsSaveUrl: "' . Url::to(['users/ajax-notifications-save']) . '",
+        ajaxPasswordSaveUrl:      "' . Url::to(['users/ajax-password-save']) . '",
+        ajaxProfielSaveUrl:       "' . Url::to(['users/ajax-profile-save']) . '",
+        ajaxTempAvatarUploadUrl:  "' . Url::to(['users/ajax-temp-avatar-upload']) . '",
+        ajaxSaveAvatarUrl:        "' . Url::to(['users/ajax-avatar-save']) . '",
+        ajaxDeleteAvatarUrl:      "' . Url::to(['users/ajax-avatar-delete']) . '"
     });
 ', View::POS_READY, 'settings-js');

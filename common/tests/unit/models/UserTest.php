@@ -3,6 +3,7 @@ namespace common\tests\unit\models;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\IntegrityException;
 use yii\base\NotSupportedException;
 use common\models\User;
 use common\models\Project;
@@ -24,8 +25,6 @@ use common\tests\fixtures\UserProjectRelFixture;
 use common\tests\fixtures\UserScreenCommentRelFixture;
 
 /**
- * @todo Check emails after registration, password reset requests, etc.
-
  * User AR model tests.
  *
  * @author Gani Georgiev <gani.georgiev@gmail.com>
@@ -89,22 +88,22 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetFullName()
     {
-        $this->specify('User WITH first and last name', function() {
+        $this->specify('User WITH first and last name', function () {
             $user = User::findOne(1001);
             verify('User first and last name', $user->getFullName())->equals('Gani Georgiev');
         });
 
-        $this->specify('User WITH only first name', function() {
+        $this->specify('User WITH only first name', function () {
             $user = User::findOne(1002);
             verify('User first name', $user->getFullName())->equals('Ivan');
         });
 
-        $this->specify('User WITH only last name', function() {
+        $this->specify('User WITH only last name', function () {
             $user = User::findOne(1004);
             verify('User last name', $user->getFullName())->equals('Petrov');
         });
 
-        $this->specify('User WITHOUT first and last name', function() {
+        $this->specify('User WITHOUT first and last name', function () {
             $user = User::findOne(1007);
             verify('Empty string', $user->getFullName())->equals('');
         });
@@ -115,7 +114,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetIdentificator()
     {
-        $this->specify('User WITH first and last name', function() {
+        $this->specify('User WITH first and last name', function () {
             $user = User::findOne(1001);
             verify('User first name', $user->getIdentificator('firstName'))->equals('Gani');
             verify('User last name', $user->getIdentificator('lastName'))->equals('Georgiev');
@@ -123,7 +122,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('User first and last name', $user->getIdentificator(null))->equals('Gani Georgiev');
         });
 
-        $this->specify('User WITHOUT first and last name', function() {
+        $this->specify('User WITHOUT first and last name', function () {
             $user = User::findOne(1007);
             verify('User email as fallback for missing first name', $user->getIdentificator('firstName'))->equals('test7@presentator.io');
             verify('User email as fallback for missing last name', $user->getIdentificator('lastName'))->equals('test7@presentator.io');
@@ -165,6 +164,28 @@ class UserTest extends \Codeception\Test\Unit
         );
     }
 
+    /**
+     * `User::sendEmailChangeEmail()` method test.
+     */
+    public function testSendEmailChangeEmail()
+    {
+        $user     = User::findOne(1005);
+        $newEmail = 'test_change2@presentator.io';
+        $result   = $user->sendEmailChangeEmail($newEmail);
+
+        $this->tester->seeEmailIsSent();
+        $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
+        verify('Mail method should succeed', $result)->true();
+        verify('Receiver email should match', $message->getTo())->hasKey($newEmail);
+        verify('Body should contains an email change url', current($message->getChildren())->getBody())->contains(
+            Yii::$app->mainUrlManager->createUrl([
+                'site/change-email',
+                'token' => $user->emailChangeToken,
+                'email' => $newEmail,
+            ], true)
+        );
+    }
+
     /* ===============================================================
      * Relations
      * ============================================================ */
@@ -173,7 +194,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetUserAuths()
     {
-        $this->specify('User WITHOUT related UserAuth models', function() {
+        $this->specify('User WITHOUT related UserAuth models', function () {
             $user  = User::findOne(1003);
             $query = $user->getUserAuths();
 
@@ -182,7 +203,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->userAuths)->count(0);
         });
 
-        $this->specify('User WITH related UserAuth models', function() {
+        $this->specify('User WITH related UserAuth models', function () {
             $user  = User::findOne(1002);
             $query = $user->getUserAuths();
 
@@ -200,7 +221,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetUserSettings()
     {
-        $this->specify('User WITHOUT related UserSetting models', function() {
+        $this->specify('User WITHOUT related UserSetting models', function () {
             $user  = User::findOne(1006);
             $query = $user->getUserSettings();
 
@@ -209,7 +230,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->userSettings)->count(0);
         });
 
-        $this->specify('User WITH related UserSetting models', function() {
+        $this->specify('User WITH related UserSetting models', function () {
             $user  = User::findOne(1002);
             $query = $user->getUserSettings();
 
@@ -227,7 +248,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetProjectRels()
     {
-        $this->specify('User WITHOUT related UserProjectRel models', function() {
+        $this->specify('User WITHOUT related UserProjectRel models', function () {
             $user  = User::findOne(1005);
             $query = $user->getProjectRels();
 
@@ -236,7 +257,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->projectRels)->count(0);
         });
 
-        $this->specify('User WITH related UserProjectRel models', function() {
+        $this->specify('User WITH related UserProjectRel models', function () {
             $user  = User::findOne(1003);
             $query = $user->getProjectRels();
 
@@ -255,7 +276,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetProjects()
     {
-        $this->specify('User WITHOUT related Project models', function() {
+        $this->specify('User WITHOUT related Project models', function () {
             $user  = User::findOne(1005);
             $query = $user->getProjects();
 
@@ -264,7 +285,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->projects)->count(0);
         });
 
-        $this->specify('User WITH related Project models', function() {
+        $this->specify('User WITH related Project models', function () {
             $user  = User::findOne(1003);
             $query = $user->getProjects();
 
@@ -285,7 +306,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetVersions()
     {
-        $this->specify('User WITHOUT related Version models', function() {
+        $this->specify('User WITHOUT related Version models', function () {
             $user  = User::findOne(1005);
             $query = $user->getVersions();
 
@@ -294,7 +315,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->versions)->count(0);
         });
 
-        $this->specify('User WITH related Version models', function() {
+        $this->specify('User WITH related Version models', function () {
             $user  = User::findOne(1003);
             $query = $user->getVersions();
 
@@ -315,7 +336,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetScreens()
     {
-        $this->specify('User WITHOUT related Screen models', function() {
+        $this->specify('User WITHOUT related Screen models', function () {
             $user  = User::findOne(1005);
             $query = $user->getScreens();
 
@@ -324,7 +345,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->screens)->count(0);
         });
 
-        $this->specify('User WITH related Screen models', function() {
+        $this->specify('User WITH related Screen models', function () {
             $user  = User::findOne(1003);
             $query = $user->getScreens();
 
@@ -345,7 +366,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetScreenComments()
     {
-        $this->specify('User WITHOUT related ScreenComment models', function() {
+        $this->specify('User WITHOUT related ScreenComment models', function () {
             $user  = User::findOne(1005);
             $query = $user->getScreenComments();
 
@@ -354,7 +375,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->screenComments)->count(0);
         });
 
-        $this->specify('User WITH related ScreenComment models', function() {
+        $this->specify('User WITH related ScreenComment models', function () {
             $user  = User::findOne(1003);
             $query = $user->getScreenComments();
 
@@ -375,7 +396,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testGetScreenCommentRels()
     {
-        $this->specify('User WITHOUT related UserScreenCommentRel models', function() {
+        $this->specify('User WITHOUT related UserScreenCommentRel models', function () {
             $user  = User::findOne(1005);
             $query = $user->getScreenCommentRels();
 
@@ -384,7 +405,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Query result should be empty array', $user->screenCommentRels)->count(0);
         });
 
-        $this->specify('User WITH related UserScreenCommentRel models', function() {
+        $this->specify('User WITH related UserScreenCommentRel models', function () {
             $user  = User::findOne(1003);
             $query = $user->getScreenCommentRels();
 
@@ -406,17 +427,17 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindIdentity()
     {
-        $this->specify('Non existing user', function() {
+        $this->specify('Non existing user', function () {
             $user = User::findIdentity(0);
             verify($user)->null();
         });
 
-        $this->specify('Existing INACTIVE user', function() {
+        $this->specify('Existing INACTIVE user', function () {
             $user = User::findIdentity(1001);
             verify($user)->null();
         });
 
-        $this->specify('Existing active user', function() {
+        $this->specify('Existing active user', function () {
             $user = User::findIdentity(1002);
             verify($user)->isInstanceOf(User::className());
         });
@@ -427,7 +448,7 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindIdentityByAccessToken()
     {
-        $this->specify('Method is not supported', function() {
+        $this->specify('Method is not supported', function () {
             User::findIdentityByAccessToken('blah-blah-blah');
         }, ['throws' => new NotSupportedException]);
     }
@@ -459,11 +480,11 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('INVALID auth key', function() use ($user) {
+        $this->specify('INVALID auth key', function () use ($user) {
             verify($user->validateAuthKey('blah-blah-blah'))->false();
         });
 
-        $this->specify('VALID auth key', function() use ($user) {
+        $this->specify('VALID auth key', function () use ($user) {
             verify($user->validateAuthKey($user->authKey))->true();
         });
     }
@@ -501,11 +522,11 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1003);
 
-        $this->specify('INVALID user password', function() use ($user) {
+        $this->specify('INVALID user password', function () use ($user) {
             verify($user->validatePassword('invalid-password'))->false();
         });
 
-        $this->specify('VALID user password', function() use ($user) {
+        $this->specify('VALID user password', function () use ($user) {
             verify($user->validatePassword('123456'))->true();
         });
     }
@@ -515,12 +536,12 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testIsPasswordResetTokenValid()
     {
-        $this->specify('INVALID/EXPIRED password reset token', function() {
+        $this->specify('INVALID/EXPIRED password reset token', function () {
             $invalidToken = Yii::$app->security->generateRandomString() . '_' . strtotime('-3 days');
             verify(User::isPasswordResetTokenValid($invalidToken))->false();
         });
 
-        $this->specify('VALID password reset token', function() {
+        $this->specify('VALID password reset token', function () {
             $validToken = Yii::$app->security->generateRandomString() . '_' . time();
             verify(User::isPasswordResetTokenValid($validToken))->true();
         });
@@ -535,13 +556,8 @@ class UserTest extends \Codeception\Test\Unit
         $user->generatePasswordResetToken();
         $token = $user->passwordResetToken;
 
-        $this->specify('Password reset token must be set', function() use ($token) {
-            verify($token)->notEmpty();
-        });
-
-        $this->specify('Password reset token must be valid', function() use ($token) {
-            verify(User::isPasswordResetTokenValid($token))->true();
-        });
+        verify('Password reset token must be set', $token)->notEmpty();
+        verify('Password reset token must be valid', User::isPasswordResetTokenValid($token))->true();
     }
 
     /**
@@ -565,12 +581,12 @@ class UserTest extends \Codeception\Test\Unit
         $token = $user->generateJwtToken();
         $parts = explode('.', $token);
 
-        $this->specify('Generates valid JWT token string', function() use ($user, $token, $parts) {
+        $this->specify('Generates valid JWT token string', function () use ($user, $token, $parts) {
             verify($token)->notEmpty();
             verify($parts)->count(3);
         });
 
-        $this->specify('Checks payload token data', function() use ($user, $token, $parts) {
+        $this->specify('Checks payload token data', function () use ($user, $token, $parts) {
             $payload = json_decode(base64_decode($parts[1]));
             verify($payload)->notEmpty();
             verify($payload->userId)->equals($user->id);
@@ -596,16 +612,67 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user  = User::findOne(1002);
 
-        $this->specify('INVALID validation token', function() use ($user) {
+        $this->specify('INVALID validation token', function () use ($user) {
             $invalidToken = '8d42ae83f6ca9a59de725475df3caa07';
 
             verify('Should be invalid', $user->validateActivationToken($invalidToken))->false();
         });
 
-        $this->specify('VALID validation token', function() use ($user) {
+        $this->specify('VALID validation token', function () use ($user) {
             $validToken = $user->getActivationToken();
 
             verify('Should be valid', $user->validateActivationToken($validToken))->true();
+        });
+    }
+
+    /**
+     * `User::generateEmailChangeToken()` method test.
+     */
+    public function testGenerateEmailChangeToken()
+    {
+        $user  = new User;
+        $email = 'test@presentator.io';
+
+        $user->generateEmailChangeToken($email);
+        $token = $user->emailChangeToken;
+
+        verify('Email change token must be set', $token)->notEmpty();
+        verify('Email change token must be valid', User::isEmailChangeTokenValid($token, $email))->true();
+    }
+
+    /**
+     * `User::removeEmailChangeToken()` method test.
+     */
+    public function testRemoveEmailChangeToken()
+    {
+        $user = User::findOne(1003);
+        verify('Have email change token', $user->emailChangeToken)->notEmpty();
+
+        $user->removeEmailChangeToken();
+        verify('Email change token is unset', $user->emailChangeToken)->isEmpty();
+    }
+
+    /**
+     * `User::isEmailChangeTokenValid()` method test.
+     */
+    public function testIsEmailChangeTokenValid()
+    {
+        $this->specify('INVALID email change token', function () {
+            $email         = 'test@presentator.io';
+            $invalidToken1 = md5($email) . '_' . strtotime('-2 days');
+            $invalidToken2 = md5('test2@presentator.io') . '_' . time();
+            $invalidToken3 = md5($email) . time();
+
+            verify('Expired token', User::isEmailChangeTokenValid($invalidToken1, $email))->false();
+            verify('Wrong hashed email', User::isEmailChangeTokenValid($invalidToken2, $email))->false();
+            verify('Invalid token format', User::isEmailChangeTokenValid($invalidToken3, $email))->false();
+        });
+
+        $this->specify('VALID email change token', function () {
+            $email      = 'test@presentator.io';
+            $validToken = md5($email) . '_' . time();
+
+            verify(User::isEmailChangeTokenValid($validToken, $email))->true();
         });
     }
 
@@ -617,17 +684,17 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindByEmail()
     {
-        $this->specify('Existing INACTIVE user', function() {
+        $this->specify('Existing INACTIVE user', function () {
             $user = User::findByEmail('test1@presentator.io');
             verify($user)->null();
         });
 
-        $this->specify('Existing ACTIVE user', function() {
+        $this->specify('Existing ACTIVE user', function () {
             $user = User::findByEmail('test2@presentator.io');
             verify($user)->isInstanceOf(User::className());
         });
 
-        $this->specify('Non existing user', function() {
+        $this->specify('Non existing user', function () {
             $user = User::findByEmail('none_existing_email@presentator.io');
             verify($user)->null();
         });
@@ -639,30 +706,110 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindByPasswordResetToken()
     {
-        $this->specify('Non existing password reset token', function() {
+        $this->specify('Non existing password reset token', function () {
             $user = User::findByPasswordResetToken('blah-blah-blah');
             verify($user)->null();
         });
 
-        $this->specify('Inactive user with existing VALID password reset token', function() {
+        $this->specify('Inactive user with existing VALID password reset token', function () {
             $inactiveUser = User::findOne(1001);
             $user         = User::findByPasswordResetToken($inactiveUser->passwordResetToken);
 
             verify($user)->null();
         });
 
-        $this->specify('Active user with existing INVALID password reset token', function() {
+        $this->specify('Active user with existing INVALID password reset token', function () {
             $invalidUser = User::findOne(1003);
             $user        = User::findByPasswordResetToken($invalidUser->passwordResetToken);
 
             verify($user)->null();
         });
 
-        $this->specify('Active user with existing VALID password reset token', function() {
+        $this->specify('Active user with existing VALID password reset token', function () {
             $validUser = User::findOne(1004);
             $user      = User::findByPasswordResetToken($validUser->passwordResetToken);
 
             verify($user)->isInstanceOf(User::className());
+        });
+    }
+
+    /**
+     * Tests whether `User::findByEmailChangeToken()` returns
+     * active User model by valid email change token string.
+     */
+    public function testFindByEmailChangeToken()
+    {
+        $this->specify('Non existing email change token', function () {
+            $user = User::findByEmailChangeToken('blah-blah-blah');
+
+            verify($user)->null();
+        });
+
+        $this->specify('Inactive user with existing VALID email change token', function () {
+            $inactiveUser = User::findOne(1001);
+            $user         = User::findByEmailChangeToken($inactiveUser->emailChangeToken);
+
+            verify($user)->null();
+        });
+
+        $this->specify('Active user with existing INVALID email change token', function () {
+            $invalidUser = User::findOne(1003);
+            $user        = User::findByEmailChangeToken($invalidUser->emailChangeToken);
+
+            verify($user)->null();
+        });
+
+        $this->specify('Active user with existing VALID email change token', function () {
+            $validUser = User::findOne(1004);
+            $user      = User::findByEmailChangeToken($validUser->emailChangeToken);
+
+            verify($user)->isInstanceOf(User::className());
+        });
+    }
+
+    /**
+     * Tests whether `User::changeEmail()` change active User model email address.
+     */
+    public function testChangeEmail()
+    {
+        $this->specify('Fail changing the email address for user with no emailChangeToken', function () {
+            $user     = User::findOne(1002);
+            $oldEmail = $user->email;
+
+            $result = $user->changeEmail('test_change@presentator.io');
+            $user->refresh();
+
+            verify('Should return false', $result)->false();
+            verify('Email should not be changed', $user->email)->equals($oldEmail);
+        });
+
+        $this->specify('Fail changing the email address for user with expired emailChangeToken', function () {
+            $user     = User::findOne(1003);
+            $oldEmail = $user->email;
+
+            $result = $user->changeEmail('test_change@presentator.io');
+            $user->refresh();
+
+            verify('Should return false', $result)->false();
+            verify('Email should not be changed', $user->email)->equals($oldEmail);
+        });
+
+        $this->specify('Fail changing the email address for user with valid emailChangeToken but duplicating email address record', function () {
+            $user = User::findOne(1004);
+
+            $user->changeEmail('test5@presentator.io');
+        }, ['throws' => IntegrityException::class]);
+
+        $this->specify('Successfully change the email address for user with valid emailChangeToken', function () {
+            $user     = User::findOne(1005);
+            $newEmail = 'test_change2@presentator.io';
+
+            $result = $user->changeEmail($newEmail);
+            $user->refresh();
+
+            verify('Change email method should succeed', $result)->true();
+            verify('Email should be changed', $user->email)->equals($newEmail);
+            verify('Email change token should be cleared', $user->emailChangeToken)->isEmpty();
         });
     }
 
@@ -672,18 +819,18 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindByJwtToken()
     {
-        $this->specify('INVALID JWT token', function() {
+        $this->specify('INVALID JWT token', function () {
             $user = User::findByJwtToken('invalid.existing.token');
             verify($user)->null();
         });
 
-        $this->specify('VALID token for INACTIVE user', function() {
+        $this->specify('VALID token for INACTIVE user', function () {
             $inactiveUser = User::findOne(1001);
             $user         = User::findByJwtToken($inactiveUser->generateJwtToken());
             verify($user)->null();
         });
 
-        $this->specify('VALID token ACTIVE user', function() {
+        $this->specify('VALID token ACTIVE user', function () {
             $activeUser = User::findOne(1002);
             $user       = User::findByJwtToken($activeUser->generateJwtToken());
             verify($user)->isInstanceOf(User::className());
@@ -695,17 +842,17 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testSearchUsers()
     {
-        $this->specify('Search for INACTIVE users by name part', function() {
+        $this->specify('Search for INACTIVE users by name part', function () {
             $users = User::searchUsers('Gani Georgiev', [], true);
             verify('Should be empty', $users)->isEmpty();
         });
 
-        $this->specify('Search for INACTIVE users by email part', function() {
+        $this->specify('Search for INACTIVE users by email part', function () {
             $users = User::searchUsers('test1@presentator.io', [], true);
             verify('Should be empty', $users)->isEmpty();
         });
 
-        $this->specify('Search for ACTIVE users by name part (fuzzy search)', function() {
+        $this->specify('Search for ACTIVE users by name part (fuzzy search)', function () {
             $search = 'Lorem';
             $users  = User::searchUsers($search, [], true);
 
@@ -715,14 +862,14 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Search for ACTIVE users by name part (non fuzzy search)', function() {
+        $this->specify('Search for ACTIVE users by name part (non fuzzy search)', function () {
             $search = 'Lorem';
             $users  = User::searchUsers($search, [], false);
 
             verify('Should be empty', $users)->isEmpty();
         });
 
-        $this->specify('Search for ACTIVE users by email part (fuzzy search)', function() {
+        $this->specify('Search for ACTIVE users by email part (fuzzy search)', function () {
             $search = '@presentator.io';
             $users  = User::searchUsers($search, [], true);
 
@@ -732,14 +879,14 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Search for ACTIVE users by email part (non fuzzy search)', function() {
+        $this->specify('Search for ACTIVE users by email part (non fuzzy search)', function () {
             $search = '@presentator.io';
             $users  = User::searchUsers($search, [], false);
 
             verify('Should be empty', $users)->isEmpty();
         });
 
-        $this->specify('Search for ACTIVE users by email part with exclude (fuzzy search)', function() {
+        $this->specify('Search for ACTIVE users by email part with exclude (fuzzy search)', function () {
             $search = '@presentator.io';
             $users  = User::searchUsers($search, [1004, 1005], true);
 
@@ -756,12 +903,12 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testCountProjects()
     {
-        $this->specify('User without projects', function() {
+        $this->specify('User without projects', function () {
             $user = User::findOne(1005);
             verify('Should be empty', $user->countProjects())->equals(0);
         });
 
-        $this->specify('User with projects', function() {
+        $this->specify('User with projects', function () {
             $user = User::findOne(1003);
             verify('Should count 2 projects', $user->countProjects())->equals(3);
         });
@@ -775,13 +922,13 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1003);
 
-        $this->specify('Search by non existing project title string', function() use ($user) {
+        $this->specify('Search by non existing project title string', function () use ($user) {
             $projects = $user->searchProjects('non existing title');
 
             verify('Should be empty', $projects)->count(0);
         });
 
-        $this->specify('Search by existing project title string', function() use ($user) {
+        $this->specify('Search by existing project title string', function () use ($user) {
             $search   = 'Lorem ipsum';
             $projects = $user->searchProjects($search);
 
@@ -791,7 +938,7 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('Search by existing project titles string with set limit', function() use ($user) {
+        $this->specify('Search by existing project titles string with set limit', function () use ($user) {
             $search   = 'Lorem';
             $projects = $user->searchProjects($search, 1);
 
@@ -807,14 +954,14 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindProjects()
     {
-        $this->specify('User without projects', function() {
+        $this->specify('User without projects', function () {
             $user     = User::findOne(1005);
             $projects = $user->findProjects();
 
             verify('Should be empty', $projects)->count(0);
         });
 
-        $this->specify('User with projects', function() {
+        $this->specify('User with projects', function () {
             $user     = User::findOne(1003);
             $projects = $user->findProjects();
             $validIds = [1002, 1003, 1004];
@@ -825,7 +972,7 @@ class UserTest extends \Codeception\Test\Unit
             }
         });
 
-        $this->specify('User with projects and set limit', function() {
+        $this->specify('User with projects and set limit', function () {
             $user     = User::findOne(1003);
             $projects = $user->findProjects(1);
 
@@ -842,17 +989,17 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Non existing project', function() use ($user) {
+        $this->specify('Non existing project', function () use ($user) {
             $project = $user->findProjectById(0);
             verify($project)->null();
         });
 
-        $this->specify('Existing project owned by a different user', function() use ($user) {
+        $this->specify('Existing project owned by a different user', function () use ($user) {
             $project = $user->findProjectById(1002);
             verify($project)->null();
         });
 
-        $this->specify('Existing project owned by the current user', function() use ($user) {
+        $this->specify('Existing project owned by the current user', function () use ($user) {
             $project = $user->findProjectById(1001);
             verify($project)->isInstanceOf(Project::className());
         });
@@ -866,17 +1013,17 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Non existing version', function() use ($user) {
+        $this->specify('Non existing version', function () use ($user) {
             $version = $user->findVersionById(0);
             verify($version)->null();
         });
 
-        $this->specify('Existing version owned by a different user', function() use ($user) {
+        $this->specify('Existing version owned by a different user', function () use ($user) {
             $version = $user->findVersionById(1003);
             verify($version)->null();
         });
 
-        $this->specify('Existing version owned by the current user', function() use ($user) {
+        $this->specify('Existing version owned by the current user', function () use ($user) {
             $version = $user->findVersionById(1001);
             verify($version)->isInstanceOf(Version::className());
         });
@@ -889,22 +1036,22 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Valid ActiveQuery object', function() use ($user) {
+        $this->specify('Valid ActiveQuery object', function () use ($user) {
             $query = $user->findScreensQuery([1001, 1002]);
             verify($query)->isInstanceOf(ActiveQuery::className());
         });
 
-        $this->specify('Non existing screen(s)', function() use ($user) {
+        $this->specify('Non existing screen(s)', function () use ($user) {
             $screens = $user->findScreensQuery(1232456)->all();
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens owned by a different user', function() use ($user) {
+        $this->specify('Existing screens owned by a different user', function () use ($user) {
             $screens = $user->findScreensQuery([1003])->all();
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens owned by the current user', function() use ($user) {
+        $this->specify('Existing screens owned by the current user', function () use ($user) {
             $screens = $user->findScreensQuery([1001, 1002])->all();
             verify($screens)->count(2);
         });
@@ -918,17 +1065,17 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Non existing screen', function() use ($user) {
+        $this->specify('Non existing screen', function () use ($user) {
             $screen = $user->findScreenById(0);
             verify($screen)->null();
         });
 
-        $this->specify('Existing screen owned by a different user', function() use ($user) {
+        $this->specify('Existing screen owned by a different user', function () use ($user) {
             $screen = $user->findScreenById(1003);
             verify($screen)->null();
         });
 
-        $this->specify('Existing screen owned by the current user', function() use ($user) {
+        $this->specify('Existing screen owned by the current user', function () use ($user) {
             $screen = $user->findScreenById(1001);
             verify($screen)->isInstanceOf(Screen::className());
         });
@@ -942,17 +1089,17 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Non existing comment', function() use ($user) {
+        $this->specify('Non existing comment', function () use ($user) {
             $comment = $user->findScreenCommentById(0);
             verify($comment)->null();
         });
 
-        $this->specify('Existing comment from a screen owned by a different user', function() use ($user) {
+        $this->specify('Existing comment from a screen owned by a different user', function () use ($user) {
             $comment = $user->findScreenCommentById(1004);
             verify($comment)->null();
         });
 
-        $this->specify('Existing comment from a screen owned by the current user', function() use ($user) {
+        $this->specify('Existing comment from a screen owned by the current user', function () use ($user) {
             $comment = $user->findScreenCommentById(1001);
             verify($comment)->isInstanceOf(ScreenComment::className());
         });
@@ -965,13 +1112,13 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindLeavedScreenComments()
     {
-        $this->specify('User WITHOUT leaved comments', function() {
+        $this->specify('User WITHOUT leaved comments', function () {
             $user     = User::findOne(1001);
             $comments = $user->findLeavedScreenComments();
             verify($comments)->count(0);
         });
 
-        $this->specify('User WITH leaved comments', function() {
+        $this->specify('User WITH leaved comments', function () {
             $user     = User::findOne(1002);
             $comments = $user->findLeavedScreenComments();
             verify($comments)->count(2);
@@ -983,14 +1130,14 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testCountUnreadCommentsByScreens()
     {
-        $this->specify('Count unread comments with not set screens', function() {
+        $this->specify('Count unread comments with not set screens', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByScreens([]);
 
             verify('Should be empty array', $commentsCount)->isEmpty();
         });
 
-        $this->specify('Count unread comments from screens that are NOT owned by the user', function() {
+        $this->specify('Count unread comments from screens that are NOT owned by the user', function () {
             $user          = User::findOne(1002);
             $commentsCount = $user->countUnreadCommentsByScreens([1004, 6666]);
 
@@ -1000,7 +1147,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Value should be zero', $commentsCount[6666])->equals(0);
         });
 
-        $this->specify('Count unread comments from screens that are owned by the user', function() {
+        $this->specify('Count unread comments from screens that are owned by the user', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByScreens([1004]);
 
@@ -1008,7 +1155,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Value should match', $commentsCount[1004])->equals(2);
         });
 
-        $this->specify('Count only unread primary comments from screens that are owned by the user', function() {
+        $this->specify('Count only unread primary comments from screens that are owned by the user', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByScreens([1004], true);
 
@@ -1022,14 +1169,14 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testCountUnreadCommentsByProjects()
     {
-        $this->specify('Count unread comments with not set projects', function() {
+        $this->specify('Count unread comments with not set projects', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByProjects([]);
 
             verify('Should be empty array', $commentsCount)->isEmpty();
         });
 
-        $this->specify('Count unread comments from projects that are NOT owned by the user', function() {
+        $this->specify('Count unread comments from projects that are NOT owned by the user', function () {
             $user          = User::findOne(1002);
             $commentsCount = $user->countUnreadCommentsByProjects([1003, 6666]);
 
@@ -1039,7 +1186,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Value should be zero', $commentsCount[6666])->equals(0);
         });
 
-        $this->specify('Count unread comments from projects that are owned by the user', function() {
+        $this->specify('Count unread comments from projects that are owned by the user', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByProjects([1003]);
 
@@ -1047,7 +1194,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Value should match', $commentsCount[1003])->equals(2);
         });
 
-        $this->specify('Count only unread primary comments from projects that are owned by the user', function() {
+        $this->specify('Count only unread primary comments from projects that are owned by the user', function () {
             $user          = User::findOne(1004);
             $commentsCount = $user->countUnreadCommentsByProjects([1003], true);
 
@@ -1065,7 +1212,7 @@ class UserTest extends \Codeception\Test\Unit
         $result  = $user->setSetting('myTestSetting', 'test');
         $setting = UserSetting::findOne(['settingName' => 'myTestSetting', 'userId' => $user->id]);
 
-        verify('The method should return true', $result)->true();
+        verify('Method should succeed', $result)->true();
         verify('UserSetting model to exist', $setting)->isInstanceOf(UserSetting::className());
         verify('UserSetting model to have the specified value', $setting->settingValue)->equals('test');
         verify('UserSetting model to be attached to the user', $setting->userId)->equals($user->id);
@@ -1078,12 +1225,12 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Non existing user setting with default value', function() use ($user) {
+        $this->specify('Non existing user setting with default value', function () use ($user) {
             $value = $user->getSetting('someNoneExistingSetting', 'defaultMissingValue');
             verify($value)->equals('defaultMissingValue');
         });
 
-        $this->specify('Existing user setting', function() use ($user) {
+        $this->specify('Existing user setting', function () use ($user) {
             $value = $user->getSetting('notifications', false);
             verify($value)->equals(true);
         });
@@ -1112,7 +1259,7 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Check thumb path', function() use ($user) {
+        $this->specify('Check thumb path', function () use ($user) {
             $path = $user->getAvatarPath(true);
 
             verify('Should not to be empty', $path)->notEmpty();
@@ -1121,7 +1268,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Should contains avatar file name', $path)->endsWith('/avatar_thumb.jpg');
         });
 
-        $this->specify('Check original path', function() use ($user) {
+        $this->specify('Check original path', function () use ($user) {
             $path = $user->getAvatarPath();
 
             verify('Should not to be empty', $path)->notEmpty();
@@ -1138,7 +1285,7 @@ class UserTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Check thumb path', function() use ($user) {
+        $this->specify('Check thumb path', function () use ($user) {
             $url = $user->getAvatarUrl(true, false);
 
             verify('Should not to be empty', $url)->notEmpty();
@@ -1147,7 +1294,7 @@ class UserTest extends \Codeception\Test\Unit
             verify('Should contains avatar file name', $url)->endsWith('/avatar_thumb.jpg');
         });
 
-        $this->specify('Check original url', function() use ($user) {
+        $this->specify('Check original url', function () use ($user) {
             $url = $user->getAvatarUrl(false, false);
 
             verify('Should not to be empty', $url)->notEmpty();

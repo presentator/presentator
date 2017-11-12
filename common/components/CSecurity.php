@@ -57,4 +57,21 @@ class CSecurity extends Security
         // shuffle and return the string
         return str_shuffle($resultString);
     }
+
+    /**
+     * Checks whether a timestamp token is valid (aka. is not expired).
+     * @param  string  $token  Token with timestamp to validate
+     * @param  integer $expire Expire interval in seconds
+     * @return boolean
+     */
+    public function isTimestampTokenValid($token, $expire = 3600)
+    {
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+
+        if ($timestamp > 0) {
+            return ($timestamp + $expire) >= time();
+        }
+
+        return false;
+    }
 }

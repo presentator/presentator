@@ -240,24 +240,6 @@ class User extends CActiveRecord implements IdentityInterface
     /* Passwords, tokens, etc.
     --------------------------------------------------------------- */
     /**
-     * Checks whether a timestamp token is valid (is not expired).
-     * @param  string  $token  Token with timestamp to validate
-     * @param  integer $expire Expire interval in seconds
-     * @return boolean
-     */
-    public static function isTimestampTokenValid($token, $expire = null)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = $expire ? $expire : 3600;
-
-        return ($timestamp + $expire) >= time();
-    }
-
-    /**
      * Finds user by password reset token.
      * @param string $token
      * @return static|null
@@ -283,7 +265,7 @@ class User extends CActiveRecord implements IdentityInterface
     {
         $expire = CArrayHelper::getValue(Yii::$app->params, 'passwordResetTokenExpire', 3600);
 
-        return self::isTimestampTokenValid($token, $expire);
+        return Yii::$app->security->isTimestampTokenValid($token, $expire);
     }
 
     /**
@@ -339,15 +321,22 @@ class User extends CActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds out if password reset token is valid.
-     * @param  string $token
+     * Finds out if email change reset token is valid.
+     * @param  string $token Token to validate
+     * @param  string $email Email addressed hashed in the token
      * @return boolean
      */
-    public static function isEmailChangeTokenValid($token)
+    public static function isEmailChangeTokenValid($token, $email)
     {
         $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 3600);
 
-        return self::isTimestampTokenValid($token, $expire);
+        if (!empty($email) && Yii::$app->security->isTimestampTokenValid($token, $expire)) {
+            $hashedEmail = strstr($token, '_', true);
+
+            return $hashedEmail === md5($email);
+        }
+
+        return false;
     }
 
     /**
@@ -357,7 +346,9 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public static function findByEmailChangeToken($token)
     {
-        if (!static::isEmailChangeTokenValid($token)) {
+        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 3600);
+
+        if (empty($token) || !Yii::$app->security->isTimestampTokenValid($token)) {
             return null;
         }
 
@@ -374,12 +365,7 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function changeEmail($newEmail)
     {
-        $hashedEmail = strstr($this->emailChangeToken, '_', true);
-
-        if (
-            static::isEmailChangeTokenValid($this->emailChangeToken) && // token is not expired
-            $hashedEmail === md5($newEmail) // the same email asddress as the hashed part
-        ) {
+        if (static::isEmailChangeTokenValid($this->emailChangeToken, $newEmail)) {
             $this->email = $newEmail;
 
             $this->removeEmailChangeToken();
