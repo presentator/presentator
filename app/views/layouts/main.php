@@ -34,7 +34,7 @@ AppAsset::register($this);
             <?= $this->render('_header'); ?>
 
             <main id="page_content" class="page-content">
-                <?= FlashAlert::widget(['options' => ['class' => 'bottom-margin', 'data-auto-hide' => 3000]]) ?>
+                <?= FlashAlert::widget(['options' => ['class' => 'bottom-margin', 'data-auto-hide' => 4000]]) ?>
 
                 <?= $content ?>
             </main>

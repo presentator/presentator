@@ -1,6 +1,7 @@
 <?php
 use yii\web\View;
 use yii\helpers\Url;
+use common\components\helpers\CArrayHelper;
 use common\widgets\CActiveForm;
 
 /**
@@ -101,11 +102,18 @@ $this->registerJsFile('/js/hotspots.js?v=1507457981');
 $this->registerJsFile('/js/profile.view.js?v=1507457981');
 $this->registerJs('
     var profileView = new ProfileView({
+        maxUploadSize: ' . CArrayHelper::getValue(Yii::$app->params, 'maxUploadSize', 15) . ',
+        emailChangeTokenExpire: ' . CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 1800) . ',
+
+        // ajax urls
         ajaxNotificationsSaveUrl: "' . Url::to(['users/ajax-notifications-save']) . '",
         ajaxPasswordSaveUrl:      "' . Url::to(['users/ajax-password-save']) . '",
         ajaxProfielSaveUrl:       "' . Url::to(['users/ajax-profile-save']) . '",
         ajaxTempAvatarUploadUrl:  "' . Url::to(['users/ajax-temp-avatar-upload']) . '",
         ajaxSaveAvatarUrl:        "' . Url::to(['users/ajax-avatar-save']) . '",
-        ajaxDeleteAvatarUrl:      "' . Url::to(['users/ajax-avatar-delete']) . '"
+        ajaxDeleteAvatarUrl:      "' . Url::to(['users/ajax-avatar-delete']) . '",
+
+        // texts
+        pendingEmailHintText: "' . Yii::t('app', 'Confirmation email is sent to {pendingEmail}.') . '"
     });
 ', View::POS_READY, 'settings-js');

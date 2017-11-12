@@ -1135,5 +1135,32 @@ var PR = {
         var newUrl  = window.location.protocol + '//' + window.location.host + window.location.pathname + queryStr + hashStr;
 
         window.history.replaceState({path: newUrl}, '', newUrl);
+    },
+
+    /**
+     * Replace template params placeholders.
+     *
+     * @param  {String} template
+     * @param  {Object} params
+     * @param  {String} leftDelimiter
+     * @param  {String} rightDelimiter
+     * @return {String}
+     */
+    resolveTemplate: function (template, params, leftDelimiter = '{', rightDelimiter = '}') {
+        params = params || {};
+
+        var lookup = '';
+        for (var key in params) {
+            lookup = leftDelimiter + key + rightDelimiter;
+
+            if (
+                params.hasOwnProperty(key) &&
+                template.indexOf(lookup) >= 0
+            ) {
+                template = template.replace(new RegExp(lookup, 'g'), params[key]);
+            }
+        }
+
+        return template;
     }
 };

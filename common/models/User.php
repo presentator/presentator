@@ -328,7 +328,7 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public static function isEmailChangeTokenValid($token, $email)
     {
-        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 3600);
+        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 1800);
 
         if (!empty($email) && Yii::$app->security->isTimestampTokenValid($token, $expire)) {
             $hashedEmail = strstr($token, '_', true);
@@ -346,7 +346,7 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public static function findByEmailChangeToken($token)
     {
-        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 3600);
+        $expire = CArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenExpire', 1800);
 
         if (empty($token) || !Yii::$app->security->isTimestampTokenValid($token)) {
             return null;

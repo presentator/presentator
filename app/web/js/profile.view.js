@@ -2,7 +2,8 @@ var ProfileView = function (data) {
     data = data || {};
 
     var defaults = {
-        'maxUploadSize': 15,
+        'maxUploadSize': 15,            // in mb
+        'emailChangeTokenExpire': 1800, // in sec
 
         // avatar form selectors
         'avatarImg':           '.avatar-img',
@@ -23,6 +24,7 @@ var ProfileView = function (data) {
         'profileForm':           '#user_profile_form',
         'emailField':            '#userprofileform-email',
         'emailConfirmFormGroup': '.field-userprofileform-password',
+        'pendingEmailHint':      '.pending-email-hint',
 
         // ajax urls
         'ajaxNotificationsSaveUrl': '/account/ajax-notifications-save',
@@ -30,7 +32,10 @@ var ProfileView = function (data) {
         'ajaxProfielSaveUrl':       '/account/ajax-profile-save',
         'ajaxTempAvatarUploadUrl':  '/account/temp-avatar-upload',
         'ajaxSaveAvatarUrl':        '/account/avatar-save',
-        'ajaxDeleteAvatarUrl':      '/account/avatar-delete'
+        'ajaxDeleteAvatarUrl':      '/account/avatar-delete',
+
+        // texts
+        'pendingEmailHintText': 'Confirmation email is sent to {pendingEmail}.'
     };
 
     this.settings = $.extend({}, defaults, data);
@@ -54,6 +59,8 @@ var ProfileView = function (data) {
     this.deleteAvatarXHR = null;
 
     this.hotspotsInst = null;
+
+    this.PENDING_EMAIL_COOKIE_KEY = 'pending_email';
 
     this.init();
 };
@@ -105,6 +112,8 @@ ProfileView.prototype.init = function () {
     /* User settings
     --------------------------------------------------------------- */
     self.$userTabs.tabs();
+    self.togglePendingEmailHint();
+
     self.$userTabs.off('tabChange.pr');
     self.$userTabs.on('tabChange.pr', function (e, tabContentId, $tabContent) {
         $tabContent = $tabContent || $();
@@ -401,8 +410,27 @@ ProfileView.prototype.saveProfileForm = function () {
         self.$profileForm,
         self.settings.ajaxProfielSaveUrl,
         function (response) {
-            if (response.userIdentificator) {
-                $(self.settings.userIdentificator).text(response.userIdentificator);
+            if (response.success) {
+                if (response.userIdentificator) {
+                    $(self.settings.userIdentificator).text(response.userIdentificator);
+                }
+
+                var oldEmail = self.$emailField.data('original-email');
+                var newEmail = self.$emailField.val();
+
+                // reset email and password fields state
+                self.$emailField.val(oldEmail);
+                self.$emailConfirmFormGroup.find(':input').val('');
+                self.toggleEmailConfirmFormGroup();
+                PR.saveFormState(self.$profileForm);
+
+                // store the pending email in a cookie
+                // @todo depending on the usage, consider to store in session or db
+                var expireDate = new Date();
+                expireDate.setSeconds(expireDate.getSeconds() + self.settings.emailChangeTokenExpire);
+                PR.cookies.setItem(self.PENDING_EMAIL_COOKIE_KEY, newEmail, expireDate);
+
+                self.togglePendingEmailHint();
             }
         }
     );
@@ -416,5 +444,27 @@ ProfileView.prototype.toggleEmailConfirmFormGroup = function () {
         this.$emailConfirmFormGroup.removeClass('hidden');
     } else {
         this.$emailConfirmFormGroup.addClass('hidden');
+    }
+};
+
+/**
+ * Toggles pending email helper hint block text based on stored cookie value.
+ */
+ProfileView.prototype.togglePendingEmailHint = function () {
+    var originalEmail = this.$emailField.data('original-email');
+
+    var pendingEmail = PR.cookies.getItem(this.PENDING_EMAIL_COOKIE_KEY, '');
+
+    if (pendingEmail && originalEmail !== pendingEmail) {
+        var $hintBox = this.$emailField.parent().find(this.settings.pendingEmailHint).first();
+
+        if (!$hintBox.length) {
+            $hintBox = $('<p class="help-block ' + this.settings.pendingEmailHint.substr(1) + '"></p>');
+            this.$emailField.after($hintBox);
+        }
+
+        $hintBox.text(PR.resolveTemplate(this.settings.pendingEmailHintText, {
+            'pendingEmail': pendingEmail
+        }));
     }
 };
