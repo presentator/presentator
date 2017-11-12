@@ -359,16 +359,16 @@ ProfileView.prototype.saveForm = function (form, action, callback) {
         type: 'POST',
         data: $form.serialize()
     }).done(function (response) {
+        if (PR.isFunction(callback)) {
+            callback(response);
+        }
+
         if (response.success) {
             PR.saveFormState($form);
 
             $form.removeClass('is-dirty');
         } else if (response.errors) {
             $form.yiiActiveForm('updateMessages', response.errors, true);
-        }
-
-        if (PR.isFunction(callback)) {
-            callback(response);
         }
     });
 };
@@ -410,7 +410,7 @@ ProfileView.prototype.saveProfileForm = function () {
         self.$profileForm,
         self.settings.ajaxProfielSaveUrl,
         function (response) {
-            if (response.success) {
+            if (!response.success) {
                 return;
             }
 
@@ -425,7 +425,6 @@ ProfileView.prototype.saveProfileForm = function () {
             self.$emailField.val(oldEmail);
             self.$emailConfirmFormGroup.find(':input').val('');
             self.toggleEmailConfirmFormGroup();
-            PR.saveFormState(self.$profileForm);
 
             // store the pending email in a cookie
             // @todo depending on the usage, consider to store in session or db
