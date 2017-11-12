@@ -112,7 +112,7 @@ ProfileView.prototype.init = function () {
     /* User settings
     --------------------------------------------------------------- */
     self.$userTabs.tabs();
-    self.togglePendingEmailHint();
+    self.togglePendingEmailHintBox();
 
     self.$userTabs.off('tabChange.pr');
     self.$userTabs.on('tabChange.pr', function (e, tabContentId, $tabContent) {
@@ -411,27 +411,29 @@ ProfileView.prototype.saveProfileForm = function () {
         self.settings.ajaxProfielSaveUrl,
         function (response) {
             if (response.success) {
-                if (response.userIdentificator) {
-                    $(self.settings.userIdentificator).text(response.userIdentificator);
-                }
-
-                var oldEmail = self.$emailField.data('original-email');
-                var newEmail = self.$emailField.val();
-
-                // reset email and password fields state
-                self.$emailField.val(oldEmail);
-                self.$emailConfirmFormGroup.find(':input').val('');
-                self.toggleEmailConfirmFormGroup();
-                PR.saveFormState(self.$profileForm);
-
-                // store the pending email in a cookie
-                // @todo depending on the usage, consider to store in session or db
-                var expireDate = new Date();
-                expireDate.setSeconds(expireDate.getSeconds() + self.settings.emailChangeTokenExpire);
-                PR.cookies.setItem(self.PENDING_EMAIL_COOKIE_KEY, newEmail, expireDate);
-
-                self.togglePendingEmailHint();
+                return;
             }
+
+            if (response.userIdentificator) {
+                $(self.settings.userIdentificator).text(response.userIdentificator);
+            }
+
+            var oldEmail = self.$emailField.data('original-email');
+            var newEmail = self.$emailField.val();
+
+            // reset email and password fields state
+            self.$emailField.val(oldEmail);
+            self.$emailConfirmFormGroup.find(':input').val('');
+            self.toggleEmailConfirmFormGroup();
+            PR.saveFormState(self.$profileForm);
+
+            // store the pending email in a cookie
+            // @todo depending on the usage, consider to store in session or db
+            var expireDate = new Date();
+            expireDate.setSeconds(expireDate.getSeconds() + self.settings.emailChangeTokenExpire);
+            PR.cookies.setItem(self.PENDING_EMAIL_COOKIE_KEY, newEmail, expireDate);
+
+            self.togglePendingEmailHintBox();
         }
     );
 };
@@ -450,7 +452,7 @@ ProfileView.prototype.toggleEmailConfirmFormGroup = function () {
 /**
  * Toggles pending email helper hint block text based on stored cookie value.
  */
-ProfileView.prototype.togglePendingEmailHint = function () {
+ProfileView.prototype.togglePendingEmailHintBox = function () {
     var originalEmail = this.$emailField.data('original-email');
 
     var pendingEmail = PR.cookies.getItem(this.PENDING_EMAIL_COOKIE_KEY, '');
