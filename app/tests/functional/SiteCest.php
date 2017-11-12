@@ -328,7 +328,7 @@ class SiteCest
     {
         $user = User::findOne(1004);
 
-        $I->wantTo('Fail resetting user password');
+        $I->wantTo('Success resetting user password');
         $I->amOnPage(['site/reset-password', 'token' => $user->passwordResetToken]);
         $I->seeResponseCodeIs(200);
         $I->submitForm('#reset_password_form', [
@@ -339,5 +339,79 @@ class SiteCest
         ]);
         $I->dontSeeElement('#reset_password_form .has-error');
         $I->seeFlash('resetSuccess');
+    }
+
+/* Change email action:
+------------------------------------------------------------------- */
+    /**
+     * @param FunctionalTester $I
+     */
+    public function changeEmailInactiveUser(FunctionalTester $I)
+    {
+        $user = User::findOne(1001); // inactive user
+
+        $I->wantTo('Change the email address for an inactive user');
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change@presentator.io']);
+        $I->seeResponseCodeIs(400);
+        $I->see('Bad Request');
+        $I->see('Invalid or expired email change token.');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function changeEmailMissingToken(FunctionalTester $I)
+    {
+        $user = User::findOne(1002); // user with no email change token
+
+        $newEmail         = 'test_change@presentator.io';
+        $emailChangeToken = md5($newEmail) . '_' . time();
+
+        $I->wantTo('Change the email address for a user with no emailChangeToken set');
+        $I->amOnPage(['site/change-email', 'token' => $emailChangeToken, 'email' => $newEmail]);
+        $I->seeResponseCodeIs(400);
+        $I->see('Bad Request');
+        $I->see('Invalid or expired email change token.');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function changeEmailExpiredToken(FunctionalTester $I)
+    {
+        $user = User::findOne(1003); // user with expired email change token
+
+        $I->wantTo('Change the email address for a user with expired emailChangeToken');
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change@presentator.io']);
+        $I->seeResponseCodeIs(400);
+        $I->see('Bad Request');
+        $I->see('Invalid or expired email change token.');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function changeEmailDuplicateEmailAddress(FunctionalTester $I)
+    {
+        $user = User::findOne(1004);
+
+        $I->wantTo('Change the email address for a user with expired emailChangeToken');
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test5@presentator.io']);
+        $I->seeResponseCodeIs(400);
+        $I->see('Bad Request');
+        $I->see('The email test5@presentator.io seems to be already registered');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function changeEmailSuccess(FunctionalTester $I)
+    {
+        $user = User::findOne(1005);
+
+        $I->wantTo('Successfully change user email address');
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change2@presentator.io']);
+        $I->seeResponseCodeIs(200);
+        $I->seeFlash('success');
     }
 }
