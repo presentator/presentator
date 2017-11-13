@@ -35,7 +35,7 @@ var ProfileView = function (data) {
         'ajaxDeleteAvatarUrl':      '/account/avatar-delete',
 
         // texts
-        'pendingEmailHintText': 'Confirmation email is sent to {pendingEmail}.'
+        'pendingEmailHintText': 'Confirmation email was sent to {pendingEmail}.'
     };
 
     this.settings = $.extend({}, defaults, data);

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Confirmation email is sent to {pendingEmail}.' => 'Confirmation email is sent to {pendingEmail}.',
+    'Confirmation email was sent to {pendingEmail}.' => 'Confirmation email was sent to {pendingEmail}.',
     'Notifications' => 'Notifications',
     'Profile' => 'Profile',
     'Successfully changed account password.' => 'Successfully changed account password.',

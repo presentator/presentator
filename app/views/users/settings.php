@@ -114,6 +114,6 @@ $this->registerJs('
         ajaxDeleteAvatarUrl:      "' . Url::to(['users/ajax-avatar-delete']) . '",
 
         // texts
-        pendingEmailHintText: "' . Yii::t('app', 'Confirmation email is sent to {pendingEmail}.') . '"
+        pendingEmailHintText: "' . Yii::t('app', 'Confirmation email was sent to {pendingEmail}.') . '"
     });
 ', View::POS_READY, 'settings-js');

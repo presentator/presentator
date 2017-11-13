@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Confirmation email is sent to {pendingEmail}.' => 'Изпратен е верификационен имейл на {pendingEmail}.',
+    'Confirmation email was sent to {pendingEmail}.' => 'Изпратен е верификационен имейл на {pendingEmail}.',
     'Notifications' => 'Нотификации',
     'Profile' => 'Профил',
     'Successfully changed account password.' => 'Паролата бе обновена успешно.',
