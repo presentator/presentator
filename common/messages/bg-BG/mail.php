@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirm email address change' => 'Потвърди смяната на имейл адреса',
     'Email change request' => 'Промяна на имейл адреса',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'Получихме запитване за смяна на имейл адреса на профила ти в Presentator от {oldEmail} на {newEmail}.',
@@ -56,4 +56,4 @@ return [
     'You have been mentioned in a comment for project "{projectTitle}".' => 'Споменат си в коментар към проект "{projectTitle}."',
     'You have successfully registered via Facebook.' => 'Успешна регистрация чрез Facebook.',
     '{projectTitle} preview' => '{projectTitle} преглед',
-];
+);

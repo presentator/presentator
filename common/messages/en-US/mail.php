@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirm email address change' => 'Confirm email address change',
     'Email change request' => 'Email change request',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.',
@@ -56,4 +56,4 @@ return [
     'You have been mentioned in a comment for project "{projectTitle}".' => 'You have been mentioned in a comment for project "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'You have successfully registered via Facebook.',
     '{projectTitle} preview' => '{projectTitle} preview',
-];
+);

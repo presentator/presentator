@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirmation email was sent to {pendingEmail}.' => 'Изпратен е верификационен имейл на {pendingEmail}.',
     'Notifications' => 'Нотификации',
     'Profile' => 'Профил',
@@ -248,4 +248,4 @@ return [
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-];
+);

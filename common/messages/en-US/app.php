@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirmation email was sent to {pendingEmail}.' => 'Confirmation email was sent to {pendingEmail}.',
     'Notifications' => 'Notifications',
     'Profile' => 'Profile',
@@ -248,4 +248,4 @@ return [
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-];
+);

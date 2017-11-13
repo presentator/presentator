@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirm email address change' => '',
     'Email change request' => '',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
@@ -56,4 +56,4 @@ return [
     'You are no longer an administrator to project "{projectTitle}".' => 'Vous n\'êtes désormais plus administrateur du projet "{projectTitle}".',
     'You have successfully registered via Facebook.' => 'Vous vous êtes bien authentifiés via Facebook.',
     '{projectTitle} preview' => 'Aperçu de {projectTitle}',
-];
+);
