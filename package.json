@@ -1,7 +1,7 @@
 {
   "name": "Presentator",
   "description": "Presentator.io dev node modules",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "Gani Georgiev <gani.georgiev@gmail.com>",
   "engines": {
     "node": ">=0.10.0"
