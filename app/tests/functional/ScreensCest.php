@@ -57,13 +57,10 @@ class ScreensCest
     /**
      * @param FunctionalTester $I
      */
-    public function ajaxUploadFail(FunctionalTester $I)
+    public function ajaxUploadFail1(FunctionalTester $I)
     {
-        $I->wantTo('Falsely upload new screen(s)');
+        $I->wantTo('Falsely upload new screen(s) to a version not owned by the logged user');
         $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-upload']);
-
-        $I->amGoingTo('try to upload screens to a version not owned by the logged user');
         $I->sendPOST(
             ['screens/ajax-upload'],
             ['versionId' => 1004],
@@ -84,8 +81,15 @@ class ScreensCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
+    }
 
-        $I->amGoingTo('try to upload image(s) with extension that is not alowed');
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxUploadFail2(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely upload new screen(s) by uploading file(s) with extension that is not alowed');
+        $I->amLoggedInAs(1002);
         $I->sendPOST(
             ['screens/ajax-upload'],
             ['versionId' => 1002],
@@ -105,7 +109,7 @@ class ScreensCest
         );
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":false');
-        $I->seeResponseContains('"message":');
+        $I->seeResponseContains('"message":"Only files with these extensions are allowed: png, jpg, jpeg."');
     }
 
     /**
@@ -129,7 +133,6 @@ class ScreensCest
                             'error'    => UPLOAD_ERR_OK,
                             'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
                             'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
-
                         ],
                         [
                             'name'     => 'test_image.png',
@@ -146,6 +149,116 @@ class ScreensCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
         $I->seeResponseContains('"listItemsHtml":');
+    }
+
+    /* ===============================================================
+     * `ScreensController::actionAjaxReplace()` tests
+     * ============================================================ */
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxReplaceFail1(FunctionalTester $I)
+    {
+        $I->wantTo('Check if replace image parameter is required');
+        $I->amLoggedInAs(1002);
+        $I->sendPOST(
+            ['screens/ajax-replace'],
+            ['screenId' => 1001],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":"Please upload a file."');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxReplaceFail2(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely replace the image of a screen not owned by the logged user');
+        $I->amLoggedInAs(1002);
+        $I->sendPOST(
+            ['screens/ajax-replace'],
+            ['screenId' => 1004],
+            [
+                // mockup $_FILES
+                'ScreenReplaceForm' => [
+                    'image' => [
+                        'name'     => 'test_image.jpg',
+                        'type'     => 'image/jpeg',
+                        'error'    => UPLOAD_ERR_OK,
+                        'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
+                        'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
+                    ],
+                ]
+            ],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxReplaceFail3(FunctionalTester $I)
+    {
+        $I->wantTo('Falsely replace the image of a screen by trying to upload a file with extension that is not alowed');
+        $I->amLoggedInAs(1002);
+        $I->sendPOST(
+            ['screens/ajax-replace'],
+            ['screenId' => 1001],
+            [
+                // mockup $_FILES
+                'ScreenReplaceForm' => [
+                    'image' => [
+                        'name'     => 'test_image.gif',
+                        'type'     => 'image/jpeg', // try to set incorrect mimetype
+                        'error'    => UPLOAD_ERR_OK,
+                        'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.gif')),
+                        'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.gif'),
+                    ],
+                ]
+            ],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":"Only files with these extensions are allowed: png, jpg, jpeg."');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxReplaceSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully replace screen image');
+        $I->amLoggedInAs(1002);
+        $I->ensureAjaxPostActionAccess(['screens/ajax-replace']);
+        $I->sendPOST(
+            ['screens/ajax-replace'],
+            ['screenId' => 1001],
+            [
+                // mockup $_FILES
+                'ScreenReplaceForm' => [
+                    'image' => [
+                        'name'     => 'test_image.jpg',
+                        'type'     => 'image/jpeg', // try to set incorrect mimetype
+                        'error'    => UPLOAD_ERR_OK,
+                        'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
+                        'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
+                    ],
+                ]
+            ],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"screen":');
+        $I->seeResponseContains('"imageUrl":"/uploads/projects/b8c37e33defde51cf91e1e03e51657da/testimage_');
     }
 
     /* ===============================================================
@@ -243,17 +356,17 @@ class ScreensCest
     }
 
     /* ===============================================================
-     * `ProjectsController::actionAjaxGetSettingsForm()` tests
+     * `ProjectsController::actionAjaxGetSettings()` tests
      * ============================================================ */
     /**
      * @param FunctionalTester $I
      */
-    public function ajaxGetSettingsFormFail(FunctionalTester $I)
+    public function ajaxGetSettingsFail(FunctionalTester $I)
     {
-        $I->wantTo('Falsely renders a screen settings form');
+        $I->wantTo('Falsely renders screen settings');
         $I->amLoggedInAs(1002);
-        $I->cantAccessAsGuest(['screens/ajax-get-settings-form', 'id' => 1004]);
-        $I->sendAjaxGetRequest(['screens/ajax-get-settings-form'], ['id' => 1004]);
+        $I->cantAccessAsGuest(['screens/ajax-get-settings', 'id' => 1004]);
+        $I->sendAjaxGetRequest(['screens/ajax-get-settings'], ['id' => 1004]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
@@ -262,15 +375,15 @@ class ScreensCest
     /**
      * @param FunctionalTester $I
      */
-    public function ajaxGetSettingsFormSuccess(FunctionalTester $I)
+    public function ajaxGetSettingsSuccess(FunctionalTester $I)
     {
-        $I->wantTo('Successfully renders a screen settings form');
+        $I->wantTo('Successfully renders screen settings');
         $I->amLoggedInAs(1002);
-        $I->cantAccessAsGuest(['screens/ajax-get-settings-form', 'id' => 1001]);
-        $I->sendAjaxGetRequest(['screens/ajax-get-settings-form'], ['id' => 1001]);
+        $I->cantAccessAsGuest(['screens/ajax-get-settings', 'id' => 1001]);
+        $I->sendAjaxGetRequest(['screens/ajax-get-settings'], ['id' => 1001]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"formHtml":');
+        $I->seeResponseContains('"settingsHtml":');
     }
 
     /* ===============================================================

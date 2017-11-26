@@ -1,4 +1,4 @@
-var ScreenView = function(data) {
+var ScreenView = function (data) {
     data = data || {};
 
     var defaults = {
@@ -23,35 +23,39 @@ var ScreenView = function(data) {
         'bulkVersionsSelect': '#bulk_versions_select',
 
         // scren edit
-        'editPopup':         '#screens_edit_popup',
-        'openHandle':        '.open-screen-edit',
-        'closeHandle':       '.close-screen-edit',
-        'versionSlider':     '.version-slider',
-        'versionSliderItem': '.slider-item',
-        'settingsHandle':    '#panel_settings_handle',
-        'nextSlideHandle':   '#slider_next_handle',
-        'prevSlideHandle':   '#slider_prev_handle',
+        'screenImgHolder':             '.screen-img',
+        'replaceScreenImageContainer': '#replace_image_container',
+        'editPopup':                   '#screens_edit_popup',
+        'openHandle':                  '.open-screen-edit',
+        'closeHandle':                 '.close-screen-edit',
+        'versionSlider':               '.version-slider',
+        'versionSliderItem':           '.slider-item',
+        'settingsHandle':              '#panel_settings_handle',
+        'nextSlideHandle':             '#slider_next_handle',
+        'prevSlideHandle':             '#slider_prev_handle',
 
         // mode handles
         'hotspotsModeHandle': '#panel_hotspots_handle',
         'commentsModeHandle': '#panel_comments_handle',
 
         // texts
-        'versionOptionText':     'Version',
-        'confirmDeleteText':     'Do you really want to delete the selected screen?',
-        'confirmBulkDeleteText': 'Do you really want to delete the selected screens?',
-        'hotspotsTooltipText':   'Click and drag to create hotspot',
-        'commentsTooltipText':   'Click to leave a comment',
+        'versionOptionText':       'Version',
+        'confirmDeleteText':       'Do you really want to delete the selected screen?',
+        'confirmBulkDeleteText':   'Do you really want to delete the selected screens?',
+        'hotspotsTooltipText':     'Click and drag to create hotspot',
+        'commentsTooltipText':     'Click to leave a comment',
+        'replaceImageConfirmText': 'Do you really want to replace the screen image?',
 
         // urls
-        'ajaxUploadUrl':           '/admin/screens/ajax-upload',
-        'ajaxDeleteUrl':           '/admin/screens/ajax-delete',
-        'ajaxGetSettingsFormUrl':  '/admin/screens/ajax-get-settings-form',
-        'ajaxSaveSettingsFormUrl': '/admin/screens/ajax-save-settings-form',
-        'ajaxReorderUrl':          '/admin/screens/ajax-reorder',
-        'ajaxMoveScreensUrl':      '/admin/screens/ajax-move-screens',
-        'ajaxGetThumbsUrl':        '/admin/screens/ajax-get-thumbs',
-        'ajaxGetScreensSliderUrl': '/admin/versions/ajax-get-screens-slider',
+        'ajaxReplaceScreenImageUrl': '/admin/screens/ajax-replace',
+        'ajaxUploadUrl':             '/admin/screens/ajax-upload',
+        'ajaxDeleteUrl':             '/admin/screens/ajax-delete',
+        'ajaxGetSettingsUrl':        '/admin/screens/ajax-get-settings',
+        'ajaxSaveSettingsFormUrl':   '/admin/screens/ajax-save-settings-form',
+        'ajaxReorderUrl':            '/admin/screens/ajax-reorder',
+        'ajaxMoveScreensUrl':        '/admin/screens/ajax-move-screens',
+        'ajaxGetThumbsUrl':          '/admin/screens/ajax-get-thumbs',
+        'ajaxGetScreensSliderUrl':   '/admin/versions/ajax-get-screens-slider',
 
         'hotspotsViewSettings': {},
         'commentsViewSettings': {},
@@ -86,8 +90,12 @@ var ScreenView = function(data) {
 /**
  * Init method
  */
-ScreenView.prototype.init = function() {
+ScreenView.prototype.init = function () {
     var self = this;
+
+    if (typeof Dropzone !== 'undefined') {
+        Dropzone.autoDiscover = false;
+    }
 
     var $document = $(document);
     var $body     = $('body');
@@ -97,7 +105,7 @@ ScreenView.prototype.init = function() {
     self.initSortable();
 
     // Screen delete
-    $document.on('click.pr.screenView', self.settings.screenDeleteHandle, function(e) {
+    $document.on('click.pr.screenView', self.settings.screenDeleteHandle, function (e) {
         e.preventDefault();
 
         if (window.confirm(self.settings.confirmDeleteText)) {
@@ -106,7 +114,7 @@ ScreenView.prototype.init = function() {
     });
 
     // Bulk selection
-    $document.on('change', self.settings.bulkInput, function(e) {
+    $document.on('change', self.settings.bulkInput, function (e) {
         if ($(this).is(':checked')) {
             $(this).closest(self.settings.screenItem).addClass('bulk-selected');
         } else {
@@ -117,7 +125,7 @@ ScreenView.prototype.init = function() {
     });
 
     // Bulk shortcut select
-    $document.on('click', self.settings.screenItem, function(e) {
+    $document.on('click', self.settings.screenItem, function (e) {
         if (self.pressedKey == PR.keys.shift) {
             e.preventDefault();
             e.stopPropagation();
@@ -131,14 +139,14 @@ ScreenView.prototype.init = function() {
     });
 
     // Reset bulk selection
-    $document.on('click.pr.screenView', self.settings.bulkReset, function(e) {
+    $document.on('click.pr.screenView', self.settings.bulkReset, function (e) {
         e.preventDefault();
 
         self.resetBulkSelection();
     });
 
     // Bulk delete
-    $document.on('click.pr.screenView', self.settings.bulkDeleteHandle, function(e) {
+    $document.on('click.pr.screenView', self.settings.bulkDeleteHandle, function (e) {
         e.preventDefault();
 
         if (window.confirm(self.settings.confirmBulkDeleteText)) {
@@ -147,26 +155,26 @@ ScreenView.prototype.init = function() {
     });
 
     // Bulk screens move
-    self.$bulkVersionsSelect.on('change', function() {
+    self.$bulkVersionsSelect.on('change', function () {
         self.moveScreensToVersion(self.getBulkSelectedIds(), $(this).val());
     });
 
     // Versions manipulation event handlers
-    self.$screensWrapperTabs.on('tabChange.pr', function(e, tabContentId) {
+    self.$screensWrapperTabs.on('tabChange.pr', function (e, tabContentId) {
         self.resetBulkSelection();
     });
 
-    $document.on('versionCreated', function() {
+    $document.on('versionCreated', function () {
         self.initSortable();
         self.resetBulkSelection();
     });
 
-    $document.on('versionDeleted', function() {
+    $document.on('versionDeleted', function () {
         self.resetBulkSelection();
     });
 
     // Open screen edit container
-    $document.on('click', self.settings.screenItem + ' ' + self.settings.openHandle, function(e) {
+    $document.on('click', self.settings.screenItem + ' ' + self.settings.openHandle, function (e) {
         e.preventDefault();
 
         if (self.pressedKey == PR.keys.shift) {
@@ -182,14 +190,14 @@ ScreenView.prototype.init = function() {
     });
 
     // Close screen edit container
-    $document.on('click', self.settings.closeHandle, function(e) {
+    $document.on('click', self.settings.closeHandle, function (e) {
         e.preventDefault();
 
         self.hideScreensSlider();
     });
 
     // Slider keyboard nav
-    $document.on('keydown', function(e) {
+    $document.on('keydown', function (e) {
         self.pressedKey = e.which;
 
         if (self.$activeVersionSlider &&
@@ -207,22 +215,22 @@ ScreenView.prototype.init = function() {
             }
         }
     });
-    $document.on('keyup', function(e) {
+    $document.on('keyup', function (e) {
         self.pressedKey = null;
     });
 
     // Custom slider nav
-    $document.on('click', self.settings.nextSlideHandle, function(e) {
+    $document.on('click', self.settings.nextSlideHandle, function (e) {
         e.preventDefault();
         $(self.settings.versionSlider).slider('goTo', 'next');
     });
-    $document.on('click', self.settings.prevSlideHandle, function(e) {
+    $document.on('click', self.settings.prevSlideHandle, function (e) {
         e.preventDefault();
         $(self.settings.versionSlider).slider('goTo', 'prev');
     });
 
     // Screen alignment
-    $document.on('sliderChange sliderInit', function(e, $activeSlide) {
+    $document.on('sliderChange sliderInit', function (e, $activeSlide) {
         PR.horizontalAlign($activeSlide);
 
         self.hotspotsView.deselectHotspot();
@@ -233,28 +241,28 @@ ScreenView.prototype.init = function() {
     });
 
     // Screen settings
-    $document.on('click', self.settings.settingsHandle, function(e) {
+    $document.on('click', self.settings.settingsHandle, function (e) {
         e.preventDefault();
 
         if (self.$activeVersionSlider && self.$activeVersionSlider.length) {
-            self.getSettingsForm(self.$activeVersionSlider.slider('getActive').data('screen-id'));
+            self.openScreenSettingsPopup(self.$activeVersionSlider.slider('getActive').data('screen-id'));
         }
     });
 
     // Reset edit popup content
-    self.$editPopup.on('popupClose', function() {
+    self.$editPopup.on('popupClose', function () {
         $(this).find('.content').children().remove(); // removes also the binded events to children elements
     });
 
     // Hotspots mode handle
-    $document.on('click', self.settings.hotspotsModeHandle, function(e) {
+    $document.on('click', self.settings.hotspotsModeHandle, function (e) {
         e.preventDefault();
 
         self.activateHotspotsMode();
     });
 
     // Comments mode handle
-    $document.on('click', self.settings.commentsModeHandle, function(e) {
+    $document.on('click', self.settings.commentsModeHandle, function (e) {
         e.preventDefault();
 
         self.activateCommentsMode();
@@ -293,7 +301,7 @@ ScreenView.prototype.init = function() {
  * @param {Number} screenId
  * @return {jQuery}
  */
-ScreenView.prototype.getScreenItem = function(screenId) {
+ScreenView.prototype.getScreenItem = function (screenId) {
     return $(this.settings.screenItem + '[data-screen-id="' + screenId + '"]');
 };
 
@@ -301,7 +309,7 @@ ScreenView.prototype.getScreenItem = function(screenId) {
  * Returns the current active version div container.
  * @return {jQuery}
  */
-ScreenView.prototype.getActiveScreensWrapper = function() {
+ScreenView.prototype.getActiveScreensWrapper = function () {
     return $(this.settings.screensWrapper + '.active');
 };
 
@@ -309,7 +317,7 @@ ScreenView.prototype.getActiveScreensWrapper = function() {
 /**
  * Populates the bulk versions select with the latest project versions data.
  */
-ScreenView.prototype.populateBulkVersionsSelect = function() {
+ScreenView.prototype.populateBulkVersionsSelect = function () {
     var self = this;
 
     // append select prompt option
@@ -340,7 +348,7 @@ ScreenView.prototype.populateBulkVersionsSelect = function() {
 /**
  * Handles screens bulk panel visibility.
  */
-ScreenView.prototype.toggleBulkPanel = function() {
+ScreenView.prototype.toggleBulkPanel = function () {
     var self = this;
 
     if (self.getActiveScreensWrapper().find(self.settings.bulkInput + ':checked').length) {
@@ -355,7 +363,7 @@ ScreenView.prototype.toggleBulkPanel = function() {
  * Returns array list with the bulk selected screen ids.
  * @return {Array}
  */
-ScreenView.prototype.getBulkSelectedIds = function() {
+ScreenView.prototype.getBulkSelectedIds = function () {
     var result = [];
 
     this.getActiveScreensWrapper().find(this.settings.screenItem + '.bulk-selected').each(function(i, item) {
@@ -368,7 +376,7 @@ ScreenView.prototype.getBulkSelectedIds = function() {
 /**
  * Resets currently bulk selected screens.
  */
-ScreenView.prototype.resetBulkSelection = function() {
+ScreenView.prototype.resetBulkSelection = function () {
     var $activeScreensWrapper = this.getActiveScreensWrapper();
 
     $activeScreensWrapper.find(this.settings.bulkInput + ':checked').prop('checked', false);
@@ -382,7 +390,7 @@ ScreenView.prototype.resetBulkSelection = function() {
  * @param {Array}  screenIds Ids of the screens to move.
  * @param {Number} versionId Id of the new version.
  */
-ScreenView.prototype.moveScreensToVersion = function(screenIds, versionId) {
+ScreenView.prototype.moveScreensToVersion = function (screenIds, versionId) {
     var self = this;
 
     if (!versionId) {
@@ -429,10 +437,14 @@ ScreenView.prototype.moveScreensToVersion = function(screenIds, versionId) {
 /**
  * Handles screens Dropzone upload initialization.
  */
-ScreenView.prototype.initScreensDropzone = function() {
+ScreenView.prototype.initScreensDropzone = function () {
     var self = this;
 
-    Dropzone.autoDiscover = false;
+    if (typeof Dropzone === 'undefined') {
+        console.warn("Dropzone is missing or is not initialized yet.");
+        return;
+    }
+
     var myDropzone = new Dropzone(self.settings.uploadContainer, {
         url:                   self.settings.ajaxUploadUrl,
         paramName:             'ScreensUploadForm[images]',
@@ -449,7 +461,7 @@ ScreenView.prototype.initScreensDropzone = function() {
 
     var $activeScreensWrapper = $();
 
-    myDropzone.on('sending', function(file, xhr, formData) {
+    myDropzone.on('sending', function (file, xhr, formData) {
         $activeScreensWrapper = self.getActiveScreensWrapper();
 
         formData.append(yii.getCsrfParam(), yii.getCsrfToken());
@@ -459,11 +471,11 @@ ScreenView.prototype.initScreensDropzone = function() {
         self.$uploadPopup.find('.popup-close').hide();
     });
 
-    myDropzone.on('error', function(file, errorMessage) {
+    myDropzone.on('error', function (file, errorMessage) {
         PR.addNotification('An error occured while uploading "' + file.name + '".', 'danger');
     });
 
-    myDropzone.on('successmultiple', function(files, response) {
+    myDropzone.on('successmultiple', function (files, response) {
         if (response.success) {
             self.insertScreens(response.listItemsHtml, $activeScreensWrapper);
         }
@@ -471,24 +483,105 @@ ScreenView.prototype.initScreensDropzone = function() {
         PR.addNotification(response.message, response.success ? 'success' : 'danger');
     });
 
-    myDropzone.on('queuecomplete', function(files) {
+    myDropzone.on('queuecomplete', function (files) {
         PR.closePopup(self.$uploadPopup);
 
         self.$uploadContainer.removeClass('loading');
     });
 
-    self.$uploadPopup.on('popupClose', function() {
+    self.$uploadPopup.on('popupClose', function () {
         self.$uploadPopup.find('.popup-close').show();
     });
 };
 
+/**
+ * Handles single image screen replace Dropzone upload initialization.
+ * @param {Number} Screen id       Id of the screen to replace.
+ * @param {String} uploadContainer Upload container selector.
+ */
+ScreenView.prototype.initReplaceScreenImageDropzone = function (screenId, uploadContainer) {
+    var self = this;
+
+    if (typeof Dropzone === 'undefined') {
+        console.warn("Dropzone is missing or is not initialized yet.");
+        return;
+    }
+
+    screenId        = screenId        || (self.$activeVersionSlider && self.$activeVersionSlider.slider('getActive').data('screen-id'));
+    uploadContainer = uploadContainer || self.settings.replaceScreenImageContainer;
+
+    var $uploadContainer = $(uploadContainer);
+    var $uploadPopup     = $uploadContainer.closest('.popup');
+
+
+    var myDropzone = new Dropzone(uploadContainer, {
+        url:                   self.settings.ajaxReplaceScreenImageUrl,
+        paramName:             'ScreenReplaceForm[image]',
+        parallelUploads:       1,
+        uploadMultiple:        false,
+        thumbnailWidth:        null,
+        thumbnailHeight:       null,
+        addRemoveLinkss:       false,
+        createImageThumbnails: false,
+        previewTemplate:       '<div style="display: none"></div>',
+        acceptedFiles:         '.jpg, .jpeg, .png',
+        maxFilesize:           self.settings.maxUploadSize
+    });
+
+    myDropzone.on('addedfile', function (file) {
+        if (!window.confirm(self.settings.replaceImageConfirmText)) {
+            myDropzone.removeAllFiles();
+        }
+    });
+
+    myDropzone.on('sending', function (file, xhr, formData) {
+        formData.append(yii.getCsrfParam(), yii.getCsrfToken());
+        formData.append('screenId', screenId);
+
+        $uploadContainer.addClass('loading');
+        $uploadPopup.find('.popup-close').hide();
+    });
+
+    myDropzone.on('error', function (file, errorMessage) {
+        PR.addNotification('An error occured while uploading "' + file.name + '".', 'danger');
+    });
+
+    myDropzone.on('success', function (file, response) {
+        if (response.success) {
+            PR.closePopup($uploadPopup);
+
+            // replace scren image placeholders
+            if (response.screen) {
+                $(self.settings.screenImgHolder)
+                    .attr('src', response.screen.imageUrl)
+                    .data('src', response.screen.imageUrl);
+
+                self.updateScreenTitle(screenId, response.screen.title);
+
+                // reload screen slider
+                self.showScreensSlider(
+                    self.getActiveScreensWrapper().data('version-id'),
+                    screenId
+                );
+            }
+        }
+
+        PR.addNotification(response.message, response.success ? 'success' : 'danger');
+    });
+
+    myDropzone.on('queuecomplete', function (files) {
+        $uploadPopup.find('.popup-close').show();
+
+        $uploadContainer.removeClass('loading');
+    });
+};
 
 /**
  * Handles screen elements insertion.
  * @param  {String|Object} screens
  * @param  {String|Object} container
  */
-ScreenView.prototype.insertScreens = function(screens, container) {
+ScreenView.prototype.insertScreens = function (screens, container) {
     var self       = this;
     var $container = $(container || self.getActiveScreensWrapper());
 
@@ -512,7 +605,7 @@ ScreenView.prototype.insertScreens = function(screens, container) {
  * @param  {String|Object} screen
  * @param  {String}        thumbSize
  */
-ScreenView.prototype.loadThumb = function(screen, thumbSize) {
+ScreenView.prototype.loadThumb = function (screen, thumbSize) {
     thumbSize = thumbSize || 'medium';
 
     var self    = this;
@@ -544,7 +637,7 @@ ScreenView.prototype.loadThumb = function(screen, thumbSize) {
  * Deletes screen item via ajax.
  * @param {Number|Array} screenId
  */
-ScreenView.prototype.deleteScreen = function(screenId) {
+ScreenView.prototype.deleteScreen = function (screenId) {
     var self = this;
 
     PR.abortXhr(self.deleteXHR);
@@ -577,7 +670,7 @@ ScreenView.prototype.deleteScreen = function(screenId) {
  * @param {Number} screenId
  * @param {Number} position
  */
-ScreenView.prototype.reorderScreen = function(screenId, position) {
+ScreenView.prototype.reorderScreen = function (screenId, position) {
     var self = this;
 
     PR.abortXhr(self.reorderXHR);
@@ -594,7 +687,7 @@ ScreenView.prototype.reorderScreen = function(screenId, position) {
 /**
  * Screen items sortable initialization.
  */
-ScreenView.prototype.initSortable = function() {
+ScreenView.prototype.initSortable = function () {
     var self = this;
 
     var oldIndex = 0;
@@ -628,7 +721,7 @@ ScreenView.prototype.initSortable = function() {
  * @params {Number}   screenId
  * @params {Function} callback
  */
-ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback) {
+ScreenView.prototype.showScreensSlider = function (versionId, screenId, callback) {
     var self = this;
 
     PR.abortXhr(self.generalXHR);
@@ -643,13 +736,15 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
         if (response.success) {
             var $body = $('body');
 
+            $(self.settings.versionSlider).remove(); // remove previously generated sliders
+
             $body.addClass('screen-edit-active')
                 .append(response.screensSliderHtml);
 
             self.$activeVersionSlider = $(self.settings.versionSlider).first();
             self.$activeVersionSlider.slider({nav: false});
 
-            self.$activeVersionSlider.find(self.settings.versionSliderItem).on('scroll', function(e) {
+            self.$activeVersionSlider.find(self.settings.versionSliderItem).on('scroll', function (e) {
                 if ($body.hasClass('hotspot-active')) {
                     self.hotspotsView.repositionPopover();
                     // self.hotspotsView.deselectHotspot();
@@ -661,7 +756,7 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
 
             // updates container width to prevent displaying unnecessary horizontal scrollbar
             if (!self.$activeVersionSlider.hasClass('desktop')) {
-                self.$activeVersionSlider.find('.hotspot-layer').on('load', function(e) {
+                self.$activeVersionSlider.find('.hotspot-layer').on('load', function (e) {
                     PR.updateScrollContainerWidth(this, $(this).closest(self.settings.versionSliderItem))
                 });
             }
@@ -678,7 +773,7 @@ ScreenView.prototype.showScreensSlider = function(versionId, screenId, callback)
 /**
  * Closes screen edit container.
  */
-ScreenView.prototype.hideScreensSlider = function() {
+ScreenView.prototype.hideScreensSlider = function () {
     var self = this;
 
     $('body').removeClass('screen-edit-active hotspot-active comment-active hotspots-mode comments-mode');
@@ -694,7 +789,7 @@ ScreenView.prototype.hideScreensSlider = function() {
  * Fetches screen settings form via ajax and open a popup with it.
  * @param {Number} screenId
  */
-ScreenView.prototype.getSettingsForm = function(screenId) {
+ScreenView.prototype.openScreenSettingsPopup = function (screenId) {
     var self = this;
 
     if (!screenId) {
@@ -704,17 +799,21 @@ ScreenView.prototype.getSettingsForm = function(screenId) {
 
     PR.abortXhr(self.updateXHR);
     self.updateXHR = $.ajax({
-        url: self.settings.ajaxGetSettingsFormUrl,
+        url: self.settings.ajaxGetSettingsUrl,
         type: 'GET',
         data: {
             'id': screenId
         }
     }).done(function(response) {
-        if (response.success && response.formHtml) {
-            self.$editPopup.find('.content').html(response.formHtml);
+        if (response.success && response.settingsHtml) {
+            self.$editPopup.find('.content').html(response.settingsHtml);
             PR.openPopup(self.$editPopup);
 
-            self.$editPopup.find('form').on('beforeSubmit', function(e) {
+            self.$editPopup.find('.tabs').tabs();
+
+            self.initReplaceScreenImageDropzone(screenId);
+
+            self.$editPopup.find('form').on('beforeSubmit', function (e) {
                 e.preventDefault();
 
                 self.saveSettingsForm(this, screenId);
@@ -730,7 +829,7 @@ ScreenView.prototype.getSettingsForm = function(screenId) {
  * @param {Mixed} form
  * @param {Number} screenId
  */
-ScreenView.prototype.saveSettingsForm = function(form, screenId) {
+ScreenView.prototype.saveSettingsForm = function (form, screenId) {
     var self = this;
 
     var $form = $(form);
@@ -754,11 +853,7 @@ ScreenView.prototype.saveSettingsForm = function(form, screenId) {
 
             var $sliderItem = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
 
-            // update screen title across all placeholders
-            PR.setData('[data-screen-id="' + screenId + '"]', 'title', PR.htmlEncode(response.settings.title));
-            $('[data-screen-id="' + screenId + '"]').find(self.settings.screenTitlteHolder)
-                .attr('title', PR.htmlEncode(response.settings.title))
-                .text(response.settings.title);
+            self.updateScreenTitle(screenId, response.settings.title);
 
             // update alignment
             PR.setData($sliderItem, 'alignment', response.settings.alignment);
@@ -769,6 +864,19 @@ ScreenView.prototype.saveSettingsForm = function(form, screenId) {
         }
     });
 };
+
+/**
+ * Updates screen title across all placeholders.
+ * @param {Number} screenId
+ * @param {String} newTitle
+ */
+ScreenView.prototype.updateScreenTitle = function (screenId, newTitle) {
+    PR.setData('[data-screen-id="' + screenId + '"]', 'title', PR.htmlEncode(newTitle));
+
+    $('[data-screen-id="' + screenId + '"]').find(this.settings.screenTitlteHolder)
+        .attr('title', PR.htmlEncode(newTitle))
+        .text(newTitle);
+}
 
 /**
  * Activates hotspots edit mode.

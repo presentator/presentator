@@ -33,7 +33,7 @@ return [
         'email'              => 'test3@presentator.io',
         'firstName'          => 'John',
         'lastName'           => '',
-        'authKey'            => 'prevWUG47dCVkj1aplzhpXEnDhf-2G3pR',
+        'authKey'            => 'pevWUG47dCVkj1aplzhpXEnDhf-2G3pR',
         'passwordHash'       => '$2a$06$bVu5ROFjksz.0nj3AMQR0OZOvVniJaNsNkJCivYbqUvj7htjX60Ke', // 123456
         'passwordResetToken' => '62QehlLraoZVe5BoYnmzgURpOmhZC0FF_' . strtotime('-2 days'), // expired password reset token
         'emailChangeToken'   => md5('test_change@presentator.io') . '_' . strtotime('-2 days'), // expired email change token

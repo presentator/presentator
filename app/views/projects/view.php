@@ -250,20 +250,24 @@ $this->registerJs('
     var screenView = new ScreenView({
         maxUploadSize: ' . Yii::$app->params['maxUploadSize'] . ',
 
-        versionOptionText:     "' . Yii::t('app', 'Version') . '",
-        confirmDeleteText:     "' . Yii::t('app', 'Do you really want to delete the selected screen?') . '",
-        confirmBulkDeleteText: "' . Yii::t('app', 'Do you really want to delete the selected screens?') . '",
-        hotspotsTooltipText:   "' . Yii::t('app', 'Click and drag to create hotspot') . '",
-        commentsTooltipText:   "' . Yii::t('app', 'Click to leave a comment') . '",
+        // texts
+        versionOptionText:       "' . Yii::t('app', 'Version') . '",
+        confirmDeleteText:       "' . Yii::t('app', 'Do you really want to delete the selected screen?') . '",
+        confirmBulkDeleteText:   "' . Yii::t('app', 'Do you really want to delete the selected screens?') . '",
+        hotspotsTooltipText:     "' . Yii::t('app', 'Click and drag to create hotspot') . '",
+        commentsTooltipText:     "' . Yii::t('app', 'Click to leave a comment') . '",
+        replaceImageConfirmText: "' . Yii::t('app', 'Do you really want to replace the screen image?') . '",
 
-        ajaxGetSettingsFormUrl:  "' . Url::to(['screens/ajax-get-settings-form']) .'",
-        ajaxSaveSettingsFormUrl: "' . Url::to(['screens/ajax-save-settings-form']) .'",
-        ajaxUploadUrl:           "' . Url::to(['screens/ajax-upload']) .'",
-        ajaxDeleteUrl:           "' . Url::to(['screens/ajax-delete']) .'",
-        ajaxReorderUrl:          "' . Url::to(['screens/ajax-reorder']) .'",
-        ajaxGetThumbsUrl:        "' . Url::to(['screens/ajax-get-thumbs']) .'",
-        ajaxMoveScreensUrl:      "' . Url::to(['screens/ajax-move-screens']) .'",
-        ajaxGetScreensSliderUrl: "' . Url::to(['versions/ajax-get-screens-slider']) .'",
+        // ajax urls
+        ajaxGetSettingsUrl:        "' . Url::to(['screens/ajax-get-settings']) .'",
+        ajaxSaveSettingsFormUrl:   "' . Url::to(['screens/ajax-save-settings-form']) .'",
+        ajaxReplaceScreenImageUrl: "' . Url::to(['screens/ajax-replace']) .'",
+        ajaxUploadUrl:             "' . Url::to(['screens/ajax-upload']) .'",
+        ajaxDeleteUrl:             "' . Url::to(['screens/ajax-delete']) .'",
+        ajaxReorderUrl:            "' . Url::to(['screens/ajax-reorder']) .'",
+        ajaxGetThumbsUrl:          "' . Url::to(['screens/ajax-get-thumbs']) .'",
+        ajaxMoveScreensUrl:        "' . Url::to(['screens/ajax-move-screens']) .'",
+        ajaxGetScreensSliderUrl:   "' . Url::to(['versions/ajax-get-screens-slider']) .'",
 
         // sub-classes
         hotspotsViewSettings: {

@@ -198,6 +198,7 @@ $hasScreens = !empty($activeVersion->screens);
                             $align = 'center';
                         }
 
+                        // background color
                         $background = ($screen->background ? $screen->background : '#eff2f8');
 
                         // image dimensions
@@ -208,7 +209,9 @@ $hasScreens = !empty($activeVersion->screens);
                         }
 
                         // scaling
-                        $scaleFactor = $project->getScaleFactor($width);
+                        $scaleFactor = $screen->project->getScaleFactor($width);
+                        $width       = $width / $scaleFactor;
+                        $height      = $height / $scaleFactor;
 
                         // hotspots
                         $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
@@ -223,8 +226,8 @@ $hasScreens = !empty($activeVersion->screens);
                         <figure class="img-wrapper hotspot-layer-wrapper">
                             <img class="img lazy-load hotspot-layer"
                                 alt="<?= Html::encode($screen->title) ?>"
-                                width="<?= $width / $scaleFactor ?>px"
-                                height="<?= $height / $scaleFactor ?>px"
+                                width="<?= $width ?>px"
+                                height="<?= $height ?>px"
                                 data-src="<?= $screen->imageUrl ?>"
                                 data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                             >
@@ -232,24 +235,26 @@ $hasScreens = !empty($activeVersion->screens);
                             <!-- Hotspots -->
                             <div id="hotspots_wrapper">
                                 <?php foreach ($hotspots as $id => $spot): ?>
-                                    <div id="<?= Html::encode($id) ?>"
-                                        class="hotspot"
-                                        data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
-                                        style="width: <?= (float) (ArrayHelper::getValue($spot, 'width', 0) / $scaleFactor); ?>px; height: <?= (float) (ArrayHelper::getValue($spot, 'height', 0) / $scaleFactor); ?>px; top: <?= (float) (ArrayHelper::getValue($spot, 'top', 0) / $scaleFactor); ?>px; left: <?= (float) (ArrayHelper::getValue($spot, 'left', 0) / $scaleFactor); ?>px"
-                                    >
-                                    </div>
+                                    <?= $this->render('_hotspot_item', [
+                                        'id'           => $id,
+                                        'spot'         => $spot,
+                                        'scaleFactor'  => $scaleFactor,
+                                        'maxWidth'     => $width,
+                                        'maxHeight'    => $height,
+                                        'showControls' => false,
+                                    ]); ?>
                                 <?php endforeach ?>
                             </div>
 
                             <!-- Comment targets -->
                             <div id="comment_targets_list" class="comment-targets-list">
                                 <?php foreach ($screen->primaryScreenComments as $comment): ?>
-                                    <?php $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED; ?>
-
-                                    <div class="comment-target <?= $isResolved ? 'resolved' : '' ?>"
-                                        data-comment-id="<?= $comment->id ?>"
-                                        style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
-                                    ></div>
+                                    <?= $this->render('_comment_item', [
+                                        'comment'     => $comment,
+                                        'scaleFactor' => $scaleFactor,
+                                        'isResolved'  => ($comment->status == ScreenComment::STATUS_RESOLVED),
+                                        'isUnread'    => false,
+                                    ]); ?>
                                 <?php endforeach ?>
                             </div>
                         </figure>

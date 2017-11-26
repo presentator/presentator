@@ -29,9 +29,9 @@ $hasImg = !empty(@getimagesize($url));
 
         <figure class="featured with-overlay-panel">
             <?php if ($lazyLoad): ?>
-                <img data-src="<?= $url ?>" class="img lazy-load" alt="<?= Html::encode($model->title) ?>" data-priority="<?= $lazyLoadPriority ?>">
+                <img data-src="<?= $url ?>" class="img lazy-load screen-img" alt="<?= Html::encode($model->title) ?>" data-priority="<?= $lazyLoadPriority ?>">
             <?php else: ?>
-                <img src="<?= $hasImg ? $url : '' ?>" class="img" alt="<?= Html::encode($model->title) ?>">
+                <img src="<?= $hasImg ? $url : '' ?>" class="img screen-img" alt="<?= Html::encode($model->title) ?>">
             <?php endif ?>
 
             <div class="featured-overlay"></div>

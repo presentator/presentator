@@ -7,6 +7,7 @@ use yii\web\BadRequestHttpException;
 use common\components\web\CUploadedFile;
 use common\models\Screen;
 use app\models\ScreensUploadForm;
+use app\models\ScreenReplaceForm;
 use app\models\ScreenSettingsForm;
 
 /**
@@ -25,6 +26,7 @@ class ScreensController extends AppController
 
         $behaviors['verbs']['actions'] = [
             'ajax-upload'             => ['post'],
+            'ajax-replace'            => ['post'],
             'ajax-delete'             => ['post'],
             'ajax-save-settings-form' => ['post'],
             'ajax-reorder'            => ['post'],
@@ -77,6 +79,55 @@ class ScreensController extends AppController
             return [
                 'success' => false,
                 'message' => implode('<br/>', $uploadForm->getFirstErrors()),
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
+        ];
+    }
+
+    /**
+     * Replace single screen image via ajax.
+     * @return array
+     * @throws BadRequestHttpException For none ajax request
+     */
+    public function actionAjaxReplace()
+    {
+        if (!Yii::$app->request->isAjax) {
+            throw new BadRequestHttpException('Error Processing Request');
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $user     = Yii::$app->user->identity;
+        $screenId = Yii::$app->request->post('screenId', -1);
+        $screen   = $user->findScreenById($screenId);
+
+        if ($screen) {
+            $replaceForm        = new ScreenReplaceForm($screen);
+            $replaceForm->image = CUploadedFile::getInstance($replaceForm, 'image');
+
+            if ($screens = $replaceForm->save()) {
+                $screen->refresh();
+
+                // there is no need to manually fetch and replace the screen thumbs
+                // since they will be auto regenerated and replaced on page refresh
+                // $thumbUrls = [];
+                // foreach (Screen::THUMB_SIZES as $name => $option) {
+                //     $thumbUrls[] = $screen->getThumbUrl($name);
+                // }
+
+                return [
+                    'success' => true,
+                    'screen'  => $screen->toArray(),
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => implode('<br/>', $replaceForm->getFirstErrors()),
             ];
         }
 
@@ -168,12 +219,12 @@ class ScreensController extends AppController
     }
 
     /**
-     * Returns and renders screen settings form via ajax.
+     * Returns and renders screen settings popup content via ajax.
      * @param  integer $id
      * @return array
      * @throws BadRequestHttpException For none ajax request
      */
-    public function actionAjaxGetSettingsForm($id)
+    public function actionAjaxGetSettings($id)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -190,8 +241,8 @@ class ScreensController extends AppController
             $this->layout = 'blank';
 
             return [
-                'success'  => true,
-                'formHtml' => $this->render('/screens/_form', ['model' => $model]),
+                'success'      => true,
+                'settingsHtml' => $this->render('/screens/_settings', ['model' => $model]),
             ];
         }
 

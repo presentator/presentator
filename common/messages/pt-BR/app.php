@@ -17,11 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
+    'Click or drop here to replace the screen image' => '',
     'Confirmation email was sent to {pendingEmail}.' => '',
+    'Do you really want to replace the screen image?' => '',
+    'Image' => '',
     'Notifications' => '',
     'Pending' => '',
     'Profile' => '',
     'Receive an email when someone mentions you' => '',
+    'Replacing with different sized image could result in hotspots and comments position disorder!' => '',
     'Resolved' => '',
     'Show resolved' => '',
     'Successfully changed account password.' => '',

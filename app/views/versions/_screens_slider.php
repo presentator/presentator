@@ -96,7 +96,9 @@ $isGuest = Yii::$app->user->isGuest;
                         $align = 'center';
                     }
 
+                    // background color
                     $background = ($screen->background ? $screen->background : '#eff2f8');
+
 
                     // image dimensions
                     $width  = 0;
@@ -107,6 +109,8 @@ $isGuest = Yii::$app->user->isGuest;
 
                     // scaling
                     $scaleFactor = $model->project->getScaleFactor($width);
+                    $width       = $width / $scaleFactor;
+                    $height      = $height / $scaleFactor;
 
                     // hotspots
                     $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
@@ -121,8 +125,8 @@ $isGuest = Yii::$app->user->isGuest;
                     <figure class="img-wrapper hotspot-layer-wrapper">
                         <img class="img lazy-load hotspot-layer"
                             alt="<?= Html::encode($screen->title) ?>"
-                            width="<?= $width / $scaleFactor ?>px"
-                            height="<?= $height / $scaleFactor ?>px"
+                            width="<?= $width ?>px"
+                            height="<?= $height ?>px"
                             data-src="<?= $screen->imageUrl ?>"
                             data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                         >
@@ -130,15 +134,14 @@ $isGuest = Yii::$app->user->isGuest;
                         <!-- Hotspots -->
                         <div id="hotspots_wrapper">
                             <?php foreach ($hotspots as $id => $spot): ?>
-                                <div id="<?= Html::encode($id) ?>"
-                                    class="hotspot"
-                                    data-context-menu="#hotspot_context_menu"
-                                    data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
-                                    style="width: <?= (float) (ArrayHelper::getValue($spot, 'width', 0) / $scaleFactor); ?>px; height: <?= (float) (ArrayHelper::getValue($spot, 'height', 0) / $scaleFactor); ?>px; top: <?= (float) (ArrayHelper::getValue($spot, 'top', 0) / $scaleFactor); ?>px; left: <?= (float) (ArrayHelper::getValue($spot, 'left', 0) / $scaleFactor); ?>px"
-                                >
-                                    <span class="remove-handle context-menu-ignore"><i class="ion ion-trash-a"></i></span>
-                                    <span class="resize-handle context-menu-ignore"></span>
-                                </div>
+                                <?= $this->render('_hotspot_item', [
+                                    'id'           => $id,
+                                    'spot'         => $spot,
+                                    'scaleFactor'  => $scaleFactor,
+                                    'maxWidth'     => $width,
+                                    'maxHeight'    => $height,
+                                    'showControls' => true,
+                                ]); ?>
                             <?php endforeach ?>
                         </div>
 
@@ -150,10 +153,12 @@ $isGuest = Yii::$app->user->isGuest;
                                         $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED;
                                         $isUnread   = in_array($comment->id, $unreadCommentTargets);
                                     ?>
-                                    <div class="comment-target <?= $isResolved ? 'resolved' : '' ?> <?= $isUnread ? 'unread' : '' ?>"
-                                        data-comment-id="<?= $comment->id ?>"
-                                        style="left: <?= (float) ($comment->posX / $scaleFactor) ?>px; top: <?= (float) ($comment->posY / $scaleFactor) ?>px;"
-                                    ></div>
+                                    <?= $this->render('_comment_item', [
+                                        'comment'     => $comment,
+                                        'scaleFactor' => $scaleFactor,
+                                        'isUnread'    => $isUnread,
+                                        'isResolved'  => $isResolved,
+                                    ]); ?>
                                 <?php endif ?>
                             <?php endforeach ?>
                         </div>

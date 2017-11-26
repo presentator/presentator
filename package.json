@@ -1,21 +1,20 @@
 {
   "name": "Presentator",
-  "description": "Presentator.io node modules",
-  "version": "1.3.0",
+  "description": "Presentator.io dev node modules",
+  "version": "1.4.0",
   "author": "Gani Georgiev <gani.georgiev@gmail.com>",
   "engines": {
     "node": ">=0.10.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~1.0.1",
-    "grunt-cli": "~1.2.0",
     "grunt-apidoc": "~0.11.0",
+    "grunt-cli": "~1.2.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-sass": "*",
-    "node-sass": "*"
+    "node-sass": "^4.7.2"
   },
   "apidoc": {
     "name": "Presentator.io API",

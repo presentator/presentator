@@ -11,7 +11,7 @@ return [
         'order'      => 1,
         'alignment'  => Screen::ALIGNMENT_CENTER,
         'background' => '',
-        'imageUrl'   => '/uploads/2/1/text_1488461867_94.png',
+        'imageUrl'   => '/uploads/2/1/screen-1_1488461867_94.png',
         'createdAt'  => 1488526394,
         'updatedAt'  => 1488526394,
     ],
