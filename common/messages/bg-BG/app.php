@@ -19,7 +19,7 @@
 return array(
     'Click or drop here to replace the screen image' => 'Кликни или провлачи, за да подмениш файла към екрана',
     'Do you really want to replace the screen image?' => 'Наистина ли искаш да подмениш файла към екрана?',
-    'Image' => 'Файл',
+    'Image' => 'Изображение',
     'Replacing with different sized image could result in hotspots and comments position disorder!' => 'Подмяна с изображение с различни размери от оригиналното може да доведе до разместени препратки и коментари!',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
