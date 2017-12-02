@@ -67,6 +67,11 @@ $isGuest = Yii::$app->user->isGuest;
                             </label>
                         </div>
                     </li>
+
+                    <?php if ($model->project->type == Project::TYPE_DESKTOP): ?>
+                        <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-ios-grid-view"></i></li>
+                    <?php endif ?>
+
                     <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-android-arrow-forward"></i></li>
                 </ul>
             </div>
@@ -101,21 +106,22 @@ $isGuest = Yii::$app->user->isGuest;
 
 
                     // image dimensions
-                    $width  = 0;
-                    $height = 0;
+                    $originalWidth  = 0;
+                    $originalHeight = 0;
                     if (file_exists(CFileHelper::getPathFromUrl($screen->imageUrl))) {
-                        list($width, $height) = getimagesize(CFileHelper::getPathFromUrl($screen->imageUrl));
+                        list($originalWidth, $originalHeight) = getimagesize(CFileHelper::getPathFromUrl($screen->imageUrl));
                     }
 
                     // scaling
-                    $scaleFactor = $model->project->getScaleFactor($width);
-                    $width       = $width / $scaleFactor;
-                    $height      = $height / $scaleFactor;
+                    $scaleFactor = $model->project->getScaleFactor($originalWidth);
+                    $width       = $originalWidth / $scaleFactor;
+                    $height      = $originalHeight / $scaleFactor;
 
                     // hotspots
                     $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
                 ?>
                 <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
+                    data-original-scale-factor="<?= $scaleFactor ?>"
                     data-scale-factor="<?= $scaleFactor ?>"
                     data-screen-id="<?= $screen->id ?>"
                     data-alignment="<?= $align ?>"
@@ -127,6 +133,8 @@ $isGuest = Yii::$app->user->isGuest;
                             alt="<?= Html::encode($screen->title) ?>"
                             width="<?= $width ?>px"
                             height="<?= $height ?>px"
+                            data-original-width="<?= $originalWidth ?>"
+                            data-original-height="<?= $originalHeight ?>"
                             data-src="<?= $screen->imageUrl ?>"
                             data-priority="<?= $isActive ? 'high' : 'medium' ?>"
                         >

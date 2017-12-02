@@ -293,7 +293,10 @@ ScreenCommentsView.prototype.createCommentTarget = function(target, message, fro
         if (response.success && response.comment) {
             PR.setData($target, 'comment-id', response.comment.id);
 
+            $target.data('original-top', response.comment.posY);
+            $target.data('original-left', response.comment.posX);
             $target.removeClass('new').data('isNew', false);
+
             self.deselectCommentTarget();
             self.updateCommentsCounter();
             self.updateResolvedCommentsCounter();
@@ -401,9 +404,10 @@ ScreenCommentsView.prototype.updateCommentTargetPosition = function(target, scre
         $screen = $(self.settings.versionSliderItem + '[data-screen-id="' + screenId + '"]');
     }
 
-    var $target = $(target);
-
+    var $target     = $(target);
     var scaleFactor = $screen.data('scale-factor') || 1;
+    var posX        = $target.position().left * scaleFactor;
+    var posY        = $target.position().top * scaleFactor;
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
@@ -411,10 +415,15 @@ ScreenCommentsView.prototype.updateCommentTargetPosition = function(target, scre
         type: 'POST',
         data: {
             'commentId': $target.data('comment-id'),
-            'posX':      $target.position().left * scaleFactor,
-            'posY':      $target.position().top * scaleFactor
+            'posX':      posX,
+            'posY':      posY
         }
     }).done(function(response) {
+        if (response.success) {
+            $target.data('original-top', posY);
+            $target.data('original-left', posX);
+        }
+
         if (PR.isFunction(callback)) {
             callback(response);
         }

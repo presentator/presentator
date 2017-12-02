@@ -60,7 +60,7 @@
             height: inherit;
             line-height: inherit;
             @include transition(color 0.2s, background 0.2s);
-            &:hover, &.active {
+            &:hover {
                 background: $lighterGreyColor;
             }
             &:active {
@@ -74,6 +74,7 @@
                 display: none;
             }
             &.active {
+                color: $successColor;
                 .inactive-icon {
                     display: none;
                 }
@@ -108,6 +109,9 @@
                 &:first-child {
                     border-left: 1px solid $lightGreyColor;
                 }
+                &.active {
+                    background: $lighterGreyColor;
+                }
             }
             i {
                 font-size: 23px;
@@ -125,6 +129,7 @@
                 background: $primaryColor;
             }
             &.active {
+                color: $primaryColor;
                 @include topHighlight($primaryColor);
             }
         }
@@ -135,6 +140,7 @@
                 background: $dangerColor;
             }
             &.active {
+                color: $dangerColor;
                 @include topHighlight($dangerColor);
             }
         }

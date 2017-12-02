@@ -15,10 +15,15 @@ if (!isset($showControls)) {
     $showControls = false;
 }
 
-$width  = (float) (ArrayHelper::getValue($spot, 'width', 0) / $scaleFactor);
-$height = (float) (ArrayHelper::getValue($spot, 'height', 0) / $scaleFactor);
-$top    = (float) (ArrayHelper::getValue($spot, 'top', 0) / $scaleFactor);
-$left   = (float) (ArrayHelper::getValue($spot, 'left', 0) / $scaleFactor);
+$originalWidth  = ArrayHelper::getValue($spot, 'width', 0);
+$originalHeight = ArrayHelper::getValue($spot, 'height', 0);
+$originalTop    = ArrayHelper::getValue($spot, 'top', 0);
+$originalLeft   = ArrayHelper::getValue($spot, 'left', 0);
+
+$width  = (float) ($originalWidth / $scaleFactor);
+$height = (float) ($originalHeight / $scaleFactor);
+$top    = (float) ($originalTop / $scaleFactor);
+$left   = (float) ($originalLeft / $scaleFactor);
 
 // normalize dimensions
 if ($width > $maxWidth) {
@@ -39,6 +44,10 @@ if ($top > $maxHeight) {
 ?>
 <div id="<?= Html::encode($id) ?>"
     class="hotspot"
+    data-original-width="<?= $originalWidth ?>"
+    data-original-height="<?= $originalHeight ?>"
+    data-original-left="<?= $originalLeft ?>"
+    data-original-top="<?= $originalTop ?>"
     style="width: <?= $width ?>px; height: <?= $height ?>px; top: <?= $top ?>px; left: <?= $left ?>px"
     data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
     <?php if ($showControls): ?>

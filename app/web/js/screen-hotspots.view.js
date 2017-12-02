@@ -307,10 +307,13 @@ ScreenHotspotsView.prototype.getHotspotsCoordinates = function(screenId) {
 
     var scaleFactor = $screenSliderItem.data('scale-factor') || 1;
 
-    var position = {};
-    var $hotspot = null;
+    var position  = {};
+    var $hotspot  = $();
+    var hotspotId = 0;
     $screenSliderItem.find(self.settings.hotspot).not('.remove-start').each(function(i, hotspot) {
-        $hotspot = $(hotspot);
+        position  = {};
+        $hotspot  = $(hotspot);
+        hotspotId = $hotspot.attr('id');
 
         if ($hotspot.is(':hidden')) {
             // get the element position from the style attr
@@ -320,13 +323,18 @@ ScreenHotspotsView.prototype.getHotspotsCoordinates = function(screenId) {
             position = $hotspot.position();
         }
 
-        result[$hotspot.attr('id')] = {
+        result[hotspotId] = {
             'left':   position.left * scaleFactor,
             'top':    position.top * scaleFactor,
             'width':  $hotspot.outerWidth(true) * scaleFactor,
             'height': $hotspot.outerHeight(true) * scaleFactor,
             'link':   $hotspot.data('link')
         };
+
+        $hotspot.data('original-left', result[hotspotId].left)
+        $hotspot.data('original-top', result[hotspotId].top)
+        $hotspot.data('original-width', result[hotspotId].width)
+        $hotspot.data('original-height', result[hotspotId].height)
     });
 
     return result;

@@ -28,8 +28,9 @@ var PreviewView = function(data) {
         'nextSlideHandle':        '#slider_next_handle',
         'prevSlideHandle':        '#slider_prev_handle',
 
-        // screen comments
-        'commentsViewSettings': {},
+        // external handlers
+        'commentsViewSettings':  {},
+        'screenFitViewSettings': {},
 
         // ajax urls
         'ajaxInvokeAccessUrl': '',
@@ -49,7 +50,8 @@ var PreviewView = function(data) {
 
     this.generalXHR = null;
 
-    this.commentsView = new ScreenCommentsView(this.settings.commentsViewSettings);
+    this.commentsView  = new ScreenCommentsView(this.settings.commentsViewSettings);
+    this.screenFitView = new ScreenFitView(this.settings.screenFitViewSettings);
 
     // query param keys
     this.VERSION_PARAM = 'v';

@@ -57,9 +57,10 @@ var ScreenView = function (data) {
         'ajaxGetThumbsUrl':          '/admin/screens/ajax-get-thumbs',
         'ajaxGetScreensSliderUrl':   '/admin/versions/ajax-get-screens-slider',
 
-        'hotspotsViewSettings': {},
-        'commentsViewSettings': {},
-        'versionViewSettings':  {}
+        'hotspotsViewSettings':  {},
+        'commentsViewSettings':  {},
+        'versionViewSettings':   {},
+        'screenFitViewSettings': {}
     };
 
     this.settings = $.extend({}, defaults, data);
@@ -80,9 +81,10 @@ var ScreenView = function (data) {
     this.pressedKey           = null;
     this.$activeVersionSlider = null;
 
-    this.hotspotsView = new ScreenHotspotsView(this.settings.hotspotsViewSettings);
-    this.commentsView = new ScreenCommentsView(this.settings.commentsViewSettings);
-    this.versionView  = new VersionView(this.settings.versionViewSettings);
+    this.hotspotsView  = new ScreenHotspotsView(this.settings.hotspotsViewSettings);
+    this.commentsView  = new ScreenCommentsView(this.settings.commentsViewSettings);
+    this.versionView   = new VersionView(this.settings.versionViewSettings);
+    this.screenFitView = new ScreenFitView(this.settings.screenFitViewSettings);
 
     this.init();
 };

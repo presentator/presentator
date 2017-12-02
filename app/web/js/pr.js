@@ -55,7 +55,7 @@ var PR = {
      * @param  {String} str
      * @return {String}
      */
-    htmlEncode: function(str) {
+    htmlEncode: function (str) {
         if (!str || !str.length) {
             return '';
         }
@@ -74,7 +74,7 @@ var PR = {
      * @param  {String} str
      * @return {String}
      */
-    htmlDecode: function(str) {
+    htmlDecode: function (str) {
         if (!str || !str.length) {
             return '';
         }
@@ -93,7 +93,7 @@ var PR = {
      * @param {String} dataKey
      * @param {Mixed}  value
      */
-    setData: function(selector, dataKey, dataValue) {
+    setData: function (selector, dataKey, dataValue) {
         $(selector).data(dataKey, dataValue)
             .attr('data-' + dataKey, dataValue);
     },
@@ -103,7 +103,7 @@ var PR = {
      * @param  {Object} e Mouse event.
      * @return {Boolean}
      */
-    isMouseLeftBtn: function(e) {
+    isMouseLeftBtn: function (e) {
         e = e || window.event;
 
         return (e.which || e.button) == 1;
@@ -114,7 +114,7 @@ var PR = {
      * @param  {Object} e Mouse event.
      * @return {Boolean}
      */
-    isMouseRightBtn: function(e) {
+    isMouseRightBtn: function (e) {
         e = e || window.event;
 
         return (e.which || e.button) == 3;
@@ -124,7 +124,7 @@ var PR = {
      * Aborts incomplete ajax request
      * @param {Object} xhr
      */
-    abortXhr: function(xhr) {
+    abortXhr: function (xhr) {
         if (xhr && xhr.readyState != 4) {
             xhr.abort();
         }
@@ -135,7 +135,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isObject: function(item) {
+    isObject: function (item) {
         if (typeof item === 'object') {
             return true;
         }
@@ -148,7 +148,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isArray: function(item) {
+    isArray: function (item) {
         if (typeof item === 'object' && item.constructor === Array) {
             return true;
         }
@@ -162,7 +162,7 @@ var PR = {
      * @param  {Mixed} value
      * @return {Array}
      */
-    inArray: function(array, value) {
+    inArray: function (array, value) {
         for (var i = 0; i < array.length; i++) {
             if (array[i] == value) {
                 return true;
@@ -177,7 +177,7 @@ var PR = {
      * @param  {Mixed} item
      * @return {Boolean}
      */
-    isFunction: function(item) {
+    isFunction: function (item) {
         if (item && typeof item === 'function') {
             return true;
         }
@@ -190,7 +190,7 @@ var PR = {
      * @param  {Mixed}  item
      * @return {Boolean}
      */
-    isJquery: function(item) {
+    isJquery: function (item) {
         if (item && item instanceof jQuery) {
             return true;
         }
@@ -204,7 +204,7 @@ var PR = {
      * @param  {String} url
      * @return {Boolean}
      */
-    isValidUrl: function(url) {
+    isValidUrl: function (url) {
         var urlRegex = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
 
         return urlRegex.test(url);
@@ -214,10 +214,10 @@ var PR = {
      * Adds disabled to empty form fields to prevent serializing.
      * @param {String} form selector
      */
-    ignoreEmptyFields: function(form) {
+    ignoreEmptyFields: function (form) {
         form = form || '.ignore-empty';
 
-        $(document).on('submit', form, function() {
+        $(document).on('submit', form, function () {
             $(this).find(':input').each(function(i, field) {
                 if (!$(field).val() || $(field).val().length === 0) {
                     $(field).attr('disabled', 'disabled');
@@ -238,7 +238,7 @@ var PR = {
      * @param  {String|Object} selector
      * @return {jQuery}
      */
-    getTarget: function(selector) {
+    getTarget: function (selector) {
         var $selector = $(selector);
         var isolateType = '';
 
@@ -266,7 +266,7 @@ var PR = {
 
      * @param {String} selector
      */
-    checkToggle: function(selector) {
+    checkToggle: function (selector) {
         var self = this;
 
         selector = selector || '[data-bind="checkToggle"]';
@@ -276,7 +276,7 @@ var PR = {
         var toggleClass = '';
 
         $(document).off('change.pr.checkToggle', selector);
-        $(document).on('change.pr.checkToggle', selector, function(e) {
+        $(document).on('change.pr.checkToggle', selector, function (e) {
             $input      = $(this);
             $target     = self.getTarget($input);
             toggleClass = $input.data('class') || 'active';
@@ -299,7 +299,7 @@ var PR = {
      *
      * @param {String} selector
      */
-    clickToggle: function(selector) {
+    clickToggle: function (selector) {
         var self = this;
 
         selector = selector || '[data-bind="clickToggle"]';
@@ -313,7 +313,7 @@ var PR = {
 
             // close on outside click
             $(document).off('mousedown.pr.clickToggle touchstart.pr.clickToggle');
-            $(document).on('mousedown.pr.clickToggle touchstart.pr.clickToggle', function(e) {
+            $(document).on('mousedown.pr.clickToggle touchstart.pr.clickToggle', function (e) {
                 if (self.clickToggleCache.$target &&
                     self.clickToggleCache.$selector &&
                     self.clickToggleCache.$target.length &&
@@ -334,7 +334,7 @@ var PR = {
 
         // class toggle
         $(document).off('click.pr.clickToggle', selector);
-        $(document).on('click.pr.clickToggle', selector, function(e) {
+        $(document).on('click.pr.clickToggle', selector, function (e) {
             self.clickToggleCache.$selector   = $(this);
             self.clickToggleCache.$target     = self.getTarget(this);
             self.clickToggleCache.toggleClass = self.clickToggleCache.$selector.data('class') || 'active';
@@ -359,7 +359,7 @@ var PR = {
      * <div id="my_div">Some content...</div>
      * ```
      */
-    visibilityToggle: function() {
+    visibilityToggle: function () {
         var $input, $target;
         function toggle(input, animation) {
             $input  = $(input);
@@ -385,7 +385,7 @@ var PR = {
         }
 
         $(document).off('change.pr.visibilityToggle', 'input[data-toggle]');
-        $(document).on('change.pr.visibilityToggle', 'input[data-toggle]', function(e) {
+        $(document).on('change.pr.visibilityToggle', 'input[data-toggle]', function (e) {
             toggle(this);
         });
 
@@ -397,7 +397,7 @@ var PR = {
                 $(input).closest('form')
                     .data('reset-toggle-binded', true)
                     .off('reset.pr.visibilityToggle')
-                    .on('reset.pr.visibilityToggle', function() {
+                    .on('reset.pr.visibilityToggle', function () {
                         setTimeout(function() {
                             toggle(input, 0);
                         }, 50); // @see yiiactiveform.js:431
@@ -411,7 +411,7 @@ var PR = {
      * @param  {String} selector
      * @return {Boolean}
      */
-    hasVerticalScrollbar: function(selector) {
+    hasVerticalScrollbar: function (selector) {
         var elem = $(selector || 'html').get(0);
 
         if (elem && elem.scrollHeight > elem.clientHeight) {
@@ -426,7 +426,7 @@ var PR = {
      * @param  {String} selector
      * @return {Boolean}
      */
-    hasHorizontalScrollbar: function(selector) {
+    hasHorizontalScrollbar: function (selector) {
         var elem = $(selector || 'html').get(0);
 
         if (elem && elem.scrollWidth > elem.clientWidth) {
@@ -448,7 +448,7 @@ var PR = {
      *
      * @return {Object} A reference to the newly created window
      */
-    windowOpen: function(url, width, height, name) {
+    windowOpen: function (url, width, height, name) {
         width  = width  || 600;
         height = height || 480;
         name   = name   || 'popup';
@@ -476,7 +476,7 @@ var PR = {
      * @param {String} type
      * @param {Number} timeout
      */
-    addNotification: function(text, type, timeout) {
+    addNotification: function (text, type, timeout) {
         if (typeof text !== 'string' || text.length === 0) {
             return;
         }
@@ -504,7 +504,7 @@ var PR = {
      * @param  {String} url
      * @return {String}
      */
-    nocacheUrl: function(url) {
+    nocacheUrl: function (url) {
         if (!url) {
             return '';
         }
@@ -519,7 +519,7 @@ var PR = {
     /**
      * Hides all broken images from the DOM tree.
      */
-    hideBrokenImages: function() {
+    hideBrokenImages: function () {
         $('img').each(function() {
             if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                 $(this).hide();
@@ -534,7 +534,7 @@ var PR = {
      * @example
      * <img class="lazy-load" data-src="/my/image/path.png" data-priority="high">
      */
-    lazyLoad: function(selector) {
+    lazyLoad: function (selector) {
         var self = this;
         selector = selector || '.lazy-load';
 
@@ -562,7 +562,7 @@ var PR = {
             }
 
             var loadedImages = 0;
-            var recursiveCall = function() {
+            var recursiveCall = function () {
                 if (typeof priorities[1] !== 'undefined' &&
                     $.isArray(groups[priorities[0]]) &&
                     groups[priorities[0]].length === loadedImages
@@ -575,7 +575,7 @@ var PR = {
             if (!groups[priorities[0]].length) {
                 recursiveCall();
             } else {
-                $.each(groups[priorities[0]], function(i, $img) {
+                $.each(groups[priorities[0]], function (i, $img) {
                     if ($img.data('nocache')) {
                         $img.attr('src', self.nocacheUrl($img.data('src')));
                     } else {
@@ -583,13 +583,13 @@ var PR = {
                     }
                     $img.$parent.addClass('lazy-load-start');
 
-                    $img.on('load', function() {
+                    $img.on('load', function () {
                         $img.addClass('loaded');
                         $img.$parent.removeClass('lazy-load-start').addClass('loaded');
 
                         loadedImages++;
                         recursiveCall();
-                    }).on('error', function() {
+                    }).on('error', function () {
                         $img.hide();
 
                         loadedImages++;
@@ -607,7 +607,7 @@ var PR = {
      * so when call `form.reset()` the values will be not removed.
      * @param {string} formSelector
      */
-    saveFormState: function(formSelector) {
+    saveFormState: function (formSelector) {
         var type = 'text';
         $(formSelector).find('input').each(function(j, input) {
             type = $(input).attr('type');
@@ -642,7 +642,7 @@ var PR = {
     /**
      * Binds animation helpers related to the ajax actions inside a popup.
      */
-    bindAjaxPopupAnimations: function() {
+    bindAjaxPopupAnimations: function () {
         var loadingInterval = null;
         var $btn            = $();
         var $btnProgress    = $();
@@ -687,7 +687,7 @@ var PR = {
     /**
      * Shows global loader.
      */
-    showLoader: function() {
+    showLoader: function () {
         if (!$('#global_loader').length) {
             $('body').append('<div id="global_loader" class="global-loader"></div>');
         }
@@ -698,7 +698,7 @@ var PR = {
     /**
      * Hides global loader.
      */
-    hideLoader: function() {
+    hideLoader: function () {
         $('#global_loader').addClass('close-start').delay(400).queue(function(next) {
             $(this).removeClass('active close-start');
 
@@ -710,7 +710,7 @@ var PR = {
      * Inits color picker control.
      * @param {Mixed} selector
      */
-    colorPicker: function(selector) {
+    colorPicker: function (selector) {
         var $input;
         return $(selector).each(function(i, input) {
             $input = $(input);
@@ -736,7 +736,7 @@ var PR = {
 
             // event handlers
             // --------------
-            $resetHandle.on('click', function(e) {
+            $resetHandle.on('click', function (e) {
                 e.preventDefault();
 
                 picker.trigger("change", [initialColor.substr(1)]);
@@ -744,18 +744,18 @@ var PR = {
                 picker.exit();
             });
 
-            $applyHandle.on('click', function(e) {
+            $applyHandle.on('click', function (e) {
                 e.preventDefault();
 
                 picker.exit();
             });
 
-            picker.on('change', function(color) {
+            picker.on('change', function (color) {
                 $input.val('#' + color);
                 $colorPickerHandle.css('background', '#' + color);
             });
 
-            $input.on('change', function() {
+            $input.on('change', function () {
                 picker.set($input.val());
                 $colorPickerHandle.css('background', $input.val());
             });
@@ -765,7 +765,7 @@ var PR = {
     /**
      * Takes care for the cursor following tooltip initialization.
      */
-    cursorTooltipInit: function() {
+    cursorTooltipInit: function () {
         if ($('#cursor_tooltip').length) {
             console.warn('Cursor tooltip seems to be already binded!');
             return;
@@ -779,12 +779,12 @@ var PR = {
 
         $('body').append($cursorTooltip);
 
-        $document.on('remove', function(e, elems) {
+        $document.on('remove', function (e, elems) {
             if ($cursorTooltip.hasClass('active')) {
                 $cursorTooltip.removeClass('active');
             }
         });
-        $document.on('mousemove', '[data-cursor-tooltip]', function(e) {
+        $document.on('mousemove', '[data-cursor-tooltip]', function (e) {
             if (!$(this).data('cursor-tooltip')) {
                 $cursorTooltip.removeClass('active');
                 $cursorTooltip[0].className = 'cursor-tooltip';
@@ -811,12 +811,12 @@ var PR = {
 
             $cursorTooltip.css(coords);
         })
-        .on('mouseleave', '[data-cursor-tooltip]', function(e) {
+        .on('mouseleave', '[data-cursor-tooltip]', function (e) {
             // remove all other classes
             $cursorTooltip[0].className = 'cursor-tooltip';
         });
 
-        $window.on('scroll', function(e) {
+        $window.on('scroll', function (e) {
             if ($cursorTooltip.hasClass('active')) {
                 $cursorTooltip.removeClass().addClass('cursor-tooltip');
             }
@@ -829,7 +829,7 @@ var PR = {
      * @param {Mixed} popover
      * @param {Mixed} view
      */
-    repositionPopover: function(item, popover, view) {
+    repositionPopover: function (item, popover, view) {
         var $item = $(item);
         if (!$item.length) {
             console.warn('The realated popover item was not found!');
@@ -901,7 +901,7 @@ var PR = {
      * Horizontal item alignment based on data attribute.
      * @param {Mixed} item
      */
-    horizontalAlign: function(item) {
+    horizontalAlign: function (item) {
         var $item = $(item);
         if (!$item.length) {
             // console.warn('Missing item element!');
@@ -926,7 +926,7 @@ var PR = {
      * @param {Mixed} typeSelect
      * @param {Mixed} subtypeSelect
      */
-    bindSubtypesToggle: function(typeSelect, subtypeSelect, animationOnInit) {
+    bindSubtypesToggle: function (typeSelect, subtypeSelect, animationOnInit) {
         animationOnInit = typeof animationOnInit !== 'undefined' ? animationOnInit : true;
 
         var $typeSelect    = $(typeSelect);
@@ -936,7 +936,7 @@ var PR = {
         var $customSubtypeSelect = $subtypeSelect.closest('.custom-select');
         var $activeSubtypes;
 
-        var toggle = function(typeVal, animations) {
+        var toggle = function (typeVal, animations) {
             animations = typeof animations !== 'undefined' ? animations : true;
 
             $activeSubtypes = $customSubtypeSelect.find('.option').hide()
@@ -967,10 +967,10 @@ var PR = {
         };
 
         $typeSelect.off('change.pr.subtypesToggle');
-        $typeSelect.on('change.pr.subtypesToggle', function() {
+        $typeSelect.on('change.pr.subtypesToggle', function () {
             toggle($(this).val());
         });
-        $typeSelect.closest('form').on('reset', function() {
+        $typeSelect.closest('form').on('reset', function () {
             setTimeout(function() {
                 toggle($typeSelect.filter(':checked').val());
             }, 50); // @see yiiactiveform.js:431
@@ -986,7 +986,7 @@ var PR = {
      * @param {Mixed} typeSelect
      * @param {Mixed} scales
      */
-    bindScalesToggle: function(typeSelect, scales) {
+    bindScalesToggle: function (typeSelect, scales) {
         var self = this;
         var $typeSelect = $(typeSelect);
         var $scales     = $(scales || '[data-scale-group]');
@@ -1007,13 +1007,13 @@ var PR = {
         }
 
         $typeSelect.off('change.pr.scaleToggle')
-            .on('change.pr.scaleToggle', function() {
+            .on('change.pr.scaleToggle', function () {
                 toggle($(this).val());
             });
 
         $typeSelect.closest('form')
             .off('reset.pr.scaleToggle')
-            .on('reset.pr.scaleToggle', function() {
+            .on('reset.pr.scaleToggle', function () {
                 setTimeout(function() {
                     toggle($typeSelect.filter(':checked').val());
                 }, 50); // @see yiiactiveform.js:431
@@ -1028,7 +1028,7 @@ var PR = {
      * @param  {String} delimiter
      * @return {String}
      */
-    highlightLastStringPart: function(url, delimiter) {
+    highlightLastStringPart: function (url, delimiter) {
         delimiter = delimiter || '/';
 
         var parts = url.split(delimiter);
@@ -1043,7 +1043,7 @@ var PR = {
      * @param  {String} visibilityClass Class to toggle if scrollContainer element is hidden.
      * @return {Number}
      */
-    getScrollbarWidth: function(scrollContainer, visibilityClass) {
+    getScrollbarWidth: function (scrollContainer, visibilityClass) {
         visibilityClass = typeof visibilityClass !== 'undefined' ? visibilityClass : 'active';
 
         var $scrollContainer = $(scrollContainer);
@@ -1080,7 +1080,7 @@ var PR = {
      * @param {Mixed}  scrollContainer
      * @param {String} visibilityClass Class to toggle if scrollContainer element is hidden.
      */
-    updateScrollContainerWidth: function(item, scrollContainer, visibilityClass) {
+    updateScrollContainerWidth: function (item, scrollContainer, visibilityClass) {
         var $item            = $(item);
         var $scrollContainer = $(scrollContainer);
 
@@ -1105,7 +1105,7 @@ var PR = {
      * @param {Mixed}   value    Parameter value (set to `null` to remove the parameter)
      * @param {Boolean} keepHash Whether to keep the current hash string.
      */
-    setQueryParam: function(name, value, keepHash) {
+    setQueryParam: function (name, value, keepHash) {
         if (!this.isObject(window.history) || !this.isFunction(window.history.pushState)) {
             return;
         }
@@ -1122,7 +1122,7 @@ var PR = {
 
         // build query string
         var queryStr = '';
-        $.each(params, function(paramName, paramValue) {
+        $.each(params, function (paramName, paramValue) {
             if (queryStr) {
                 queryStr += '&';
             }
