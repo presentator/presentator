@@ -1,4 +1,4 @@
-// @todo Refact and merge common logiv with PreviewView.js
+// @todo Refact and cmerge common logic with PreviewView
 var ScreenView = function (data) {
     data = data || {};
 
