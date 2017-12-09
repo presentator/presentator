@@ -121,6 +121,10 @@
     }
     .preview-mode & {
         opacity: 0;
+        .remove-handle,
+        .resize-handle {
+            display: none;
+        }
         &:hover {
             opacity: 1;
         }

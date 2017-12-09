@@ -1,3 +1,4 @@
+// @todo Refact and merge common logiv with PreviewView.js
 var ScreenView = function (data) {
     data = data || {};
 
@@ -35,6 +36,7 @@ var ScreenView = function (data) {
         'prevSlideHandle':             '#slider_prev_handle',
 
         // mode handles
+        'previewModeHandle':  '#panel_preview_handle',
         'hotspotsModeHandle': '#panel_hotspots_handle',
         'commentsModeHandle': '#panel_comments_handle',
 
@@ -256,6 +258,13 @@ ScreenView.prototype.init = function () {
         $(this).find('.content').children().remove(); // removes also the binded events to children elements
     });
 
+    // Preview mode handle
+    $document.on('click', self.settings.previewModeHandle, function (e) {
+        e.preventDefault();
+
+        self.activatePreviewMode();
+    });
+
     // Hotspots mode handle
     $document.on('click', self.settings.hotspotsModeHandle, function (e) {
         e.preventDefault();
@@ -268,6 +277,48 @@ ScreenView.prototype.init = function () {
         e.preventDefault();
 
         self.activateCommentsMode();
+    });
+
+    // Hotspots navigation
+    $document.on('click', '.hotspot', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var link = $(this).data('link');
+
+        if (!isNaN(link)) {
+            var $slider = $(self.settings.versionSlider);
+            if ($slider.length) {
+                $slider.slider('goTo', $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index());
+            }
+        } else if (PR.isValidUrl(link)) {
+            window.open(PR.htmlDecode(link),'_blank');
+        }
+    });
+
+    // Preview mode hints
+    $document.on('click', self.settings.versionSliderItem, function(e) {
+        if ($body.hasClass('preview-mode')) {
+            e.preventDefault();
+
+            $body.addClass('preview-mode-hint').stop(true, true).delay(500).queue(function(next) {
+                $body.removeClass('preview-mode-hint');
+                next();
+            });
+        }
+    });
+
+    // Keyboard shortcut to toggle hotspots visibility
+    $document.on('keydown', function(e) {
+        if (
+            e.shiftKey &&
+            e.which === PR.keys.h &&
+            $body.hasClass('preview-mode')
+        ) {
+            e.preventDefault();
+
+            $body.toggleClass('hotspots-force-show');
+        }
     });
 
     // auto open screen edit based on query param
@@ -778,7 +829,7 @@ ScreenView.prototype.showScreensSlider = function (versionId, screenId, callback
 ScreenView.prototype.hideScreensSlider = function () {
     var self = this;
 
-    $('body').removeClass('screen-edit-active hotspot-active comment-active hotspots-mode comments-mode');
+    $('body').removeClass('screen-edit-active hotspot-active comment-active hotspots-mode comments-mode preview-mode');
     $(self.settings.versionSlider).addClass('close-anim').delay(400).queue(function(next) {
         $(this).remove();
 
@@ -881,12 +932,28 @@ ScreenView.prototype.updateScreenTitle = function (screenId, newTitle) {
 }
 
 /**
+ * Activates hotspot preview mode.
+ */
+ScreenView.prototype.activatePreviewMode = function () {
+    $('body').addClass('preview-mode').removeClass('comments-mode hotspots-mode');
+    $(this.settings.previewModeHandle).addClass('active');
+    $(this.settings.hotspotsModeHandle).removeClass('active');
+    $(this.settings.commentsModeHandle).removeClass('active');
+    PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', '');
+    PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', '');
+
+    this.hotspotsView.disable();
+    this.commentsView.disable();
+};
+
+/**
  * Activates hotspots edit mode.
  */
 ScreenView.prototype.activateHotspotsMode = function () {
-    $('body').addClass('hotspots-mode').removeClass('comments-mode');
+    $('body').addClass('hotspots-mode').removeClass('comments-mode preview-mode');
     $(this.settings.hotspotsModeHandle).addClass('active');
     $(this.settings.commentsModeHandle).removeClass('active');
+    $(this.settings.previewModeHandle).removeClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.hotspotsTooltipText);
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', 'hotspots-mode-tooltip');
 
@@ -898,9 +965,10 @@ ScreenView.prototype.activateHotspotsMode = function () {
  * Activates comments edit mode.
  */
 ScreenView.prototype.activateCommentsMode = function () {
-    $('body').removeClass('hotspots-mode').addClass('comments-mode');
+    $('body').removeClass('hotspots-mode').addClass('comments-mode preview-mode');
     $(this.settings.hotspotsModeHandle).removeClass('active');
     $(this.settings.commentsModeHandle).addClass('active');
+    $(this.settings.previewModeHandle).removeClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', 'comments-mode-tooltip');
 

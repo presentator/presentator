@@ -47,6 +47,9 @@ $isGuest = Yii::$app->user->isGuest;
 
             <div class="ctrl-wrapper ctrl-center">
                 <ul>
+                    <li id="panel_preview_handle" class="ctrl-item preview-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Preview mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip">
+                        <i class="ion ion-ios-eye-outline"></i>
+                    </li>
                     <li id="panel_hotspots_handle" class="ctrl-item hotspots-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Hotspots mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-crop"></i></li>
                     <li id="panel_comments_handle" class="ctrl-item comments-handle" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
                         <i class="ion ion-ios-chatboxes-outline"></i>

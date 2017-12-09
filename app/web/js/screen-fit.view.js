@@ -10,6 +10,9 @@ var ScreenFitView = function (data) {
 
     this.settings = $.extend({}, defaults, data);
 
+    this.$window   = $(window);
+    this.$document = $(document);
+
     this.init();
 };
 
@@ -19,18 +22,16 @@ var ScreenFitView = function (data) {
 ScreenFitView.prototype.init = function () {
     var self = this;
 
-    var $document = $(document);
-
     // Screen fit toggle
-    $document.off('click.screenfitview', self.settings.screenFitToggleHandle);
-    $document.on('click.screenfitview', self.settings.screenFitToggleHandle, function (e) {
+    self.$document.off('click.screenfitview', self.settings.screenFitToggleHandle);
+    self.$document.on('click.screenfitview', self.settings.screenFitToggleHandle, function (e) {
         e.preventDefault();
 
         self.toggle()
     });
 
-    $document.off('sliderChange.screenfitview', self.settings.versionSlider);
-    $document.on('sliderChange.screenfitview', self.settings.versionSlider, function (e, $activeSlide) {
+    self.$document.off('sliderChange.screenfitview', self.settings.versionSlider);
+    self.$document.on('sliderChange.screenfitview', self.settings.versionSlider, function (e, $activeSlide) {
         if (self.isActive()) {
             self.enable($activeSlide);
         } else {
@@ -61,7 +62,7 @@ ScreenFitView.prototype.enable = function (sliderItem) {
 
     $sliderItem.data('scale-factor', scaleFactor || 1);
 
-    $(window).off('resize.screenfit').on('resize.screenfit', function (e) {
+    self.$window.off('resize.screenfit').on('resize.screenfit', function (e) {
         if ($sliderItem.length) {
             $sliderItem.data('scale-factor', self.scaleScreen(window, $sliderItem));
         }
@@ -78,6 +79,8 @@ ScreenFitView.prototype.disable = function (sliderItem) {
 
     $handle.removeClass('active');
 
+    this.$window.off('resize.screenfit');
+
     var originalScaleFactor = $sliderItem.data('original-scale-factor') || 1;
 
     if (originalScaleFactor == $sliderItem.data('scale-factor')) {
@@ -86,8 +89,6 @@ ScreenFitView.prototype.disable = function (sliderItem) {
 
     $sliderItem.data('scale-factor', originalScaleFactor);
     this.scaleScreen(originalScaleFactor, $sliderItem);
-
-    $(window).off('resize.screenfit');
 
     PR.horizontalAlign($sliderItem);
 };
