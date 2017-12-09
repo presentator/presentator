@@ -281,18 +281,20 @@ ScreenView.prototype.init = function () {
 
     // Hotspots navigation
     $document.on('click', '.hotspot', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        if ($body.hasClass('preview-mode')) {
+            e.preventDefault();
+            e.stopPropagation();
 
-        var link = $(this).data('link');
+            var link = $(this).data('link');
 
-        if (!isNaN(link)) {
-            var $slider = $(self.settings.versionSlider);
-            if ($slider.length) {
-                $slider.slider('goTo', $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index());
+            if (!isNaN(link)) {
+                var $slider = $(self.settings.versionSlider);
+                if ($slider.length) {
+                    $slider.slider('goTo', $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index());
+                }
+            } else if (PR.isValidUrl(link)) {
+                window.open(PR.htmlDecode(link),'_blank');
             }
-        } else if (PR.isValidUrl(link)) {
-            window.open(PR.htmlDecode(link),'_blank');
         }
     });
 
