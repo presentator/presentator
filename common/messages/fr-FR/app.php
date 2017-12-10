@@ -16,10 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Click or drop here to replace the screen image' => '',
     'Confirmation email was sent to {pendingEmail}.' => '',
     'Do you really want to replace the screen image?' => '',
+    'Fit to screen' => '',
     'Image' => '',
     'Notifications' => '',
     'Pending' => '',
@@ -252,4 +253,4 @@ return array(
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projets',
-);
+];

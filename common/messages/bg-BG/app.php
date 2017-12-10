@@ -16,11 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Click or drop here to replace the screen image' => 'Кликни или провлачи, за да подмениш файла към екрана',
-    'Do you really want to replace the screen image?' => 'Наистина ли искаш да подмениш файла към екрана?',
-    'Image' => 'Изображение',
-    'Replacing with different sized image could result in hotspots and comments position disorder!' => 'Подмяна с изображение с различни размери от оригиналното може да доведе до разместени препратки и коментари!',
+return [
+    'Fit to screen' => '',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -57,6 +54,7 @@ return array(
     'Check your email for further instructions how to reset your password.' => 'На посочения имейл адрес сме изпратили инструкции как възстановиш паролата си.',
     'Choose another version' => 'Изберете друга версия',
     'Click and drag to create hotspot' => 'Кликни и провлачи, за да създадеш препратка',
+    'Click or drop here to replace the screen image' => 'Кликни или провлачи, за да подмениш файла към екрана',
     'Click or drop here to upload' => 'Кликни или провлачи, за да качиш',
     'Click to leave a comment' => 'Кликни за да оставиш коментар',
     'Comments mode' => 'Режим Коментари',
@@ -83,6 +81,7 @@ return array(
     'Do you really want to delete the selected screens?' => 'Наистина ли искаш да изтриеш избраните екрани',
     'Do you really want to delete the user avatar?' => 'Наистина ли искаш да изтриеш аватара?',
     'Do you really want to deleted the selected version and all of its screens?' => 'Наистина ли искаш да изтриеш избраната версия и всички екрани към нея?',
+    'Do you really want to replace the screen image?' => 'Наистина ли искаш да подмениш файла към екрана?',
     'Do you really want to unlink {user}?' => 'Наистина ли искаш да изтриеш администраторските права на {user}?',
     'Duplicate' => 'Копиране',
     'Duplicate on screen' => 'Копиране към екран',
@@ -107,6 +106,7 @@ return array(
     'Hide' => 'Скрий',
     'Hotspots mode' => 'Режим Препратки',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'Прочетох и приемам <a href="#" data-popup="#terms_popup">Общите условия</a>',
+    'Image' => 'Изображение',
     'Invalid HEX color code.' => 'Невалиден HEX формат',
     'Invalid format.' => 'Невалиден формат',
     'Invalid login credentials.' => 'Невалидни входни данни.',
@@ -163,6 +163,7 @@ return array(
     'Receive an email when a new screen comment is added' => 'Получаване на email при нов коментар',
     'Receive an email when someone mentions you' => 'Получаване на email при споменаване в коментар',
     'Register' => 'Регистрация',
+    'Replacing with different sized image could result in hotspots and comments position disorder!' => 'Подмяна с изображение с различни размери от оригиналното може да доведе до разместени препратки и коментари!',
     'Reset password' => 'Смяна на парола',
     'Reset selection' => 'Деселектирай',
     'Resolved' => 'Одобрен',
@@ -252,4 +253,4 @@ return array(
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-);
+];

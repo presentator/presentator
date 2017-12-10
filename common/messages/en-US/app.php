@@ -16,11 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Click or drop here to replace the screen image' => 'Click or drop here to replace the screen image',
-    'Do you really want to replace the screen image?' => 'Do you really want to replace the screen image?',
-    'Image' => 'Image',
-    'Replacing with different sized image could result in hotspots and comments position disorder!' => 'Replacing with different sized image could result in hotspots and comments position disorder!',
+return [
+    'Fit to screen' => '',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -57,6 +54,7 @@ return array(
     'Check your email for further instructions how to reset your password.' => 'Check your email for further instructions how to reset your password.',
     'Choose another version' => 'Choose another version',
     'Click and drag to create hotspot' => 'Click and drag to create hotspot',
+    'Click or drop here to replace the screen image' => 'Click or drop here to replace the screen image',
     'Click or drop here to upload' => 'Click or drop here to upload',
     'Click to leave a comment' => 'Click to leave a comment',
     'Comments mode' => 'Comments mode',
@@ -83,6 +81,7 @@ return array(
     'Do you really want to delete the selected screens?' => 'Do you really want to delete the selected screens?',
     'Do you really want to delete the user avatar?' => 'Do you really want to delete the user avatar?',
     'Do you really want to deleted the selected version and all of its screens?' => 'Do you really want to deleted the selected version and all of its screens?',
+    'Do you really want to replace the screen image?' => 'Do you really want to replace the screen image?',
     'Do you really want to unlink {user}?' => 'Do you really want to unlink {user}?',
     'Duplicate' => 'Duplicate',
     'Duplicate on screen' => 'Duplicate on screen',
@@ -107,6 +106,7 @@ return array(
     'Hide' => 'Hide',
     'Hotspots mode' => 'Hotspots mode',
     'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>',
+    'Image' => 'Image',
     'Invalid HEX color code.' => 'Invalid HEX color code.',
     'Invalid format.' => 'Invalid format.',
     'Invalid login credentials.' => 'Invalid login credentials.',
@@ -163,6 +163,7 @@ return array(
     'Receive an email when a new screen comment is added' => 'Receive an email when a new screen comment is added',
     'Receive an email when someone mentions you' => 'Receive an email when someone mentions you',
     'Register' => 'Register',
+    'Replacing with different sized image could result in hotspots and comments position disorder!' => 'Replacing with different sized image could result in hotspots and comments position disorder!',
     'Reset password' => 'Reset password',
     'Reset selection' => 'Reset selection',
     'Resolved' => 'Resolved',
@@ -252,4 +253,4 @@ return array(
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-);
+];

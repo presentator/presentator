@@ -137,10 +137,13 @@ ScreenFitView.prototype.scaleScreen = function (scaleTo, sliderItem, siblings) {
         scaleFactor = scaleTo;
     }
 
+    var screenWidth  = itemWidth / scaleFactor;
+    var screenHeight = itemHeight / scaleFactor;
+
     // scale screen img
     $img.css({
-        width:  itemWidth / scaleFactor,
-        height: itemHeight / scaleFactor
+        width:  screenWidth,
+        height: screenHeight
     });
 
     // scale screen img siblings (if any)
@@ -157,6 +160,14 @@ ScreenFitView.prototype.scaleScreen = function (scaleTo, sliderItem, siblings) {
 
         settings.left = ($sibling.data('original-left') || $sibling.position().left) / scaleFactor;
         settings.top  = ($sibling.data('original-top') || $sibling.position().top) / scaleFactor;
+
+        if (settings.left + (settings.width || $sibling.outerWidth()) > screenWidth) {
+            settings.left = screenWidth - (settings.width || $sibling.outerWidth());
+        }
+
+        if (settings.top + (settings.height || $sibling.outerHeight()) > screenHeight) {
+            settings.top = screenHeight - (settings.height || $sibling.outerHeight());
+        }
 
         $sibling.css(settings);
     });
