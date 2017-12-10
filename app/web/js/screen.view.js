@@ -607,7 +607,8 @@ ScreenView.prototype.initReplaceScreenImageDropzone = function (screenId, upload
 
             // replace scren image placeholders
             if (response.screen) {
-                $(self.settings.screenImgHolder)
+                $('[data-screen-id="' + screenId + '"]')
+                    .find(self.settings.screenImgHolder)
                     .attr('src', response.screen.imageUrl)
                     .data('src', response.screen.imageUrl);
 
