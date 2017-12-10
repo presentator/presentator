@@ -1,22 +1,30 @@
 <?php
 /**
- * $comment     /common/models/ScreenComment
- * $scaleFactor float
- * $isUnread    boolean
- * $isResolved  boolean
+ * $comment      /common/models/ScreenComment
+ * $scaleFactor  float
+ * $isUnread     boolean
+ * $isResolved   boolean
+ * $maxX         float   Max allowed comment X position.
+ * $maxY         float   Max allowed comment Y position.
  */
 
-if (!isset($isResolved)) {
-    $isResolved = false;
+$maxX       = isset($maxX)       ? $maxX : INF;
+$maxY       = isset($maxY)       ? $maxY : INF;
+$isResolved = isset($isResolved) ? $isResolved : false;
+$isUnread   = isset($isUnread)   ? $isUnread : false;
+
+$left      = (float) ($comment->posX / $scaleFactor);
+$top       = (float) ($comment->posY / $scaleFactor);
+$tolerance = 35;
+
+// normalize dimensions
+if ($left + $tolerance >= $maxX) {
+    $left = $maxX - $tolerance;
 }
 
-if (!isset($isUnread)) {
-    $isUnread = false;
+if ($top + $tolerance >= $maxY) {
+    $top = $maxY - $tolerance;
 }
-
-$left = (float) ($comment->posX / $scaleFactor);
-$top  = (float) ($comment->posY / $scaleFactor);
-
 ?>
 <div class="comment-target <?= $isResolved ? 'resolved' : '' ?> <?= $isUnread ? 'unread' : '' ?>"
 	data-original-left="<?= $comment->posX ?>"

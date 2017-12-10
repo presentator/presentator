@@ -246,9 +246,9 @@ $hasScreens = !empty($activeVersion->screens);
                                         'id'           => $id,
                                         'spot'         => $spot,
                                         'scaleFactor'  => $scaleFactor,
-                                        'maxWidth'     => $width,
-                                        'maxHeight'    => $height,
                                         'showControls' => false,
+                                        'maxX'         => $width,
+                                        'maxY'         => $height,
                                     ]); ?>
                                 <?php endforeach ?>
                             </div>
@@ -261,6 +261,8 @@ $hasScreens = !empty($activeVersion->screens);
                                         'scaleFactor' => $scaleFactor,
                                         'isResolved'  => ($comment->status == ScreenComment::STATUS_RESOLVED),
                                         'isUnread'    => false,
+                                        'maxX'        => $width,
+                                        'maxY'        => $height,
                                     ]); ?>
                                 <?php endforeach ?>
                             </div>

@@ -6,14 +6,14 @@ use yii\helpers\ArrayHelper;
  * $id           int     Hotspot id.
  * $spot         array   Hotspot properties.
  * $scaleFactor  float   Screen scale factor.
- * $maxWidth     float   Max allowed hotspot width.
- * $maxHeight    float   Max allowed hotspot height.
  * $showControls boolean Flag whether to show hotspot controls.
+ * $maxX         float   Max allowed hotspot horizontal endpoint.
+ * $maxY         float   Max allowed hotspot vertical endpoint.
  */
 
-if (!isset($showControls)) {
-    $showControls = false;
-}
+$maxX         = isset($maxX)         ? $maxX : INF;
+$maxY         = isset($maxY)         ? $maxY : INF;
+$showControls = isset($showControls) ? $showControls : false;
 
 $originalWidth  = ArrayHelper::getValue($spot, 'width', 0);
 $originalHeight = ArrayHelper::getValue($spot, 'height', 0);
@@ -26,20 +26,20 @@ $top    = (float) ($originalTop / $scaleFactor);
 $left   = (float) ($originalLeft / $scaleFactor);
 
 // normalize dimensions
-if ($width > $maxWidth) {
-    $width = $maxWidth;
+if ($width > $maxX) {
+    $width = $maxX;
 }
 
-if ($height > $maxHeight) {
-    $height = $maxHeight;
+if ($height > $maxY) {
+    $height = $maxY;
 }
 
-if ($left > $maxWidth) {
-    $left = $maxWidth - $width;
+if ($left + $width > $maxX) {
+    $left = $maxX - $width;
 }
 
-if ($top > $maxHeight) {
-    $top = $maxHeight - $height;
+if ($top + $height > $maxY) {
+    $top = $maxY - $height;
 }
 ?>
 <div id="<?= Html::encode($id) ?>"

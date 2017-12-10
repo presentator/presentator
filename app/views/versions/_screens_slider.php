@@ -149,9 +149,9 @@ $isGuest = Yii::$app->user->isGuest;
                                     'id'           => $id,
                                     'spot'         => $spot,
                                     'scaleFactor'  => $scaleFactor,
-                                    'maxWidth'     => $width,
-                                    'maxHeight'    => $height,
                                     'showControls' => true,
+                                    'maxX'         => $width,
+                                    'maxY'         => $height,
                                 ]); ?>
                             <?php endforeach ?>
                         </div>
@@ -169,6 +169,8 @@ $isGuest = Yii::$app->user->isGuest;
                                         'scaleFactor' => $scaleFactor,
                                         'isUnread'    => $isUnread,
                                         'isResolved'  => $isResolved,
+                                        'maxX'        => $width,
+                                        'maxY'        => $height,
                                     ]); ?>
                                 <?php endif ?>
                             <?php endforeach ?>
