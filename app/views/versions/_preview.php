@@ -222,6 +222,7 @@ $hasScreens = !empty($activeVersion->screens);
                         $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
                     ?>
                     <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
+                        data-original-scale-factor="<?= $scaleFactor ?>"
                         data-scale-factor="<?= $scaleFactor ?>"
                         data-screen-id="<?= $screen->id ?>"
                         data-alignment="<?= $align ?>"

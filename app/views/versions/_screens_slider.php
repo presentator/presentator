@@ -107,7 +107,6 @@ $isGuest = Yii::$app->user->isGuest;
                     // background color
                     $background = ($screen->background ? $screen->background : '#eff2f8');
 
-
                     // image dimensions
                     $originalWidth  = 0;
                     $originalHeight = 0;
