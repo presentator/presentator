@@ -569,6 +569,11 @@ ScreenCommentsView.prototype.selectCommentTarget = function (target, scrollToCom
         $(self.settings.commentPopoverStatusBar).hide();
 
         select();
+
+        // focus message field on comment create
+        setTimeout(function () {
+            $(self.settings.commentFormMessageInput).focus();
+        }, 300);
     } else {
         $(self.settings.commentPopoverStatusBar).show();
 
