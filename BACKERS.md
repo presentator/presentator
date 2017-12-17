@@ -1,8 +1,10 @@
 Presentator - Backers
 ======================================================================
 
-This page shows the project's backers and sponsors. Thank you for your help.
-Check our [Support us](https://presentator.io/support-us) page to learn how to help us.
+This page shows the project's backers and sponsors. Thank you for your supports!
+
+You can join them in supporting Presentator development by visiting our [Support us](https://presentator.io/support-us) page.
+
 
 ## Patreon
 
