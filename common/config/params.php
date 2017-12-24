@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'currentVersion'          => '1.6.0',
+    'versionCheckUrl'         => 'https://presentator.io/downloads/check',
+    'latestVersionArchiveUrl' => 'https://presentator.io/downloads/latest',
+
     'fuzzyUsersSearch' => false,
     'showCredits'      => true,
     'maxUploadSize'    => 15,
