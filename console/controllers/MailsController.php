@@ -6,6 +6,9 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use common\models\MailQueue;
 
+/**
+ * @author Gani Georgiev <gani.georgiev@gmail.com>
+ */
 class MailsController extends Controller
 {
     /**
