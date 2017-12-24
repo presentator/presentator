@@ -26,6 +26,7 @@ class UpdateController extends Controller
      */
     public function actionIndex()
     {
+        $extractPath = dirname(Yii::$app->basePath);
         $archivePath = rtrim(Yii::$app->basePath, '/') . '/update_' . time() . '.zip';
 
         // Check if there is a newer version available
@@ -65,7 +66,7 @@ class UpdateController extends Controller
             return self::EXIT_CODE_ERROR;
         }
 
-        $zip->extractTo('./demo');
+        $zip->extractTo($extractPath);
         $zip->close();
 
         // delete the archive file
