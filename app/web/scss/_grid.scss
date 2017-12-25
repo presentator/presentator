@@ -23,6 +23,6 @@
     /* fix inline-block gaps */
     font-size: 0px;
     %col {
-        font-size: 14px;
+        font-size: $baseFontSize;
     }
 }
