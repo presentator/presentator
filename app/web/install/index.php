@@ -1,7 +1,7 @@
 <?php
 /**
  * -------------------------------------------------------------------
- * Presentator installer tool.
+ * Presentator Web Installer.
  *
  * For more info and instructions make sure to check https://github.com/ganigeorgiev/presentator/blob/master/docs/start-installation.md.
  *
