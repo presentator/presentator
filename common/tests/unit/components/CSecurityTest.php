@@ -41,7 +41,6 @@ class CSecurityTest extends \Codeception\Test\Unit
             $alphabetCount1 = 0;
             $alphabetCount2 = 0;
 
-
             $str = Yii::$app->security->generateRandomString(6, [
                 [$alphabet1, 2], // with specified min occurance
                 [$alphabet2],    // without specified min occurance (1 by default)
