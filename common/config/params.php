@@ -9,6 +9,10 @@ return [
     'showCredits'      => true,
     'maxUploadSize'    => 15,
 
+    // List of email address domains that are allowed to register (eg. `['example.com', 'test.com']`).
+    // Leave empty to disable the restriction.
+    'allowedRegistrationDomains' => [],
+
     // whether to store the mails that need to be send in MailQueue table
     // and use a cron job to process them or send them directly on runtime
     // @see `common\components\swiftmailer\CMessage`

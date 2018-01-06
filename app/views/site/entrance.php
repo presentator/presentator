@@ -7,6 +7,7 @@ use common\widgets\LanguageSwitch;
 
 /**
  * @var $this               \yii\web\View
+ * @var $isLoginAttemp      boolean
  * @var $loginForm          \app\models\LoginForm
  * @var $registerForm       \app\models\RegisterForm
  * @var $hasFbConfig        boolean
@@ -38,14 +39,14 @@ $this->title = Yii::t('app', 'Login');
 
                 <div id="auth_tabs" class="tabs m-t-30 m-b-30">
                     <div class="tabs-header">
-                        <div class="tab-item active" data-target="#login"><span class="txt"><?= Yii::t('app', 'Login') ?></span></div>
-                        <div class="tab-item" data-target="#register"><span class="txt"><?= Yii::t('app', 'Register') ?></span></div>
+                        <div class="tab-item <?= $isLoginAttemp ? 'active' : '' ?>" data-target="#login"><span class="txt"><?= Yii::t('app', 'Login') ?></span></div>
+                        <div class="tab-item <?= !$isLoginAttemp ? 'active' : '' ?>" data-target="#register"><span class="txt"><?= Yii::t('app', 'Register') ?></span></div>
                     </div>
                     <div class="tabs-content p-b-0">
-                        <div id="login" class="tab-item active">
+                        <div id="login" class="tab-item <?= $isLoginAttemp ? 'active' : '' ?>">
                             <?= $this->render('_login_form', ['model' => $loginForm]); ?>
                         </div>
-                        <div id="register" class="tab-item">
+                        <div id="register" class="tab-item <?= !$isLoginAttemp ? 'active' : '' ?>">
                             <?= $this->render('_register_form', ['model' => $registerForm]); ?>
                         </div>
                     </div>

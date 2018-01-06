@@ -4,6 +4,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\components\validators\CEmailValidator;
 
 /**
  * Register form model.
@@ -54,6 +55,7 @@ class RegisterForm extends Model
             [['email', 'password', 'passwordConfirm'], 'required'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => User::className()],
+            ['email', CEmailValidator::className(), 'allowMultiple' => false, 'allowedDomains' => Yii::$app->params['allowedRegistrationDomains']],
             ['password', 'string', 'min' => 4],
             ['passwordConfirm', 'compare', 'compareAttribute'=>'password', 'message'=> Yii::t('app', "Passwords don't match")],
             ['terms', 'required', 'requiredValue' => 1, 'message' => Yii::t('app', 'This checkbox is required.')],

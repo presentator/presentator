@@ -146,6 +146,7 @@ class SiteController extends AppController
             $hasReCaptchaConfig = true;
         }
 
+        $isLoginAttemp      = true;
         $loginForm          = new LoginForm();
         $registerForm       = new RegisterForm();
         $wrongLoginAttempts = Yii::$app->session->get(self::SESSION_LOGIN_ATTEMPTS_KEY, 0);
@@ -162,6 +163,8 @@ class SiteController extends AppController
 
             Yii::$app->session->set(self::SESSION_LOGIN_ATTEMPTS_KEY, ++$wrongLoginAttempts);
         } elseif ($registerForm->load($postData)) {
+            $isLoginAttemp = false;
+
             // register
             if ($registerForm->register()) {
                 Yii::$app->session->setFlash('registerSuccess');
@@ -174,6 +177,7 @@ class SiteController extends AppController
         }
 
         return $this->render('entrance', [
+            'isLoginAttemp'      => $isLoginAttemp,
             'loginForm'          => $loginForm,
             'registerForm'       => $registerForm,
             'hasFbConfig'        => $hasFbConfig,
