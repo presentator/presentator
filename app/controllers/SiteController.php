@@ -130,6 +130,22 @@ class SiteController extends AppController
         $this->view->params['bodyClass'] = 'full-page';
         $this->view->params['globalWrapperClass'] = 'auth-panel-wrapper';
 
+        $hasFbConfig = false;
+        if (
+            !empty(Yii::$app->params['facebookAuth']['clientId']) &&
+            !empty(Yii::$app->params['facebookAuth']['clientSecret'])
+        ) {
+            $hasFbConfig = true;
+        }
+
+        $hasReCaptchaConfig = false;
+        if (
+            !empty(Yii::$app->params['recaptcha']['siteKey']) &&
+            !empty(Yii::$app->params['recaptcha']['secretKey'])
+        ) {
+            $hasReCaptchaConfig = true;
+        }
+
         $loginForm          = new LoginForm();
         $registerForm       = new RegisterForm();
         $wrongLoginAttempts = Yii::$app->session->get(self::SESSION_LOGIN_ATTEMPTS_KEY, 0);
@@ -153,13 +169,15 @@ class SiteController extends AppController
         }
 
         // show recaptcha on too many wrong login attempts
-        if ($wrongLoginAttempts >= 3) {
+        if ($wrongLoginAttempts >= 3 && $hasReCaptchaConfig) {
             $loginForm->scenario = LoginForm::SCENARIO_RECAPTCHA;
         }
 
         return $this->render('entrance', [
-            'loginForm'    => $loginForm,
-            'registerForm' => $registerForm,
+            'loginForm'          => $loginForm,
+            'registerForm'       => $registerForm,
+            'hasFbConfig'        => $hasFbConfig,
+            'hasReCaptchaConfig' => $hasReCaptchaConfig,
         ]);
     }
 

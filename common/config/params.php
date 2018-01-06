@@ -44,13 +44,15 @@ return [
     'issuesUrl'    => 'https://github.com/ganigeorgiev/presentator/issues',
     'supportUsUrl' => 'https://presentator.io/en/support-us',
 
+    // FB auth client settings (to enable both properties must be set)
     'facebookAuth' => [
         'clientId'     => '',
         'clientSecret' => '',
     ],
 
+    // ReCaptcha to prevent login brute force attacks (to enable both properties must be set)
     'recaptcha' => [
         'siteKey'   => '',
-        'secretKey' => '',
+        'secretKey' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
     ],
 ];

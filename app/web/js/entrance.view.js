@@ -37,6 +37,8 @@ EntranceView.prototype.init = function() {
         }
     });
 
+    self.recalcDiagonalAngle();
+
     $(document).on('remove', function() {
         self.recalcDiagonalAngle();
     });

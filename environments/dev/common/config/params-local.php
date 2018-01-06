@@ -15,10 +15,10 @@ return [
         'clientSecret' => '',
     ],
 
-    // recaptcha keys (prevent login brute force attacks)
+    // ReCaptcha to prevent login brute force attacks (to enable both properties must be set)
     'recaptcha' => [
         'siteKey'   => '',
-        'secretKey' => '',
+        'secretKey' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
     ],
 
     // service email address

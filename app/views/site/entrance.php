@@ -6,9 +6,11 @@ use common\widgets\FlashAlert;
 use common\widgets\LanguageSwitch;
 
 /**
- * @var $this         \yii\web\View
- * @var $loginForm    \app\models\LoginForm
- * @var $registerForm \app\models\RegisterForm
+ * @var $this               \yii\web\View
+ * @var $loginForm          \app\models\LoginForm
+ * @var $registerForm       \app\models\RegisterForm
+ * @var $hasFbConfig        boolean
+ * @var $hasReCaptchaConfig boolean
  */
 
 $this->title = Yii::t('app', 'Login');
@@ -34,7 +36,7 @@ $this->title = Yii::t('app', 'Login');
             <?php else: ?>
                 <?= FlashAlert::widget(['close' => false, 'options' => ['class' => 'no-radius-b-l no-radius-b-r']]) ?>
 
-                <div id="auth_tabs" class="tabs m-t-30">
+                <div id="auth_tabs" class="tabs m-t-30 m-b-30">
                     <div class="tabs-header">
                         <div class="tab-item active" data-target="#login"><span class="txt"><?= Yii::t('app', 'Login') ?></span></div>
                         <div class="tab-item" data-target="#register"><span class="txt"><?= Yii::t('app', 'Register') ?></span></div>
@@ -48,17 +50,20 @@ $this->title = Yii::t('app', 'Login');
                         </div>
                     </div>
                 </div>
-                <footer class="footer text-center">
-                    <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>"
-                        class="facebook-link"
-                        data-window="facebookLogin"
-                        data-width="990"
-                        data-height="700"
-                    >
-                        <i class="ion ion-social-facebook"></i>
-                        <span class="txt"><?= Yii::t('app', 'Enter with Facebook') ?></span>
-                    </a>
-                </footer>
+
+                <?php if ($hasFbConfig): ?>
+                    <footer class="footer m-t-0 text-center m-t-0">
+                        <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>"
+                            class="facebook-link"
+                            data-window="facebookLogin"
+                            data-width="990"
+                            data-height="700"
+                        >
+                            <i class="ion ion-social-facebook"></i>
+                            <span class="txt"><?= Yii::t('app', 'Enter with Facebook') ?></span>
+                        </a>
+                    </footer>
+                <?php endif; ?>
             <?php endif ?>
 
             <?= LanguageSwitch::widget(); ?>
