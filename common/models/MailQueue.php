@@ -46,7 +46,7 @@ class MailQueue extends CActiveRecord
     {
         return [
             [['to', 'subject', 'body'], 'required'],
-            [['from', 'to', 'cc', 'bcc'], CEmailValidator::className()],
+            [['from', 'to', 'cc', 'bcc'], CEmailValidator::className(), 'allowName' => true, 'allowMultiple' => true],
             ['status', 'default', 'value' => static::STATUS_PENDING],
             ['status', 'in', 'range' => [static::STATUS_PENDING, static::STATUS_SENT]],
         ];

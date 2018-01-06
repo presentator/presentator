@@ -13,15 +13,10 @@ use yii\validators\EmailValidator;
 class CEmailValidator extends EmailValidator
 {
     /**
-     * @inheritdoc
-     */
-    public $allowName = true;
-
-    /**
      * Allow multiple comma separated emails (eg. 'test@presentator.io, John Doe <john.doe@presentator.io>').
      * @var boolean
      */
-    public $allowMultiple = true;
+    public $allowMultiple = false;
 
     /**
      * List of allowed email domains (leave empty for no limitation).
