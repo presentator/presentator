@@ -177,7 +177,7 @@
             </div>
         </div>
         <div class="cols-5">
-            <div class="form-group" data-cursor-tooltip="Application base url required for properly handling and serving uploaded designs.">
+            <div class="form-group" data-cursor-tooltip="Application base url required for properly handling and serving uploaded design screens.">
                 <label for="params_public_url">Public/Base Url</label>
                 <input type="text" id="params_public_url" name="params[publicUrl]" value="https://app.mysite.com">
             </div>
@@ -188,6 +188,16 @@
                 <input type="text" id="php_path" name="phpPath" placeholder="eg. php (default) or php56">
             </div>
         </div>
+    </div>
+
+    <div class="form-group">
+        <label for="allowed_registration_domains" class="m-b-0">Allowed registration domains</label>
+        <small class="hint">Comma separated list of email address <strong>domains</strong> that are allowed to register (eg. "gmail.com, example.com").</small>
+        <br>
+        <small class="hint">Leave empty to disable the restriction and to allow every valid email address to register.</small>
+
+        <div class="clearfix m-b-10"></div>
+        <input type="text" id="allowed_registration_domains" name="params[allowedRegistrationDomains]">
     </div>
 
     <div class="block text-center">

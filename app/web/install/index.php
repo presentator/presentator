@@ -109,6 +109,16 @@ function resolveParams(array $data)
             $data['params']['publicUrl'] = $baseUrl;
         }
 
+        if (!empty($data['params']['allowedRegistrationDomains'])) {
+            $domains = explode(',', $data['params']['allowedRegistrationDomains']);
+            $data['params']['allowedRegistrationDomains'] = [];
+            foreach ($domains as $domain) {
+                $data['params']['allowedRegistrationDomains'][] = trim($domain);
+            }
+        } else {
+            $data['params']['allowedRegistrationDomains'] = [];
+        }
+
         $initParams = [];
         if (file_exists($paramsLocalPath)) {
             $initParams = (array) include($paramsLocalPath);
