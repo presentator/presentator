@@ -72,6 +72,9 @@ class UpdateController extends Controller
         // delete the archive file
         @unlink($archivePath);
 
+        // delete the installer dir
+        @unlink($extractPath . '/app/web/install');
+
         $this->stdout('Successfully extracted the archive files.', Console::FG_GREEN);
         $this->stdout(PHP_EOL . PHP_EOL);
 
