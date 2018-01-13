@@ -30,12 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $installSuccess = install($_POST);
-
-        if ($installSuccess) {
-            if (!unlink(__DIR__)) {
-                $errors[] = "Warning! The install folder was not able to be deleted automatically. For security reasons it is recommended to delete the folder manually!";
-            }
-        }
     } catch (Exception $e) {
         $errors[] = $e->getMessage();
     }
@@ -43,8 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once('./_installer_view.php');
 
+// try to delete the installer directory on success
+if ($installSuccess) {
+    removeDir(__DIR__);
+}
+
 // -------------------------------------------------------------------
-// Helpers
+// Helpers and handlers
 // -------------------------------------------------------------------
 
 /**
@@ -57,24 +56,28 @@ function install($data) {
     $phpPath = !empty($data['phpPath']) ? $data['phpPath'] : 'php';
 
     // Init application
-    exec(sprintf('%s %s/init --env=Production --overwrite=y', $phpPath, $rootDir), $output, $initResult);
+    exec(sprintf('%s %s/init --env=Production --overwrite=y', $phpPath, $rootDir), $initOutout, $initResult);
     if ($initResult !== 0) {
-        throw new Exception('Oops! Something when wrong while initializing the application.');
+        throw new Exception('Oops! Something when wrong while initializing the application.<br>' . implode('<br>', $initOutout));
     }
 
     // Save local settings
     $main   = resolveMainComponents($data);
     $params = resolveParams($data);
-    $settingsResult = file_put_contents($paramsLocalPath, '<?php' . PHP_EOL . var_export($params, true)) !== false;
-    $settingsResult = $settingsResult && (file_put_contents($mainLocalPath, '<?php' . PHP_EOL . var_export($main, true)) !== false);
+    $settingsResult = saveArrayToFile($paramsLocalPath, $params);
+    $settingsResult = $settingsResult && saveArrayToFile($mainLocalPath, $main);
     if (!$settingsResult) {
-        throw new Exception('Oops! Something when wrong while trying to save the configuration files.');
+        @unlink($mainLocalPath);
+        @unlink($paramsLocalPath);
+        throw new Exception('Oops! Something when wrong while trying to save the configuration files.<br>');
     }
 
     // Apply migrations
-    exec(sprintf('%s %s/yii migrate --interactive=0', $phpPath, $rootDir), $output, $migrationsResult);
+    exec(sprintf('%s %s/yii migrate --interactive=0', $phpPath, $rootDir), $migrationsOutput, $migrationsResult);
     if ($migrationsResult !== 0) {
-        throw new Exception('Oops! Something when wrong while applying migration scripts.');
+        @unlink($mainLocalPath);
+        @unlink($paramsLocalPath);
+        throw new Exception('Oops! Something when wrong while applying the migration scripts (probably invalid DB settings).');
     }
 
     return true;
@@ -117,6 +120,10 @@ function resolveParams(array $data)
             }
         } else {
             $data['params']['allowedRegistrationDomains'] = [];
+        }
+
+        if (empty($data['params']['recaptcha']['secretKey'])) {
+            unset($data['params']['recaptcha']);
         }
 
         $initParams = [];
@@ -175,4 +182,78 @@ function resolveMainComponents(array $data)
     }
 
     return array_merge($initMain, $main);
+}
+
+/**
+ * Recursively remove directory and all its files.
+ *
+ * @param  string $dir Path to the directory to remove.
+ * @return boolean
+ */
+function removeDir($dir)
+{
+    $files = array_diff(scandir($dir), ['.', '..']);
+
+    foreach ($files as $file) {
+        is_dir("$dir/$file") ? delTree("$dir/$file") : unlink("$dir/$file");
+    }
+
+    return rmdir($dir);
+}
+
+/**
+ * Simple and very robust "prettier" alternative to `var_export`.
+ *
+ * @param  array   $data  Array to export.
+ * @param  integer $level Recursion flag.
+ * @return string
+ */
+function simpleArrayExport(array $data, $level = 1) {
+    $result = "";
+
+    for ($i = 0; $i < $level - 1; $i++) {
+        $result .= "\t";
+    }
+
+    $result = "[\n";
+
+    foreach ($data as $key => $value) {
+        for ($i = 0; $i < $level; $i++) {
+            $result .= "\t";
+        }
+        $result .= "'$key' => ";
+
+        if (is_array($value)) {
+            $result .= (simpleArrayExport($value, $level + 1) . ",\n");
+        } elseif (is_string($value)) {
+            $result .= "'$value',\n";
+        } elseif ($value === true) {
+            $result .= "true,\n";
+        } elseif ($value === false) {
+            $result .= "false,\n";
+        } else {
+            $result .= "$value,\n";
+        }
+    }
+
+    for ($i = 0; $i < $level - 1; $i++) {
+        $result .= "\t";
+    }
+
+    $result .= "]";
+
+    return $result;
+}
+
+/**
+ * Saves array in a file (with return statement).
+ *
+ * @param  string $file
+ * @param  array  $data
+ * @return boolean
+ */
+function saveArrayToFile($file, array $data) {
+    $content = "<?php\nreturn" . simpleArrayExport($data) . ";\n";
+
+    return file_put_contents($file, $content) !== false;
 }
