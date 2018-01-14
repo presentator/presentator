@@ -107,6 +107,8 @@ function resolveParams(array $data)
 {
     global $baseUrl, $paramsLocalPath;
 
+    $boolParams = ['useMailQueue', 'purgeSentMails', 'showCredits', 'fuzzyUsersSearch'];
+
     if (isset($data['params']) && is_array($data['params'])) {
         if (empty($data['params']['publicUrl'])) {
             $data['params']['publicUrl'] = $baseUrl;
@@ -124,6 +126,19 @@ function resolveParams(array $data)
 
         if (empty($data['params']['recaptcha']['secretKey'])) {
             unset($data['params']['recaptcha']);
+        }
+
+        // normalize boolean params
+        foreach ($boolParams as $param) {
+            if (!isset($data['params'][$param])) {
+                continue;
+            }
+
+            if ($data['params'][$param]) {
+                $data['params'][$param] = true;
+            } else {
+                $data['params'][$param] = false;
+            }
         }
 
         $initParams = [];
