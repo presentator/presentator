@@ -89,6 +89,10 @@
                 display: inline-block;
                 vertical-align: middle;
             }
+            .active-slide-title {
+                @include ellipsis();
+                max-width: 160px;
+            }
         }
 
         // Sides
@@ -121,6 +125,13 @@
 
     // Specific control items
     .ctrl-item {
+        &.ctrl-text {
+            cursor: default;
+            &:hover,
+            &:active {
+                background: none;
+            }
+        }
         &.preview-handle,
         &.hotspots-handle {
             color: $primaryColor;
@@ -273,6 +284,12 @@
     }
 
     // @todo refact panel responsive styles
+
+    @media screen and (max-width: 1100px)  {
+        .screen-info {
+            display: none;
+        }
+    }
 
     @media screen and (max-width: 700px)  {
         .resolved-comments-toggle-wrapper {

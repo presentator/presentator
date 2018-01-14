@@ -9,12 +9,14 @@ var ScreenView = function (data) {
         'uploadContainer':    '#upload_container',
         'uploadPopup':        '#screens_upload_popup',
 
-        'screensWrapperTabs': '#version_screens_tabs',
-        'screensWrapper':     '.version-screens',
-        'screenItem':         '.screen-item',
-        'screenDeleteHandle': '.screen-delete',
-        'screenUploadHandle': '.action-box',
-        'screenTitlteHolder': '.screen-title',
+        'screensWrapperTabs':     '#version_screens_tabs',
+        'screensWrapper':         '.version-screens',
+        'screenItem':             '.screen-item',
+        'screenDeleteHandle':     '.screen-delete',
+        'screenUploadHandle':     '.action-box',
+        'screenTitlteHolder':     '.screen-title',
+        'activeSlideTitleHolder': '.active-slide-title',
+        'activeSlideOrderHolder': '.active-slide-order',
 
         // bulk
         'bulkPanel':          '#screens_bulk_panel',
@@ -236,6 +238,8 @@ ScreenView.prototype.init = function () {
     // Screen alignment
     $document.on('sliderChange sliderInit', function (e, $activeSlide) {
         PR.horizontalAlign($activeSlide);
+
+        self.updateSliderCaption($activeSlide);
 
         self.hotspotsView.deselectHotspot();
         self.commentsView.deselectCommentTarget();
@@ -614,6 +618,8 @@ ScreenView.prototype.initReplaceScreenImageDropzone = function (screenId, upload
 
                 self.updateScreenTitle(screenId, response.screen.title);
 
+                self.updateSliderCaption();
+
                 // reload screen slider
                 self.showScreensSlider(
                     self.getActiveScreensWrapper().data('version-id'),
@@ -911,6 +917,8 @@ ScreenView.prototype.saveSettingsForm = function (form, screenId) {
 
             self.updateScreenTitle(screenId, response.settings.title);
 
+            self.updateSliderCaption($sliderItem);
+
             // update alignment
             PR.setData($sliderItem, 'alignment', response.settings.alignment);
             PR.horizontalAlign($sliderItem);
@@ -932,7 +940,23 @@ ScreenView.prototype.updateScreenTitle = function (screenId, newTitle) {
     $('[data-screen-id="' + screenId + '"]').find(this.settings.screenTitlteHolder)
         .attr('title', PR.htmlEncode(newTitle))
         .text(newTitle);
-}
+};
+
+/**
+ * Updates active slide info.
+ * @param {Null|jQuery} [$activeSlide]
+ */
+ScreenView.prototype.updateSliderCaption = function ($activeSlide) {
+    $activeSlide = $activeSlide || $();
+    if (!$activeSlide.length && this.$activeVersionSlider) {
+        $activeSlide = this.$activeVersionSlider.slider('getActive');
+    }
+
+    var title = $activeSlide.data('title') || '';
+
+    $(this.settings.activeSlideTitleHolder).text(title).attr('title', title);
+    $(this.settings.activeSlideOrderHolder).text($activeSlide.index() + 1);
+};
 
 /**
  * Activates hotspot preview mode.

@@ -30,7 +30,8 @@ if ($model->project->subtype && !empty(Project::SUBTYPES[$model->project->subtyp
     $generalSlideStyles['height'] = Project::SUBTYPES[$model->project->subtype][1] . 'px';
 }
 
-$isGuest = Yii::$app->user->isGuest;
+$totalScreens = count($model->screens);
+$isGuest      = Yii::$app->user->isGuest;
 ?>
 
 <div id="version_slider_<?= $model->id ?>"
@@ -42,6 +43,15 @@ $isGuest = Yii::$app->user->isGuest;
             <div class="ctrl-wrapper ctrl-left">
                 <ul>
                     <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-android-arrow-back"></i></li>
+
+                    <?php if ($totalScreens > 0): ?>
+                        <li class="ctrl-item screen-info ctrl-text hint">
+                            <span class="txt active-slide-title"></span>
+                            <span class="slide-counter">
+                                (<span class="active-slide-order"></span>&nbsp;<?= Yii::t('app', 'of') ?>&nbsp;<?= $totalScreens ?>)
+                            </span>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
 

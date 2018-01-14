@@ -274,6 +274,7 @@ PreviewView.prototype.updateSliderCaption = function() {
 
     $caption.addClass('active');
     $(self.settings.activeSlideTitleHolder).text($activeSlide.data('title'));
+    $(self.settings.activeSlideTitleHolder).attr('title', $activeSlide.data('title'));
     $(self.settings.activeSlideOrderHolder).text($activeSlide.index() + 1);
 
     if (self.sliderCaptionTimeout) {
@@ -368,7 +369,6 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 PR.setQueryParam(self.SCREEN_PARAM, $activeSlide.index() + 1);
 
                 self.updateSliderCaption();
-
             });
 
             $slider.slider({nav: false});

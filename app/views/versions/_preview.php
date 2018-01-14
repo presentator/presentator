@@ -31,7 +31,7 @@ if ($project->subtype && !empty(Project::SUBTYPES[$project->subtype])) {
     $generalSlideStyles['height'] = Project::SUBTYPES[$project->subtype][1] . 'px';
 }
 
-$hasScreens = !empty($activeVersion->screens);
+$totalScreens = count($activeVersion->screens);
 ?>
 
 <div id="version_slider_<?= $activeVersion->id ?>"
@@ -93,10 +93,19 @@ $hasScreens = !empty($activeVersion->screens);
                             <?php endforeach ?>
                         </div>
                     </li>
+
+                    <?php if ($totalScreens > 0): ?>
+                        <li class="ctrl-item screen-info ctrl-text hint">
+                            <span class="txt active-slide-title"></span>
+                            <span class="slide-counter">
+                                (<span class="active-slide-order"></span>&nbsp;<?= Yii::t('app', 'of') ?>&nbsp;<?= $totalScreens ?>)
+                            </span>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
 
-            <?php if ($hasScreens): ?>
+            <?php if ($totalScreens > 0): ?>
                 <div class="ctrl-wrapper ctrl-center">
                     <ul>
                         <?php if (count($project->versions) > 1): ?>
@@ -158,7 +167,7 @@ $hasScreens = !empty($activeVersion->screens);
     <div class="version-slider-content">
         <span id="panel_toggle_handle" class="version-slider-panel-toggle" data-collapsed-text="<?= Yii::t('app', 'Menu') ?>" data-expanded-text="<?= Yii::t('app', 'Hide') ?>"></span>
 
-        <?php if (!$hasScreens): ?>
+        <?php if ($totalScreens <= 0): ?>
             <div class="block text-center m-t-30 m-b-30 padded panel panel-sm">
                 <h5><?= Yii::t('app', 'Oops, the selected version does not have any screens.') ?></h5>
 
