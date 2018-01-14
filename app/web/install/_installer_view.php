@@ -26,7 +26,7 @@
 
             <?php if ($installSuccess === true): ?>
                 <div class="alert alert-success">
-                    <p>Successfully completed the installation process and you can now continue to your <a href="../">application homepage</a>.</p>
+                    <p>The installation process was completed successfully and you can now continue to your <a href="../"><strong>application homepage</strong></a>.</p>
                 </div>
             <?php else: ?>
                 <?php require_once('./_installer_form.php') ?>

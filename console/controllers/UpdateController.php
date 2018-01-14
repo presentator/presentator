@@ -4,6 +4,7 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
+use common\components\helpers\CFileHelper;
 use common\components\helpers\CArrayHelper;
 
 /**
@@ -58,7 +59,7 @@ class UpdateController extends Controller
         $res = $zip->open($archivePath);
 
         if ($res !== true) {
-            $this->stdout('An error occured while unzipping the file - it seems to be either corrupted or invalid.', Console::BG_RED);
+            $this->stdout('An error occured while unzipping the archive - it seems to be either corrupted or invalid.', Console::BG_RED);
             $this->stdout(PHP_EOL);
 
             @unlink($archivePath);
@@ -73,7 +74,7 @@ class UpdateController extends Controller
         @unlink($archivePath);
 
         // delete the installer dir
-        @unlink($extractPath . '/app/web/install');
+        CFileHelper::removeDirectory($extractPath . '/app/web/install');
 
         $this->stdout('Successfully extracted the archive files.', Console::FG_GREEN);
         $this->stdout(PHP_EOL . PHP_EOL);
