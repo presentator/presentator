@@ -73,8 +73,11 @@ class UpdateController extends Controller
         // delete the archive file
         @unlink($archivePath);
 
-        // delete the installer dir
-        CFileHelper::removeDirectory($extractPath . '/app/web/install');
+        // try to delete the installer dir
+        try {
+            CFileHelper::removeDirectory($extractPath . '/app/web/install');
+        } catch (\Exception $e) {
+        }
 
         $this->stdout('Successfully extracted the archive files.', Console::FG_GREEN);
         $this->stdout(PHP_EOL . PHP_EOL);
