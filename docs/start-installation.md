@@ -29,7 +29,7 @@ It supports deploying the application in different environments (`prod`, `dev`).
 
 1. Create a new database (with `utf8_general_ci` or `utf8_unicode_ci` collation).
 
-2. Download the latest builded archive version from https://presentator.io/downloads/latest and extract it to your server directory.
+2. Download the latest build from https://presentator.io/downloads/latest and extract it to your server directory.
 
     > For security reasons, if you are using a shared hosting service it is recommended to extract the archvie files **outside** from your default **public_html(www)** directory!
 

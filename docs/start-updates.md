@@ -3,7 +3,7 @@ Presentator - Updates
 
 **Before you get started, it's a good idea to backup your database and all Presentator files.**
 
-> **WARNING**: The upgrade process will affect all core files used to run Presentator. If you have made any modifications to those files, your changes will be lost.
+> **WARNING**: The update process will affect all core files used to run Presentator. If you have made any modifications to those files, your changes will be lost.
 
 
 #### For v1.6.0+
@@ -21,7 +21,7 @@ php yii update
 
 #### Before v1.6.0
 
-1. Download the latest builded version from https://presentator.io/downloads/latest.
+1. Download the latest build from https://presentator.io/downloads/latest.
 
 2. Extract and replace the archive in your project root directory (don't worry, your `main-local` and `params-local` configurations will be not deleted).
 
