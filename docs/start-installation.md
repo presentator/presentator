@@ -2,11 +2,9 @@ Presentator - Installation
 ======================================================================
 
 The project is designed to work in a team development environment.
-It supports deploying the application in different environments.
+It supports deploying the application in different environments (`prod`, `dev`).
 
 ## Requirements
-The minimum server requirements to run the project are:
-
 - _PHP 5.6+_ with the following extensions:
     ```
     Reflection
@@ -23,49 +21,66 @@ The minimum server requirements to run the project are:
 
 - DB - _MySQL v5.5+_ or _MariaDb 10+_ (recommended)
 
+> From the project root directory run the console command `php requirements.php` for more detail check.
+
 ## Installation
-To install and setup the application components you will need [Composer](https://getcomposer.org/).
+
+#### For Production (GUI Installer)
+
+1. Create a new database (with `utf8_general_ci` or `utf8_unicode_ci` collation).
+
+2. Download the latest builded archive version from https://presentator.io/downloads/latest and extract it to your server directory.
+
+    > For security reasons, if you are using a shared hosting service it is recommended to extract the archvie files **outside** from your default **public_html(www)** directory!
+
+3. Setup your domain (or create a new subdomain) and point it to the main application web directory, eg. `/path/to/presentator/app/web`.
+
+    > Optional: if you are intending to make use of the API of the platform, create a subdomain and point it to the api application web directory - `/path/to/presentator/api/web`.
+
+4. Navigate to `https://my-site.example/install` and follow the instructions of the graphic installer.
+
+
+After the installer has successfully completed you should be able to access and start using the platform at `https://my-site.example`.
+
+> Don't worry, you can always change later the application configurations (db, mailer, etc.) by editting `/path/to/presentator/common/config/main-local.php` and `/path/to/presentator/common/config/params-local.php`
+
+
+#### For Development (Manual)
+
+> To install and setup the application components you will need [Composer](https://getcomposer.org/).
 
 1. Clone the GitHub repository (or download and extract the archive).
-    ```
+    ```bash
     git clone https://github.com/ganigeorgiev/presentator.git
     ```
 
-2. Setup a vhost/server address for the **app**, eg. `http://app.presentator.dev/` and point it to `/app/web`.
+2. Setup a vhost/server address for the **app**, eg. `http://app.presentator.local/` and point it to `/app/web`.
 
-3. Setup a vhost/server address for the **api**, eg. `http://api.presentator.dev/` and point it to `/api/web`.
+3. Setup a vhost/server address for the **api**, eg. `http://api.presentator.local/` and point it to `/api/web`.
 
 4. Open a console terminal and execute:
     ```bash
     # navigate to project root dir
-    cd /path/to/project
+    cd /path/to/presentator
 
     # install vendor dependencies
     composer global require "fxp/composer-asset-plugin:^1.3.1"
     composer install
 
-    # only for development
-    npm install
+    # execute the init command and select the appropriate environment
+    php init
     ```
 
-    > For production `npm` command is optional but it is required if you want to change the API docs and app assets.
+5. Create a new database and adjust the database and mailer components settings in `common/config/main-local.php` accordingly.
 
-5. Execute the `init` command and select the appropriate environment.
-    ```bash
-    php /path/to/project/init
-    ```
+6. Adjust the applications required parameters in `common/config/params-local.php`.
 
-6. Adjust applications required params in `common/config/params-local.php`.
-
-7. Create a new database and adjust the `components['db']` configuration in `common/config/main-local.php` accordingly.
-
-8. Open a console terminal and apply migrations.
+7. Open a console terminal and apply migrations.
     ```bash
     php /path/to/project/yii migrate
     ```
 
 That is! Now you should be able to access the previously created vhosts.
-
 
 
 ## Cron Jobs

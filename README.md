@@ -1,4 +1,4 @@
-Presentator [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
+Presentator [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/) [![Latest Release](https://badge.fury.io/gh/ganigeorgiev%2Fpresentator.svg)](https://github.com/ganigeorgiev/presentator/releases)
 ======================================================================
 
 ![img](docs/interface.png)
@@ -8,6 +8,7 @@ Its main goal is to enable web designers to create simple dynamic prototypes and
 
 ## Getting started
 - [Installation](docs/start-installation.md)
+- [Updates](docs/start-updates.md)
 - [Running tests](docs/start-tests.md)
 - [Coding standards](docs/start-coding-standards.md)
 - [REST API documentation](https://api.presentator.io/doc)
