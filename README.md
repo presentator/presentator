@@ -1,4 +1,4 @@
-Presentator [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/) [![Latest Release](https://badge.fury.io/gh/ganigeorgiev%2Fpresentator.svg)](https://github.com/ganigeorgiev/presentator/releases)
+Presentator [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/) [![Latest Release](https://img.shields.io/github/release/ganigeorgiev/presentator.svg)](https://github.com/ganigeorgiev/presentator/releases)
 ======================================================================
 
 ![img](docs/interface.png)
