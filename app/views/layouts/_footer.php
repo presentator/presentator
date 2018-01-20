@@ -4,7 +4,7 @@ use common\widgets\LanguageSwitch;
 <footer id="page_footer" class="page-footer">
     <div class="links">
         <ul class="separator-list">
-            <li><?= date('Y') ?> Presentator</li>
+            <li><?= date('Y') ?> Presentator v<?= Yii::$app->params['currentVersion'] ?></li>
             <li>
                 <?= LanguageSwitch::widget(); ?>
             </li>
