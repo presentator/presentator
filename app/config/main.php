@@ -73,8 +73,8 @@ return [
                 'forgotten-password'                          => 'site/forgotten-password',
                 '<lang:\w{2}-\w{2}|\w{2}>/reset-password'     => 'site/reset-password',
                 'reset-password'                              => 'site/reset-password',
-                '<lang:\w{2}-\w{2}|\w{2}>/change-email'     => 'site/change-email',
-                'change-email'                              => 'site/change-email',
+                '<lang:\w{2}-\w{2}|\w{2}>/change-email'       => 'site/change-email',
+                'change-email'                                => 'site/change-email',
 
                 // Users
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account'                         => 'users/settings',
