@@ -1,20 +1,25 @@
 <?php
 
 return [
-    'currentVersion'          => '1.6.0',
-    'versionCheckUrl'         => 'https://presentator.io/downloads/check',
-    'latestVersionArchiveUrl' => 'https://presentator.io/downloads/latest',
+    // base url of the app service used for building the absolute url of the uploaded screens
+    // (required for backward compatability with the old api service)
+    'publicUrl' => '',
 
-    'fuzzyUsersSearch' => false,
-    'showCredits'      => true,
-    'maxUploadSize'    => 15,
+    // maximum allowed upload size (in MB)
+    'maxUploadSize' => 15,
 
-    // List of email address domains that are allowed to register (eg. `['example.com', 'test.com']`).
-    // Leave empty to disable the restriction.
+    // list of email address domains that are allowed to register (eg. `['example.com', 'test.com']`)
+    // leave empty to disable the restriction
     'allowedRegistrationDomains' => [],
 
+    // flag used to enable/disable project admins search by only a part of their email address or name
+    'fuzzyUsersSearch' => false,
+
+    // flag used to show/hide info about the project author (usually placed in the footer)
+    'showCredits' => true,
+
     // whether to store the mails that need to be send in MailQueue table
-    // and use a cron job to process them or send them directly on runtime
+    // and use a cron job to process them OR send them directly during runtime
     // @see `common\components\swiftmailer\CMessage`
     'useMailQueue' => false,
 
@@ -22,6 +27,54 @@ return [
     // @see `\console\controllers\MailsController::actionProcess()`
     'purgeSentMails' => true,
 
+    // email address that is used for sending system emails
+    'noreplyEmail' => 'no-reply@example.com',
+
+    // email address that is intented to process client's emails
+    'supportEmail' => 'support@example.com',
+
+    // password reset token duration time in seconds
+    'passwordResetTokenExpire' => 3600,
+
+    // email change token duration time in seconds
+    'emailChangeTokenExpire' => 1800,
+
+    // user session duration time in seconds
+    'rememberMeDuration' => 3600 * 24 * 30,
+
+    // url to the Facebook page of the platform, usually located in the footer (leave empty to hide)
+    'facebookUrl'  => 'https://www.facebook.com/presentator.io',
+
+    // url to the GitHub page of the platform, usually located in the footer (leave empty to hide)
+    'githubUrl' => 'https://github.com/ganigeorgiev/presentator',
+
+    // url to the GitHub Issues page of the platform, usually located in the footer (leave empty to hide)
+    'issuesUrl' => 'https://github.com/ganigeorgiev/presentator/issues',
+
+    // url to the Support page of the platform, usually located in the footer (leave empty to hide)
+    'supportUrl' => 'https://presentator.io/en/support-us',
+
+    // FB auth client settings (to enable both properties must be set!)
+    'facebookAuth' => [
+        'clientId'     => '',
+        'clientSecret' => '',
+    ],
+
+    // ReCaptcha to prevent login brute force attacks (to enable both properties must be set!)
+    'recaptcha' => [
+        'siteKey' => '',
+        'secretKey' => '_dont_leave_empty_',
+    ],
+
+    // secret key part of the user auth mechanism
+    // (should be auto populated in params-local.php during the init process)
+    'activationSalt'   => '',
+
+    // secret key part of the api user auth mechanism
+    // (should be auto populated in params-local.php during the init process)
+    'apiUserSecretKey' => '',
+
+    // lists with supported languages
     // short/url lang code => full lang code
     'languages' => [
         'en'    => 'en-US',
@@ -33,30 +86,12 @@ return [
         'es'    => 'es-ES',
     ],
 
-    'publicUrl'        => '',
-    'activationSalt'   => '',
-    'apiUserSecretKey' => '',
+    // the current application running version (used for update checks)
+    'currentVersion' => '1.6.0',
 
-    'noreplyEmail'             => 'no-reply@example.com',
-    'supportEmail'             => 'support@example.com',
-    'passwordResetTokenExpire' => 3600,
-    'emailChangeTokenExpire'   => 1800,
-    'rememberMeDuration'       => 3600 * 24 * 30,
+    // url to a service that checks whether the provided version is the latest one
+    'versionCheckUrl' => 'https://presentator.io/downloads/check',
 
-    'facebookUrl'  => 'https://www.facebook.com/presentator.io',
-    'githubUrl'    => 'https://github.com/ganigeorgiev/presentator',
-    'issuesUrl'    => 'https://github.com/ganigeorgiev/presentator/issues',
-    'supportUsUrl' => 'https://presentator.io/en/support-us',
-
-    // FB auth client settings (to enable both properties must be set)
-    'facebookAuth' => [
-        'clientId'     => '',
-        'clientSecret' => '',
-    ],
-
-    // ReCaptcha to prevent login brute force attacks (to enable both properties must be set)
-    'recaptcha' => [
-        'siteKey'   => '',
-        'secretKey' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
-    ],
+    // link to the latest archive (build) version
+    'latestVersionArchiveUrl' => 'https://presentator.io/downloads/latest',
 ];

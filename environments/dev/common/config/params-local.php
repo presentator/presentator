@@ -1,27 +1,18 @@
 <?php
+// NB! Check `common/config/params.php` for list with all parameters.
+
 return [
-    // app domain/vhost
-    'publicUrl' => 'http://app.presentator.dev',
+    // base url of the app service used for building the absolute url of the uploaded screens
+    // (required for backward compatability with the old api service)
+    'publicUrl' => 'http://app.presentator.local',
 
     // !!! insert a secret key in the following (if it is empty) - this is required for User validation
-    'activationSalt'   => '',
+    'activationSalt' => '',
 
     // !!! insert a secret key in the following (if it is empty) - this is required for API User authentication
     'apiUserSecretKey' => '',
 
-    // facebook login app data
-    'facebookAuth' => [
-        'clientId'     => '',
-        'clientSecret' => '',
-    ],
-
-    // ReCaptcha to prevent login brute force attacks (to enable both properties must be set)
-    'recaptcha' => [
-        'siteKey'   => '',
-        'secretKey' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
-    ],
-
-    // service email address
+    // service email addresses
     'noreplyEmail' => 'no-reply@example.com',
     'supportEmail' => 'support@example.com',
 ];
