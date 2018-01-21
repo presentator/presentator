@@ -102,7 +102,7 @@ class SiteController extends AppController
         }
 
         $user     = Yii::$app->user->identity;
-        $projects = $user->findProjects(10);
+        $projects = $user->findProjects(9);
         $comments = $user->findLeavedScreenComments(30);
 
         $projectIds      = ArrayHelper::getColumn($projects, 'id');

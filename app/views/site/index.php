@@ -69,6 +69,17 @@ $this->title = Yii::t('app', 'Dashboard') ;
     <!-- Latest projects -->
     <h5 class="m-t-0"><?= Yii::t('app', 'Latest projects') ?></h5>
     <div class="projects-list">
+        <a href="<?= Url::to(['projects/index', '#' => 'project_create_popup']) ?>" class="box action-box primary">
+            <div class="content">
+                <div class="table-wrapper">
+                    <div class="table-cell">
+                        <span class="icon"><i class="ion ion-ios-plus-outline"></i></span>
+                        <span class="txt"><?= Yii::t('app', 'Create new project') ?></span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
         <?php foreach ($projects as $project): ?>
             <?= $this->render('/projects/_item', ['model' => $project, 'newComments' => $commentCounters[$project->id]]); ?>
         <?php endforeach; ?>
