@@ -21,7 +21,10 @@ $action     = Yii::$app->controller->action->id;
             </li>
         </ul>
     </nav>
-    <a href="<?= Yii::$app->params['issuesUrl'] ?>" class="bug-report" target="_blank" data-cursor-tooltip="<?= Yii::t('app', 'Create GitHub issue') ?>">
-        <i class="ion ion-bug"></i>
-    </a>
+
+    <?php if (!empty(Yii::$app->params['issuesUrl'])): ?>
+        <a href="<?= Yii::$app->params['issuesUrl'] ?>" class="bug-report" target="_blank" data-cursor-tooltip="<?= Yii::t('app', 'Create GitHub issue') ?>">
+            <i class="ion ion-bug"></i>
+        </a>
+    <?php endif; ?>
 </aside>
