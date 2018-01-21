@@ -17,7 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Fit to screen' => '',
+    'Fit to screen' => 'Fit to screen',
+    'I have read and agree with the {termsLink}' => 'I have read and agree with the {termsLink}',
+    'Registrations from {domain} domain are not allowed.' => 'Registrations from {domain} domain are not allowed.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -105,7 +107,6 @@ return array(
     'Hello and welcome to Presentator!' => 'Hello and welcome to Presentator!',
     'Hide' => 'Hide',
     'Hotspots mode' => 'Hotspots mode',
-    'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>',
     'Image' => 'Image',
     'Invalid HEX color code.' => 'Invalid HEX color code.',
     'Invalid format.' => 'Invalid format.',

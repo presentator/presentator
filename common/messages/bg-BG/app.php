@@ -18,6 +18,8 @@
  */
 return array(
     'Fit to screen' => '',
+    'I have read and agree with the {termsLink}' => 'Прочетох и приемам {termsLink}',
+    'Registrations from {domain} domain are not allowed.' => '',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -105,7 +107,6 @@ return array(
     'Hello and welcome to Presentator!' => 'Здравей и добре дошъл в Presentator',
     'Hide' => 'Скрий',
     'Hotspots mode' => 'Режим Препратки',
-    'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>' => 'Прочетох и приемам <a href="#" data-popup="#terms_popup">Общите условия</a>',
     'Image' => 'Изображение',
     'Invalid HEX color code.' => 'Невалиден HEX формат',
     'Invalid format.' => 'Невалиден формат',
