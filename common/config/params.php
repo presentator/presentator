@@ -42,6 +42,12 @@ return [
     // user session duration time in seconds
     'rememberMeDuration' => 3600 * 24 * 30,
 
+    // url to the platform Terms and Conditions page
+    'termsUrl' => 'https://presentator.io/terms-and-conditions',
+
+    // url to the Support page of the platform, usually located in the footer (leave empty to hide)
+    'supportUrl' => 'https://presentator.io/support-us',
+
     // url to the Facebook page of the platform, usually located in the footer (leave empty to hide)
     'facebookUrl'  => 'https://www.facebook.com/presentator.io',
 
@@ -50,9 +56,6 @@ return [
 
     // url to the GitHub Issues page of the platform, usually located in the footer (leave empty to hide)
     'issuesUrl' => 'https://github.com/ganigeorgiev/presentator/issues',
-
-    // url to the Support page of the platform, usually located in the footer (leave empty to hide)
-    'supportUrl' => 'https://presentator.io/en/support-us',
 
     // FB auth client settings (to enable both properties must be set!)
     'facebookAuth' => [

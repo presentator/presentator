@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 use common\widgets\CActiveForm;
 
 /**
@@ -15,7 +16,9 @@ use common\widgets\CActiveForm;
     <?= $form->field($model, 'password')->passwordInput() ?>
     <?= $form->field($model, 'passwordConfirm')->passwordInput() ?>
     <?= $form->field($model, 'terms')->checkbox()
-        ->label(Yii::t('app', 'I have read and agree with the <a href="#" data-popup="#terms_popup">Terms and Conditions</a>'))
+        ->label(Yii::t('app', 'I have read and agree with the {termsLink}', [
+            'termsLink' => Html::a(Yii::t('app', 'Terms and Conditions'), Yii::$app->params['termsUrl'], ['target' => '_blank'])
+        ]))
     ?>
 
     <div class="block text-center">
