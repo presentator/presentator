@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Fit to screen' => '',
+    'Fit to screen' => 'Преоразмери спрямо екрана',
     'I have read and agree with the {termsLink}' => 'Прочетох и приемам {termsLink}',
-    'Registrations from {domain} domain are not allowed.' => '',
+    'Registrations from {domain} domain are not allowed.' => 'Регистрации от домейн {domain} не са разрешени.',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
