@@ -39,6 +39,7 @@ It supports deploying the application in different environments (`prod`, `dev`).
 
 4. Navigate to `https://my-site.example/install` and follow the instructions of the graphic installer.
 
+![GUI Installer](installer.png)
 
 After the installer has successfully completed you should be able to access and start using the platform at `https://my-site.example`.
 
