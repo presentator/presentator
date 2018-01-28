@@ -79,13 +79,11 @@ class SiteCest
         $I->seeElement('.tabs-header .tab-item[data-target="#register"]');
         $I->seeElement('.tabs-content .tab-item#login');
         $I->seeElement('.tabs-content .tab-item#register');
-        $I->seeElement('#terms_popup');
 
         $I->expectTo('see register form elements');
         $I->seeElement('[name="RegisterForm[email]"]');
         $I->seeElement('[name="RegisterForm[password]"]');
         $I->seeElement('[name="RegisterForm[terms]"]');
-        $I->seeElement('[data-popup="#terms_popup"]');
 
         $I->expectTo('see login form elements');
         $I->seeElement('[name="LoginForm[email]"]');
