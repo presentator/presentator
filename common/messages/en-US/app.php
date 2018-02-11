@@ -91,7 +91,7 @@ return array(
     'Edit version' => 'Edit version',
     'Email' => 'Email',
     'English' => 'English',
-    'Enter with Facebook' => 'Enter with Facebook',
+    'Login with Facebook' => 'Login with Facebook',
     'Error' => 'Error',
     'First name' => 'First name',
     'For 2x pixel density designs.' => 'For 2x pixel density designs.',

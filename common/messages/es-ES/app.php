@@ -104,7 +104,7 @@ return array(
     'Edit version' => 'Editar versión',
     'Email' => 'Correo electrónico',
     'English' => 'Inglés',
-    'Enter with Facebook' => 'Acceder con Facebook',
+    'Login with Facebook' => 'Acceder con Facebook',
     'Error' => 'Error',
     'First name' => 'Nombre',
     'For 2x pixel density designs.' => 'For 2x pixel density designs.',

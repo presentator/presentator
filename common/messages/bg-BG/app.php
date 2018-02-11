@@ -91,7 +91,7 @@ return array(
     'Edit version' => 'Редактиране на версия',
     'Email' => 'Имейл',
     'English' => 'Английски',
-    'Enter with Facebook' => 'Вход с Facebook',
+    'Login with Facebook' => 'Вход с Facebook',
     'Error' => 'Грешка',
     'First name' => 'Име',
     'For 2x pixel density designs.' => 'За екрани експортнати в 2x по-голяма резолюция.',

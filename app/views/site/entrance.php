@@ -61,7 +61,7 @@ $this->title = Yii::t('app', 'Login');
                             data-height="700"
                         >
                             <i class="ion ion-social-facebook"></i>
-                            <span class="txt"><?= Yii::t('app', 'Enter with Facebook') ?></span>
+                            <span class="txt"><?= Yii::t('app', 'Login with Facebook') ?></span>
                         </a>
                     </footer>
                 <?php endif; ?>
