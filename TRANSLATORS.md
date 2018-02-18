@@ -22,6 +22,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 ### Portuguese (Brazil)
 
 - Leandro Oliveira ([http://leandro.design](http://leandro.design))
+- Tiago Soares ([tfsoares](https://www.transifex.com/user/profile/tfsoares/))
 
 
 ### Spanish
