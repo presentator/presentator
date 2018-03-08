@@ -56,9 +56,9 @@ function install($data) {
     $phpPath = !empty($data['phpPath']) ? $data['phpPath'] : 'php';
 
     // Init application
-    exec(sprintf('%s %s/init --env=Production --overwrite=y', $phpPath, $rootDir), $initOutout, $initResult);
+    exec(sprintf('%s %s/init --env=Production --overwrite=y', $phpPath, $rootDir), $initOutput, $initResult);
     if ($initResult !== 0) {
-        throw new Exception('Oops! Something when wrong while initializing the application.<br>' . implode('<br>', $initOutout));
+        throw new Exception('Oops! Something went wrong while initializing the application.<br>' . implode('<br>', $initOutput));
     }
 
     // Save local settings
@@ -69,7 +69,7 @@ function install($data) {
     if (!$settingsResult) {
         @unlink($mainLocalPath);
         @unlink($paramsLocalPath);
-        throw new Exception('Oops! Something when wrong while trying to save the configuration files.<br>');
+        throw new Exception('Oops! Something went wrong while trying to save the configuration files.<br>');
     }
 
     // Apply migrations
@@ -77,7 +77,7 @@ function install($data) {
     if ($migrationsResult !== 0) {
         @unlink($mainLocalPath);
         @unlink($paramsLocalPath);
-        throw new Exception('Oops! Something when wrong while applying the migration scripts (probably invalid DB settings).');
+        throw new Exception('Oops! Something went wrong while applying the migration scripts (probably invalid DB settings).');
     }
 
     return true;
