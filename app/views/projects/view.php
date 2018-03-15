@@ -193,7 +193,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Screens upload popup -->
-<div id="screens_upload_popup" class="popup popup-small" data-overlay-close="false">
+<div id="screens_upload_popup" class="popup" data-overlay-close="false">
     <div class="popup-content">
         <h3 class="popup-title text-center"><?= Yii::t('app', 'Screens upload') ?></h3>
         <span class="popup-close close-icon"></span>

@@ -456,9 +456,18 @@ class ScreensController extends AppController
             return true;
         }
 
-        $hotspots = is_array($hotspots) ? $hotspots : json_decode($hotspots, true);
+        $hotspots           = is_array($hotspots) ? $hotspots : json_decode($hotspots, true);
+        $validTransitions   = array_keys(Screen::getTransitionLabels());
+        $requiredAttributes = ['width', 'height', 'top', 'left', 'link'];
+
         foreach ($hotspots as $hotspot) {
-            if (!isset($hotspot['width']) || !isset($hotspot['height']) || !isset($hotspot['top']) || !isset($hotspot['left']) || !isset($hotspot['link'])) {
+            foreach ($requiredAttributes as $attr) {
+                if (!isset($hotspot[$attr])) {
+                    return false;
+                }
+            }
+
+            if (!empty($hotspot['transition']) && !in_array($hotspot['transition'], $validTransitions)) {
                 return false;
             }
         }

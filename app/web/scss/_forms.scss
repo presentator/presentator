@@ -304,6 +304,10 @@ select {
     option {
         color: $txtColor;
         padding: 0;
+        &[disabled],
+        &[readonly] {
+            color: lighten($txtColor, 10%);
+        }
     }
 }
 textarea {

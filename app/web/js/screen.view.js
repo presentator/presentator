@@ -289,15 +289,21 @@ ScreenView.prototype.init = function () {
             e.preventDefault();
             e.stopPropagation();
 
-            var link = $(this).data('link');
+            var link       = $(this).data('link');
+            var transition = $(this).data('transition');
 
             if (!isNaN(link)) {
                 var $slider = $(self.settings.versionSlider);
                 if ($slider.length) {
-                    $slider.slider('goTo', $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index());
+                    $slider.slider(
+                        'goTo',
+                        $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index(),
+                        true,
+                        transition
+                    );
                 }
             } else if (PR.isValidUrl(link)) {
-                window.open(PR.htmlDecode(link),'_blank');
+                window.open(PR.htmlDecode(link), '_blank');
             }
         }
     });

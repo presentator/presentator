@@ -1318,6 +1318,7 @@ img.lazy-load {
     line-height: 12px;
     font-weight: normal;
     max-width: 200px;
+    word-break: break-all;
     background: rgba($overlayColor, 0.8);
     @include border-radius($baseRadius);
     @include user-select(none);
