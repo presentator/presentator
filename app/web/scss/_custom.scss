@@ -80,9 +80,8 @@
         color: $greyColor;
         cursor: pointer;
         color: $dangerColor;
-        @include transition(color 0.2s);
         @include transition(color 0.2s, transform 0.2s, visibility 0.2s, opacity 0.2s);
-        @include transform(scale(0.4));
+        @include transform(scale(0.7));
         @include hide;
     }
     .search-input {

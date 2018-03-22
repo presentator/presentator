@@ -150,6 +150,15 @@ small, .text-small {
     display: inline-block;
     vertical-align: top;
 }
+.v-align-top {
+    vertical-align: top;
+}
+.v-align-middle {
+    vertical-align: middle;
+}
+.v-align-bottom {
+    vertical-align: bottom;
+}
 
 .pointer {
     cursor: pointer;
@@ -223,23 +232,6 @@ ul {
             height: $size;
             background: $txtColor;
             @include border-radius($size);
-        }
-    }
-}
-
-// Standart table
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    td, th {
-        padding: 10px;
-        border: 1px solid $lightGreyColor;
-    }
-    th {
-        font-weight: normal;
-        background: $lighterGreyColor;
-        i {
-            font-size: 18px;
         }
     }
 }
@@ -350,6 +342,39 @@ ul {
         &:hover {
             opacity: 1;
         }
+    }
+}
+
+// Labels
+.label {
+    display: inline-block;
+    vertical-align: top;
+    padding: 3px 5px;
+    background: $greyColor;
+    font-size: $baseFontSize - 1;
+    line-height: $baseFontSize + 3;
+    text-align: center;
+    color: darken($txtColor, 10%);
+    @include border-radius($baseRadius);
+    &.label-danger {
+        color: #fff;
+        background: $dangerColor;
+    }
+    &.label-success {
+        color: #fff;
+        background: $successColor;
+    }
+    &.label-warning {
+        color: #fff;
+        background: $warningColor;
+    }
+    &.label-primary {
+        color: #fff;
+        background: $primaryColor;
+    }
+    &.label-secondary {
+        color: #fff;
+        background: $secondaryColor;
     }
 }
 
@@ -848,45 +873,6 @@ ul {
     }
 }
 
-// Filters
-.filters {
-    @extend %clear-after;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    .label, .filter-item {
-        display: inline-block;
-        vertical-align: top;
-        margin: 0 3px;
-    }
-    .label {
-        margin-left: 0;
-    }
-    .filter-item {
-        cursor: pointer;
-        color: #fff;
-        padding: 2px 5px;
-        font-size: 11px;
-        font-weight: bold;
-        line-height: 18px;
-        background: $greyColor;
-        @include user-select(none);
-        @include border-radius($baseRadius);
-        @include transition(color 0.2s, background 0.2s);
-        &:last-child {
-            margin-right: 0;
-        }
-        &:hover {
-            background: darken($greyColor, 10%);
-        }
-        &:active,
-        &.active {
-            color: #fff;
-            background: $successColor;
-        }
-    }
-}
-
 // Basic popover
 .popover {
     $arrowDistance: 15px;
@@ -1345,7 +1331,29 @@ img.lazy-load {
     }
 }
 
-// Table
+// Tables
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    td, th {
+        padding: 10px;
+        border: 1px solid $lightGreyColor;
+    }
+    th {
+        font-weight: normal;
+        background: $lighterGreyColor;
+        i {
+            font-size: 18px;
+        }
+    }
+    .min-width {
+        width: 1%;
+        white-space: nowrap;
+    }
+    .max-width {
+        width: 99%;
+    }
+}
 .table-list {
     width: 100%;
     text-align: left;

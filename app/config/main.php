@@ -163,6 +163,12 @@ return [
                 '<slug:[\w\-]+>'                                             => 'preview/view',
                 '<lang:\w{2}-\w{2}|\w{2}>/<slug:[\w\-]+>/ajax-invoke-access' => 'preview/ajax-invoke-access',
                 '<slug:[\w\-]+>/ajax-invoke-access'                          => 'preview/ajax-invoke-access',
+
+                // Super
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/super'                 => 'super/index',
+                'admin/super'                                          => 'super/index',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/super/<id:\d+>/delete' => 'super/delete',
+                'admin/super/<id:\d+>/delete'                          => 'super/delete',
             ],
         ],
     ],

@@ -11,7 +11,6 @@ $.cleanData = function (elems) {
 };
 
 jQuery(function ($) {
-    var $window        = $(window);
     var $document      = $(document);
     var $globalWrapper = $('#global_wrapper');
     var $pageHeader    = $('#page_header');
@@ -169,16 +168,16 @@ jQuery(function ($) {
         }
     });
 
-    // Page load identifier
-    $window.on('load', function () {
-        $('html').addClass('page-loaded');
-
-        // auto hide/slideUp items
-        $('[data-auto-hide]').each(function (i, item) {
-            setTimeout(function () {
-                $(item).stop(true, true).slideUp(300);
-            }, $(item).data('auto-hide') || 2000);
-        });
-    });
 });
 
+// Page load identifier
+$(window).on('load', function () {
+    $('html').addClass('page-loaded');
+
+    // auto hide/slideUp items
+    $('[data-auto-hide]').each(function (i, item) {
+        setTimeout(function () {
+            $(item).stop(true, true).slideUp(300);
+        }, $(item).data('auto-hide') || 2000);
+    });
+});

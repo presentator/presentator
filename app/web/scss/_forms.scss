@@ -178,7 +178,7 @@ button, .btn {
         height: $height;
         line-height: $height;
         padding: 0 ($baseSpacing / 2);
-        font-size: 13px;
+        font-size: $baseFontSize - 1;
         &.btn-cons {
             min-width: 130px;
         }

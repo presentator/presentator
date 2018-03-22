@@ -16,6 +16,9 @@ $action     = Yii::$app->controller->action->id;
             <li class="<?= ($controller === 'projects') ? 'active' : ''?>">
                 <a href="<?= Url::to(['projects/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Projects') ?>"><i class="ion ion-social-buffer"></i></a>
             </li>
+            <li class="<?= ($controller === 'super') ? 'active' : ''?>">
+                <a href="<?= Url::to(['super/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Users') ?>"><i class="ion ion-ios-people"></i></a>
+            </li>
             <li class="<?= ($controller === 'users' && $action === 'settings') ? 'active' : ''?>">
                 <a href="<?= Url::to(['users/settings']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Settings') ?>"><i class="ion ion-android-settings"></i></a>
             </li>

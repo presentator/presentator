@@ -33,7 +33,7 @@ $this->title = Yii::t('app', 'Projects');
     </h5>
     <div id="no_search_results" style="display: none;">
         <h6>
-            <span><?= Yii::t('app', 'No results found') ?>.</span>
+            <span><?= Yii::t('app', 'No results found') ?></span>
             <a href="#" class="clear-projects-search"><?= Yii::t('app', 'Back to all projects') ?></a>
         </h6>
     </div>

@@ -71,7 +71,7 @@ ProjectIndex.prototype.init = function() {
     });
 
     // Projects search
-    var searchValue   = 0;
+    var searchValue = '';
     self.$searchInput.on('input paste', function(e) {
         searchValue = self.$searchInput.val();
         if (searchValue.length > 0) {
