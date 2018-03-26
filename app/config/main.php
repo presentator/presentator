@@ -176,15 +176,17 @@ return [
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/users/<id:\d+>/delete' => 'users/delete',
                 'admin/users/<id:\d+>/delete'                          => 'users/delete',
 
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/temp-avatar-upload'      => 'users/ajax-temp-avatar-upload',
-                'admin/users/temp-avatar-upload'                               => 'users/ajax-temp-avatar-upload',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-save'             => 'users/ajax-avatar-save',
-                'admin/users/avatar-save'                                      => 'users/ajax-avatar-save',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-delete'           => 'users/ajax-avatar-delete',
-                'admin/users/avatar-delete'                                    => 'users/ajax-avatar-delete',
+                // Users avatar upload
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/temp-avatar-upload' => 'users/ajax-temp-avatar-upload',
+                'admin/users/temp-avatar-upload'                          => 'users/ajax-temp-avatar-upload',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-save'        => 'users/ajax-avatar-save',
+                'admin/users/avatar-save'                                 => 'users/ajax-avatar-save',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-delete'      => 'users/ajax-avatar-delete',
+                'admin/users/avatar-delete'                               => 'users/ajax-avatar-delete',
 
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/settings'           => 'users/settings',
-                'admin/users/settings'                                    => 'users/settings',
+                // Regular user settings
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/settings' => 'users/settings',
+                'admin/users/settings'                          => 'users/settings',
             ],
         ],
     ],
