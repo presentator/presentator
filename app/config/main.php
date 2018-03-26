@@ -76,24 +76,6 @@ return [
                 '<lang:\w{2}-\w{2}|\w{2}>/change-email'       => 'site/change-email',
                 'change-email'                                => 'site/change-email',
 
-                // Users
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account'                         => 'users/settings',
-                'admin/account'                                                  => 'users/settings',
-
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/temp-avatar-upload'      => 'users/ajax-temp-avatar-upload',
-                'admin/account/temp-avatar-upload'                               => 'users/ajax-temp-avatar-upload',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/avatar-save'             => 'users/ajax-avatar-save',
-                'admin/account/avatar-save'                                      => 'users/ajax-avatar-save',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/avatar-delete'           => 'users/ajax-avatar-delete',
-                'admin/account/avatar-delete'                                    => 'users/ajax-avatar-delete',
-
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-notifications-save' => 'users/ajax-notifications-save',
-                'admin/account/ajax-notifications-save'                          => 'users/ajax-notifications-save',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-password-save'      => 'users/ajax-password-save',
-                'admin/account/ajax-password-save'                               => 'users/ajax-password-save',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-profile-save'       => 'users/ajax-profile-save',
-                'admin/account/ajax-profile-save'                                => 'users/ajax-profile-save',
-
                 // Projects
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/projects'                                => 'projects/index',
                 'admin/projects'                                                         => 'projects/index',
@@ -185,8 +167,14 @@ return [
                 'admin/users/avatar-delete'                               => 'users/ajax-avatar-delete',
 
                 // Regular user settings
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/settings' => 'users/settings',
-                'admin/users/settings'                          => 'users/settings',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/account'                         => 'users/settings',
+                'admin/account'                                                  => 'users/settings',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-notifications-save' => 'users/ajax-notifications-save',
+                'admin/account/ajax-notifications-save'                          => 'users/ajax-notifications-save',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-password-save'      => 'users/ajax-password-save',
+                'admin/account/ajax-password-save'                               => 'users/ajax-password-save',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-profile-save'       => 'users/ajax-profile-save',
+                'admin/account/ajax-profile-save'                                => 'users/ajax-profile-save',
             ],
         ],
     ],
