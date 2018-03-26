@@ -11,6 +11,7 @@ return [
         'passwordHash'       => '$2a$06$TRlYHhAHRCfO11q8spPPu.GJlPBCrMltBr.u8U/h.jyEJJcOZzbWm', // 123456
         'passwordResetToken' => 'mmhZeoYehC0FFzgURpO625BQlLraoZVn_' . time(), // valid password reset token
         'emailChangeToken'   => md5('test_change@presentator.io') . '_' . time(), // valid email change token
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_INACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -24,6 +25,7 @@ return [
         'passwordHash'       => '$2a$06$D.vvwAuHJKg37EXIQnY39ezf2U23YcW2KAgK91UCn9XMtg5f4q6Aa', // 123456
         'passwordResetToken' => null,
         'emailChangeToken'   => null,
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -37,6 +39,7 @@ return [
         'passwordHash'       => '$2a$06$bVu5ROFjksz.0nj3AMQR0OZOvVniJaNsNkJCivYbqUvj7htjX60Ke', // 123456
         'passwordResetToken' => '62QehlLraoZVe5BoYnmzgURpOmhZC0FF_' . strtotime('-2 days'), // expired password reset token
         'emailChangeToken'   => md5('test_change@presentator.io') . '_' . strtotime('-2 days'), // expired email change token
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -50,6 +53,7 @@ return [
         'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
         'passwordResetToken' => 'QehlLraoZVmmhZC0FFzgURpO62e5BoYn_' . time(), // valid password reset token
         'emailChangeToken'   => md5('test5@presentator.io') . '_' . time(), // valid email change token (duplicate test)
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -63,6 +67,7 @@ return [
         'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
         'passwordResetToken' => null,
         'emailChangeToken'   => md5('test_change2@presentator.io') . '_' . time(), // valid email change token
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -76,6 +81,7 @@ return [
         'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
         'passwordResetToken' => null,
         'emailChangeToken'   => null,
+        'type'               => User::TYPE_SUPER,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,
@@ -89,6 +95,7 @@ return [
         'passwordHash'       => '$2a$06$588SkWzoJiBHvD0yQnwsFuZvZZSyKmJOoR3a2u5kueRu/jmHMjwje', // 123456
         'passwordResetToken' => null,
         'emailChangeToken'   => null,
+        'type'               => User::TYPE_REGULAR,
         'status'             => User::STATUS_ACTIVE,
         'createdAt'          => 1488526394,
         'updatedAt'          => 1488526394,

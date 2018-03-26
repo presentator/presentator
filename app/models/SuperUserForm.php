@@ -3,6 +3,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\base\InvalidConfigException;
 use common\models\User;
 
 /**
@@ -14,6 +15,9 @@ use common\models\User;
  */
 class SuperUserForm extends Model
 {
+    const SCENARIO_UPDATE = 'scenario_update';
+    const SCENARIO_CREATE = 'scenario_create';
+
     /**
      * @var string
      */
@@ -38,6 +42,11 @@ class SuperUserForm extends Model
      * @var integer
      */
     public $type;
+
+    /**
+     * @var boolean
+     */
+    public $changePassword = false;
 
     /**
      * @var string
@@ -69,11 +78,29 @@ class SuperUserForm extends Model
      * @param User  $user
      * @param array $config
      */
-    public function __construct(User $user, $config = [])
+    public function __construct(User $user = null, $config = [])
     {
-        $this->loadUser($user);
+        // set default scenario
+        $this->scenario = self::SCENARIO_CREATE;
+
+        if ($user) {
+            if (!$user->isNewRecord) {
+                $this->scenario = self::SCENARIO_UPDATE;
+            }
+
+            $this->loadUser($user);
+        } else {
+            $this->user = new User;
+        }
 
         parent::__construct($config);
+
+        if (
+            $this->scenario == self::SCENARIO_UPDATE &&
+            (!$this->user || $this->user->isNewRecord)
+        ) {
+            throw new InvalidConfigException('Existing user instance is required for update scenario.');
+        }
     }
 
     /**
@@ -85,6 +112,7 @@ class SuperUserForm extends Model
             'firstName'       => Yii::t('app', 'First name'),
             'lastName'        => Yii::t('app', 'Last name'),
             'email'           => Yii::t('app', 'Email'),
+            'changePassword'  => Yii::t('app', 'Change password'),
             'password'        => Yii::t('app', 'Password'),
             'passwordConfirm' => Yii::t('app', 'Password confirmation'),
             'notifications'   => Yii::t('app', 'Receive an email when a new screen comment is added'),
@@ -95,18 +123,41 @@ class SuperUserForm extends Model
     /**
      * @inheritdoc
      */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $baseFields = [
+            'firstName', 'lastName', 'email',
+            'status', 'type',
+            'password', 'passwordConfirm',
+            'notifications', 'mentions',
+        ];
+
+        $scenarios[self::SCENARIO_CREATE] = $baseFields;
+
+        $scenarios[self::SCENARIO_UPDATE] = array_merge($baseFields, [
+            'changePassword',
+        ]);
+
+        return $scenarios;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            ['type', 'default', 'value' => User::TYPE_REGULAR],
-            ['type', 'in', 'range' => array_keys(User::getTypeLabels())],
-            ['status', 'default', 'value' => static::STATUS_INACTIVE],
-            ['status', 'in', 'range' => array_keys(User::getStatusLabels())],
             [['email', 'status', 'type'], 'required'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => User::className(), 'filter' => function ($query) {
-                $query->andWhere(['not', ['email' => $this->user->email]]);
+                $query->andFilterWhere(['not', ['email' => $this->user->email]]);
             }],
+            ['type', 'default', 'value' => User::TYPE_REGULAR],
+            ['type', 'in', 'range' => array_keys(User::getTypeLabels())],
+            ['status', 'default', 'value' => User::STATUS_INACTIVE],
+            ['status', 'in', 'range' => array_keys(User::getStatusLabels())],
             [['firstName', 'lastName'], 'string', 'max' => 255],
             [['firstName', 'lastName'], 'filter', 'filter' => function ($value) {
                 $value = trim($value);
@@ -114,9 +165,26 @@ class SuperUserForm extends Model
                 // capitalize first letter
                 return (mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1));
             }],
+            [['notifications', 'mentions'], 'boolean'],
             ['password', 'string', 'min' => 4, 'max' => 255],
             ['passwordConfirm', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('app', "Passwords don't match")],
-            [['notifications', 'mentions'], 'boolean'],
+            ['password', 'required', 'when' => function ($model) {
+                if ($model->scenario == self::SCENARIO_CREATE) {
+                    return true;
+                }
+
+                if ($model->changePassword) {
+                    return true;
+                }
+
+                return false;
+            }, 'whenClient' => 'function (attribute, value) {
+                if ($("#superuserform-changepassword").length) {
+                    return $("#superuserform-changepassword").is(":checked");
+                }
+
+                return true;
+            }'],
         ];
     }
 
@@ -150,14 +218,28 @@ class SuperUserForm extends Model
             $user->status    = $this->status;
             $user->type      = $this->type;
 
-            if ($this->password) {
+            if ($this->scenario == self::SCENARIO_CREATE || $this->changePassword) {
                 $user->setPassword($this->password);
             }
 
-            $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
-            $user->setSetting(User::MENTIONS_SETTING_KEY, $this->mentions ? true : false);
+            $transaction = User::getDb()->beginTransaction();
+            try {
+                $result = $user->save();
+                $result = $result && $user->setSetting(User::NOTIFICATIONS_SETTING_KEY, $this->notifications ? true : false);
+                $result = $result && $user->setSetting(User::MENTIONS_SETTING_KEY, $this->mentions ? true : false);
 
-            return $user->save();
+                if ($result) {
+                    $transaction->commit();
+
+                    return true;
+                }
+
+                $transaction->rollBack();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
         }
 
         return false;

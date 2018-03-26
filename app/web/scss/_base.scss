@@ -441,6 +441,7 @@ ul {
     @extend %block;
     @extend %clear-after;
     max-width: 900px;
+    margin-bottom: $baseSpacing;
 }
 .global-wrapper {
     @extend %clear-after;

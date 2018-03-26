@@ -170,7 +170,7 @@ class ScreenTest extends \Codeception\Test\Unit
             Screen::TRANSITION_SLIDE_BOTTOM,
         ];
 
-        verify('Labels count should match', count($labels))->equals(6);
+        verify('Labels count should match', count($labels))->equals(count($expectedKeys));
         foreach ($expectedKeys as $key) {
             verify($key . ' key should be set', $labels)->hasKey($key);
         }

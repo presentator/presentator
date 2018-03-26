@@ -27,12 +27,8 @@ use common\widgets\CActiveForm;
 
     <hr class="m-t-0">
 
-    <div class="table-wrapper">
-        <div class="table-cell text-left">
-            <span class="default-link reset-form-handle">Cancel changes</span>
-        </div>
-        <div class="table-cell text-right">
-            <button class="btn btn-primary"><?= Yii::t('app', 'Save changes') ?></button>
-        </div>
+    <div class="block">
+        <button type="button" class="btn btn-ghost left reset-form-handle"><?= Yii::t('app', 'Cancel') ?></button>
+        <button class="btn btn-primary btn-cons right"><?= Yii::t('app', 'Save changes') ?></button>
     </div>
 <?php CActiveForm::end(); ?>

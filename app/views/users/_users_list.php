@@ -62,10 +62,10 @@ use common\models\User;
                 </td>
                 <td><?= date('Y-m-d H:i:s', $user->updatedAt) ?></td>
                 <td class="min-width">
-                    <a href="#" class="btn btn-ghost btn-label btn-primary m-r-15">
+                    <a href="<?= Url::to(['users/update', 'id' => $user->id]) ?>" class="btn btn-ghost btn-label btn-primary m-r-15">
                         <?= Yii::t('app', 'Edit') ?>
                     </a>
-                    <a href="<?= Url::to(['super/delete', 'id' => $user->id]) ?>"
+                    <a href="<?= Url::to(['users/delete', 'id' => $user->id]) ?>"
                         class="btn btn-ghost btn-label btn-danger"
                         data-method="post"
                         data-confirm="<?= Yii::t('app', 'Are you really sure you want to delete user {userEmail}?', ['userEmail' => $user->email]) ?>"

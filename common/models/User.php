@@ -100,6 +100,7 @@ class User extends CActiveRecord implements IdentityInterface
         $extraFields['settings'] = function ($model, $field) {
             return [
                 self::NOTIFICATIONS_SETTING_KEY => $model->getSetting(self::NOTIFICATIONS_SETTING_KEY, true),
+                self::MENTIONS_SETTING_KEY      => $model->getSetting(self::MENTIONS_SETTING_KEY, true),
             ];
         };
 

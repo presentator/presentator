@@ -79,12 +79,14 @@ return [
                 // Users
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account'                         => 'users/settings',
                 'admin/account'                                                  => 'users/settings',
+
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account/temp-avatar-upload'      => 'users/ajax-temp-avatar-upload',
                 'admin/account/temp-avatar-upload'                               => 'users/ajax-temp-avatar-upload',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account/avatar-save'             => 'users/ajax-avatar-save',
                 'admin/account/avatar-save'                                      => 'users/ajax-avatar-save',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account/avatar-delete'           => 'users/ajax-avatar-delete',
                 'admin/account/avatar-delete'                                    => 'users/ajax-avatar-delete',
+
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-notifications-save' => 'users/ajax-notifications-save',
                 'admin/account/ajax-notifications-save'                          => 'users/ajax-notifications-save',
                 '<lang:\w{2}-\w{2}|\w{2}>/admin/account/ajax-password-save'      => 'users/ajax-password-save',
@@ -164,11 +166,25 @@ return [
                 '<lang:\w{2}-\w{2}|\w{2}>/<slug:[\w\-]+>/ajax-invoke-access' => 'preview/ajax-invoke-access',
                 '<slug:[\w\-]+>/ajax-invoke-access'                          => 'preview/ajax-invoke-access',
 
-                // Super
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/super'                 => 'super/index',
-                'admin/super'                                          => 'super/index',
-                '<lang:\w{2}-\w{2}|\w{2}>/admin/super/<id:\d+>/delete' => 'super/delete',
-                'admin/super/<id:\d+>/delete'                          => 'super/delete',
+                // Super user
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users'                 => 'users/index',
+                'admin/users'                                          => 'users/index',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/create'          => 'users/create',
+                'admin/users/create'                                   => 'users/create',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/<id:\d+>/update' => 'users/update',
+                'admin/users/<id:\d+>/update'                          => 'users/update',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/<id:\d+>/delete' => 'users/delete',
+                'admin/users/<id:\d+>/delete'                          => 'users/delete',
+
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/temp-avatar-upload'      => 'users/ajax-temp-avatar-upload',
+                'admin/users/temp-avatar-upload'                               => 'users/ajax-temp-avatar-upload',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-save'             => 'users/ajax-avatar-save',
+                'admin/users/avatar-save'                                      => 'users/ajax-avatar-save',
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/avatar-delete'           => 'users/ajax-avatar-delete',
+                'admin/users/avatar-delete'                                    => 'users/ajax-avatar-delete',
+
+                '<lang:\w{2}-\w{2}|\w{2}>/admin/users/settings'           => 'users/settings',
+                'admin/users/settings'                                    => 'users/settings',
             ],
         ],
     ],
