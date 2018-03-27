@@ -55,7 +55,7 @@
         @include flex(1);
     }
     &.close-anim {
-        @include animation(tab-hide 0.3s forwards);
+        @include animation(fade-out 0.3s forwards);
     }
     // close handle
     .close-handle {
