@@ -1364,7 +1364,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"type\": 0,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true,\n    \"mentions\": true\n  }\n}",
           "type": "json"
         }
       ]
@@ -1555,7 +1555,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true\n  }\n}",
+          "content": "{\n  \"id\": 1,\n  \"email\": \"test@presentator.io\",\n  \"firstName\": \"Lorem\",\n  \"lastName\": \"Ipsum\",\n  \"status\": 1,\n  \"type\": 0,\n  \"createdAt\": 1489244154,\n  \"updatedAt\": 1489244169,\n  \"avatar\": \"https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg\",\n  \"settings\": {\n    \"notifications\": true,\n    \"mentions\": true\n  }\n}",
           "type": "json"
         }
       ]

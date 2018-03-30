@@ -47,11 +47,13 @@ class UsersController extends ApiController
      *   "firstName": "Lorem",
      *   "lastName": "Ipsum",
      *   "status": 1,
+     *   "type": 0,
      *   "createdAt": 1489244154,
      *   "updatedAt": 1489244169,
      *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
-     *     "notifications": true
+     *     "notifications": true,
+     *     "mentions": true
      *   }
      * }
      *
@@ -155,11 +157,13 @@ class UsersController extends ApiController
      *   "firstName": "Lorem",
      *   "lastName": "Ipsum",
      *   "status": 1,
+     *   "type": 0,
      *   "createdAt": 1489244154,
      *   "updatedAt": 1489244169,
      *   "avatar": "https://app.presentator.io/uploads/users/c8f636f067f89cc148621e728d9d4c2c/avatar.jpg",
      *   "settings": {
-     *     "notifications": true
+     *     "notifications": true,
+     *     "mentions": true
      *   }
      * }
      *
