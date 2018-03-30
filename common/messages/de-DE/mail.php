@@ -17,11 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Confirm email address change' => '',
-    'Email change request' => '',
-    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
-    'You have been mentioned in a comment' => '',
-    'You have been mentioned in a comment for project "{projectTitle}".' => '',
+    'Confirm email address change' => 'Bestätige die Änderung deiner E-Mail Adresse',
+    'Email change request' => 'E-Mail Änderungsanfrage',
+    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'Wir haben eine Anfrage zum Ändern deiner E-Mail Adresse von {oldEmail} nach {newEmail} erhalten.',
     'A new comment was left for project "{projectTitle}".' => 'Ein neuer Kommentar wurde zum Projekt "{projectTitle}" hinterlassen.',
     'Account activation' => 'Kontoaktivierung',
     'Activate account' => 'Konto aktivieren',
@@ -54,6 +52,8 @@ return array(
     'You are assigned as admin to project "{projectTitle}".' => 'Du wurdest dem Projekt "{projectTitle}" als Administrator zugewiesen. ',
     'You are invited to review the design for "{projectTitle}".' => 'Du wurdest eingeladen das Design von "{projectTitle}" zu begutachten. ',
     'You are no longer an administrator to project "{projectTitle}".' => 'Du bist nicht länger ein Administrator des Projekts "{projectTitle}" ',
+    'You have been mentioned in a comment' => 'Du wurdest in einem Kommentar erwähnt',
+    'You have been mentioned in a comment for project "{projectTitle}".' => 'Du wurdest in einem Kommentar des Projekts "{projectTitle}" erwähnt.',
     'You have successfully registered via Facebook.' => 'Du hast dich erfolgreich mit Facebook registriert.',
     '{projectTitle} preview' => '{projectTitle} Vorschau',
 );
