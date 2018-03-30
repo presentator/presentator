@@ -409,6 +409,7 @@ input[type="radio"] {
                 position: absolute;
                 left: 0;
                 top: 0;
+                margin: 0;
                 width: $checkSize;
                 height: $checkSize;
                 font-size: 13px;
@@ -511,6 +512,18 @@ input[type="radio"] {
             border-color: $dangerColor;
             background: rgba($dangerColor, 0.04);
             @include placeholder(lighten($dangerColor, 5%));
+        }
+    }
+    &.required {
+        label {
+            &:after {
+                content: "*";
+                color: $dangerColor;
+                margin-left: 2px;
+                font-size: 11px;
+                line-height: 14px;
+                vertical-align: top;
+            }
         }
     }
 }
