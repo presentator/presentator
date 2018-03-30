@@ -57,17 +57,9 @@ class ProjectsController extends AppController
             return $this->redirect(['projects/view', 'id' => $project->id]);
         }
 
-        $projects        = $user->findProjects(self::ITEMS_PER_PAGE);
-        $hasMoreProjects = $user->countProjects() > count($projects);
-        $projectIds      = ArrayHelper::getColumn($projects, 'id');
-        $commentCounters = $user->countUnreadCommentsByProjects($projectIds);
-
         return $this->render('index', [
-            'projects'        => $projects,
             'projectForm'     => $projectForm,
             'typesList'       => Project::getTypeLabels(),
-            'hasMoreProjects' => $hasMoreProjects,
-            'commentCounters' => $commentCounters,
             'subtypesList'    => [
                 Project::TYPE_TABLET => Project::getTabletSubtypeLabels(),
                 Project::TYPE_MOBILE => Project::getMobileSubtypeLabels(),
@@ -211,11 +203,12 @@ class ProjectsController extends AppController
 
     /**
      * Renders filtered projects dropdown items.
-     * @param  string $search
+     * @param  string  $search
+     * @param  boolean $mustBeOwner Flag to filter only super user owned projects (for regular users this flag is ignored and it is always `true`)
      * @return array
      * @throws BadRequestHttpException For none ajax requests
      */
-    public function actionAjaxSearchProjects($search)
+    public function actionAjaxSearchProjects($search, $mustBeOwner = true)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -223,14 +216,23 @@ class ProjectsController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $user = Yii::$app->user->identity;
+        // normalize super user owner flag parameter
+        $mustBeOwner = is_bool($mustBeOwner) ? $mustBeOwner : ($mustBeOwner === 'true');
+
+        // normalize search param
         $search = trim($search);
+
         if (strlen($search) >= 2) {
-            $projects = $user->searchProjects($search);
+            $user            = Yii::$app->user->identity;
+            $projects        = $user->searchProjects($search, 200, 0, $mustBeOwner);
+            $commentCounters = $user->countUnreadCommentsByProjects(ArrayHelper::getColumn($projects, 'id'));
 
             $projectsHtml = '';
             foreach ($projects as $project) {
-                $projectsHtml .= $this->renderPartial('_item', ['model' => $project]);
+                $projectsHtml .= $this->renderPartial('_item', [
+                    'model'       => $project,
+                    'newComments' => ArrayHelper::getValue($commentCounters, $project->id, 0),
+                ]);
             }
 
             return [
@@ -241,18 +243,19 @@ class ProjectsController extends AppController
 
         return [
             'success' => false,
-            // there is no need for error message
+            // there is no need for an error message
             // 'message' => Yii::t('app', 'Oops, an error occurred while processing your request.'),
         ];
     }
 
     /**
      * Loads project items via ajax.
-     * @param  integet $page
+     * @param  integer $page
+     * @param  boolean $mustBeOwner Flag to filter only super user owned projects (for regular users this flag is ignored and it is always `true`)
      * @return array
      * @throws BadRequestHttpException For none ajax requests
      */
-    public function actionAjaxLoadMore($page = 1)
+    public function actionAjaxLoadMore($page = 1, $mustBeOwner = true)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -260,17 +263,25 @@ class ProjectsController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        // normalize page
+        // normalize page parameter
         $page   = $page ? (int) $page : 1;
         $offset = (($page - 1) * self::ITEMS_PER_PAGE);
 
+        // normalize super user owner flag parameter
+        $mustBeOwner = is_bool($mustBeOwner) ? $mustBeOwner : ($mustBeOwner === 'true');
+
+        // fetch projects
         $user               = Yii::$app->user->identity;
-        $projects           = $user->findProjects(self::ITEMS_PER_PAGE, $offset);
-        $totalProjectsCount = $user->countProjects();
+        $projects           = $user->findProjects(self::ITEMS_PER_PAGE, $offset, $mustBeOwner);
+        $totalProjectsCount = $user->countProjects($mustBeOwner);
+        $commentCounters    = $user->countUnreadCommentsByProjects(ArrayHelper::getColumn($projects, 'id'));
 
         $projectsHtml = '';
         foreach ($projects as $project) {
-            $projectsHtml .= $this->renderPartial('_item', ['model' => $project]);
+            $projectsHtml .= $this->renderPartial('_item', [
+                'model'       => $project,
+                'newComments' => ArrayHelper::getValue($commentCounters, $project->id, 0),
+            ]);
         }
 
         $hasMoreProjects = true;
@@ -287,7 +298,7 @@ class ProjectsController extends AppController
 
     /**
      * Sends Project preview url email via ajax.
-     * @param  integet $id
+     * @param  integer $id
      * @return array
      * @throws BadRequestHttpException For none ajax requests
      */

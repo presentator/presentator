@@ -118,37 +118,45 @@ class ScreensCest
     public function ajaxUploadSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully upload new screen(s)');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-upload']);
-        $I->sendPOST(
-            ['screens/ajax-upload'],
-            ['versionId' => 1002],
-            [
-                // mockup $_FILES
-                'ScreensUploadForm' => [
-                    'images' => [
-                        [
-                            'name'     => 'test_image.jpg',
-                            'type'     => 'image/jpeg',
-                            'error'    => UPLOAD_ERR_OK,
-                            'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
-                            'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
+
+        $scenarios = [
+            1002 => 1002, // regular user
+            1006 => 1002, // super user
+        ];
+
+        foreach ($scenarios as $userId => $versionId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screens/ajax-upload']);
+            $I->sendPOST(
+                ['screens/ajax-upload'],
+                ['versionId' => $versionId],
+                [
+                    // mockup $_FILES
+                    'ScreensUploadForm' => [
+                        'images' => [
+                            [
+                                'name'     => 'test_image.jpg',
+                                'type'     => 'image/jpeg',
+                                'error'    => UPLOAD_ERR_OK,
+                                'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
+                                'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
+                            ],
+                            [
+                                'name'     => 'test_image.png',
+                                'type'     => 'image/jpeg',
+                                'error'    => UPLOAD_ERR_OK,
+                                'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.png')),
+                                'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.png'),
+                            ]
                         ],
-                        [
-                            'name'     => 'test_image.png',
-                            'type'     => 'image/jpeg',
-                            'error'    => UPLOAD_ERR_OK,
-                            'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.png')),
-                            'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.png'),
-                        ]
-                    ],
-                ]
-            ],
-            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
-        );
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"listItemsHtml":');
+                    ]
+                ],
+                ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+            );
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"listItemsHtml":');
+        }
     }
 
     /* ===============================================================
@@ -236,29 +244,37 @@ class ScreensCest
     public function ajaxReplaceSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully replace screen image');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-replace']);
-        $I->sendPOST(
-            ['screens/ajax-replace'],
-            ['screenId' => 1001],
-            [
-                // mockup $_FILES
-                'ScreenReplaceForm' => [
-                    'image' => [
-                        'name'     => 'test_image.jpg',
-                        'type'     => 'image/jpeg', // try to set incorrect mimetype
-                        'error'    => UPLOAD_ERR_OK,
-                        'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
-                        'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
-                    ],
-                ]
-            ],
-            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
-        );
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"screen":');
-        $I->seeResponseContains('"imageUrl":"/uploads/projects/b8c37e33defde51cf91e1e03e51657da/testimage_');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $screenId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screens/ajax-replace']);
+            $I->sendPOST(
+                ['screens/ajax-replace'],
+                ['screenId' => $screenId],
+                [
+                    // mockup $_FILES
+                    'ScreenReplaceForm' => [
+                        'image' => [
+                            'name'     => 'test_image.jpg',
+                            'type'     => 'image/jpeg', // try to set incorrect mimetype
+                            'error'    => UPLOAD_ERR_OK,
+                            'size'     => filesize(Yii::getAlias('@common/tests/_data/test_image.jpg')),
+                            'tmp_name' => Yii::getAlias('@common/tests/_data/test_image.jpg'),
+                        ],
+                    ]
+                ],
+                ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+            );
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"screen":');
+            $I->seeResponseContains('"imageUrl":"/uploads/projects/b8c37e33defde51cf91e1e03e51657da/testimage_');
+        }
     }
 
     /* ===============================================================
@@ -292,22 +308,28 @@ class ScreensCest
      */
     public function ajaxReorderSuccess(FunctionalTester $I)
     {
-
         $I->wantTo('Successfully reorder screen model');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-reorder']);
-        $I->amGoingTo('try to reorder screen not owned by the logged user');
-        $I->sendAjaxPostRequest(['screens/ajax-reorder'], [
-            'id'       => 1001,
-            'position' => 2,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $screen1 = Screen::findOne(1001);
-        $screen2 = Screen::findOne(1002);
-        $I->assertEquals($screen1->order, 2);
-        $I->assertEquals($screen2->order, 1);
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $screenId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screens/ajax-reorder']);
+            $I->sendAjaxPostRequest(['screens/ajax-reorder'], [
+                'id'       => $screenId,
+                'position' => 2,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $screen1 = Screen::findOne(1001);
+            $screen2 = Screen::findOne(1002);
+            $I->assertEquals($screen1->order, 2);
+            $I->assertEquals($screen2->order, 1);
+        }
     }
 
     /* ===============================================================
@@ -355,6 +377,22 @@ class ScreensCest
         $I->dontSeeRecord(Screen::className(), ['id' => 1002]);
     }
 
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxDeleteAsSuperUser(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully delete a screen model as super user');
+        $I->amLoggedInAs(1006);
+        $I->ensureAjaxPostActionAccess(['screens/ajax-delete']);
+        $I->sendAjaxPostRequest(['screens/ajax-delete'], ['id' => [1001, 1002]]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"message":');
+        $I->dontSeeRecord(Screen::className(), ['id' => 1001]);
+        $I->dontSeeRecord(Screen::className(), ['id' => 1002]);
+    }
+
     /* ===============================================================
      * `ProjectsController::actionAjaxGetSettings()` tests
      * ============================================================ */
@@ -378,12 +416,20 @@ class ScreensCest
     public function ajaxGetSettingsSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully renders screen settings');
-        $I->amLoggedInAs(1002);
-        $I->cantAccessAsGuest(['screens/ajax-get-settings', 'id' => 1001]);
-        $I->sendAjaxGetRequest(['screens/ajax-get-settings'], ['id' => 1001]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"settingsHtml":');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $screenId) {
+            $I->amLoggedInAs($userId);
+            $I->cantAccessAsGuest(['screens/ajax-get-settings', 'id' => $screenId]);
+            $I->sendAjaxGetRequest(['screens/ajax-get-settings'], ['id' => $screenId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"settingsHtml":');
+        }
     }
 
     /* ===============================================================
@@ -428,26 +474,34 @@ class ScreensCest
      */
     public function ajaxSaveSettingsFormSuccess(FunctionalTester $I)
     {
-        $screen = Screen::findOne(1001);
-
         $I->wantTo('Successfully submit screen settings form');
-        $I->amLoggedInAs(1002);
-        $I->cantAccessAsGuest(['screens/ajax-save-settings-form', 'id' => $screen->id]);
-        $I->sendAjaxPostRequest(['screens/ajax-save-settings-form', 'id' => $screen->id], [
-            'ScreenSettingsForm' => [
-                'title'      => 'New title',
-                'alignment'  => Screen::ALIGNMENT_LEFT,
-                'background' => '#000000',
-            ],
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"settings":');
-        $I->seeResponseContains('"message":');
-        $screen->refresh();
-        $I->assertEquals($screen->title, 'New title');
-        $I->assertEquals($screen->alignment, Screen::ALIGNMENT_LEFT);
-        $I->assertEquals($screen->background, '#000000');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
+
+        foreach ($scenarios as $userId => $screenId) {
+            $screen = Screen::findOne($screenId);
+
+            $I->amLoggedInAs($userId);
+            $I->cantAccessAsGuest(['screens/ajax-save-settings-form', 'id' => $screen->id]);
+            $I->sendAjaxPostRequest(['screens/ajax-save-settings-form', 'id' => $screen->id], [
+                'ScreenSettingsForm' => [
+                    'title'      => 'New title',
+                    'alignment'  => Screen::ALIGNMENT_LEFT,
+                    'background' => '#000000',
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"settings":');
+            $I->seeResponseContains('"message":');
+            $screen->refresh();
+            $I->assertEquals($screen->title, 'New title');
+            $I->assertEquals($screen->alignment, Screen::ALIGNMENT_LEFT);
+            $I->assertEquals($screen->background, '#000000');
+        }
     }
 
     /* ===============================================================
@@ -476,34 +530,42 @@ class ScreensCest
      */
     public function ajaxSaveHotspotsSuccess(FunctionalTester $I)
     {
-        $screen = Screen::findOne(1001);
-
         $I->wantTo('Successfully save hotspots data');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-save-hotspots']);
 
-        $I->amGoingTo('set new screen hotspots');
-        $I->sendAjaxPostRequest(['screens/ajax-save-hotspots'], [
-            'id'       => $screen->id,
-            'hotspots' => [
-                'hotspot_1' => ['left' => 0, 'top' => 0, 'width' => 10, 'height' => 10, 'link' => '#'],
-                'hotspot_2' => ['left' => 0, 'top' => 0, 'width' => 10, 'height' => 10, 'link' => '#'],
-            ],
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $screen->refresh();
-        $I->assertNotEmpty($screen->hotspots);
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
 
-        $I->amGoingTo('clear all screen hotspots');
-        $I->sendAjaxPostRequest(['screens/ajax-save-hotspots'], [
-            'id'       => $screen->id,
-            'hotspots' => null,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $screen->refresh();
-        $I->assertEmpty($screen->hotspots);
+        foreach ($scenarios as $userId => $screenId) {
+            $screen = Screen::findOne($screenId);
+
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screens/ajax-save-hotspots']);
+
+            $I->amGoingTo('set new screen hotspots');
+            $I->sendAjaxPostRequest(['screens/ajax-save-hotspots'], [
+                'id'       => $screen->id,
+                'hotspots' => [
+                    'hotspot_1' => ['left' => 0, 'top' => 0, 'width' => 10, 'height' => 10, 'link' => '#'],
+                    'hotspot_2' => ['left' => 0, 'top' => 0, 'width' => 10, 'height' => 10, 'link' => '#'],
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $screen->refresh();
+            $I->assertNotEmpty($screen->hotspots);
+
+            $I->amGoingTo('clear all screen hotspots');
+            $I->sendAjaxPostRequest(['screens/ajax-save-hotspots'], [
+                'id'       => $screen->id,
+                'hotspots' => null,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $screen->refresh();
+            $I->assertEmpty($screen->hotspots);
+        }
     }
 
     /* ===============================================================
@@ -543,21 +605,27 @@ class ScreensCest
     public function ajaxMoveScreensSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully move screens from one version to another');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screens/ajax-move-screens']);
 
-        $I->amGoingTo('try to move screens to a version that is owned by the logged user');
-        $I->sendAjaxPostRequest(['screens/ajax-move-screens'], [
-            'screenIds' => [1001, 1002],
-            'versionId' => 1002,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
 
-        $screens = Screen::findAll(['id' => [1001, 1002]]);
-        foreach ($screens as $screen) {
-            $I->assertEquals($screen->versionId, 1002);
+        foreach ($scenarios as $userId => $versionId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screens/ajax-move-screens']);
+            $I->sendAjaxPostRequest(['screens/ajax-move-screens'], [
+                'screenIds' => [1001, 1002],
+                'versionId' => $versionId,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+
+            $screens = Screen::findAll(['id' => [1001, 1002]]);
+            foreach ($screens as $screen) {
+                $I->assertEquals($screen->versionId, $versionId);
+            }
         }
     }
 
@@ -587,29 +655,37 @@ class ScreensCest
     public function ajaxGetThumbsSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully fetch and generate thumbnails');
-        $I->amLoggedInAs(1002);
-        $I->cantAccessAsGuest(['screens/ajax-get-thumbs', 'id' => 1001]);
 
-        $I->amGoingTo('try to fetch and generate specific thumb size of a screen that is owned by the logged user');
-        $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
-            'id'        => 1001,
-            'thumbSize' => 'medium'
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"thumbs":');
-        $I->seeResponseContains('"medium":');
-        $I->dontSeeResponseContains('"small":');
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
 
-        $I->amGoingTo('try to fetch and generate thumbs of a screen that is owned by the logged user');
-        $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
-            'id' => 1001,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"thumbs":');
-        foreach (Screen::THUMB_SIZES as $size => $settings) {
-            $I->seeResponseContains('"' . $size . '":');
+        foreach ($scenarios as $userId => $screenId) {
+            $I->amLoggedInAs($userId);
+            $I->cantAccessAsGuest(['screens/ajax-get-thumbs', 'id' => $screenId]);
+
+            $I->amGoingTo('try to fetch and generate specific thumb size of a screen that is owned by the logged user');
+            $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
+                'id'        => $screenId,
+                'thumbSize' => 'medium'
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"thumbs":');
+            $I->seeResponseContains('"medium":');
+            $I->dontSeeResponseContains('"small":');
+
+            $I->amGoingTo('try to fetch and generate thumbs of a screen that is owned by the logged user');
+            $I->sendAjaxGetRequest(['screens/ajax-get-thumbs'], [
+                'id' => $screenId,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"thumbs":');
+            foreach (Screen::THUMB_SIZES as $size => $settings) {
+                $I->seeResponseContains('"' . $size . '":');
+            }
         }
     }
 }

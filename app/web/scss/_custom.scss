@@ -129,6 +129,29 @@
     }
 }
 
+// Filter bar block
+.filter-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    margin: 0 0 $baseSpacing;
+    .filter-item {
+        margin-left: 20px;
+        &:first-child {
+            margin-left: 0;
+        }
+        &.min-width {
+            white-space: nowrap;
+        }
+        &.max-width {
+            width: 99%;
+        }
+        & > div {
+            margin: 0;
+        }
+    }
+}
 
 // Dashboard widgets
 .dashboard-widget {

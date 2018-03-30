@@ -99,13 +99,21 @@ class ScreenCommentsCest
     public function ajaxDeleteSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully delete a screen comment model');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-delete']);
-        $I->sendAjaxPostRequest(['screen-comments/ajax-delete'], ['id' => 1001]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->dontSeeRecord(ScreenComment::className(), ['id' => 1001]);
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
+
+        foreach ($scenarios as $userId => $commentId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screen-comments/ajax-delete']);
+            $I->sendAjaxPostRequest(['screen-comments/ajax-delete'], ['id' => $commentId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->dontSeeRecord(ScreenComment::className(), ['id' => $commentId]);
+        }
     }
 
     /* ===============================================================
@@ -224,24 +232,32 @@ class ScreenCommentsCest
      */
     public function ajaxCreateUserSuccess(FunctionalTester $I)
     {
-        $oldCount = ScreenComment::find()->count();
-
         $I->wantTo('Successfully create a new screen comment via logged user');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-create'], [], true);
-        $I->sendAjaxPostRequest(['screen-comments/ajax-create'], [
-            'screenId' => 1001,
-            'replyTo'  => null,
-            'message'  => 'Lorem ipsum dolor sit amet...',
-            'from'     => 'test@presentator.io',
-            'posX'     => 0,
-            'posY'     => 100,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->seeResponseContains('"commentsListHtml":');
-        $I->seeRecordsCountChange(ScreenComment::className(), $oldCount, 1);
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $screenId) {
+            $oldCount = ScreenComment::find()->count();
+
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screen-comments/ajax-create'], [], true);
+            $I->sendAjaxPostRequest(['screen-comments/ajax-create'], [
+                'screenId' => $screenId,
+                'replyTo'  => null,
+                'message'  => 'Lorem ipsum dolor sit amet...',
+                'from'     => 'test@presentator.io',
+                'posX'     => 0,
+                'posY'     => 100,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->seeResponseContains('"commentsListHtml":');
+            $I->seeRecordsCountChange(ScreenComment::className(), $oldCount, 1);
+        }
     }
 
     /* ===============================================================
@@ -328,15 +344,23 @@ class ScreenCommentsCest
     public function ajaxGetCommentsUserSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully fetch a screen comments list as a logged user');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['screen-comments/ajax-get-comments'], [], true);
-        $I->sendAjaxGetRequest(['screen-comments/ajax-get-comments'], [
-            'commentId' => 1001,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"commentsListHtml":');
-        $I->seeRecord(UserScreenCommentRel::className(), ['userId' => 1002, 'screenCommentId' => 1001, 'isRead' => UserScreenCommentRel::IS_READ_TRUE]);
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $commentId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['screen-comments/ajax-get-comments'], [], true);
+            $I->sendAjaxGetRequest(['screen-comments/ajax-get-comments'], [
+                'commentId' => $commentId,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"commentsListHtml":');
+            $I->seeRecord(UserScreenCommentRel::className(), ['userId' => $userId, 'screenCommentId' => $commentId, 'isRead' => UserScreenCommentRel::IS_READ_TRUE]);
+        }
     }
 
     /**
@@ -385,18 +409,24 @@ class ScreenCommentsCest
     public function ajaxPositionUpdateSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully update a screen comments target position');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-position-update'], ['commentId' => 1001], false);
 
-        $I->amGoingTo('try with a primary comment');
-        $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
-            'commentId' => 1001,
-            'posX'      => 200,
-            'posY'      => 0,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeRecord(ScreenComment::className(), ['id' => 1001, 'posX' => 200, 'posY' => 0]);
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $commentId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screen-comments/ajax-position-update'], ['commentId' => $commentId], false);
+            $I->sendAjaxPostRequest(['screen-comments/ajax-position-update'], [
+                'commentId' => $commentId,
+                'posX'      => 200,
+                'posY'      => 0,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeRecord(ScreenComment::className(), ['id' => $commentId, 'posX' => 200, 'posY' => 0]);
+        }
     }
 
     /**
@@ -442,16 +472,22 @@ class ScreenCommentsCest
     public function ajaxStatusUpdateSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully update a screen comment status');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['screen-comments/ajax-status-update'], ['commentId' => 1001], false);
 
-        $I->amGoingTo('change primary comment status from pending to resolved');
-        $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
-            'commentId' => 1001,
-            'status'    => ScreenComment::STATUS_RESOLVED,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeRecord(ScreenComment::className(), ['id' => 1001, 'status' => ScreenComment::STATUS_RESOLVED]);
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $commentId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['screen-comments/ajax-status-update'], ['commentId' => $commentId], false);
+            $I->sendAjaxPostRequest(['screen-comments/ajax-status-update'], [
+                'commentId' => $commentId,
+                'status'    => ScreenComment::STATUS_RESOLVED,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeRecord(ScreenComment::className(), ['id' => $commentId, 'status' => ScreenComment::STATUS_RESOLVED]);
+        }
     }
 }

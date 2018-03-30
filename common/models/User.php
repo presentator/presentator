@@ -613,7 +613,7 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function cropAvatar(array $cropDimensions = null)
     {
-        ini_set('memory_limit', '256M');
+        ini_set('memory_limit', '512M');
 
         $originalAvatarPath = $this->getAvatarPath(false);
         if (!file_exists($originalAvatarPath)) {
