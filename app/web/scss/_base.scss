@@ -1201,7 +1201,7 @@ img.lazy-load {
     @include hide;
     .loaded & {
         @include show;
-        @include animation(fade-in 0.3s);
+        @include animation(fade-in 0.3s 1);
     }
 }
 
