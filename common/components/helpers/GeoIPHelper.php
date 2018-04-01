@@ -35,6 +35,8 @@ class GeoIPHelper
             $lang = 'es';
         } elseif ($countryCode === 'br' || $countryCode === 'pt' || $countryCode === 'pt-br') {
             $lang = 'pt-br';
+        } elseif ($countryCode === 'sq' || $countryCode === 'al' || $countryCode === 'sq-al') {
+            $lang = 'sq-al';
         } else {
             $lang = $default;
         }
