@@ -998,9 +998,9 @@ ScreenView.prototype.activateHotspotsMode = function () {
  * Activates comments edit mode.
  */
 ScreenView.prototype.activateCommentsMode = function () {
-    $('body').removeClass('hotspots-mode').addClass('comments-mode preview-mode');
-    $(this.settings.hotspotsModeHandle).removeClass('active');
+    $('body').addClass('comments-mode').removeClass('hotspots-mode preview-mode');
     $(this.settings.commentsModeHandle).addClass('active');
+    $(this.settings.hotspotsModeHandle).removeClass('active');
     $(this.settings.previewModeHandle).removeClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', 'comments-mode-tooltip');

@@ -230,14 +230,14 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1512235487');
-$this->registerJsFile('/js/pins.js?v=1512235487');
-$this->registerJsFile('/js/project-view.view.js?v=1512235487');
-$this->registerJsFile('/js/version.view.js?v=1512235487');
-$this->registerJsFile('/js/screen-comments.view.js?v=1513489044');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1512235487');
-$this->registerJsFile('/js/screen-fit.view.js?v=1512235487');
-$this->registerJsFile('/js/screen.view.js?v=1515929344');
+$this->registerJsFile('/js/hotspots.js?v=1522585665');
+$this->registerJsFile('/js/pins.js?v=1522585665');
+$this->registerJsFile('/js/project-view.view.js?v=1522585665');
+$this->registerJsFile('/js/version.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-comments.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-fit.view.js?v=1522585665');
+$this->registerJsFile('/js/screen.view.js?v=1522585665');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",

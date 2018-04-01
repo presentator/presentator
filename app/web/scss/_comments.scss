@@ -69,16 +69,19 @@
         }
     }
     &.remove-start {
-        display: block;
         @include show;
         @include animation(scale-exit 0.3s linear forwards !important);
     }
-    .hotspots-mode & {
+    .hotspots-mode &,
+    .preview-mode & {
+        display: none;
         @include hide;
         @include pointer-events(none);
     }
     .comments-mode & {
+        display: block;
         @include show;
+        @include pointer-events(auto);
         &.resolved {
             @include hide;
         }
