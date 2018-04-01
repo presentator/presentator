@@ -9,7 +9,7 @@ use yii\helpers\Url;
  * @var $typesList    array
  */
 
-$this->title = Yii::t('app', 'Create User');
+$this->title = Yii::t('app', 'User create');
 ?>
 
 <?php $this->beginBlock('page_title'); ?>

@@ -11,7 +11,7 @@ use common\components\helpers\CArrayHelper;
  * @var $typesList    array
  */
 
-$this->title = Yii::t('app', 'Update User');
+$this->title = Yii::t('app', 'User update');
 ?>
 
 <?php $this->beginBlock('page_title'); ?>
