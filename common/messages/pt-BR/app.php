@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -47,6 +46,7 @@ return [
     'Successfully updated user.' => '',
     'Super user' => '',
     'The user was successfully deleted.' => '',
+    'Type user email to add a new admin' => '',
     'Update' => '',
     'User create' => '',
     'User update' => '',

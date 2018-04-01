@@ -174,7 +174,11 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
         <footer class="footer m-t-15">
             <input type="hidden" id="admins_search_project_id" name="projectId" value="<?= $project->id ?>">
             <div class="form-group no-margin">
-                <input type="text" id="admins_search_term_input" placeholder="<?= Yii::t('app', 'Type name or email to add a new admin') ?>" autocomplete="off">
+                <input type="text"
+                    id="admins_search_term_input"
+                    autocomplete="off"
+                    placeholder="<?= Yii::$app->params['fuzzyUsersSearch'] ? Yii::t('app', 'Type name or email to add a new admin') : Yii::t('app', 'Type user email to add a new admin') ?>"
+                >
                 <div id="admins_search_suggestions" class="input-dropdown" style="display: none;"></div>
             </div>
         </footer>

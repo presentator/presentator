@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'User create' => 'Създаване на потребител',
-    'User update' => 'Редакция на потребител',
+    'Type user email to add a new admin' => 'Имейл адрес на потребителя',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -32,7 +31,6 @@ return [
     '800x1200 <em>(Portrait)</em>' => '800x1200 <em>(Portrait)</em>',
     'A password reset request has been already sent. Please check your email inbox or wait until the token expire and try again.' => 'Вече е изпратен имейл за възстановяване на паролата. Провери електронната си поща или опитай по-късно..',
     'Action' => 'Действие',
-    'Actions' => 'Действия',
     'Active' => 'Активен',
     'Add screens' => 'Добави екрани',
     'Albanian' => 'Албански',
@@ -262,6 +260,8 @@ return [
     'Update' => 'Редакция',
     'Upload another' => 'Качи ново изображение',
     'Uploading and generating thumbs...' => 'Качване на изображенията...',
+    'User create' => 'Създаване на потребител',
+    'User update' => 'Редакция на потребител',
     'User was linked successfully.' => 'Администраторът беше добавен успешно.',
     'User was unlinked successfully.' => 'Администраторът беше премахнат успешно.',
     'Users' => 'Потребители',

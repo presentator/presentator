@@ -17,7 +17,7 @@ use common\models\User;
             <th><?= Yii::t('app', 'Status') ?></th>
             <th><?= Yii::t('app', 'Type') ?></th>
             <th><?= Yii::t('app', 'Date Modified') ?></th>
-            <th class="text-right min-width"><?= Yii::t('app', 'Actions') ?></th>
+            <th class="text-right min-width"></th>
         </tr>
     </thead>
     <tbody>
