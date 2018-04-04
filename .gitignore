@@ -43,3 +43,10 @@ phpunit.phar
 # todo notes
 /todo.todo
 /todo.txt
+
+# Docker container logs and data
+docker/logs/
+docker/data/
+
+# composer directories
+/.composer
