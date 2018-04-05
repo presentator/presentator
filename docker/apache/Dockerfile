@@ -3,16 +3,16 @@ FROM nimmis/apache
 # disable interactive functions
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN  \
-  # install php 7.1
+# install php 7.1, nodejs, php-extensions, composer and dependencies
+RUN \
+  curl --silent --location https://deb.nodesource.com/setup_8.x | bash - && \
   LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
   LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/apache2 && \
   apt-get update && \
   apt-get install -y \
   php7.1 \
   libapache2-mod-php \
-
-  # install php extensions
+  nodejs \
   php-cli \
   php-mysql \
   php-apcu \
@@ -26,14 +26,8 @@ RUN  \
   php-xml \
   php-zip && \
   phpenmod mcrypt && \
-
-  # clean up
   rm -rf /var/lib/apt/lists/* && \
-
-  # install composer
   cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && \
-
-  # enable required apache modules
   a2enmod rewrite headers
 
 COPY root /
