@@ -7,13 +7,11 @@
 ;(function($) {
     var defaults = {
         nav:          true,
-        animDuration: 300,
+        animDuration: 350,
         itemClass:    '.slider-item'
     };
 
     var settings = {};
-
-    var isAnimationStart = false;
 
     /**
      * Returns slider settings.
@@ -26,14 +24,14 @@
 
     /**
      * Active slider item change handler.
-     * @param {Mixed}         slider  Slider selector, DOM element, or jQuery object.
-     * @param {Number|String} slide   The targeted slide index (use 'prev', 'next' for relative target).
-     * @param {Boolean}       animate Whether to animate the sliders change or not.
+     * @param {Mixed}         slider          Slider selector, DOM element, or jQuery object.
+     * @param {Number|String} slide           The targeted slide index (use 'prev', 'next' for relative target).
+     * @param {Boolean}       animate         Whether to animate the sliders change or not.
+     * @param {String}        transitionClass The css class that defines the slider animation ('none', 'fade', 'slide-left', 'slide-right', 'slide-top', 'slide-bottom').
      */
-    function changeSlide(slider, slide, animate) {
-        if (isAnimationStart) {
-            return;
-        }
+    function changeSlide(slider, slide, animate, transitionClass) {
+        animate         = typeof animate !== 'undefined' ? animate : true;
+        transitionClass = transitionClass || 'fade';
 
         var $slider = $(slider);
         if (!$slider.length) {
@@ -41,13 +39,14 @@
             return;
         }
 
-        animate = typeof animate !== 'undefined' ? animate : true;
-
-        var settings = getSettings($slider);
-
+        var settings       = getSettings($slider);
         var $slides        = $(settings.itemClass);
         var $currentSlide  = $slides.filter('.active');
         var $targetedSlide = $();
+
+        if ($slider.data('isAnimationRunning') === true) {
+            return;
+        }
 
         // Find the targeted slider item
         if (typeof slide === 'number') {
@@ -79,14 +78,25 @@
 
         // Change slides
         $slider.trigger('sliderChangeBefore', [$targetedSlide, $currentSlide, $slides]);
-        if (animate && $currentSlide.length) {
-            isAnimationStart = true;
+        if (animate && transitionClass != 'none') {
+            $slider.addClass(transitionClass);
+            $slider.data('isAnimationRunning', true);
 
+            // animations position helpers
+            $currentSlide.css('left', $currentSlide.position().left);
+            $currentSlide.css('top', $currentSlide.position().top);
+
+            $targetedSlide.addClass('next-active');
             $currentSlide.addClass('change-start').delay(settings.animDuration).queue(function(next) {
-                $currentSlide.removeClass('change-start active');
-                $targetedSlide.addClass('active');
+                // reset position helpers
+                $currentSlide.css('left', '');
+                $currentSlide.css('top', '');
 
-                isAnimationStart = false;
+                $currentSlide.removeClass('change-start active');
+                $targetedSlide.removeClass('next-active').addClass('active');
+
+                $slider.data('isAnimationRunning', false);
+                $slider.removeClass(transitionClass);
                 $slider.trigger('sliderChange', [$targetedSlide, $currentSlide, $slides]);
 
                 next();
@@ -95,9 +105,10 @@
             $currentSlide.removeClass('active');
             $targetedSlide.addClass('active');
 
-            isAnimationStart = false;
+            $slider.data('isAnimationRunning', false);
             $slider.trigger('sliderChange', [$targetedSlide, $currentSlide, $slides]);
         }
+
         $slider.trigger('sliderChangeAfter', [$targetedSlide, $currentSlide, $slides]);
     }
 
@@ -167,11 +178,11 @@
                 $slider.trigger('sliderInit', [$slider.find(settings.itemClass + '.active'), $slider.find(settings.itemClass)]);
             });
         },
-        goTo: function(slideIndex, animate) {
+        goTo: function(slideIndex, animate, transitionClass) {
             animate = typeof animate !== 'undefined' ? animate : true;
 
             return $(this).each(function(i, slider) {
-                changeSlide(slider, slideIndex, animate);
+                changeSlide(slider, slideIndex, animate, transitionClass);
             });
         },
         getActive: function() {

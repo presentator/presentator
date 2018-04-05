@@ -174,7 +174,11 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
         <footer class="footer m-t-15">
             <input type="hidden" id="admins_search_project_id" name="projectId" value="<?= $project->id ?>">
             <div class="form-group no-margin">
-                <input type="text" id="admins_search_term_input" placeholder="<?= Yii::t('app', 'Type name or email to add a new admin') ?>" autocomplete="off">
+                <input type="text"
+                    id="admins_search_term_input"
+                    autocomplete="off"
+                    placeholder="<?= Yii::$app->params['fuzzyUsersSearch'] ? Yii::t('app', 'Type name or email to add a new admin') : Yii::t('app', 'Type user email to add a new admin') ?>"
+                >
                 <div id="admins_search_suggestions" class="input-dropdown" style="display: none;"></div>
             </div>
         </footer>
@@ -193,7 +197,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Screens upload popup -->
-<div id="screens_upload_popup" class="popup popup-small" data-overlay-close="false">
+<div id="screens_upload_popup" class="popup" data-overlay-close="false">
     <div class="popup-content">
         <h3 class="popup-title text-center"><?= Yii::t('app', 'Screens upload') ?></h3>
         <span class="popup-close close-icon"></span>
@@ -230,14 +234,14 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1512235487');
-$this->registerJsFile('/js/pins.js?v=1512235487');
-$this->registerJsFile('/js/project-view.view.js?v=1512235487');
-$this->registerJsFile('/js/version.view.js?v=1512235487');
-$this->registerJsFile('/js/screen-comments.view.js?v=1513489044');
-$this->registerJsFile('/js/screen-hotspots.view.js?v=1512235487');
-$this->registerJsFile('/js/screen-fit.view.js?v=1512235487');
-$this->registerJsFile('/js/screen.view.js?v=1515929344');
+$this->registerJsFile('/js/hotspots.js?v=1522585665');
+$this->registerJsFile('/js/pins.js?v=1522585665');
+$this->registerJsFile('/js/project-view.view.js?v=1522585665');
+$this->registerJsFile('/js/version.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-comments.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-hotspots.view.js?v=1522585665');
+$this->registerJsFile('/js/screen-fit.view.js?v=1522585665');
+$this->registerJsFile('/js/screen.view.js?v=1522585665');
 $this->registerJs('
     var projectView = new ProjectView({
         ajaxGetUpdateFormUrl:  "' . Url::to(['projects/ajax-get-update-form', 'id' => $project->id]) .'",

@@ -20,8 +20,6 @@ return array(
     'Confirm email address change' => '',
     'Email change request' => '',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
-    'You have been mentioned in a comment' => '',
-    'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'A new comment was left for project "{projectTitle}".' => 'Um novo comentário para o projeto "{projectTitle}" foi escrito.',
     'Account activation' => 'Ativação de conta',
     'Activate account' => 'Ativar conta',
@@ -54,6 +52,8 @@ return array(
     'You are assigned as admin to project "{projectTitle}".' => 'Você foi escolhido como administrador do projeto "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'Você foi convidado para revisar o design de "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Você não é mais um administrador do projeto "{projectTitle}".',
+    'You have been mentioned in a comment' => '',
+    'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'You have successfully registered via Facebook.' => 'Você se registrou com sucesso usando Facebook.',
     '{projectTitle} preview' => 'visualização de {projectTitle}',
 );

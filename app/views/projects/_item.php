@@ -10,7 +10,7 @@ use yii\helpers\Url;
 $newComments       = isset($newComments) ? $newComments : 0;
 $hasFeaturedScreen = !empty($model->featuredScreen);
 ?>
-<div class="box">
+<div class="box" data-project-id="<?= $model->id ?>">
     <div class="content">
         <?php if ($newComments > 0): ?>
             <div class="pin pin-warning" data-cursor-tooltip="<?= Yii::t('app', 'Has unread comments')?>">

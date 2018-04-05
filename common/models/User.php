@@ -23,6 +23,7 @@ use yii\imagine\Image;
  * @property string  $emailChangeToken
  * @property string  $authKey
  * @property integer $status
+ * @property integer $type
  * @property integer $createdAt
  * @property integer $updatedAt
  *
@@ -34,6 +35,9 @@ class User extends CActiveRecord implements IdentityInterface
 
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE   = 1;
+
+    const TYPE_REGULAR = 0;
+    const TYPE_SUPER   = 1;
 
     const THUMB_WIDTH   = 100;
     const THUMB_HEIGHT  = 100;
@@ -56,8 +60,10 @@ class User extends CActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['type', 'default', 'value' => User::TYPE_REGULAR],
+            ['type', 'in', 'range' => array_keys(User::getTypeLabels())],
             ['status', 'default', 'value' => static::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_INACTIVE]],
+            ['status', 'in', 'range' => array_keys(User::getStatusLabels())],
         ];
     }
 
@@ -94,6 +100,7 @@ class User extends CActiveRecord implements IdentityInterface
         $extraFields['settings'] = function ($model, $field) {
             return [
                 self::NOTIFICATIONS_SETTING_KEY => $model->getSetting(self::NOTIFICATIONS_SETTING_KEY, true),
+                self::MENTIONS_SETTING_KEY      => $model->getSetting(self::MENTIONS_SETTING_KEY, true),
             ];
         };
 
@@ -114,6 +121,30 @@ class User extends CActiveRecord implements IdentityInterface
         }
 
         return false;
+    }
+
+    /**
+     * Returns User statuses with labels.
+     * @return array
+     */
+    public static function getStatusLabels()
+    {
+        return [
+            self::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
+            self::STATUS_ACTIVE   => Yii::t('app', 'Active'),
+        ];
+    }
+
+    /**
+     * Returns User types with labels.
+     * @return array
+     */
+    public static function getTypeLabels()
+    {
+        return [
+            self::TYPE_REGULAR => Yii::t('app', 'Regular user'),
+            self::TYPE_SUPER   => Yii::t('app', 'Super user'),
+        ];
     }
 
     /* Relations
@@ -582,7 +613,7 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function cropAvatar(array $cropDimensions = null)
     {
-        ini_set('memory_limit', '256M');
+        ini_set('memory_limit', '512M');
 
         $originalAvatarPath = $this->getAvatarPath(false);
         if (!file_exists($originalAvatarPath)) {
@@ -625,6 +656,7 @@ class User extends CActiveRecord implements IdentityInterface
      * @param  string  $search      Search keyword.
      * @param  array   $exclude     User id(s) to exclude.
      * @param  boolean $fuzzySearch Whether to enable fuzzy email/name search or not.
+     * @param  boolean $activeOnly  Whether to return only active user models or not.
      * @param  integer $limit       Number of returned results.
      * @param  integer $offset      Returned results offset.
      * @return User[]
@@ -633,6 +665,7 @@ class User extends CActiveRecord implements IdentityInterface
         $search,
         array $exclude = [],
         $fuzzySearch = false,
+        $activeOnly = true,
         $limit = 20,
         $offset = 0
     )
@@ -651,8 +684,11 @@ class User extends CActiveRecord implements IdentityInterface
             $query->where(['email' => $search]);
         }
 
-        return $query->andWhere(['status' => static::STATUS_ACTIVE])
-            ->andWhere(['not in', 'id', $exclude])
+        if ($activeOnly) {
+            $query->andWhere(['status' => static::STATUS_ACTIVE]);
+        }
+
+        return $query->andWhere(['not in', 'id', $exclude])
             ->limit($limit)
             ->offset($offset)
             ->all();
@@ -669,6 +705,38 @@ class User extends CActiveRecord implements IdentityInterface
             'email'  => $email,
             'status' => static::STATUS_ACTIVE,
         ]);
+    }
+
+    /**
+     * Returns list with user models.
+     * @param  integer $limit      Number of returned results.
+     * @param  integer $offset     Results page offset.
+     * @param  array   $conditions Optional conditions to be applied to the query.
+     * @return User[]
+     */
+    public static function findUsers($limit = -1, $offset = 0, array $conditions = [])
+    {
+        return User::find()
+            ->distinct()
+            ->andFilterWhere($conditions)
+            ->orderBy(['createdAt' => SORT_DESC])
+            ->limit($limit)
+            ->offset($offset)
+            ->all();
+    }
+
+    /**
+     * Counts total user models.
+     * @param  array $conditions Optional conditions to be applied to the query.
+     * @return integer
+     */
+    public static function countUsers(array $conditions = [])
+    {
+        return (int) User::find()
+            ->distinct()
+            ->select('id')
+            ->andFilterWhere($conditions)
+            ->count();
     }
 
     /**

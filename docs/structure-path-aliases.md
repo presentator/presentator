@@ -23,4 +23,3 @@ Defined in the application init constructor.
 - `@bower`    - vendor directory that contains the [bower packages](http://bowerio/)
 - `@web`      - base URL of currently running web application
 - `@webroot`  - web root directory of currently running web application
-

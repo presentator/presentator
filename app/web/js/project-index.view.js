@@ -2,8 +2,9 @@ var ProjectIndex = function(data) {
     data = data || {};
 
     var defaults = {
-        'typeSelect':     '[name="ProjectForm[type]"]',
-        'subtypeSelect':  '#projectform-subtype',
+        'typeSelect':             '[name="ProjectForm[type]"]',
+        'subtypeSelect':          '#projectform-subtype',
+        'onlyMyProjectsCheckbox': '#only_my_projects_toggle',
 
         // projects list
         'projectsListWrapper':    '#projects_list_wrapper',
@@ -29,6 +30,7 @@ var ProjectIndex = function(data) {
     // cached selectors
     this.$typeSelect             = $(this.settings.typeSelect);
     this.$subtypeSelect          = $(this.settings.subtypeSelect);
+    this.$onlyMyProjectsCheckbox = $(this.settings.onlyMyProjectsCheckbox);
     this.$projectsListWrapper    = $(this.settings.projectsListWrapper);
     this.$projectsList           = $(this.settings.projectsList);
     this.$noMoreProjectsLabel    = $(this.settings.noMoreProjectsLabel);
@@ -43,6 +45,8 @@ var ProjectIndex = function(data) {
     this.searchXHR       = null;
     this.loadProjectsXHR = null;
     this.searchTrottle   = null;
+
+    this.ONLY_MY_PROJECTS_TOGGLE_STORAGE_KEY = 'only_my_projects';
 
     this.init();
 };
@@ -68,6 +72,18 @@ ProjectIndex.prototype.init = function() {
         e.preventDefault();
 
         self.loadProjects();
+    });
+
+    // Project ownership toggle handler
+    if (PR.cookies.getItem(this.ONLY_MY_PROJECTS_TOGGLE_STORAGE_KEY, 1) == 1) {
+        self.$onlyMyProjectsCheckbox.prop('checked', true);
+    } else {
+        self.$onlyMyProjectsCheckbox.prop('checked', false);
+    }
+
+    self.toggleOnlyMyProjects();
+    self.$onlyMyProjectsCheckbox.on('change', function (e) {
+        self.toggleOnlyMyProjects();
     });
 
     // Projects search
@@ -162,8 +178,13 @@ ProjectIndex.prototype.subtypeToggle = function() {
  * Load more projects via ajax.
  */
 ProjectIndex.prototype.loadProjects = function() {
-    var self     = this;
-    var nextPage = (self.$projectsList.data('page') || 1) + 1;
+    var self        = this;
+    var nextPage    = (self.$projectsList.data('page') << 0) + 1;
+    var mustBeOwner = true;
+
+    if (self.$onlyMyProjectsCheckbox.length) {
+        mustBeOwner = self.$onlyMyProjectsCheckbox.is(':checked');
+    }
 
     self.$loadMoreProjectsHandle.addClass('btn-disabled');
 
@@ -172,7 +193,8 @@ ProjectIndex.prototype.loadProjects = function() {
         url:  self.settings.ajaxLoadProjectsUrl,
         type: 'GET',
         data: {
-            'page': nextPage
+            'page':        nextPage,
+            'mustBeOwner': mustBeOwner
         }
     }).done(function(response) {
         self.$loadMoreProjectsHandle.removeClass('btn-disabled');
@@ -227,11 +249,19 @@ ProjectIndex.prototype.searchProjects = function(search) {
     self.$searchListWrapper.show();
     self.$projectsListWrapper.hide();
 
+    var mustBeOwner = true;
+    if (self.$onlyMyProjectsCheckbox.length) {
+        mustBeOwner = self.$onlyMyProjectsCheckbox.is(':checked');
+    }
+
     PR.abortXhr(self.searchXHR);
     self.searchXHR = $.ajax({
         url:  self.settings.ajaxSearchProjectsUrl,
         type: 'GET',
-        data: {'search': search}
+        data: {
+            'search':      search,
+            'mustBeOwner': mustBeOwner
+        }
     }).done(function(response) {
         if (response.success) {
             if (response.projectsHtml) {
@@ -243,4 +273,20 @@ ProjectIndex.prototype.searchProjects = function(search) {
             }
         }
     });
+};
+
+/**
+ * Handles "only my projects" checkbox toggle.
+ */
+ProjectIndex.prototype.toggleOnlyMyProjects = function() {
+    this.deactivateSearch();
+
+    this.$projectsList.data('page', 0);
+    this.$projectsList.children().not(':first-child').remove();
+
+    if (this.$onlyMyProjectsCheckbox.length) {
+        PR.cookies.setItem(this.ONLY_MY_PROJECTS_TOGGLE_STORAGE_KEY, this.$onlyMyProjectsCheckbox.is(':checked') << 0, Infinity, '/');
+    }
+
+    this.loadProjects();
 };

@@ -26,5 +26,3 @@ Parameters are read in the following order:
 - `api/config/params-local.php`
 
 Or in other words - **the later config file overrides the former.**
-
-

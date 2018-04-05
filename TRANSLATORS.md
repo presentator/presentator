@@ -6,9 +6,9 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 ---
 
-### Polish
+### Albanian
 
-- Bizley ([http://bizley.pl](http://bizley.pl))
+- Elio Qoshi ([http://www.elioqoshi.me](http://www.elioqoshi.me))
 
 
 ### French
@@ -17,6 +17,16 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - Steven Mazelerat ([smaze](https://www.transifex.com/user/profile/smaze/))
 - Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
+
+
+### German
+
+- Dave ([https://mdxdave.de](https://mdxdave.de))
+
+
+### Polish
+
+- Bizley ([http://bizley.pl](http://bizley.pl))
 
 
 ### Portuguese (Brazil)
@@ -31,8 +41,3 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - Antonela Debiasi ([holantonela1](https://www.transifex.com/user/profile/holantonela1/))
 - Dani Catalan ([danicatalan](https://www.transifex.com/user/profile/danicatalan/))
 - Georgi Svetoslavov ([ghs](https://www.transifex.com/user/profile/ghs/))
-
-
-### German
-
-- Dave ([https://mdxdave.de](https://mdxdave.de))

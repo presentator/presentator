@@ -55,7 +55,7 @@
         @include flex(1);
     }
     &.close-anim {
-        @include animation(tab-hide 0.3s forwards);
+        @include animation(fade-out 0.3s forwards);
     }
     // close handle
     .close-handle {
@@ -262,12 +262,37 @@
             .comment-active & {
                 overflow: hidden;
             }
-            &.active {
+            &.active,
+            &.change-start {
                 display: inline-block;
+            }
+            &.change-start {
+                position: absolute;
+                z-index: -1;
+            }
+        }
+    }
+
+    // Animations
+    &.fade {
+        .slider-item {
+            &.active {
                 @include animation(fade-in 0.4s);
             }
             &.change-start {
                 @include animation(fade-out 0.35s forwards);
+            }
+        }
+    }
+    $sidesList: ('left', 'right', 'top', 'bottom');
+    @each $side in $sidesList {
+        &.slide-#{$side} {
+            .slider-item {
+                &.next-active {
+                    z-index: 0;
+                    display: inline-block;
+                    @include animation(slide-#{$side} 0.4s);
+                }
             }
         }
     }

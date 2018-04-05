@@ -1,0 +1,45 @@
+.pagination {
+    $size: 30px;
+    @include clear-list;
+    display: inline-block;
+    vertical-align: top;
+    margin: $baseSpacing 0;
+    @include user-select(none);
+    li {
+        float: left;
+        min-width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        margin-left: 10px;
+        @include border-radius($baseRadius);
+        a {
+            width: 100%;
+            height: 100%;
+            display: block;
+            text-decoration: none;
+            @include border-radius($baseRadius);
+            @include transition(color 0.2s, background 0.2s);
+        }
+        &:hover {
+            a {
+                background: $lighterGreyColor;
+            }
+        }
+        &:active {
+            a {
+                background: lighten($lighterGreyColor, 5%);
+            }
+        }
+        &.active {
+            a {
+                color: #fff;
+                background: darken($greyColor, 5%);
+            }
+        }
+        &.disabled {
+            opacity: 0.5;
+            @include pointer-events(none);
+        }
+    }
+}

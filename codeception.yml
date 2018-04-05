@@ -3,6 +3,7 @@ include:
     - common
     - app
     - api
+    - console
 paths:
     log: console/runtime/logs
 settings:

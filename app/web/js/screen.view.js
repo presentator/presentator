@@ -289,15 +289,21 @@ ScreenView.prototype.init = function () {
             e.preventDefault();
             e.stopPropagation();
 
-            var link = $(this).data('link');
+            var link       = $(this).data('link');
+            var transition = $(this).data('transition');
 
             if (!isNaN(link)) {
                 var $slider = $(self.settings.versionSlider);
                 if ($slider.length) {
-                    $slider.slider('goTo', $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index());
+                    $slider.slider(
+                        'goTo',
+                        $slider.find(self.settings.versionSliderItem + '[data-screen-id="' + link + '"]').index(),
+                        true,
+                        transition
+                    );
                 }
             } else if (PR.isValidUrl(link)) {
-                window.open(PR.htmlDecode(link),'_blank');
+                window.open(PR.htmlDecode(link), '_blank');
             }
         }
     });
@@ -992,9 +998,9 @@ ScreenView.prototype.activateHotspotsMode = function () {
  * Activates comments edit mode.
  */
 ScreenView.prototype.activateCommentsMode = function () {
-    $('body').removeClass('hotspots-mode').addClass('comments-mode preview-mode');
-    $(this.settings.hotspotsModeHandle).removeClass('active');
+    $('body').addClass('comments-mode').removeClass('hotspots-mode preview-mode');
     $(this.settings.commentsModeHandle).addClass('active');
+    $(this.settings.hotspotsModeHandle).removeClass('active');
     $(this.settings.previewModeHandle).removeClass('active');
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip', this.settings.commentsTooltipText);
     PR.setData(this.settings.versionSliderItem + ' .hotspot-layer', 'cursor-tooltip-class', 'comments-mode-tooltip');

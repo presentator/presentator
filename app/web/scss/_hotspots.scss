@@ -141,6 +141,7 @@
 
 /* ---- Hotspot popover ---- */
 .hotspot-popover {
+    $tabSpacing: 20px;
     position: absolute;
     z-index: 3;
     left: 0;
@@ -153,8 +154,9 @@
     &.bottom-left:before {
         border-color: transparent transparent $lightGreyColor $lightGreyColor;
     }
+
+    // Tabs
     .tabs {
-        $tabSpacing: 20px;
         .tabs-header {
             padding: $tabSpacing $tabSpacing 0;
             .tab-item {
@@ -165,19 +167,43 @@
                 }
             }
         }
-        .tabs-content {
-            padding: 0;
-            background: $lightGreyColor;
-            .tab-item {
-                padding: $tabSpacing $tabSpacing 0 $tabSpacing;
-                @include items-per-row(3, $tabSpacing);
-            }
+    }
+    .tabs-content {
+        padding: 0;
+        background: $lightGreyColor;
+        .tab-item {
+            padding: $tabSpacing $tabSpacing 0 $tabSpacing;
+            @include items-per-row(3, $tabSpacing);
         }
         .tab-screens {
             padding-bottom: 0;
-            max-height: 300px;
-            overflow-x: hidden;
-            overflow-y: auto;
+            padding-left: 0;
+            padding-right: 0;
+            .hotspot-transition-select-wrapper {
+                padding: 0 $tabSpacing;
+                display: flex;
+                align-items: center;
+                label,
+                select {
+                    clear: none;
+                    margin: 0;
+                }
+                label {
+                    width: auto;
+                    margin-right: 10px;
+                    white-space: nowrap;
+                }
+                select {
+                    width: 100%;
+                }
+            }
+            .hotspot-screens-list {
+                position: relative;
+                padding: 0 $tabSpacing;
+                max-height: 200px;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
         }
     }
 

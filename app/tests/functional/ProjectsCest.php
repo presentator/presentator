@@ -142,22 +142,30 @@ class ProjectsCest
      */
     public function viewSuccess(FunctionalTester $I)
     {
-        $project = Project::findOne(1001);
-
         $I->wantTo('View project owned by the logged user');
-        $I->cantAccessAsGuest(['projects/view', 'id' => $project->id]);
-        $I->amLoggedInAs(1002);
-        $I->amOnPage(['projects/view', 'id' => $project->id]);
-        $I->seeResponseCodeIs(200);
-        $I->see($project->title);
-        $I->seeElement('#versions_list');
-        $I->seeElement('#version_screens_tabs');
-        $I->seeElement('#screens_bulk_panel');
-        $I->seeElement('#screens_upload_popup');
-        $I->seeElement('#screens_edit_popup');
-        $I->seeElement('#project_preview_share_form');
-        $I->seeElement('#admins_popup');
-        $I->seeElement('#links_popup');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $project = Project::findOne($projectId);
+
+            $I->cantAccessAsGuest(['projects/view', 'id' => $project->id]);
+            $I->amLoggedInAs($userId);
+            $I->amOnPage(['projects/view', 'id' => $project->id]);
+            $I->seeResponseCodeIs(200);
+            $I->see($project->title);
+            $I->seeElement('#versions_list');
+            $I->seeElement('#version_screens_tabs');
+            $I->seeElement('#screens_bulk_panel');
+            $I->seeElement('#screens_upload_popup');
+            $I->seeElement('#screens_edit_popup');
+            $I->seeElement('#project_preview_share_form');
+            $I->seeElement('#admins_popup');
+            $I->seeElement('#links_popup');
+        }
     }
 
     /* ===============================================================
@@ -182,12 +190,20 @@ class ProjectsCest
     public function deleteSuccess(FunctionalTester $I)
     {
         $I->wantTo('Delete project owned by the logged user');
-        $I->cantAccessAsGuest(['projects/delete', 'id' => 1001]);
-        $I->amLoggedInAs(1002);
-        $I->sendPOST(['projects/delete', 'id' => 1001]);
-        $I->seeResponseCodeIs(200);
-        $I->seeCurrentUrlEquals(['projects/index']);
-        $I->seeFlash('success');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1002, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->cantAccessAsGuest(['projects/delete', 'id' => $projectId]);
+            $I->amLoggedInAs($userId);
+            $I->sendPOST(['projects/delete', 'id' => $projectId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeCurrentUrlEquals(['projects/index']);
+            $I->seeFlash('success');
+        }
     }
 
     /* ===============================================================
@@ -214,15 +230,21 @@ class ProjectsCest
      */
     public function ajaxGetUpdateFormSuccess(FunctionalTester $I)
     {
-        $project = Project::findOne(1001);
-
         $I->wantTo('Successfully fetch project update form');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['projects/ajax-get-update-form', 'id' => $project->id]);
-        $I->sendAjaxGetRequest(['projects/ajax-get-update-form', 'id' => $project->id]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"updateForm":');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['projects/ajax-get-update-form', 'id' => $projectId]);
+            $I->sendAjaxGetRequest(['projects/ajax-get-update-form', 'id' => $projectId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"updateForm":');
+        }
     }
 
     /* ===============================================================
@@ -265,26 +287,32 @@ class ProjectsCest
      */
     public function ajaxSaveUpdateFormSuccess(FunctionalTester $I)
     {
-        $project = Project::findOne(1001);
-
         $I->wantTo('Successfully update a project model');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['projects/ajax-save-update-form', 'id' => $project->id]);
-        $I->sendAjaxPostRequest(['projects/ajax-save-update-form', 'id' => $project->id], [
-            'ProjectForm' => [
-                'title'               => 'New title',
-                'type'                => Project::TYPE_TABLET,
-                'subtype'             => 21,
-                'isPasswordProtected' => 1,
-                'password'            => '123456',
-                'autoScale'           => false,
-                'retinaScale'         => false,
-            ],
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->seeResponseContains('"project":');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['projects/ajax-save-update-form', 'id' => $projectId]);
+            $I->sendAjaxPostRequest(['projects/ajax-save-update-form', 'id' => $projectId], [
+                'ProjectForm' => [
+                    'title'               => 'New title',
+                    'type'                => Project::TYPE_TABLET,
+                    'subtype'             => 21,
+                    'isPasswordProtected' => 1,
+                    'password'            => '123456',
+                    'autoScale'           => false,
+                    'retinaScale'         => false,
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->seeResponseContains('"project":');
+        }
     }
 
     /* ===============================================================
@@ -311,14 +339,22 @@ class ProjectsCest
     public function ajaxSearchProjectsSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully fetch search projects list');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['projects/ajax-search-projects', 'search' => '']);
-        $I->sendAjaxGetRequest(['projects/ajax-search-projects'], [
-            'search' => 'Lorem',
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"projectsHtml":');
+
+        $scenarios = [
+            1002 => 'Lorem', // regular user
+            1006 => 'Lorem', // super user
+        ];
+
+        foreach ($scenarios as $userId => $search) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['projects/ajax-search-projects', 'search' => '']);
+            $I->sendAjaxGetRequest(['projects/ajax-search-projects'], [
+                'search' => $search,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"projectsHtml":');
+        }
     }
 
     /* ===============================================================
@@ -337,6 +373,25 @@ class ProjectsCest
         $I->seeResponseContains('"success":true');
         $I->seeResponseContains('"projectsHtml":');
         $I->seeResponseContains('"hasMoreProjects":');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxLoadMoreAsSuperUser(FunctionalTester $I)
+    {
+        $I->wantTo('Loads more projects via ajax as super user');
+        $I->amLoggedInAs(1006);
+        $I->ensureAjaxGetActionAccess(['projects/ajax-load-more'], ['page' => 1, 'mustBeOwner' => false]);
+        $I->sendAjaxGetRequest(['projects/ajax-load-more'], ['page' => 1, 'mustBeOwner' => false]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"projectsHtml":');
+        $I->seeResponseContains('"hasMoreProjects":');
+
+        foreach (Project::find()->all() as $project) {
+            $I->seeResponseContains('data-project-id=\"' . $project->id . '\"');
+        }
     }
 
     /* ===============================================================
@@ -381,19 +436,27 @@ class ProjectsCest
     public function ajaxShareSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully share a project link');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['projects/ajax-share', 'id' => 1001]);
-        $I->sendAjaxPostRequest(['projects/ajax-share', 'id' => 1001], [
-            'ProjectShareForm' => [
-                'email' => 'test@presentator.io',
-            ],
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->seeEmailIsSent();
-        $message = $I->grabLastSentEmail();
-        $I->assertArrayHasKey('test@presentator.io', $message->getTo());
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['projects/ajax-share', 'id' => $projectId]);
+            $I->sendAjaxPostRequest(['projects/ajax-share', 'id' => $projectId], [
+                'ProjectShareForm' => [
+                    'email' => 'test@presentator.io',
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->seeEmailIsSent();
+            $message = $I->grabLastSentEmail();
+            $I->assertArrayHasKey('test@presentator.io', $message->getTo());
+        }
     }
 
     /* ===============================================================
@@ -474,6 +537,40 @@ class ProjectsCest
         $I->assertArrayHasKey($unlinkedUser->email, $message->getTo());
     }
 
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxRemoveAdminAsSuperUser(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully unlink a project admin as super user');
+        $I->amLoggedInAs(1006);
+
+        $I->amGoingTo('try to unlink the current logged in user from a project owned by the super user');
+        $I->ensureAjaxPostActionAccess(['projects/ajax-remove-admin']);
+        $I->sendAjaxPostRequest(['projects/ajax-remove-admin'], [
+            'projectId' => 1004,
+            'userId'    => 1006,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"message":');
+        $I->dontSeeEmailIsSent();
+
+        $I->amGoingTo('try to unlink a project admin from a project not owned by the super user');
+        $unlinkedUser = User::findOne(1003);
+        $I->ensureAjaxPostActionAccess(['projects/ajax-remove-admin']);
+        $I->sendAjaxPostRequest(['projects/ajax-remove-admin'], [
+            'projectId' => 1002,
+            'userId'    => $unlinkedUser->id,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"message":');
+        $I->seeEmailIsSent();
+        $message = $I->grabLastSentEmail();
+        $I->assertArrayHasKey($unlinkedUser->email, $message->getTo());
+    }
+
     /* ===============================================================
      * `ProjectsController::actionAjaxAddAdmin()` tests
      * ============================================================ */
@@ -512,23 +609,31 @@ class ProjectsCest
      */
     public function ajaxAddAdminSuccess(FunctionalTester $I)
     {
+        $I->wantTo('Successfully link a project admin');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
         $linkedUser = User::findOne(1003);
 
-        $I->wantTo('Successfully link a project admin');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['projects/ajax-add-admin']);
-        $I->sendAjaxPostRequest(['projects/ajax-add-admin'], [
-            'projectId' => 1001,
-            'userId'    => $linkedUser->id,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"listItemHtml":');
-        $I->seeResponseContains('"message":');
-        $I->seeEmailIsSent();
-        $I->seeEmailIsSent();
-        $message = $I->grabLastSentEmail();
-        $I->assertArrayHasKey($linkedUser->email, $message->getTo());
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['projects/ajax-add-admin']);
+            $I->sendAjaxPostRequest(['projects/ajax-add-admin'], [
+                'projectId' => $projectId,
+                'userId'    => $linkedUser->id,
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"listItemHtml":');
+            $I->seeResponseContains('"message":');
+            $I->seeEmailIsSent();
+            $I->seeEmailIsSent();
+            $message = $I->grabLastSentEmail();
+            $I->assertArrayHasKey($linkedUser->email, $message->getTo());
+        }
     }
 
     /* ===============================================================
@@ -561,12 +666,20 @@ class ProjectsCest
      */
     public function ajaxSearchUsersSuccess(FunctionalTester $I)
     {
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
         $I->wantTo('Successfully search for a new users');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['projects/ajax-search-users'], ['id' => 1001, 'search' => 'John']);
-        $I->sendAjaxGetRequest(['projects/ajax-search-users'], ['id' => 1001, 'search' => 'John']);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"suggestionsHtml":');
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['projects/ajax-search-users'], ['id' => $projectId, 'search' => 'John']);
+            $I->sendAjaxGetRequest(['projects/ajax-search-users'], ['id' => $projectId, 'search' => 'John']);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"suggestionsHtml":');
+        }
     }
 }

@@ -3,5 +3,6 @@ bootstrap: false
 modules:
     enabled:
         - Asserts
-        - Yii2
         - \app\tests\Helper\Functional
+        - Yii2:
+            cleanup: false

@@ -2,16 +2,13 @@
 namespace app\controllers;
 
 use Yii;
-use yii\helpers\Html;
-use yii\base\Model;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
+use yii\data\Pagination;
+use common\models\User;
 use common\components\web\CUploadedFile;
-use app\models\UserForm;
 use app\models\AvatarForm;
-use app\models\UserProfileForm;
-use app\models\UserPasswordForm;
-use app\models\UserNotificationsForm;
+use app\models\SuperUserForm;
 
 /**
  * Users controller.
@@ -20,6 +17,12 @@ use app\models\UserNotificationsForm;
  */
 class UsersController extends AppController
 {
+    use SuperUserActionsTrait;
+    use RegularUserActionsTrait;
+
+    const ITEMS_PER_PAGE     = 20;
+    const MAX_SEARCH_RESULTS = 50;
+
     /**
      * @inheritdoc
      */
@@ -27,7 +30,50 @@ class UsersController extends AppController
     {
         $behaviors = parent::behaviors();
 
+        $behaviors['access']['rules'] = [
+            [
+                'actions' => [
+                    'ajax-temp-avatar-upload',
+                    'ajax-avatar-save',
+                    'ajax-avatar-delete',
+                ],
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+            [
+                'actions' => [
+                    'settings',
+                    'ajax-notifications-save',
+                    'ajax-password-save',
+                    'ajax-profile-save',
+                    'ajax-temp-avatar-upload',
+                    'ajax-avatar-save',
+                    'ajax-avatar-delete',
+                ],
+                'allow' => true,
+                'roles' => ['@'],
+                'matchCallback' => function ($rule, $action) {
+                    return Yii::$app->user->identity->type != User::TYPE_SUPER;
+                },
+            ],
+            [
+                'actions' => [
+                    'index',
+                    'ajax-search-users',
+                    'create',
+                    'update',
+                    'delete',
+                ],
+                'allow' => true,
+                'roles' => ['@'],
+                'matchCallback' => function ($rule, $action) {
+                    return Yii::$app->user->identity->type == User::TYPE_SUPER;
+                },
+            ],
+        ];
+
         $behaviors['verbs']['actions'] = [
+            'delete'                  => ['post'],
             'ajax-notifications-save' => ['post'],
             'ajax-password-save'      => ['post'],
             'ajax-profile-save'       => ['post'],
@@ -39,139 +85,14 @@ class UsersController extends AppController
         return $behaviors;
     }
 
-    /**
-     * Renders profile settings page.
-     * @return string
-     */
-    public function actionSettings()
-    {
-        $user = Yii::$app->user->identity;
-
-        $avatarForm = new AvatarForm($user);
-
-        $profileForm       = new UserProfileForm($user);
-        $passwordForm      = new UserPasswordForm($user);
-        $notificationsForm = new UserNotificationsForm($user);
-
-        return $this->render('settings', [
-            'user'              => $user,
-            'avatarForm'        => $avatarForm,
-            'profileForm'       => $profileForm,
-            'passwordForm'      => $passwordForm,
-            'notificationsForm' => $notificationsForm,
-        ]);
-    }
-
-    /**
-     * Returns model errors list indexed by input id.
-     * @param  Model  $model
-     * @return array
-     */
-    protected function getModelErrosList(Model $model)
-    {
-        $result = [];
-
-        foreach ($model->getErrors() as $attribute => $errors) {
-            $result[Html::getInputId($model, $attribute)] = $errors;
-        }
-
-        return $result;
-    }
-
-    /* Setting forms
-    --------------------------------------------------------------- */
-    /**
-     * Persists user notifications form update via ajax.
-     * @return array
-     */
-    public function actionAjaxNotificationsSave()
-    {
-        if (!Yii::$app->request->isAjax) {
-            throw new BadRequestHttpException('Error Processing Request');
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $user  = Yii::$app->user->identity;
-        $model = new UserNotificationsForm($user);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Successfully updated notification settings.'),
-            ];
-        }
-
-        return [
-            'success' => false,
-            'errors'  => $this->getModelErrosList($model),
-        ];
-    }
-
-    /**
-     * Persists user password form update via ajax.
-     * @return array
-     */
-    public function actionAjaxPasswordSave()
-    {
-        if (!Yii::$app->request->isAjax) {
-            throw new BadRequestHttpException('Error Processing Request');
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $user  = Yii::$app->user->identity;
-        $model = new UserPasswordForm($user);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Successfully changed account password.'),
-            ];
-        }
-
-        return [
-            'success' => false,
-            'errors'  => $this->getModelErrosList($model),
-        ];
-    }
-
-    /**
-     * Persists user profile form update via ajax.
-     * @return array
-     */
-    public function actionAjaxProfileSave()
-    {
-        if (!Yii::$app->request->isAjax) {
-            throw new BadRequestHttpException('Error Processing Request');
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $user  = Yii::$app->user->identity;
-        $model = new UserProfileForm($user);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Successfully updated profile settings.'),
-                'userIdentificator' => $user->getIdentificator(),
-            ];
-        }
-
-        return [
-            'success' => false,
-            'errors'  => $this->getModelErrosList($model),
-        ];
-    }
-
     /* Avatar
     --------------------------------------------------------------- */
     /**
      * Uploads temp avatar via ajax.
+     * @param  null|integer $id
      * @return array
      */
-    public function actionAjaxTempAvatarUpload()
+    public function actionAjaxTempAvatarUpload($id = null)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -179,7 +100,8 @@ class UsersController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $user          = Yii::$app->user->identity;
+        $user = $this->resolveAvatarUser($id);
+
         $model         = new AvatarForm($user);
         $model->avatar = CUploadedFile::getInstance($model, 'avatar');
 
@@ -198,9 +120,10 @@ class UsersController extends AppController
 
     /**
      * Persists temp avatar image and generates its thumb via ajax.
+     * @param  null|integer $id
      * @return array
      */
-    public function actionAjaxAvatarSave()
+    public function actionAjaxAvatarSave($id = null)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -208,7 +131,7 @@ class UsersController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $user = Yii::$app->user->identity;
+        $user = $this->resolveAvatarUser($id);
 
         $crop   = Yii::$app->request->post('crop');
         $isTemp = (int) Yii::$app->request->post('isTemp', 0);
@@ -237,9 +160,10 @@ class UsersController extends AppController
 
     /**
      * Deletes avatar and its thumb via ajax.
+     * @param  null|integer $id
      * @return array
      */
-    public function actionAjaxAvatarDelete()
+    public function actionAjaxAvatarDelete($id = null)
     {
         if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Error Processing Request');
@@ -247,12 +171,11 @@ class UsersController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $user = Yii::$app->user->identity;
+        $user = $this->resolveAvatarUser($id);
 
         $path      = $user->getAvatarPath();
         $thumbPath = $user->getAvatarPath(true);
         $tempPath  = $user->getTempAvatarPath(true);
-
 
         if (file_exists($path)) {
             @unlink($path);
@@ -270,5 +193,23 @@ class UsersController extends AppController
             'success' => true,
             'message' => Yii::t('app', 'Successfully removed avatar image.'),
         ];
+    }
+
+    /**
+     * @param  null|integer $id
+     * @return \common\models\User
+     */
+    protected function resolveAvatarUser($id = null) {
+        $currentUser = Yii::$app->user->identity;
+
+        if ($id && $currentUser->type == User::TYPE_SUPER) {
+            $user = User::findOne($id);
+
+            if ($user) {
+                return $user;
+            }
+        }
+
+        return $currentUser;
     }
 }

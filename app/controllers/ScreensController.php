@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use common\components\web\CUploadedFile;
+use common\components\helpers\CArrayHelper;
 use common\models\Screen;
 use app\models\ScreensUploadForm;
 use app\models\ScreenReplaceForm;
@@ -111,13 +112,6 @@ class ScreensController extends AppController
 
             if ($screens = $replaceForm->save()) {
                 $screen->refresh();
-
-                // there is no need to manually fetch and replace the screen thumbs
-                // since they will be auto regenerated and replaced on page refresh
-                // $thumbUrls = [];
-                // foreach (Screen::THUMB_SIZES as $name => $option) {
-                //     $thumbUrls[] = $screen->getThumbUrl($name);
-                // }
 
                 return [
                     'success' => true,
@@ -336,11 +330,20 @@ class ScreensController extends AppController
         }
 
         if ($this->checkHotspotsFormat($hotspots) && $screen) {
+            $changesInfo = $this->detectHotspotsChanges($screen->hotspots, $hotspots);
+
+            // add response message on specific hotspots change
+            $message = '';
+            if ($changesInfo['linksUpdate'] || $changesInfo['transitionsUpdate']) {
+                $message = Yii::t('app', 'Successfully saved changes.');
+            }
+
             $screen->hotspots = $hotspots;
 
             if ($screen->save()) {
                 return [
                     'success' => true,
+                    'message' => $message,
                 ];
             }
 
@@ -447,7 +450,7 @@ class ScreensController extends AppController
 
     /**
      * Helper that checks whether a hotspots array contains properly formatted data.
-     * @param  string|array $hotspots
+     * @param  null|string|array $hotspots
      * @return boolean
      */
     protected function checkHotspotsFormat($hotspots)
@@ -456,13 +459,80 @@ class ScreensController extends AppController
             return true;
         }
 
-        $hotspots = is_array($hotspots) ? $hotspots : json_decode($hotspots, true);
+        $hotspots           = is_array($hotspots) ? $hotspots : json_decode($hotspots, true);
+        $validTransitions   = array_keys(Screen::getTransitionLabels());
+        $requiredAttributes = ['width', 'height', 'top', 'left', 'link'];
+
         foreach ($hotspots as $hotspot) {
-            if (!isset($hotspot['width']) || !isset($hotspot['height']) || !isset($hotspot['top']) || !isset($hotspot['left']) || !isset($hotspot['link'])) {
+            foreach ($requiredAttributes as $attr) {
+                if (!isset($hotspot[$attr])) {
+                    return false;
+                }
+            }
+
+            if (!empty($hotspot['transition']) && !in_array($hotspot['transition'], $validTransitions)) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Returns various info for hotspots changes.
+     * @param  null|string|array  $oldHotspots
+     * @param  null|string|array  $newHotspots
+     * @return array
+     */
+    protected function detectHotspotsChanges($oldHotspots, $newHotspots)
+    {
+        $oldHotspots = is_array($oldHotspots) ? $oldHotspots : ((array) json_decode($oldHotspots, true));
+        $newHotspots = is_array($newHotspots) ? $newHotspots : ((array) json_decode($newHotspots, true));
+
+        $created           = 0;
+        $deleted           = 0;
+        $positionsUpdate   = 0;
+        $sizesUpdate       = 0;
+        $linksUpdate       = 0;
+        $transitionsUpdate = 0;
+
+        foreach ($oldHotspots as $id => $props) {
+            if (!isset($newHotspots[$id])) {
+                $deleted++;
+                continue;
+            }
+            if (
+                CArrayHelper::getValue($props, 'left') != CArrayHelper::getValue($newHotspots[$id], 'left') ||
+                CArrayHelper::getValue($props, 'top') != CArrayHelper::getValue($newHotspots[$id], 'top')
+            ) {
+                $positionsUpdate++;
+            }
+
+            if (
+                CArrayHelper::getValue($props, 'width') != CArrayHelper::getValue($newHotspots[$id], 'width') ||
+                CArrayHelper::getValue($props, 'height') != CArrayHelper::getValue($newHotspots[$id], 'height')
+            ) {
+                $sizesUpdate++;
+            }
+
+            if (CArrayHelper::getValue($props, 'link') != CArrayHelper::getValue($newHotspots[$id], 'link')) {
+                $linksUpdate++;
+            }
+
+            if (CArrayHelper::getValue($props, 'transition') != CArrayHelper::getValue($newHotspots[$id], 'transition')) {
+                $transitionsUpdate++;
+            }
+        }
+
+        $created = count($newHotspots) - (count($oldHotspots) - $deleted);
+
+        return [
+            'created'           => $created,
+            'deleted'           => $deleted,
+            'positionsUpdate'   => $positionsUpdate,
+            'sizesUpdate'       => $sizesUpdate,
+            'linksUpdate'       => $linksUpdate,
+            'transitionsUpdate' => $transitionsUpdate,
+        ];
     }
 }

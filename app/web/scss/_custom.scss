@@ -80,9 +80,8 @@
         color: $greyColor;
         cursor: pointer;
         color: $dangerColor;
-        @include transition(color 0.2s);
         @include transition(color 0.2s, transform 0.2s, visibility 0.2s, opacity 0.2s);
-        @include transform(scale(0.4));
+        @include transform(scale(0.7));
         @include hide;
     }
     .search-input {
@@ -130,6 +129,29 @@
     }
 }
 
+// Filter bar block
+.filter-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    margin: 0 0 $baseSpacing;
+    .filter-item {
+        margin-left: 20px;
+        &:first-child {
+            margin-left: 0;
+        }
+        &.min-width {
+            white-space: nowrap;
+        }
+        &.max-width {
+            width: 99%;
+        }
+        & > div {
+            margin: 0;
+        }
+    }
+}
 
 // Dashboard widgets
 .dashboard-widget {

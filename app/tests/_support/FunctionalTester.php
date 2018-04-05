@@ -2,6 +2,7 @@
 namespace app\tests;
 
 use Yii;
+use common\models\User;
 
 /**
  * Inherited Methods
@@ -151,17 +152,76 @@ class FunctionalTester extends \Codeception\Actor
     }
 
     /**
+     * Tests whether a regular user can access super user restricted route.
+     * @param string|array $uri
+     */
+    public function cantAccessAsRegularUser($uri)
+    {
+        // logout
+        $loggedUser = null;
+        if (!Yii::$app->user->isGuest) {
+            $loggedUser = Yii::$app->user->identity;
+            Yii::$app->user->logout();
+        }
+
+        $regularUser = User::findOne(['type' => User::TYPE_REGULAR, 'status' => User::STATUS_ACTIVE]);
+        $this->amLoggedInAs($regularUser);
+        $this->amOnPage($uri);
+        $this->seeResponseCodeIs(200);
+        $this->expectTo('redirect to the login page');
+        $this->seeCurrentUrlEquals(['site/index']);
+
+        // reset
+        if ($loggedUser) {
+            Yii::$app->user->login($loggedUser, 0);
+        }
+    }
+
+    /**
+     * Tests whether a super user can access regular user only route.
+     * @param string|array $uri
+     */
+    public function cantAccessAsSuperUser($uri)
+    {
+        // logout
+        $loggedUser = null;
+        if (!Yii::$app->user->isGuest) {
+            $loggedUser = Yii::$app->user->identity;
+            Yii::$app->user->logout();
+        }
+
+        $superUser = User::findOne(['type' => User::TYPE_SUPER, 'status' => User::STATUS_ACTIVE]);
+        $this->amLoggedInAs($superUser);
+        $this->amOnPage($uri);
+        $this->seeResponseCodeIs(200);
+        $this->expectTo('redirect to the login page');
+        $this->seeCurrentUrlEquals(['site/index']);
+
+        // reset
+        if ($loggedUser) {
+            Yii::$app->user->login($loggedUser, 0);
+        }
+    }
+
+    /**
      * Helper actor that contains couple of tests to ensure that an action
      * allows only ajax GET requests from authenticated users.
      * @param string|array $uri
      * @param array        $params
      * @param boolean      $allowGuests
+     * @param null|integer $onlyUserType
      */
-    public function ensureAjaxGetActionAccess($uri, array $params = [], $allowGuests = false)
+    public function ensureAjaxGetActionAccess($uri, array $params = [], $allowGuests = false, $onlyUserType = null)
     {
         if (!$allowGuests) {
             $this->amGoingTo('ensure that guests cannot access the action');
             $this->cantAccessAsGuest($uri);
+
+            if ($onlyUserType === User::TYPE_SUPER) {
+                $this->cantAccessAsRegularUser($uri);
+            } elseif ($onlyUserType === User::TYPE_REGULAR) {
+                $this->cantAccessAsSuperUser($uri);
+            }
         }
 
         $this->amGoingTo('try send a non-ajax request');
@@ -179,12 +239,19 @@ class FunctionalTester extends \Codeception\Actor
      * @param string|array $uri
      * @param array        $params
      * @param boolean      $allowGuests
+     * @param null|integer $onlyUserType
      */
-    public function ensureAjaxPostActionAccess($uri, array $params = [], $allowGuests = false)
+    public function ensureAjaxPostActionAccess($uri, array $params = [], $allowGuests = false, $onlyUserType = null)
     {
         if (!$allowGuests) {
             $this->amGoingTo('ensure that guests cannot access the action');
             $this->cantAccessAsGuest($uri);
+
+            if ($onlyUserType === User::TYPE_SUPER) {
+                $this->cantAccessAsRegularUser($uri);
+            } elseif ($onlyUserType === User::TYPE_REGULAR) {
+                $this->cantAccessAsSuperUser($uri);
+            }
         }
 
         $this->amGoingTo('try send an ajax GET request');

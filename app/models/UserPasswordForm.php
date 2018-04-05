@@ -65,7 +65,7 @@ class UserPasswordForm extends Model
             [['oldPassword', 'newPassword', 'newPasswordConfirm'], 'required'],
             ['oldPassword', 'validateOldPassword'],
             ['newPassword', 'string', 'min' => 4, 'max' => 255],
-            ['newPasswordConfirm', 'compare', 'compareAttribute'=>'newPassword', 'message'=> Yii::t('app', "Passwords don't match")],
+            ['newPasswordConfirm', 'compare', 'compareAttribute' => 'newPassword', 'message' => Yii::t('app', "Passwords don't match")],
         ];
     }
 

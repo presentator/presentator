@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 /**
  * @var $this            \yii\web\View
@@ -81,7 +82,10 @@ $this->title = Yii::t('app', 'Dashboard') ;
         </a>
 
         <?php foreach ($projects as $project): ?>
-            <?= $this->render('/projects/_item', ['model' => $project, 'newComments' => $commentCounters[$project->id]]); ?>
+            <?= $this->render('/projects/_item', [
+                'model'       => $project,
+                'newComments' => ArrayHelper::getValue($commentCounters, $project->id, 0),
+            ]); ?>
         <?php endforeach; ?>
     </div>
     <div class="block text-center">

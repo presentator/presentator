@@ -178,7 +178,7 @@ button, .btn {
         height: $height;
         line-height: $height;
         padding: 0 ($baseSpacing / 2);
-        font-size: 13px;
+        font-size: $baseFontSize - 1;
         &.btn-cons {
             min-width: 130px;
         }
@@ -304,6 +304,10 @@ select {
     option {
         color: $txtColor;
         padding: 0;
+        &[disabled],
+        &[readonly] {
+            color: lighten($txtColor, 10%);
+        }
     }
 }
 textarea {
@@ -405,6 +409,7 @@ input[type="radio"] {
                 position: absolute;
                 left: 0;
                 top: 0;
+                margin: 0;
                 width: $checkSize;
                 height: $checkSize;
                 font-size: 13px;
@@ -507,6 +512,18 @@ input[type="radio"] {
             border-color: $dangerColor;
             background: rgba($dangerColor, 0.04);
             @include placeholder(lighten($dangerColor, 5%));
+        }
+    }
+    &.required {
+        label {
+            &:after {
+                content: "*";
+                color: $dangerColor;
+                margin-left: 2px;
+                font-size: 11px;
+                line-height: 14px;
+                vertical-align: top;
+            }
         }
     }
 }

@@ -60,8 +60,9 @@ To run only `common` tests, navigate to the `common` dir and execute:
 ```
 
 ## Useful links
-[Codeception Unit testing guide](http://codeception.com/docs/05-UnitTests)
-[Codeception Function testing guide](http://codeception.com/docs/04-FunctionalTests)
-[Codeception REST testing guide](http://codeception.com/docs/10-WebServices#REST)
-[Yii Codeception module](http://codeception.com/for/yii)
-[Speed up your tests using MySQL/MariaDB server with tmpfs datadir](https://github.com/martingeorg/tmpfs-mysql)
+
+- [Codeception Unit testing guide](http://codeception.com/docs/05-UnitTests)
+- [Codeception Function testing guide](http://codeception.com/docs/04-FunctionalTests)
+- [Codeception REST testing guide](http://codeception.com/docs/10-WebServices#REST)
+- [Yii Codeception module](http://codeception.com/for/yii)
+- [Speed up your tests using MySQL/MariaDB server with tmpfs datadir](https://github.com/martingeorg/tmpfs-mysql)

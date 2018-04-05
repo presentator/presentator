@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Url;
+use common\models\User;
 
+$user       = Yii::$app->user->identity;
 $controller = Yii::$app->controller->id;
 $action     = Yii::$app->controller->action->id;
 ?>
@@ -16,8 +18,12 @@ $action     = Yii::$app->controller->action->id;
             <li class="<?= ($controller === 'projects') ? 'active' : ''?>">
                 <a href="<?= Url::to(['projects/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Projects') ?>"><i class="ion ion-social-buffer"></i></a>
             </li>
-            <li class="<?= ($controller === 'users' && $action === 'settings') ? 'active' : ''?>">
-                <a href="<?= Url::to(['users/settings']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Settings') ?>"><i class="ion ion-android-settings"></i></a>
+            <li class="<?= ($controller === 'users') ? 'active' : ''?>">
+                <?php if ($user->type == User::TYPE_SUPER): ?>
+                    <a href="<?= Url::to(['users/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Users') ?>"><i class="ion ion-ios-people"></i></a>
+                <?php else: ?>
+                    <a href="<?= Url::to(['users/settings']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Settings') ?>"><i class="ion ion-android-settings"></i></a>
+                <?php endif ?>
             </li>
         </ul>
     </nav>
@@ -26,5 +32,5 @@ $action     = Yii::$app->controller->action->id;
         <a href="<?= Yii::$app->params['issuesUrl'] ?>" class="bug-report" target="_blank" data-cursor-tooltip="<?= Yii::t('app', 'Create GitHub issue') ?>">
             <i class="ion ion-bug"></i>
         </a>
-    <?php endif; ?>
+    <?php endif ?>
 </aside>

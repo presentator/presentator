@@ -88,12 +88,20 @@ class VersionsCest
     public function ajaxGetFormSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully fetch version form');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['versions/ajax-get-form', 'projectId' => 1001]);
-        $I->sendAjaxGetRequest(['versions/ajax-get-form', 'projectId' => 1001]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"formHtml":');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['versions/ajax-get-form', 'projectId' => $projectId]);
+            $I->sendAjaxGetRequest(['versions/ajax-get-form', 'projectId' => $projectId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"formHtml":');
+        }
     }
 
     /* ===============================================================
@@ -130,25 +138,32 @@ class VersionsCest
      */
     public function ajaxSaveFormCreateSuccess(FunctionalTester $I)
     {
-        $oldCount = Version::find()->count();
-
         $I->wantTo('Successfully create a new version');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 1001]);
-        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1001], [
-            'VersionForm' => [
-                'title' => 'TEST_TITLE'
-            ],
-        ]);
 
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->seeResponseContains('"isUpdate":false');
-        $I->seeResponseContains('"version":');
-        $I->seeResponseContains('"navItemHtml":');
-        $I->seeResponseContains('"contentItemHtml":');
-        $I->seeRecordsCountChange(Version::className(), $oldCount, 1);
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $oldCount = Version::find()->count();
+
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => $projectId]);
+            $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => $projectId], [
+                'VersionForm' => [
+                    'title' => 'TEST_TITLE'
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->seeResponseContains('"isUpdate":false');
+            $I->seeResponseContains('"version":');
+            $I->seeResponseContains('"navItemHtml":');
+            $I->seeResponseContains('"contentItemHtml":');
+            $I->seeRecordsCountChange(Version::className(), $oldCount, 1);
+        }
     }
 
     /**
@@ -183,26 +198,31 @@ class VersionsCest
      */
     public function ajaxSaveFormUpdateSuccess(FunctionalTester $I)
     {
-        $oldCount = Version::find()->count();
-
         $I->wantTo('Successfully create a new version');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => 1001]);
-        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1001], [
-            'versionId' => 1001,
-            'VersionForm' => [
-                'title' => 'TEST_TITLE'
-            ],
-        ]);
 
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"message":');
-        $I->seeResponseContains('"isUpdate":true');
-        $I->seeResponseContains('"version":');
-        $I->seeResponseContains('"navItemHtml":');
-        $I->seeResponseContains('"contentItemHtml":');
-        $I->dontSeeRecordsCountChange(Version::className(), $oldCount);
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => $projectId]);
+            $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => $projectId], [
+                'versionId' => 1001,
+                'VersionForm' => [
+                    'title' => 'TEST_TITLE'
+                ],
+            ]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"message":');
+            $I->seeResponseContains('"isUpdate":true');
+            $I->seeResponseContains('"version":');
+            $I->seeResponseContains('"navItemHtml":');
+            $I->seeResponseContains('"contentItemHtml":');
+            $I->assertEquals(Version::findOne(1001)->title, 'TEST_TITLE');
+        }
     }
 
     /* ===============================================================
@@ -251,6 +271,23 @@ class VersionsCest
         $I->dontSeeRecord(Version::className(), ['id' => 1001]);
     }
 
+    /**
+     * @param FunctionalTester $I
+     */
+    public function ajaxDeleteAsSuperUser(FunctionalTester $I)
+    {
+        $oldCount = Version::find()->count();
+
+        $I->wantTo('Successfully delete a version model as super user');
+        $I->amLoggedInAs(1006);
+        $I->ensureAjaxPostActionAccess(['versions/ajax-delete']);
+        $I->sendAjaxPostRequest(['versions/ajax-delete'], ['id' => 1001]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":true');
+        $I->seeResponseContains('"message":');
+        $I->dontSeeRecord(Version::className(), ['id' => 1001]);
+    }
+
     /* ===============================================================
      * `VersionsController::actionAjaxGetScreensSlider()` tests
      * ============================================================ */
@@ -282,11 +319,19 @@ class VersionsCest
     public function ajaxGetScreensSliderSuccess(FunctionalTester $I)
     {
         $I->wantTo('Successfully fetch version screens slider');
-        $I->amLoggedInAs(1002);
-        $I->ensureAjaxGetActionAccess(['versions/ajax-get-screens-slider'], ['versionId' => 1001]);
-        $I->sendAjaxGetRequest(['versions/ajax-get-screens-slider'], ['versionId' => 1001]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContains('"success":true');
-        $I->seeResponseContains('"screensSliderHtml":');
+
+        $scenarios = [
+            1002 => 1001, // regular user
+            1006 => 1001, // super user
+        ];
+
+        foreach ($scenarios as $userId => $projectId) {
+            $I->amLoggedInAs($userId);
+            $I->ensureAjaxGetActionAccess(['versions/ajax-get-screens-slider'], ['versionId' => $projectId]);
+            $I->sendAjaxGetRequest(['versions/ajax-get-screens-slider'], ['versionId' => $projectId]);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseContains('"success":true');
+            $I->seeResponseContains('"screensSliderHtml":');
+        }
     }
 }

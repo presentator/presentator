@@ -186,6 +186,42 @@ class UserTest extends \Codeception\Test\Unit
         );
     }
 
+    /**
+     * `User::getStatusLabels()` method test.
+     */
+    public function testGetStatusLabels()
+    {
+        $labels = User::getStatusLabels();
+
+        $expectedKeys = [
+            User::STATUS_ACTIVE,
+            User::STATUS_INACTIVE,
+        ];
+
+        verify('Labels count should match', count($labels))->equals(count($expectedKeys));
+        foreach ($expectedKeys as $key) {
+            verify($key . ' key should be set', $labels)->hasKey($key);
+        }
+    }
+
+    /**
+     * `User::getTypeLabels()` method test.
+     */
+    public function testGetTypeLabels()
+    {
+        $labels = User::getTypeLabels();
+
+        $expectedKeys = [
+            User::TYPE_REGULAR,
+            User::TYPE_SUPER,
+        ];
+
+        verify('Labels count should match', count($labels))->equals(count($expectedKeys));
+        foreach ($expectedKeys as $key) {
+            verify($key . ' key should be set', $labels)->hasKey($key);
+        }
+    }
+
     /* ===============================================================
      * Relations
      * ============================================================ */
@@ -680,6 +716,48 @@ class UserTest extends \Codeception\Test\Unit
      * Queries
      * ============================================================ */
     /**
+     * `User::findUsers()` method test.
+     */
+    public function testFindUsers()
+    {
+        $this->specify('With default conditions', function () {
+            $users = User::findUsers(3, 2);
+
+            verify('Users count should match', $users)->count(3);
+            foreach ($users as $user) {
+                verify($user)->isInstanceOf(User::className());
+            }
+        });
+
+        $this->specify('With specified conditions', function () {
+            $users = User::findUsers(-1, 0, ['status' => User::STATUS_INACTIVE]);
+
+            verify('Users count should match', $users)->count(1);
+            foreach ($users as $user) {
+                verify($user)->isInstanceOf(User::className());
+            }
+        });
+    }
+
+    /**
+     * `User::countUsers()` method test.
+     */
+    public function testCountUsers()
+    {
+        $this->specify('Without additional conditions', function () {
+            $count = User::countUsers();
+
+            verify('Users count should match', $count)->equals(7);
+        });
+
+        $this->specify('With additional conditions', function () {
+            $count = User::countUsers(['status' => User::STATUS_INACTIVE]);
+
+            verify('Users count should match', $count)->equals(1);
+        });
+    }
+
+    /**
      * Tests whether `User::findByEmail()` returns active User model by its email address.
      */
     public function testFindByEmail()
@@ -843,55 +921,71 @@ class UserTest extends \Codeception\Test\Unit
     public function testSearchUsers()
     {
         $this->specify('Search for INACTIVE users by name part', function () {
-            $users = User::searchUsers('Gani Georgiev', [], true);
-            verify('Should be empty', $users)->isEmpty();
+            $search = 'Gani Georgiev';
+
+            $result1 = User::searchUsers($search, [], true);
+            verify('Result should be empty', $result1)->isEmpty();
+
+            $result2 = User::searchUsers($search, [], true, false);
+            verify('Result should not be empty', $result2)->notEmpty();
+            foreach ($result2 as $user) {
+                verify('Should contains the search keyword', strtoupper($user->getFullName()))->contains(strtoupper($search));
+            }
         });
 
         $this->specify('Search for INACTIVE users by email part', function () {
-            $users = User::searchUsers('test1@presentator.io', [], true);
-            verify('Should be empty', $users)->isEmpty();
+            $search = 'test1@presentator.io';
+
+            $result1 = User::searchUsers($search, [], true);
+            verify('Result should be empty', $result1)->isEmpty();
+
+            $result2 = User::searchUsers($search, [], true, false);
+            verify('Result should not be empty', $result2)->notEmpty();
+            foreach ($result2 as $user) {
+                verify('Should contains the search keyword', $user->email)->contains($search);
+            }
         });
 
         $this->specify('Search for ACTIVE users by name part (fuzzy search)', function () {
             $search = 'Lorem';
-            $users  = User::searchUsers($search, [], true);
+            $result = User::searchUsers($search, [], true);
 
-            verify('Should found 1 active user', $users)->count(1);
-            foreach ($users as $user) {
+            verify('Users count should match', $result)->count(1);
+            foreach ($result as $user) {
                 verify('Should contains the search keyword', strtoupper($user->getFullName()))->contains(strtoupper($search));
             }
         });
 
         $this->specify('Search for ACTIVE users by name part (non fuzzy search)', function () {
             $search = 'Lorem';
-            $users  = User::searchUsers($search, [], false);
+            $result = User::searchUsers($search, [], false);
 
-            verify('Should be empty', $users)->isEmpty();
+            verify('Should be empty', $result)->isEmpty();
         });
 
         $this->specify('Search for ACTIVE users by email part (fuzzy search)', function () {
             $search = '@presentator.io';
-            $users  = User::searchUsers($search, [], true);
+            $result = User::searchUsers($search, [], true);
 
-            verify('Users count should match', $users)->count(6);
-            foreach ($users as $user) {
+            verify('Users count should match', $result)->count(6);
+            foreach ($result as $user) {
                 verify('Should contains the search keyword', $user->email)->contains($search);
             }
         });
 
         $this->specify('Search for ACTIVE users by email part (non fuzzy search)', function () {
             $search = '@presentator.io';
-            $users  = User::searchUsers($search, [], false);
+            $result = User::searchUsers($search, [], false);
 
-            verify('Should be empty', $users)->isEmpty();
+            verify('Should be empty', $result)->isEmpty();
         });
 
         $this->specify('Search for ACTIVE users by email part with exclude (fuzzy search)', function () {
             $search = '@presentator.io';
-            $users  = User::searchUsers($search, [1004, 1005], true);
+            $result = User::searchUsers($search, [1004, 1005], true);
 
-            verify('Users count should match', $users)->count(4);
-            foreach ($users as $user) {
+            verify('Users count should match', $result)->count(4);
+            foreach ($result as $user) {
                 verify('Should contains the search keyword', $user->email)->contains($search);
             }
         });
@@ -910,7 +1004,17 @@ class UserTest extends \Codeception\Test\Unit
 
         $this->specify('User with projects', function () {
             $user = User::findOne(1003);
-            verify('Should count 2 projects', $user->countProjects())->equals(3);
+            verify('Projects count should match', $user->countProjects())->equals(3);
+        });
+
+        $this->specify('Super user - own projects', function () {
+            $user = User::findOne(1006);
+            verify('Projects count should match', $user->countProjects(true))->equals(1);
+        });
+
+        $this->specify('Super user - all projects', function () {
+            $user = User::findOne(1006);
+            verify('Projects count should match', $user->countProjects())->equals(4);
         });
     }
 
@@ -920,29 +1024,60 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testSearchProjects()
     {
-        $user = User::findOne(1003);
 
-        $this->specify('Search by non existing project title string', function () use ($user) {
-            $projects = $user->searchProjects('non existing title');
+        $this->specify('Search by non matching project title string', function () {
+            $user     = User::findOne(1003);
+            $projects = $user->searchProjects('non matching title');
 
             verify('Should be empty', $projects)->count(0);
         });
 
-        $this->specify('Search by existing project title string', function () use ($user) {
+        $this->specify('Search by matching project title string', function () {
+            $user     = User::findOne(1003);
             $search   = 'Lorem ipsum';
             $projects = $user->searchProjects($search);
 
-            verify('Should found 2 projects', $projects)->count(2);
+            verify('Projects count should match', $projects)->count(2);
             foreach ($projects as $project) {
                 verify('Should contains the search keyword', strtoupper($project->title))->contains(strtoupper($search));
             }
         });
 
-        $this->specify('Search by existing project titles string with set limit', function () use ($user) {
+        $this->specify('Search by matching project title string with specified limit', function () {
+            $user     = User::findOne(1003);
             $search   = 'Lorem';
             $projects = $user->searchProjects($search, 1);
 
-            verify('Should found 1 projects', $projects)->count(1);
+            verify('Projects count should match', $projects)->count(1);
+            foreach ($projects as $project) {
+                verify('Should contains the search keyword', strtoupper($project->title))->contains(strtoupper($search));
+            }
+        });
+
+        $this->specify('Super user - search only within user\'s projects (non matching title)', function () {
+            $user     = User::findOne(1006);
+            $projects = $user->searchProjects('Lorem ipsum', 100, 0, true);
+
+            verify('Should be empty', $projects)->count(0);
+        });
+
+        $this->specify('Super user - search only within user\'s projects (matching title)', function () {
+            $user     = User::findOne(1006);
+            $search   = 'test title';
+            $projects = $user->searchProjects($search, 100, 0, true);
+
+            verify('Projects count should match', $projects)->count(1);
+            foreach ($projects as $project) {
+                verify('Should contains the search keyword', strtoupper($project->title))->contains(strtoupper($search));
+            }
+        });
+
+        $this->specify('Super user - search within all projects', function () {
+            $user     = User::findOne(1006);
+            $search   = 'Lorem Ipsum';
+            $projects = $user->searchProjects($search);
+
+            verify('Projects count should match', $projects)->count(3);
             foreach ($projects as $project) {
                 verify('Should contains the search keyword', strtoupper($project->title))->contains(strtoupper($search));
             }
@@ -966,18 +1101,33 @@ class UserTest extends \Codeception\Test\Unit
             $projects = $user->findProjects();
             $validIds = [1002, 1003, 1004];
 
-            verify('Should found 2 projects', $projects)->count(3);
+            verify('Projects count should match', $projects)->count(3);
             foreach ($projects as $project) {
                 verify('Should be owned by the user', in_array($project->id, $validIds))->true();
             }
         });
 
-        $this->specify('User with projects and set limit', function () {
+        $this->specify('User with projects and specified limit', function () {
             $user     = User::findOne(1003);
             $projects = $user->findProjects(1);
 
             verify('Should found 1 projects', $projects)->count(1);
             verify('Should be owned by the user', $projects[0]->id)->equals(1004); // descendant sort
+        });
+
+        $this->specify('Super user - owned projects', function () {
+            $user     = User::findOne(1006);
+            $projects = $user->findProjects(10, 0, true);
+
+            verify('Should found 1 projects', $projects)->count(1);
+            verify('Should be owned by the user', $projects[0]->id)->equals(1004);
+        });
+
+        $this->specify('Super user - all projects', function () {
+            $user     = User::findOne(1006);
+            $projects = $user->findProjects();
+
+            verify('Projects count should match', $projects)->count((int) Project::find()->count());
         });
     }
 
@@ -987,21 +1137,40 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindProjectById()
     {
-        $user = User::findOne(1002);
 
-        $this->specify('Non existing project', function () use ($user) {
+        $this->specify('Non existing project', function () {
+            $user    = User::findOne(1002);
             $project = $user->findProjectById(0);
+
             verify($project)->null();
         });
 
-        $this->specify('Existing project owned by a different user', function () use ($user) {
+        $this->specify('Existing project owned by a different user', function () {
+            $user    = User::findOne(1002);
             $project = $user->findProjectById(1002);
+
             verify($project)->null();
         });
 
-        $this->specify('Existing project owned by the current user', function () use ($user) {
+        $this->specify('Existing project owned by the user', function () {
+            $user    = User::findOne(1002);
             $project = $user->findProjectById(1001);
+
             verify($project)->isInstanceOf(Project::className());
+        });
+
+        $this->specify('Super user - existing project owned by a different user', function () {
+            $user = User::findOne(1006);
+
+            verify($user->findProjectById(1002, true))->null();
+            verify($user->findProjectById(1002))->isInstanceOf(Project::className());
+        });
+
+        $this->specify('Super user - existing project owned by the user', function () {
+            $user = User::findOne(1006);
+
+            verify($user->findProjectById(1004, true))->isInstanceOf(Project::className());
+            verify($user->findProjectById(1004))->isInstanceOf(Project::className());
         });
     }
 
@@ -1011,21 +1180,39 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindVersionById()
     {
-        $user = User::findOne(1002);
-
-        $this->specify('Non existing version', function () use ($user) {
+        $this->specify('Non existing version', function () {
+            $user    = User::findOne(1002);
             $version = $user->findVersionById(0);
+
             verify($version)->null();
         });
 
-        $this->specify('Existing version owned by a different user', function () use ($user) {
+        $this->specify('Existing version owned by a different user', function () {
+            $user    = User::findOne(1002);
             $version = $user->findVersionById(1003);
+
             verify($version)->null();
         });
 
-        $this->specify('Existing version owned by the current user', function () use ($user) {
+        $this->specify('Existing version owned by the current user', function () {
+            $user    = User::findOne(1002);
             $version = $user->findVersionById(1001);
+
             verify($version)->isInstanceOf(Version::className());
+        });
+
+        $this->specify('Super user - existing version owned by a different user', function () {
+            $user = User::findOne(1006);
+
+            verify($user->findVersionById(1003, true))->null();
+            verify($user->findVersionById(1003))->isInstanceOf(Version::className());
+        });
+
+        $this->specify('Super user - existing version owned by the user', function () {
+            $user = User::findOne(1006);
+
+            verify($user->findVersionById(1006, true))->isInstanceOf(Version::className());
+            verify($user->findVersionById(1006))->isInstanceOf(Version::className());
         });
     }
 
@@ -1034,26 +1221,40 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testFindScreensQuery()
     {
-        $user = User::findOne(1002);
 
-        $this->specify('Valid ActiveQuery object', function () use ($user) {
+        $this->specify('Valid ActiveQuery object', function () {
+            $user  = User::findOne(1002);
             $query = $user->findScreensQuery([1001, 1002]);
+
             verify($query)->isInstanceOf(ActiveQuery::className());
         });
 
-        $this->specify('Non existing screen(s)', function () use ($user) {
+        $this->specify('Non existing screen(s)', function () {
+            $user    = User::findOne(1002);
             $screens = $user->findScreensQuery(1232456)->all();
+
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens owned by a different user', function () use ($user) {
+        $this->specify('Existing screens owned by a different user', function () {
+            $user    = User::findOne(1002);
             $screens = $user->findScreensQuery([1003])->all();
+
             verify($screens)->isEmpty();
         });
 
-        $this->specify('Existing screens owned by the current user', function () use ($user) {
+        $this->specify('Existing screens owned by the current user', function () {
+            $user    = User::findOne(1002);
             $screens = $user->findScreensQuery([1001, 1002])->all();
+
             verify($screens)->count(2);
+        });
+
+        $this->specify('Super user - existing screens owned by a different user', function () {
+            $user = User::findOne(1006);
+
+            verify($user->findScreensQuery([1001, 1002], true)->all())->isEmpty();
+            verify($user->findScreensQuery([1001, 1002])->all())->count(2);
         });
     }
 
@@ -1079,6 +1280,22 @@ class UserTest extends \Codeception\Test\Unit
             $screen = $user->findScreenById(1001);
             verify($screen)->isInstanceOf(Screen::className());
         });
+
+        $this->specify('Super user - existing screen owned by a different user', function () use ($user) {
+            $super = clone $user;
+            $super->type = User::TYPE_SUPER;
+
+            verify($super->findScreenById(1003, true))->null();
+            verify($super->findScreenById(1003))->isInstanceOf(Screen::className());
+        });
+
+        $this->specify('Super user - existing screen owned by the current user', function () use ($user) {
+            $super = clone $user;
+            $super->type = User::TYPE_SUPER;
+
+            verify($super->findScreenById(1001, true))->isInstanceOf(Screen::className());
+            verify($super->findScreenById(1001))->isInstanceOf(Screen::className());
+        });
     }
 
     /**
@@ -1103,6 +1320,22 @@ class UserTest extends \Codeception\Test\Unit
             $comment = $user->findScreenCommentById(1001);
             verify($comment)->isInstanceOf(ScreenComment::className());
         });
+
+        $this->specify('Super user - existing comment from a screen owned by a different user', function () use ($user) {
+            $super = clone $user;
+            $super->type = User::TYPE_SUPER;
+
+            verify($super->findScreenCommentById(1004, true))->null();
+            verify($super->findScreenCommentById(1004))->isInstanceOf(ScreenComment::className());
+        });
+
+        $this->specify('Super user - existing comment from a screen owned by the current user', function () use ($user) {
+            $super = clone $user;
+            $super->type = User::TYPE_SUPER;
+
+            verify($super->findScreenCommentById(1001, true))->isInstanceOf(ScreenComment::className());
+            verify($super->findScreenCommentById(1001))->isInstanceOf(ScreenComment::className());
+        });
     }
 
     /**
@@ -1113,15 +1346,32 @@ class UserTest extends \Codeception\Test\Unit
     public function testFindLeavedScreenComments()
     {
         $this->specify('User WITHOUT leaved comments', function () {
-            $user     = User::findOne(1001);
-            $comments = $user->findLeavedScreenComments();
-            verify($comments)->count(0);
+            $user = User::findOne(1001);
+
+            verify($user->findLeavedScreenComments())->count(0);
         });
 
         $this->specify('User WITH leaved comments', function () {
-            $user     = User::findOne(1002);
-            $comments = $user->findLeavedScreenComments();
-            verify($comments)->count(2);
+            $user = User::findOne(1002);
+
+            verify($user->findLeavedScreenComments())->count(2);
+            verify($user->findLeavedScreenComments(1))->count(1);
+        });
+
+        $this->specify('Super user - without leaved comments', function () {
+            $user       = User::findOne(1001);
+            $user->type = User::TYPE_SUPER;
+
+            verify($user->findLeavedScreenComments(100, 0, true))->count(0);
+            verify($user->findLeavedScreenComments())->count(7);
+        });
+
+        $this->specify('Super user - with leaved comments', function () {
+            $user       = User::findOne(1002);
+            $user->type = User::TYPE_SUPER;
+
+            verify($user->findLeavedScreenComments(100, 0, true))->count(2);
+            verify($user->findLeavedScreenComments())->count(6);
         });
     }
 

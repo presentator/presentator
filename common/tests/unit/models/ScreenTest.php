@@ -148,10 +148,32 @@ class ScreenTest extends \Codeception\Test\Unit
     {
         $labels = Screen::getAlignmentLabels();
 
-        verify('Should have 3 labels', count($labels))->equals(3);
+        verify('Labels count should match', count($labels))->equals(3);
         verify('Center alignment key should be set', $labels)->hasKey(Screen::ALIGNMENT_CENTER);
         verify('Left alignment key should be set', $labels)->hasKey(Screen::ALIGNMENT_LEFT);
         verify('Right alignment key should be set', $labels)->hasKey(Screen::ALIGNMENT_RIGHT);
+    }
+
+    /**
+     * `Screen::getTransitionLabels()` method test.
+     */
+    public function testGetTransitionLabels()
+    {
+        $labels = Screen::getTransitionLabels();
+
+        $expectedKeys = [
+            Screen::TRANSITION_NONE,
+            Screen::TRANSITION_FADE,
+            Screen::TRANSITION_SLIDE_LEFT,
+            Screen::TRANSITION_SLIDE_RIGHT,
+            Screen::TRANSITION_SLIDE_TOP,
+            Screen::TRANSITION_SLIDE_BOTTOM,
+        ];
+
+        verify('Labels count should match', count($labels))->equals(count($expectedKeys));
+        foreach ($expectedKeys as $key) {
+            verify($key . ' key should be set', $labels)->hasKey($key);
+        }
     }
 
     /**

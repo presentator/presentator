@@ -101,12 +101,10 @@ class SiteController extends AppController
             return $this->redirect(['site/entrance']);
         }
 
-        $user     = Yii::$app->user->identity;
-        $projects = $user->findProjects(9);
-        $comments = $user->findLeavedScreenComments(30);
-
-        $projectIds      = ArrayHelper::getColumn($projects, 'id');
-        $commentCounters = $user->countUnreadCommentsByProjects($projectIds);
+        $user            = Yii::$app->user->identity;
+        $projects        = $user->findProjects(9, 0, true);
+        $comments        = $user->findLeavedScreenComments(30, 0, true);
+        $commentCounters = $user->countUnreadCommentsByProjects(ArrayHelper::getColumn($projects, 'id'));
 
         return $this->render('index', [
             'user'            => $user,

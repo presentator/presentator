@@ -32,12 +32,25 @@ class Screen extends CActiveRecord
     const ALIGNMENT_CENTER = 2;
     const ALIGNMENT_RIGHT  = 3;
 
+    /**
+     * Supported thumb sizes in the following format: `[name => [width, height, quality]]`
+     */
     const THUMB_SIZES = [
-        // name => [width, height, quality]
         'medium' => [500, 500, 70],
         'small'  => [100, 100, 70],
     ];
 
+    // Hotspot transitions
+    const TRANSITION_NONE         = 'none';
+    const TRANSITION_FADE         = 'fade';
+    const TRANSITION_SLIDE_LEFT   = 'slide-left';
+    const TRANSITION_SLIDE_RIGHT  = 'slide-right';
+    const TRANSITION_SLIDE_TOP    = 'slide-top';
+    const TRANSITION_SLIDE_BOTTOM = 'slide-bottom';
+
+    /**
+     * @var boolean
+     */
     public $generateThumbsOnCreate = true;
 
     /**
@@ -181,6 +194,22 @@ class Screen extends CActiveRecord
             self::ALIGNMENT_LEFT   => Yii::t('app', 'Left'),
             self::ALIGNMENT_CENTER => Yii::t('app', 'Center'),
             self::ALIGNMENT_RIGHT  => Yii::t('app', 'Right'),
+        ];
+    }
+
+    /**
+     * Returns translated screen hotspot transition labels list.
+     * @return array
+     */
+    public static function getTransitionLabels()
+    {
+        return [
+            self::TRANSITION_NONE         => Yii::t('app', 'None'),
+            self::TRANSITION_FADE         => Yii::t('app', 'Fade'),
+            self::TRANSITION_SLIDE_LEFT   => Yii::t('app', 'Slide left'),
+            self::TRANSITION_SLIDE_RIGHT  => Yii::t('app', 'Slide right'),
+            self::TRANSITION_SLIDE_TOP    => Yii::t('app', 'Slide top'),
+            self::TRANSITION_SLIDE_BOTTOM => Yii::t('app', 'Slide bottom'),
         ];
     }
 
