@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 cd ../../
-docker-compose exec -u www-data apache php migrate
+docker-compose exec -u www-data apache php yii migrate
