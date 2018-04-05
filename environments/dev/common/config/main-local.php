@@ -1,11 +1,16 @@
 <?php
+$dbHost = getenv('DB_HOST') or 'localhost';
+$dbName = getenv('DB_NAME') or 'presentator';
+$dbUser = getenv('DB_USER') or 'root';
+$dbPass = getenv('DB_PASSWORD') or '';
+
 return [
     'components' => [
         'db' => [
             'class'    => 'yii\db\Connection',
-            'dsn'      => 'mysql:host=localhost;dbname=presentator',
-            'username' => 'root',
-            'password' => '',
+            'dsn'      => 'mysql:host=' . $dbHost . ';dbname=' . $dbName,
+            'username' => $dbUser,
+            'password' => $dbPass,
             'charset'  => 'utf8',
         ],
         'mailer' => [

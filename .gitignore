@@ -28,6 +28,9 @@ vendor
 # npm modules
 node_modules
 
+# npm debug log
+npm-debug.log
+
 # composer itself is not needed
 composer.phar
 
@@ -43,3 +46,13 @@ phpunit.phar
 # todo notes
 /todo.todo
 /todo.txt
+
+# Docker container logs and data
+docker/logs/
+docker/data/
+
+# composer directories
+/.composer
+
+# npm directories
+/.npm
