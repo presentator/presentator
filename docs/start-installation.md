@@ -75,7 +75,6 @@ After the installer has successfully completed you should be able to access and 
     cd /path/to/presentator
 
     # install vendor dependencies
-    composer global require "fxp/composer-asset-plugin:^1.3.1"
     composer install
 
     # execute the init command and select the appropriate environment
