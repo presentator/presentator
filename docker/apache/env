@@ -1,0 +1,5 @@
+DB_HOST=mariadb
+DB_NAME=presentator
+DB_USER=presentator
+DB_PASSWORD=presentator
+PUBLIC_URL=http://localhost/app
