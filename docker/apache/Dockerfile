@@ -30,9 +30,9 @@ RUN \
   cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && \
   a2enmod rewrite headers
 
+# install global composer dependencies
+RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
+
 COPY root /
 
 WORKDIR /var/www
-
-# install global composer dependencies
-RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
