@@ -13,10 +13,11 @@ You can join them in supporting Presentator development by visiting our [Support
 #### Sponsor
 
 #### Generous Backer
-- Jess Schreib ([Janyala Illustrations](https://www.facebook.com/JanyalaIllustrations/))
+- [Ura Design](https://ura.design/)
+- [Xaviju](https://xaviju.github.io/)
 
 #### Backer
-
+- [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/)
 
 ## PayPal
 - Militsa Dimitrova - €25.00 EUR
