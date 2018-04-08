@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+./run composer install
+# ./run php init
+./run php yii migrate
+./run npm install

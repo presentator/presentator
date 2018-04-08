@@ -1,11 +1,11 @@
 {
   "name": "Presentator",
   "description": "Presentator.io dev node modules",
-  "version": "1.6.0",
   "author": "Gani Georgiev <gani.georgiev@gmail.com>",
   "engines": {
     "node": ">=0.10.0"
   },
+  "private": true,
   "dependencies": {},
   "devDependencies": {
     "grunt": "~1.0.1",

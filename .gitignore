@@ -43,3 +43,6 @@ phpunit.phar
 # todo notes
 /todo.todo
 /todo.txt
+
+# docker build files
+docker/data

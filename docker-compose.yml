@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  mariadb:
+    image: mariadb:10
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/data/mariadb:/var/lib/mysql
+    env_file:
+      - ./docker/mariadb/env
+
+  httpd:
+    build:
+      context: ./docker/httpd
+    volumes:
+      - ./:/var/www/html
+      - ./docker/httpd/vhost.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./docker/data/httpd/logs/:/var/log/apache2
+    environment:
+      - VIRTUAL_HOST=app.presentator.local,api.presentator.local
+    links:
+      - mariadb:db
