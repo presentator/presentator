@@ -2,7 +2,7 @@
     "name": "Presentator",
     "description": "Web design presentation and collaboration platform.",
     "keywords": ["yii2", "design", "presentation", "collaboration"],
-    "homepage": "http://www.presentator.io/",
+    "homepage": "https://www.presentator.io/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
