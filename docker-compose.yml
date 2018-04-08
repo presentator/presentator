@@ -21,7 +21,6 @@ services:
       context: ./docker/httpd
     volumes:
       - ./:/var/www/html
-      - ./docker/httpd/vhost.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./docker/data/httpd/logs/:/var/log/apache2
     environment:
       - VIRTUAL_HOST=app.presentator.local,api.presentator.local

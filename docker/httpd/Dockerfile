@@ -26,4 +26,12 @@ RUN apt-get update && apt-get install -y \
 RUN a2enmod rewrite headers
 
 # enable write rights in shared volumes
-RUN usermod -u 1000 www-data && usermod -G staff www-data
+RUN chown -R www-data:www-data /var/www \
+    && usermod -u 1000 www-data \
+    && usermod -G staff www-data
+
+# copy custom php.ini
+COPY ./php.ini /usr/local/etc/php/php.ini
+
+# copy vhost configurations
+COPY ./vhost.conf /etc/apache2/sites-enabled/000-default.conf
