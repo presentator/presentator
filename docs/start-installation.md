@@ -96,7 +96,7 @@ That is! Now you should be able to access the previously created vhosts.
 ## Regular/Super User
 
 By default all registered users has Regular User access rights (_access to only their own account and projects_).
-For easier system administration you can set Super User access rights (_access to all system accounts and projects_) to one or more registed users (**available since v1.7+**).
+For easier system administration you can set Super User access rights (_access to all system accounts and projects_) to one or more registered users (**available since v1.7+**).
 Change the user's `type` column manually in your DB (_0 - Regular, 1 - Super_) or run one of the following console commands:
 
 ```bash

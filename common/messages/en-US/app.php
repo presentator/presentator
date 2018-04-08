@@ -16,8 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
-    'Type user email to add a new admin' => '',
+return array(
+    'Type user email to add a new admin' => 'Type user email to add a new admin',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -31,7 +31,6 @@ return [
     '800x1200 <em>(Portrait)</em>' => '800x1200 <em>(Portrait)</em>',
     'A password reset request has been already sent. Please check your email inbox or wait until the token expire and try again.' => 'A password reset request has been already sent. Please check your email inbox or wait until the token expire and try again.',
     'Action' => 'Action',
-    'Actions' => 'Actions',
     'Active' => 'Active',
     'Add screens' => 'Add screens',
     'Albanian' => 'Albanian',
@@ -286,4 +285,4 @@ return [
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-];
+);
