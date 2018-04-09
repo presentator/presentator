@@ -1,0 +1,22 @@
+version: '3'
+services:
+  apache:
+    build:
+      context: ./docker/apache
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/data/apache/logs/:/var/log/apache2
+    links:
+      - mariadb:db
+
+  mariadb:
+    image: mariadb:10
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/data/mariadb:/var/lib/mysql
+    env_file:
+      - ./docker/mariadb/env
