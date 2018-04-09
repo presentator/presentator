@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class'    => 'yii\db\Connection',
-            'dsn'      => 'mysql:host=localhost;dbname=presentator',
-            'username' => 'root',
-            'password' => '',
+            'dsn'      => 'mysql:host=mariadb;dbname=presentator',
+            'username' => 'presentator',
+            'password' => 'presentator',
             'charset'  => 'utf8',
         ],
         'mailer' => [

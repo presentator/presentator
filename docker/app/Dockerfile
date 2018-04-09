@@ -33,5 +33,5 @@ RUN chown -R www-data:www-data /var/www \
 # copy custom php.ini
 COPY ./php.ini /usr/local/etc/php/php.ini
 
-# copy vhost configurations
-COPY ./vhost.conf /etc/apache2/sites-enabled/000-default.conf
+# copy application vhosts
+COPY ./vhosts.conf /etc/apache2/sites-enabled/000-default.conf

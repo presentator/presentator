@@ -4,5 +4,6 @@ cd "$(dirname "$0")"
 
 ./run composer install
 ./run php init
-./run php yii migrate
+./run php yii migrate --interactive=0
+./run php yii_test migrate --interactive=0
 ./run npm install

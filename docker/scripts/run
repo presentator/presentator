@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cd "$(dirname "$0")"
-cd ../../
+cd "$(dirname "$0")/../../"
 
-docker-compose exec -u www-data httpd "$@"
+docker-compose exec -u www-data app "$@"

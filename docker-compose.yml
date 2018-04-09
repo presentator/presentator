@@ -12,16 +12,27 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./docker/data/mariadb:/var/lib/mysql
+      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mariadb/data/db:/var/lib/mysql
     env_file:
       - ./docker/mariadb/env
 
-  httpd:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - VIRTUAL_HOST=adminer.local
+    links:
+      - mariadb:db
+
+  app:
     build:
-      context: ./docker/httpd
+      context: ./docker/app
     volumes:
       - ./:/var/www/html
-      - ./docker/data/httpd/logs/:/var/log/apache2
+      - ./docker/app/data/apache/logs/:/var/log/apache2
     environment:
       - VIRTUAL_HOST=app.presentator.local,api.presentator.local
     links:

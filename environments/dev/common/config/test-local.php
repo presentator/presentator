@@ -6,7 +6,7 @@ return yii\helpers\ArrayHelper::merge(
     [
         'components' => [
             'db' => [
-                'dsn' => 'mysql:host=localhost;dbname=presentator_test',
+                'dsn' => 'mysql:host=mariadb;dbname=presentator_test',
             ]
         ],
     ]
