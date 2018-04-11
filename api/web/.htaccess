@@ -1,5 +1,8 @@
 RewriteEngine on
 
+# Enable CORS by default
+Header set Access-Control-Allow-Origin "*"
+
 # If a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
