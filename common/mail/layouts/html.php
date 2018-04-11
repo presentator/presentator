@@ -168,8 +168,8 @@ use yii\helpers\Url;
     <div class="global-wrapper">
         <div class="wrapper shadowed">
             <div class="header">
-                <a href="<?= Url::home(true) ?>" class="logo">
-                    <img src="<?= Url::to('@web/images/logo_large_white.png', true) ?>" alt="Presentator logo" width="45" height="60" />
+                <a href="<?= Yii::$app->params['publicUrl'] ?>" class="logo">
+                    <img src="<?= rtrim(Yii::$app->params['publicUrl'], '/') . '/images/logo_large_white.png' ?>" alt="Presentator logo" width="45" height="60" />
                     <h3 class="title">Presentator</h3>
                 </a>
             </div>
