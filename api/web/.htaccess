@@ -2,6 +2,7 @@ RewriteEngine on
 
 # Enable CORS by default
 Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS, HEAD"
 
 # If a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
