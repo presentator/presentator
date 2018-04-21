@@ -983,6 +983,55 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "Mixed",
+            "optional": true,
+            "field": "hotspots",
+            "description": "<p>Screen hotspots as json encoded string or array in the following format: <code>{&quot;hostpot_id_1&quot;: {...}, &quot;hostpot_id_2&quot;: {...}}</code></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.left",
+            "description": "<p>Left (X) hotspot coordinate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.top",
+            "description": "<p>Left (Y) hotspot coordinate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.width",
+            "description": "<p>Hotspot width</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.height",
+            "description": "<p>Hotspot height</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Mixed",
+            "optional": false,
+            "field": "hotspots.link",
+            "description": "<p>Hotspot link target - screen id or external url</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "hotspots.transition",
+            "description": "<p>Hotspot transition effect (<code>none</code>, <code>fade</code>, <code>slide-left</code>, <code>slide-right</code>, <code>slide-top</code>, <code>slide-bottom</code>)</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Number",
             "optional": true,
             "field": "order",
@@ -995,7 +1044,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 161,\n  \"versionId\": 21,\n  \"title\": \"dashboard3\",\n  \"hotspots\": {\n    \"hotspot_1490302776820\": {\n      \"left\": \"504\",\n      \"top\": \"204\",\n      \"width\": \"130\",\n      \"height\": \"106\",\n      \"link\": \"161\"\n     }\n  },\n  \"order\": 3,\n  \"alignment\": 1,\n  \"background\": null,\n  \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3.png\",\n  \"createdAt\": 1489927288,\n  \"updatedAt\": 1489927288,\n  \"thumbs\": {\n    \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_medium.png\",\n    \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_small.png\"\n  }\n}",
+          "content": "{\n  \"id\": 161,\n  \"versionId\": 21,\n  \"title\": \"dashboard3\",\n  \"hotspots\": {\n    \"hotspot_1490302776820\": {\n      \"left\": 504,\n      \"top\": 204,\n      \"width\": 130,\n      \"height\": 106,\n      \"link\": 161,\n      \"transition\": \"none\"\n     }\n  },\n  \"order\": 3,\n  \"alignment\": 1,\n  \"background\": null,\n  \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3.png\",\n  \"createdAt\": 1489927288,\n  \"updatedAt\": 1489927288,\n  \"thumbs\": {\n    \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_medium.png\",\n    \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_small.png\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -1126,7 +1175,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "[\n  {\n    \"id\": 157,\n    \"versionId\": 21,\n    \"title\": \"attachment2\",\n    \"hotspots\": {\n      \"hotspot_1490302776820\": {\n        \"left\": \"504\",\n        \"top\": \"204\",\n        \"width\": \"130\",\n        \"height\": \"106\",\n        \"link\": \"161\"\n       }\n    },\n    \"order\": 1,\n    \"alignment\": 2,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n    \"createdAt\": 1489926572,\n    \"updatedAt\": 1489926572,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n    }\n  },\n  {\n    \"id\": 158,\n    \"versionId\": 21,\n    \"title\": \"attachment\",\n    \"hotspots\": null,\n    \"order\": 2,\n    \"alignment\": 1,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64.png\",\n    \"createdAt\": 1489926573,\n    \"updatedAt\": 1489926573,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64_thumb_medium.png\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64_thumb_small.png\"\n    }\n  }\n]",
+          "content": "[\n  {\n    \"id\": 157,\n    \"versionId\": 21,\n    \"title\": \"attachment2\",\n    \"hotspots\": {\n      \"hotspot_1490302776820\": {\n        \"left\": 504,\n        \"top\": 204,\n        \"width\": 130,\n        \"height\": 106,\n        \"link\": 161,\n        \"transition\": \"fade\"\n       }\n    },\n    \"order\": 1,\n    \"alignment\": 2,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n    \"createdAt\": 1489926572,\n    \"updatedAt\": 1489926572,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n    }\n  },\n  {\n    \"id\": 158,\n    \"versionId\": 21,\n    \"title\": \"attachment\",\n    \"hotspots\": null,\n    \"order\": 2,\n    \"alignment\": 1,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64.png\",\n    \"createdAt\": 1489926573,\n    \"updatedAt\": 1489926573,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64_thumb_medium.png\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment_1489926573_64_thumb_small.png\"\n    }\n  }\n]",
           "type": "json"
         }
       ]
@@ -1213,6 +1262,55 @@ define({ "api": [
             "optional": true,
             "field": "background",
             "description": "<p>Screen background HEX color code (eg. <code>#ffffff</code>)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Mixed",
+            "optional": true,
+            "field": "hotspots",
+            "description": "<p>Screen hotspots as json encoded string or array in the following format: <code>{&quot;hostpot_id_1&quot;: {...}, &quot;hostpot_id_2&quot;: {...}}</code></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.left",
+            "description": "<p>Left (X) hotspot coordinate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.top",
+            "description": "<p>Left (Y) hotspot coordinate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.width",
+            "description": "<p>Hotspot width</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "hotspots.height",
+            "description": "<p>Hotspot height</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Mixed",
+            "optional": false,
+            "field": "hotspots.link",
+            "description": "<p>Hotspot link target - screen id or external url</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "hotspots.transition",
+            "description": "<p>Hotspot transition effect (<code>none</code>, <code>fade</code>, <code>slide-left</code>, <code>slide-right</code>, <code>slide-top</code>, <code>slide-bottom</code>)</p>"
           },
           {
             "group": "Parameter",
@@ -1305,7 +1403,7 @@ define({ "api": [
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"id\": 161,\n  \"versionId\": 21,\n  \"title\": \"dashboard3\",\n  \"hotspots\": {\n    \"hotspot_1490302776820\": {\n      \"left\": \"504\",\n      \"top\": \"204\",\n      \"width\": \"130\",\n      \"height\": \"106\",\n      \"link\": \"161\"\n     }\n  },\n  \"order\": 3,\n  \"alignment\": 1,\n  \"background\": '#ffffff',\n  \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3.png\",\n  \"createdAt\": 1489927288,\n  \"updatedAt\": 1489927288,\n  \"thumbs\": {\n    \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_medium.png\",\n    \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_small.png\"\n  }\n}",
+          "content": "{\n  \"id\": 161,\n  \"versionId\": 21,\n  \"title\": \"dashboard3\",\n  \"hotspots\": {\n    \"hotspot_1490302776820\": {\n      \"left\": 504,\n      \"top\": 204,\n      \"width\": 130,\n      \"height\": 106,\n      \"link\": 161\n     }\n  },\n  \"order\": 3,\n  \"alignment\": 1,\n  \"background\": '#ffffff',\n  \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3.png\",\n  \"createdAt\": 1489927288,\n  \"updatedAt\": 1489927288,\n  \"thumbs\": {\n    \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_medium.png\",\n    \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/dashboard3_1489927288_3_thumb_small.png\"\n  }\n}",
           "type": "json"
         }
       ]
