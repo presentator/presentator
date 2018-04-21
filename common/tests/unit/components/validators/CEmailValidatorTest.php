@@ -18,7 +18,7 @@ class CEmailValidatorTest extends \Codeception\Test\Unit
     protected $tester;
 
     /**
-     * `CEmailValidator::stringToArray()` method test.
+     * `CEmailValidator::validate()` method test.
      */
     public function testValidation()
     {
