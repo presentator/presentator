@@ -110,6 +110,7 @@ class ScreensCest
             'title'      => '',
             'alignment'  => -1,
             'background' => '#00p',
+            'hotspots'   => ['test' => ['width' => 'invalid']],
         ], ['image' => Yii::getAlias('@common/tests/_data/test_image.gif')]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
@@ -121,6 +122,7 @@ class ScreensCest
                 'alignment'  => 'string',
                 'background' => 'string',
                 'image'      => 'string',
+                'hotspots'   => 'string',
             ],
         ]);
     }
@@ -135,6 +137,7 @@ class ScreensCest
             'title'      => 'Test screen',
             'alignment'  => Screen::ALIGNMENT_CENTER,
             'background' => '#000000',
+            'hotspots'   => ['test' => ['width' => 1, 'height' => 1, 'top' => 1, 'left' => 1, 'link' => 1]],
         ];
         $I->wantTo('Correct screen create attempt');
         $I->sendPOST('/screens', $data, [
@@ -191,6 +194,7 @@ class ScreensCest
             'title'      => '',
             'alignment'  => -1,
             'background' => '#test',
+            'hotspots'   => ['test' => ['width' => 'invalid']],
         ];
 
         $I->wantTo('Wrong screen update attempt');
@@ -204,6 +208,7 @@ class ScreensCest
                 'title'      => 'string',
                 'alignment'  => 'string',
                 'background' => 'string',
+                'hotspots'   => 'string',
             ],
         ]);
     }
@@ -218,6 +223,7 @@ class ScreensCest
             'title'      => 'New title',
             'alignment'  => Screen::ALIGNMENT_RIGHT,
             'background' => '#ffffff',
+            'hotspots'   => null,
         ];
 
         $I->wantTo('Correct screen update attempt');

@@ -6,6 +6,7 @@ use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use common\components\web\CUploadedFile;
 use common\components\helpers\CArrayHelper;
+use common\components\validators\HotspotsValidator;
 use common\models\Screen;
 use app\models\ScreensUploadForm;
 use app\models\ScreenReplaceForm;
@@ -317,19 +318,12 @@ class ScreensController extends AppController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $user     = Yii::$app->user->identity;
-        $screen   = $user->findScreenById(Yii::$app->request->post('id', -1));
-        $hotspots = Yii::$app->request->post('hotspots', null);
+        $user              = Yii::$app->user->identity;
+        $screen            = $user->findScreenById(Yii::$app->request->post('id', -1));
+        $hotspots          = Yii::$app->request->post('hotspots', null);
+        $hotspotsValidator = new HotspotsValidator();
 
-        if (is_array($hotspots)) {
-            $hotspots = json_encode($hotspots);
-        } elseif (is_string($hotspots)) {
-            $hotspots = $hotspots;
-        } else {
-            $hotspots = null;
-        }
-
-        if ($this->checkHotspotsFormat($hotspots) && $screen) {
+        if ($hotspotsValidator->validate($hotspots) && $screen) {
             $changesInfo = $this->detectHotspotsChanges($screen->hotspots, $hotspots);
 
             // add response message on specific hotspots change
@@ -449,39 +443,9 @@ class ScreensController extends AppController
     }
 
     /**
-     * Helper that checks whether a hotspots array contains properly formatted data.
-     * @param  null|string|array $hotspots
-     * @return boolean
-     */
-    protected function checkHotspotsFormat($hotspots)
-    {
-        if ($hotspots === null) {
-            return true;
-        }
-
-        $hotspots           = is_array($hotspots) ? $hotspots : json_decode($hotspots, true);
-        $validTransitions   = array_keys(Screen::getTransitionLabels());
-        $requiredAttributes = ['width', 'height', 'top', 'left', 'link'];
-
-        foreach ($hotspots as $hotspot) {
-            foreach ($requiredAttributes as $attr) {
-                if (!isset($hotspot[$attr])) {
-                    return false;
-                }
-            }
-
-            if (!empty($hotspot['transition']) && !in_array($hotspot['transition'], $validTransitions)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Returns various info for hotspots changes.
-     * @param  null|string|array  $oldHotspots
-     * @param  null|string|array  $newHotspots
+     * @param  null|string|array $oldHotspots
+     * @param  null|string|array $newHotspots
      * @return array
      */
     protected function detectHotspotsChanges($oldHotspots, $newHotspots)

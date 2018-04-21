@@ -359,8 +359,8 @@ ScreenHotspotsView.prototype.getHotspotsData = function(screenId) {
             'top':        position.top * scaleFactor,
             'width':      $hotspot.outerWidth(true) * scaleFactor,
             'height':     $hotspot.outerHeight(true) * scaleFactor,
-            'link':       $hotspot.data('link'),
-            'transition': $hotspot.data('transition')
+            'link':       $hotspot.data('link') || null,
+            'transition': $hotspot.data('transition') || null
         };
 
         $hotspot.data('original-left', result[hotspotId].left)

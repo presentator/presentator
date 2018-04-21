@@ -122,6 +122,22 @@ class Screen extends CActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (array_key_exists('hotspots', $this->dirtyAttributes)) {
+                $this->normalizeHotspots();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getScreenComments()
@@ -272,5 +288,30 @@ class Screen extends CActiveRecord
             ->save($this->getThumbPath($sizeName), ['quality' => $thumbOptions[2]]);
 
         return $this->getThumbUrl($sizeName, false);
+    }
+
+    /**
+     * Normalizes hotspots attributes.
+     * @param null|string|array $hotspots
+     */
+    protected function normalizeHotspots()
+    {
+        if (empty($this->hotspots)) {
+            $this->hotspots = null;
+
+            return;
+        }
+
+        $hotspots = is_array($this->hotspots) ? $this->hotspots : ((array) json_decode($this->hotspots, true));
+
+        foreach ($hotspots as &$hotspot) {
+            foreach ($hotspot as $key => $value) {
+                if (is_numeric($value)) {
+                    $hotspot[$key] = $value + 0;
+                }
+            }
+        }
+
+        $this->hotspots = json_encode($hotspots);
     }
 }

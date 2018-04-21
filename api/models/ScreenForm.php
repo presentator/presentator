@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\helpers\Inflector;
 use common\models\User;
 use common\models\Screen;
+use common\components\validators\HotspotsValidator;
 use common\components\helpers\CFileHelper;
 use common\components\web\CUploadedFile;
 
@@ -45,6 +46,11 @@ class ScreenForm extends Model
     public $background;
 
     /**
+     * @var null|string|array
+     */
+    public $hotspots;
+
+    /**
      * @var UploadedFile
      */
     public $image;
@@ -55,9 +61,8 @@ class ScreenForm extends Model
     private $user;
 
     /**
-     * Model constructor.
-     * @param User $user
-     * @param array  $config
+     * @param User  $user
+     * @param array $config
      */
     public function __construct(User $user, $config = [])
     {
@@ -77,6 +82,7 @@ class ScreenForm extends Model
             ['title', 'string', 'max' => 255],
             ['background', 'string', 'min' => 7, 'max' => 7],
             ['background', 'validateHex'],
+            ['hotspots', HotspotsValidator::className()],
             ['versionId', 'validateUserVersionId'],
             ['alignment', 'in', 'range' => array_keys(Screen::getAlignmentLabels())],
             ['image', 'required', 'on' => self::SCENARIO_CREATE],
@@ -98,12 +104,12 @@ class ScreenForm extends Model
 
         $scenarios[self::SCENARIO_CREATE] = [
             'versionId', 'title', 'background',
-            'alignment', 'order', 'image',
+            'alignment', 'order', 'hotspots', 'image',
         ];
 
         $scenarios[self::SCENARIO_UPDATE] = [
             'versionId', 'title', 'background',
-            'alignment', 'order',
+            'alignment', 'order', 'hotspots',
         ];
 
         return $scenarios;
@@ -151,8 +157,9 @@ class ScreenForm extends Model
                 $screen = new Screen;
             }
 
-            $screen->versionId  = (int) $this->versionId;
             $screen->title      = $this->title;
+            $screen->hotspots   = $this->hotspots;
+            $screen->versionId  = (int) $this->versionId;
             $screen->alignment  = (int) $this->alignment;
             $screen->background = $this->background ? $this->background : null;
 

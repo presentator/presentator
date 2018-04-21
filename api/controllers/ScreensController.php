@@ -32,11 +32,12 @@ class ScreensController extends ApiController
      *     "title": "attachment2",
      *     "hotspots": {
      *       "hotspot_1490302776820": {
-     *         "left": "504",
-     *         "top": "204",
-     *         "width": "130",
-     *         "height": "106",
-     *         "link": "161"
+     *         "left": 504,
+     *         "top": 204,
+     *         "width": 130,
+     *         "height": 106,
+     *         "link": 161,
+     *         "transition": "fade"
      *        }
      *     },
      *     "order": 1,
@@ -90,12 +91,19 @@ class ScreensController extends ApiController
      * @apiPermission User
      * @apiHeader {String} X-Access-Token User authentication token
      *
-     * @apiParam {File}   image        Uploaded file
-     * @apiParam {Number} versionId    Version id (must be from a project owned by the authenticated user)
-     * @apiParam {String} title        Screen title
-     * @apiParam {Number} alignment    Screen alignment
-     * @apiParam {String} [background] Screen background HEX color code (eg. `#ffffff`)
-     * @apiParam {Number} [order]      Screen position within its version
+     * @apiParam {File}   image                 Uploaded file
+     * @apiParam {Number} versionId             Version id (must be from a project owned by the authenticated user)
+     * @apiParam {String} title                 Screen title
+     * @apiParam {Number} alignment             Screen alignment
+     * @apiParam {String} [background]          Screen background HEX color code (eg. `#ffffff`)
+     * @apiParam {Mixed}  [hotspots]            Screen hotspots as json encoded string or array in the following format: `{"hostpot_id_1": {...}, "hostpot_id_2": {...}}`
+     * @apiParam {Number} hotspots.left         Left (X) hotspot coordinate
+     * @apiParam {Number} hotspots.top          Left (Y) hotspot coordinate
+     * @apiParam {Number} hotspots.width]       Hotspot width
+     * @apiParam {Number} hotspots.height       Hotspot height
+     * @apiParam {Mixed}  hotspots.link         Hotspot link target - screen id or external url
+     * @apiParam {String} [hotspots.transition] Hotspot transition effect (`none`, `fade`, `slide-left`, `slide-right`, `slide-top`, `slide-bottom`)
+     * @apiParam {Number} [order]               Screen position within its version
      *
      * @apiSuccessExample {json} 200 Success response (example):
      * {
@@ -104,11 +112,12 @@ class ScreensController extends ApiController
      *   "title": "dashboard3",
      *   "hotspots": {
      *     "hotspot_1490302776820": {
-     *       "left": "504",
-     *       "top": "204",
-     *       "width": "130",
-     *       "height": "106",
-     *       "link": "161"
+     *       "left": 504,
+     *       "top": 204,
+     *       "width": 130,
+     *       "height": 106,
+     *       "link": 161,
+     *       "transition": "none"
      *      }
      *   },
      *   "order": 3,
@@ -163,12 +172,19 @@ class ScreensController extends ApiController
      * @apiPermission User
      * @apiHeader {String} X-Access-Token User authentication token
      *
-     * @apiParam {Number} id           Id of the screen to update (`GET` parameter)
-     * @apiParam {Number} versionId    Version id (must be from a project owned by the authenticated user)
-     * @apiParam {String} title        Screen title
-     * @apiParam {Number} alignment    Screen alignment
-     * @apiParam {String} [background] Screen background HEX color code (eg. `#ffffff`)
-     * @apiParam {Number} [order]      Screen position within its version
+     * @apiParam {Number} id                    Id of the screen to update (`GET` parameter)
+     * @apiParam {Number} versionId             Version id (must be from a project owned by the authenticated user)
+     * @apiParam {String} title                 Screen title
+     * @apiParam {Number} alignment             Screen alignment
+     * @apiParam {String} [background]          Screen background HEX color code (eg. `#ffffff`)
+     * @apiParam {Mixed}  [hotspots]            Screen hotspots as json encoded string or array in the following format: `{"hostpot_id_1": {...}, "hostpot_id_2": {...}}`
+     * @apiParam {Number} hotspots.left         Left (X) hotspot coordinate
+     * @apiParam {Number} hotspots.top          Left (Y) hotspot coordinate
+     * @apiParam {Number} hotspots.width]       Hotspot width
+     * @apiParam {Number} hotspots.height       Hotspot height
+     * @apiParam {Mixed}  hotspots.link         Hotspot link target - screen id or external url
+     * @apiParam {String} [hotspots.transition] Hotspot transition effect (`none`, `fade`, `slide-left`, `slide-right`, `slide-top`, `slide-bottom`)
+     * @apiParam {Number} [order]               Screen position within its version
      *
      * @apiSuccessExample {json} 200 Success response (example):
      * {
@@ -209,7 +225,10 @@ class ScreensController extends ApiController
         if ($screen) {
             $model = new ScreenForm($user, ['scenario' => ScreenForm::SCENARIO_UPDATE]);
 
-            if ($model->load(Yii::$app->request->bodyParams, '') && $model->save($screen)) {
+            if (
+                $model->load(Yii::$app->request->bodyParams, '') &&
+                $model->save($screen)
+            ) {
                 return $screen;
             }
 
@@ -242,11 +261,11 @@ class ScreensController extends ApiController
      *   "title": "dashboard3",
      *   "hotspots": {
      *     "hotspot_1490302776820": {
-     *       "left": "504",
-     *       "top": "204",
-     *       "width": "130",
-     *       "height": "106",
-     *       "link": "161"
+     *       "left": 504,
+     *       "top": 204,
+     *       "width": 130,
+     *       "height": 106,
+     *       "link": 161
      *      }
      *   },
      *   "order": 3,

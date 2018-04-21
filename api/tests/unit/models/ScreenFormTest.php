@@ -130,19 +130,45 @@ class ScreenFormTest extends \Codeception\Test\Unit
 
             verify('Model should not save', $result)->null();
             verify('Title error message should be set', $model->errors)->hasKey('title');
-            verify('Subtype error message should be set', $model->errors)->hasKey('versionId');
-            verify('Password error message should be set', $model->errors)->hasKey('alignment');
-            verify('Subtype error message should be set', $model->errors)->hasKey('background');
-            verify('Subtype error message should be set', $model->errors)->hasKey('image');
+            verify('VersionId error message should be set', $model->errors)->hasKey('versionId');
+            verify('Alignment error message should be set', $model->errors)->hasKey('alignment');
+            verify('Background error message should be set', $model->errors)->hasKey('background');
+            verify('Image error message should be set', $model->errors)->hasKey('image');
         });
 
-        $this->specify('Success create attempt', function() use ($user) {
+        $this->specify('Success create attempt 1', function() use ($user) {
             $imagePath = Yii::getAlias('@common/tests/_data/test_image.png');
+
+            $model = new ScreenForm($user, [
+                'title'      => 'New screen title',
+                'versionId'  => 1001,
+                'alignment'  => Screen::ALIGNMENT_LEFT,
+                'background' => '',
+                'image'      => $this->tester->getUploadedFileInstance($imagePath),
+            ]);
+            $model->scenario = ScreenForm::SCENARIO_CREATE;
+
+            $result = $model->save();
+
+            verify('Model should save successfully', $result)->isInstanceOf(Screen::className());
+            verify('Model should not has any errors', $model->errors)->isEmpty();
+            verify('Screen title should match', $result->title)->equals('New screen title');
+            verify('Screen version should match', $result->versionId)->equals(1001);
+            verify('Screen alignment should match', $result->alignment)->equals(Screen::ALIGNMENT_LEFT);
+            verify('Screen background should match', $result->background)->null();
+            verify('Screen hotspots should match', $result->hotspots)->null();
+        });
+
+        $this->specify('Success create attempt 2 (with hotspots)', function() use ($user) {
+            $hotspots  = json_encode(['test' => ['width' => 1, 'height' => 1, 'top' => 1, 'left' => 1, 'link' => 1]]);
+            $imagePath = Yii::getAlias('@common/tests/_data/test_image.png');
+
             $model = new ScreenForm($user, [
                 'title'      => 'New screen title',
                 'versionId'  => 1001,
                 'alignment'  => Screen::ALIGNMENT_LEFT,
                 'background' => '#fff000',
+                'hotspots'   => $hotspots,
                 'image'      => $this->tester->getUploadedFileInstance($imagePath),
             ]);
             $model->scenario = ScreenForm::SCENARIO_CREATE;
@@ -155,6 +181,7 @@ class ScreenFormTest extends \Codeception\Test\Unit
             verify('Screen version should match', $result->versionId)->equals(1001);
             verify('Screen alignment should match', $result->alignment)->equals(Screen::ALIGNMENT_LEFT);
             verify('Screen background should match', $result->background)->equals('#fff000');
+            verify('Screen hotspots should match', $result->hotspots)->equals($hotspots);
         });
     }
 
@@ -172,6 +199,7 @@ class ScreenFormTest extends \Codeception\Test\Unit
                 'versionId'  => 1004, // not owned by the user
                 'alignment'  => 0,
                 'background' => '#abc',
+                'hotspots'   => ['test' => ['width' => 'invalid']],
             ]);
             $model->scenario = ScreenForm::SCENARIO_UPDATE;
 
@@ -179,17 +207,43 @@ class ScreenFormTest extends \Codeception\Test\Unit
 
             verify('Model should not save', $result)->null();
             verify('Title error message should be set', $model->errors)->hasKey('title');
-            verify('Subtype error message should be set', $model->errors)->hasKey('versionId');
-            verify('Password error message should be set', $model->errors)->hasKey('alignment');
-            verify('Subtype error message should be set', $model->errors)->hasKey('background');
+            verify('VersionId error message should be set', $model->errors)->hasKey('versionId');
+            verify('Alignment error message should be set', $model->errors)->hasKey('alignment');
+            verify('background error message should be set', $model->errors)->hasKey('background');
+            verify('Hotspots error message should be set', $model->errors)->hasKey('hotspots');
+            verify('Image error message should not be set', $model->errors)->hasntKey('image');
         });
 
-        $this->specify('Success update attempt', function() use ($user, $screen) {
+        $this->specify('Success update attempt 1', function() use ($user, $screen) {
+            $model = new ScreenForm($user, [
+                'title'     => 'New screen title',
+                'versionId' => 1001,
+                'alignment' => Screen::ALIGNMENT_LEFT,
+            ]);
+            $model->scenario = ScreenForm::SCENARIO_UPDATE;
+
+            $result = $model->save($screen);
+
+            $screen->refresh();
+
+            verify('Model should save successfully', $result)->isInstanceOf(Screen::className());
+            verify('Model should not has any errors', $model->errors)->isEmpty();
+            verify('Screen title should match', $screen->title)->equals('New screen title');
+            verify('Screen version should match', $screen->versionId)->equals(1001);
+            verify('Screen alignment should match', $screen->alignment)->equals(Screen::ALIGNMENT_LEFT);
+            verify('Screen background should match', $screen->background)->null();
+            verify('Screen hotspots should match', $screen->hotspots)->null();
+        });
+
+        $this->specify('Success update attempt 2 (with hotspots)', function() use ($user, $screen) {
+            $hotspots = ['test' => ['width' => 1, 'height' => 1, 'top' => 1, 'left' => 1, 'link' => 1]];
+
             $model = new ScreenForm($user, [
                 'title'      => 'New screen title',
                 'versionId'  => 1001,
                 'alignment'  => Screen::ALIGNMENT_LEFT,
                 'background' => '#fff000',
+                'hotspots'   => $hotspots,
             ]);
             $model->scenario = ScreenForm::SCENARIO_UPDATE;
 
@@ -203,6 +257,7 @@ class ScreenFormTest extends \Codeception\Test\Unit
             verify('Screen version should match', $screen->versionId)->equals(1001);
             verify('Screen alignment should match', $screen->alignment)->equals(Screen::ALIGNMENT_LEFT);
             verify('Screen background should match', $screen->background)->equals('#fff000');
+            verify('Screen hotspots should match', $screen->hotspots)->equals(json_encode($hotspots));
         });
     }
 }
