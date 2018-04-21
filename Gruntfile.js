@@ -13,8 +13,8 @@ module.exports = function(grunt) {
                 options: {
                     packageInfo: {
                         // update accordingly
-                        "url":       "http://api.presentator.dev",
-                        "sampleUrl": "http://api.presentator.dev"
+                        "url":       "http://api.presentator.local",
+                        "sampleUrl": "http://api.presentator.local"
                     }
                 }
             },
