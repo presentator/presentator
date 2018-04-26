@@ -164,22 +164,7 @@ class ProjectsController extends ApiController
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
      *   "id": 11,
-     *   "featured": {
-     *     "id": 151,
-     *     "versionId": 23,
-     *     "title": "attachment2",
-     *     "hotspots": null,
-     *     "order": 1,
-     *     "alignment": 0,
-     *     "background": null,
-     *     "imageUrl": "/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg",
-     *     "createdAt": 1489926572,
-     *     "updatedAt": 1489926572,
-     *     "thumbs": {
-     *       "medium": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg",
-     *       "small": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg"
-     *     }
-     *   }
+     *   "featured": null,
      *   "versions": [
      *     {
      *       "id": 23,
@@ -261,7 +246,7 @@ class ProjectsController extends ApiController
      *       "medium": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg",
      *       "small": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg"
      *     }
-     *   }
+     *   },
      *   "versions": [
      *     {
      *       "id": 23,
@@ -269,7 +254,24 @@ class ProjectsController extends ApiController
      *       "order": 1,
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,
-     *       "screens": []
+     *       "screens": [
+     *         {
+     *           "id": 151,
+     *           "versionId": 23,
+     *           "title": "attachment2",
+     *           "hotspots": null,
+     *           "order": 1,
+     *           "alignment": 0,
+     *           "background": null,
+     *           "imageUrl": "/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg",
+     *           "createdAt": 1489926572,
+     *           "updatedAt": 1489926572,
+     *           "thumbs": {
+     *             "medium": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg",
+     *             "small": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg"
+     *           }
+     *         }
+     *       ]
      *     }
      *   ]
      * }

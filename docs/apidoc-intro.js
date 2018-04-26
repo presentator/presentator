@@ -65,7 +65,7 @@ Each API response could be localized with the `lang` GET parameter:
 ```
 ?lang=bg
 ```
-Currently available language codes are: `bg`, `de`, `en`, `es`, `fr`, `pl`, `pt-br`.
+Currently available language codes are: `bg`, `de`, `en`, `es`, `fr`, `pl`, `pt-br`, `sq-al`.
 
 If the `lang` parameter is not set, the API will try to detect it via **GeoIP**.
  */
@@ -262,6 +262,22 @@ GET parameters:
         <td style="width: 32%" class="code">36</td>
         <td style="width: 32%"><p>Mobile screen - <code>[732, 712]</code></p></td>
     </tr>
+    <tr class="delimiter"><td colspan="3"></td></tr>
+    <tr>
+        <td style="width: 32%" class="code">scaleFactor</td>
+        <td style="width: 32%" class="code">0</td>
+        <td style="width: 32%"><p>Auto fit scale factor</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">scaleFactor</td>
+        <td style="width: 32%" class="code">1</td>
+        <td style="width: 32%"><p>None/Default scale factor</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">scaleFactor</td>
+        <td style="width: 32%" class="code">2</td>
+        <td style="width: 32%"><p>Retian display scale factor</p></td>
+    </tr>
 </table>
 
 ## ProjectPreview model
@@ -304,6 +320,37 @@ GET parameters:
         <td style="width: 32%" class="code">alignment</td>
         <td style="width: 32%" class="code">3</td>
         <td style="width: 32%"><p>Right</p></td>
+    </tr>
+    <tr class="delimiter"><td colspan="3"></td></tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">none</td>
+        <td style="width: 32%"><p>No transition animation on hotspot click</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">fade</td>
+        <td style="width: 32%"><p>Fade animation on hotspot click</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">slide-left</td>
+        <td style="width: 32%"><p>Slide screen from left animation on hotspot click</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">slide-right</td>
+        <td style="width: 32%"><p>Slide screen from right animation on hotspot click</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">slide-top</td>
+        <td style="width: 32%"><p>Slide screen from top animation on hotspot click</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">hotspot transition</td>
+        <td style="width: 32%" class="code">slide-bottom</td>
+        <td style="width: 32%"><p>Slide screen from bottom animation on hotspot click</p></td>
     </tr>
 </table>
  */
