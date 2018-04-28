@@ -33,6 +33,9 @@ return [
     // email address that is intented to process client's emails
     'supportEmail' => 'support@example.com',
 
+    // API user auth token duration time in seconds
+    'apiUserTokenExpire' => 86400,
+
     // password reset token duration time in seconds
     'passwordResetTokenExpire' => 3600,
 

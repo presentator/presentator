@@ -413,6 +413,8 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function generateJwtToken()
     {
+        $expire = CArrayHelper::getValue(Yii::$app->params, 'apiUserTokenExpire', 3600);
+
         $secret = base64_encode(Yii::$app->params['apiUserSecretKey']);
 
         // token payload data
@@ -421,7 +423,7 @@ class User extends CActiveRecord implements IdentityInterface
             'iat'       => time(),
             'userId'    => $this->id,
             'userEmail' => $this->email,
-            'exp'       => strtotime('+ 60min'),
+            'exp'       => strtotime('+ ' . $expire . ' seconds'),
         ];
 
         return JWT::encode($payload, $secret, 'HS256');
