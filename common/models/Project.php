@@ -110,6 +110,7 @@ class Project extends CActiveRecord
         $extraFields['featured'] = 'featuredScreen';
         $extraFields['versions'] = 'versions';
         $extraFields['screens']  = 'screens';
+        $extraFields['previews'] = 'previews';
 
         return $extraFields;
     }

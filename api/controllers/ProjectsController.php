@@ -32,7 +32,25 @@ class ProjectsController extends ApiController
      *     "subtype": null,
      *     "createdAt": 1489904382,
      *     "updatedAt": 1489904382,
-     *     "featured": null
+     *     "featured": null,
+     *     "previews": [
+     *       {
+     *         "id": 1,
+     *         "projectId": 7,
+     *         "slug": "preview-slug-1",
+     *         "type": 1,
+     *         "createdAt": 1524306495,
+     *         "updatedAt": 1524306495
+     *       },
+     *       {
+     *         "id": 2,
+     *         "projectId": 7,
+     *         "slug": "preview-slug-2",
+     *         "type": 1,
+     *         "createdAt": 1524306495,
+     *         "updatedAt": 1524306495
+     *       }
+     *     ]
      *   },
      *   {
      *     "id": 9,
@@ -56,7 +74,25 @@ class ProjectsController extends ApiController
      *         "medium": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg",
      *         "small": "http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg"
      *       }
-     *     }
+     *     },
+     *     "previews": [
+     *       {
+     *         "id": 1,
+     *         "projectId": 9,
+     *         "slug": "preview-slug-1",
+     *         "type": 1,
+     *         "createdAt": 1524306495,
+     *         "updatedAt": 1524306495
+     *       },
+     *       {
+     *         "id": 2,
+     *         "projectId": 9,
+     *         "slug": "preview-slug-2",
+     *         "type": 1,
+     *         "createdAt": 1524306495,
+     *         "updatedAt": 1524306495
+     *       }
+     *     ]
      *   }
      * ]
      *
@@ -67,8 +103,8 @@ class ProjectsController extends ApiController
         $user = Yii::$app->user->identity;
 
         return new CActiveDataProvider([
-            'query'  => $user->getProjects()->with(['featuredScreen']),
-            'expand' => ['featured'],
+            'query'  => $user->getProjects()->with(['featuredScreen', 'previews']),
+            'expand' => ['featured', 'previews'],
         ]);
     }
 
@@ -90,12 +126,12 @@ class ProjectsController extends ApiController
      *
      * @apiSuccessExample {json} 200 Success response (example):
      * {
+     *   "id": 11,
      *   "title": "My new project",
      *   "type": 1,
      *   "subtype": null,
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
-     *   "id": 11,
      *   "featured": null,
      *   "versions": [
      *     {
@@ -105,6 +141,24 @@ class ProjectsController extends ApiController
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,
      *       "screens": []
+     *     }
+     *   ],
+     *   "previews": [
+     *     {
+     *       "id": 1,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-1",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
+     *     },
+     *     {
+     *       "id": 2,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-2",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
      *     }
      *   ]
      * }
@@ -129,7 +183,7 @@ class ProjectsController extends ApiController
             $model->load(Yii::$app->request->post(), '') &&
             ($project = $model->save())
         ) {
-            return $project->toArray([], ['featured', 'versions.screens']);
+            return $project->toArray([], ['featured', 'versions.screens', 'previews']);
         }
 
         return $this->setErrorResponse(
@@ -158,12 +212,12 @@ class ProjectsController extends ApiController
      *
      * @apiSuccessExample {json} 200 Success response (example):
      * {
+     *   "id": 11,
      *   "title": "My new project",
      *   "type": 1,
      *   "subtype": null,
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
-     *   "id": 11,
      *   "featured": null,
      *   "versions": [
      *     {
@@ -173,6 +227,24 @@ class ProjectsController extends ApiController
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,
      *       "screens": []
+     *     }
+     *   ],
+     *   "previews": [
+     *     {
+     *       "id": 1,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-1",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
+     *     },
+     *     {
+     *       "id": 2,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-2",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
      *     }
      *   ]
      * }
@@ -198,7 +270,7 @@ class ProjectsController extends ApiController
             $model = new ProjectForm($user);
 
             if ($model->load(Yii::$app->request->bodyParams, '') && $model->save($project)) {
-                return $project->toArray([], ['featured', 'versions.screens']);
+                return $project->toArray([], ['featured', 'versions.screens', 'previews']);
             }
 
             return $this->setErrorResponse(
@@ -273,6 +345,24 @@ class ProjectsController extends ApiController
      *         }
      *       ]
      *     }
+     *   ],
+     *   "previews": [
+     *     {
+     *       "id": 1,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-1",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
+     *     },
+     *     {
+     *       "id": 2,
+     *       "projectId": 11,
+     *       "slug": "preview-slug-2",
+     *       "type": 1,
+     *       "createdAt": 1524306495,
+     *       "updatedAt": 1524306495
+     *     }
      *   ]
      * }
      *
@@ -284,7 +374,7 @@ class ProjectsController extends ApiController
 
         $project = $user->findProjectById($id);
         if ($project) {
-            return $project->toArray([], ['featured', 'versions.screens']);
+            return $project->toArray([], ['featured', 'versions.screens', 'previews']);
         }
 
         return $this->setNotFoundResponse();

@@ -72,6 +72,7 @@ class ProjectsCest
             'type'     => 'integer',
             'subtype'  => 'integer|null',
             'featured' => 'string|null',
+            'previews' => 'array',
         ]);
     }
 
@@ -130,6 +131,7 @@ class ProjectsCest
             'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
+            'previews' => 'array',
         ]);
     }
 
@@ -207,6 +209,7 @@ class ProjectsCest
             'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
+            'previews' => 'array',
         ]);
     }
 
@@ -252,6 +255,7 @@ class ProjectsCest
             'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
+            'previews' => 'array',
         ]);
         $I->seeResponseContainsJson([
             'id' => 1001,
