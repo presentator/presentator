@@ -24,3 +24,4 @@ You can join them in supporting Presentator development by visiting our [Support
 - Stan Vladimirov - €10.00 EUR
 - A. Kelemen - €5.00 EUR
 - Erika Mayiras - €5.00 EUR
+- Aleksandar Perisic - €4.00 EUR
