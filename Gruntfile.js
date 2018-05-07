@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     var gruntConfig = {
         apidoc: {
             dev: {
-                src:  ['docs', 'api/controllers'],
+                src:  ['api/web/apidoc-template/base', 'api/controllers'],
                 dest: 'api/web/doc-dev',
                 template: 'api/web/apidoc-template',
                 options: {
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
                 }
             },
             prod: {
-                src:  ['docs', 'api/controllers'],
+                src:  ['api/web/apidoc-template/base', 'api/controllers'],
                 dest: 'api/web/doc',
                 template: 'api/web/apidoc-template',
                 options: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
             },
             scripts: {
                 files: [
-                    'docs/*.js',
+                    'api/web/apidoc-template/base/*.js',
                     'api/controllers/*.php'
                 ],
                 tasks: ['apidoc'],
