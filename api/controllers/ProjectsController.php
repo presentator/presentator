@@ -46,7 +46,7 @@ class ProjectsController extends ApiController
      *         "id": 2,
      *         "projectId": 7,
      *         "slug": "preview-slug-2",
-     *         "type": 1,
+     *         "type": 2,
      *         "createdAt": 1524306495,
      *         "updatedAt": 1524306495
      *       }
@@ -88,7 +88,7 @@ class ProjectsController extends ApiController
      *         "id": 2,
      *         "projectId": 9,
      *         "slug": "preview-slug-2",
-     *         "type": 1,
+     *         "type": 2,
      *         "createdAt": 1524306495,
      *         "updatedAt": 1524306495
      *       }
@@ -156,7 +156,7 @@ class ProjectsController extends ApiController
      *       "id": 2,
      *       "projectId": 11,
      *       "slug": "preview-slug-2",
-     *       "type": 1,
+     *       "type": 2,
      *       "createdAt": 1524306495,
      *       "updatedAt": 1524306495
      *     }
@@ -242,7 +242,7 @@ class ProjectsController extends ApiController
      *       "id": 2,
      *       "projectId": 11,
      *       "slug": "preview-slug-2",
-     *       "type": 1,
+     *       "type": 2,
      *       "createdAt": 1524306495,
      *       "updatedAt": 1524306495
      *     }
@@ -359,7 +359,7 @@ class ProjectsController extends ApiController
      *       "id": 2,
      *       "projectId": 11,
      *       "slug": "preview-slug-2",
-     *       "type": 1,
+     *       "type": 2,
      *       "createdAt": 1524306495,
      *       "updatedAt": 1524306495
      *     }
