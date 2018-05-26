@@ -47,6 +47,9 @@ button, .btn {
     @include user-select(none);
     @include border-radius(30px);
     @include transition(color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s, width 0.3s);
+    &::-moz-focus-inner {
+        border: 0;
+    }
     &:hover {
         color: #fff;
         background: darken($txtColor, 8%);
