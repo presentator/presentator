@@ -29,7 +29,7 @@
  * PR.closePopup('#my_popup');
  * ```
  *
- * @version 0.1
+ * @version 0.2
  * @author: Gani Georgiev <gani.georgiev@gmail.com>
  */
 ;(function($) {
@@ -61,6 +61,9 @@
 
         $body.addClass('popup-active');
         $popup.addClass('active');
+
+        // focus the first available form input by default
+        $popup.find('form input:visible').first().focus();
 
         $popup.trigger('popupOpen', [$popup]);
     }
