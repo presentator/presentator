@@ -386,7 +386,10 @@ PreviewView.prototype.invokeAccess = function(versionPos, screenPos, callback) {
                 });
             }
 
-            if (queryParams[self.MODE_PARAM] === self.MODE_COMMENTS) {
+            if (
+                queryParams[self.MODE_PARAM] === self.MODE_COMMENTS && // has mode param
+                $(self.settings.commentsModeHandle).length             // has comments mode handle
+            ) {
                 self.activateCommentsMode();
             } else {
                 self.activatePreviewMode();
@@ -524,3 +527,4 @@ PreviewView.prototype.activateCommentsMode = function() {
 
     this.commentsView.enable();
 };
+
