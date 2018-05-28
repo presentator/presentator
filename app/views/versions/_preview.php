@@ -1,8 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use common\models\Project;
+use common\models\Version;
 use common\models\Screen;
 use common\models\ScreenComment;
 use common\components\helpers\CFileHelper;
@@ -17,18 +16,18 @@ use common\components\helpers\CFileHelper;
 $activeScreenId = isset($activeScreenId) ? $activeScreenId : null;
 $allowComment   = isset($allowComment) ? $allowComment : false;
 
-if ($project->type == Project::TYPE_TABLET) {
-    $projectTypeClass = 'tablet';
-} elseif ($project->type == Project::TYPE_MOBILE) {
-    $projectTypeClass = 'mobile';
+if ($activeVersion->type == Version::TYPE_TABLET) {
+    $versionTypeClass = 'tablet';
+} elseif ($activeVersion->type == Version::TYPE_MOBILE) {
+    $versionTypeClass = 'mobile';
 } else {
-    $projectTypeClass = 'desktop';
+    $versionTypeClass = 'desktop';
 }
 
 $generalSlideStyles = [];
-if ($project->subtype && !empty(Project::SUBTYPES[$project->subtype])) {
-    $generalSlideStyles['width']  = Project::SUBTYPES[$project->subtype][0] . 'px';
-    $generalSlideStyles['height'] = Project::SUBTYPES[$project->subtype][1] . 'px';
+if ($activeVersion->subtype && !empty(Version::SUBTYPES[$activeVersion->subtype])) {
+    $generalSlideStyles['width']  = Version::SUBTYPES[$activeVersion->subtype][0] . 'px';
+    $generalSlideStyles['height'] = Version::SUBTYPES[$activeVersion->subtype][1] . 'px';
 }
 
 $totalScreens = count($activeVersion->screens);
@@ -36,7 +35,7 @@ $totalScreens = count($activeVersion->screens);
 
 <div id="version_slider_<?= $activeVersion->id ?>"
     data-version-id="<?= $activeVersion->id ?>"
-    class="version-slider <?= $projectTypeClass ?>"
+    class="version-slider <?= $versionTypeClass ?>"
 >
     <div class="version-slider-panel control-panel">
         <div class="panel-content">
@@ -154,7 +153,7 @@ $totalScreens = count($activeVersion->screens);
                         </div>
                     </li>
 
-                    <?php if ($project->type == Project::TYPE_DESKTOP): ?>
+                    <?php if ($activeVersion->type == Version::TYPE_DESKTOP): ?>
                         <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-ios-grid-view"></i></li>
                     <?php endif ?>
 
@@ -223,7 +222,7 @@ $totalScreens = count($activeVersion->screens);
                         }
 
                         // scaling
-                        $scaleFactor = $screen->project->getScaleFactor($originalWidth);
+                        $scaleFactor = $activeVersion->getScaleFactor($originalWidth);
                         $width       = $originalWidth / $scaleFactor;
                         $height      = $originalHeight / $scaleFactor;
 

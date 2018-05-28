@@ -90,8 +90,7 @@ class VersionsController extends AppController
 
         if ($project) {
             $version = $project->findVersionById($versionId);
-
-            $model = new VersionForm($project, $version);
+            $model   = new VersionForm($project, $version);
 
             $this->layout = 'blank';
 
@@ -150,7 +149,6 @@ class VersionsController extends AppController
                     'message'         => $message,
                 ];
             }
-
         }
 
         return [

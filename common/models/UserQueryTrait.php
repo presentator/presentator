@@ -10,7 +10,7 @@ trait UserQueryTrait
 {
     /**
      * Counts total user projects.
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return integer
      */
     public function countProjects($mustBeOwner = false)
@@ -30,7 +30,7 @@ trait UserQueryTrait
      * @param  string $search
      * @param  integer $limit       Number of returned results.
      * @param  integer $offset      Results page offset
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return Project[]
      */
     public function searchProjects($search, $limit = -1, $offset = 0, $mustBeOwner = false)
@@ -57,7 +57,7 @@ trait UserQueryTrait
      * Returns list with user projects.
      * @param  integer $limit       Number of returned results.
      * @param  integer $offset      Results page offset
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return Project[]
      */
     public function findProjects($limit = -1, $offset = 0, $mustBeOwner = false)
@@ -80,7 +80,7 @@ trait UserQueryTrait
     /**
      * Returns single user project by its id.
      * @param  integer $id
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return Project|null
      */
     public function findProjectById($id, $mustBeOwner = false)
@@ -102,7 +102,7 @@ trait UserQueryTrait
     /**
      * Returns a single Version model belonging to a project owned by the current user.
      * @param  integer $versionId
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return Version|null
      */
     public function findVersionById($versionId, $mustBeOwner = false)
@@ -124,7 +124,7 @@ trait UserQueryTrait
      * Generates query object for fetching screen model(s)
      * belonging to a project owned by the current user.
      * @param  integer|array $screenId
-     * @param  boolean       $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean       $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return \yii\db\ActiveQuery
      */
     public function findScreensQuery($screenId, $mustBeOwner = false)
@@ -145,7 +145,7 @@ trait UserQueryTrait
     /**
      * Returns single Screen model belonging to a project owned by the current user.
      * @param  integer $screenId
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return Screen
      */
     public function findScreenById($screenId, $mustBeOwner = false)
@@ -156,7 +156,7 @@ trait UserQueryTrait
     /**
      * Returns single ScreenComment belonging to a project owned by the current user.
      * @param  integer $commentId
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return ScreenComment
      */
     public function findScreenCommentById($commentId, $mustBeOwner = false)
@@ -178,7 +178,7 @@ trait UserQueryTrait
      * Returns latest leaved ScreenComment models belonging to projects owned by the current user.
      * @param  integer $limit       Number of the returned results.
      * @param  integer $offset      Results offset.
-     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is always `true`)
+     * @param  boolean $mustBeOwner Flag to filter and return only super user owned items (for regular users this flag is ignored)
      * @return ScreenComment[]
      */
     public function findLeavedScreenComments($limit = 20, $offset = 0, $mustBeOwner = false)

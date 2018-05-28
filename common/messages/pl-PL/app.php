@@ -137,7 +137,7 @@ return array(
     'Error' => 'Błąd',
     'First name' => 'Imię',
     'For 2x pixel density designs.' => 'For 2x pixel density designs.',
-    'For {projectType}' => '{projectType}',
+    'For {versionType}' => '{versionType}',
     'Forgotten password' => 'Nie pamiętam hasła',
     'Forgotten password?' => 'Nie pamiętasz hasła?',
     'French' => 'Francuski',

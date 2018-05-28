@@ -17,13 +17,19 @@ if ($model->title) {
 <li class="nav-item version-item <?= $model->title  ? 'has-title' : '' ?> <?= $isActive ? 'active' : '' ?>"
     data-version-id="<?= $model->id ?>"
     data-project-id="<?= $model->projectId ?>"
-    <?php if ($model->title): ?>
-    data-version-title="<?= $title ?>"
-    title="<?= $title ?>"
-    <?php endif; ?>
 >
-    <span class="txt version-title-holder"><?= $title ?></span>
+    <div class="version-title-holder"
+        <?php if ($model->title): ?>
+        data-version-title="<?= $title ?>"
+        title="<?= $title ?>"
+        <?php endif; ?>
+    >
+        <?= $title ?>
+    </div>
+
     <div class="ctrl-bar">
-        <span class="ctrl-item version-edit"><i class="ion ion-edit"></i></span>
+        <span class="ctrl-item version-edit" data-cursor-tooltip="<?= Yii::t('app', 'Edit version') ?>">
+            <i class="ion ion-edit"></i>
+        </span>
     </div>
 </li>

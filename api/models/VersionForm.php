@@ -13,10 +13,40 @@ use common\models\Version;
  */
 class VersionForm extends Model
 {
+    const SCENARIO_CREATE = 'scenarioCreate';
+    const SCENARIO_UPDATE = 'scenarioUpdate';
+
     /**
      * @var integer
      */
     public $projectId;
+
+    /**
+     * @var string
+     */
+    public $title;
+
+    /**
+     * @var integer
+     */
+    public $type;
+
+    /**
+     * @var integer
+     */
+    public $subtype;
+
+    /**
+     * Auto scale flag for mobile and tablet Version types.
+     * @var boolean
+     */
+    public $autoScale = false;
+
+    /**
+     * Retina scale flag for desktop Version types.
+     * @var boolean
+     */
+    public $retinaScale = false;
 
     /**
      * @var User
@@ -41,13 +71,47 @@ class VersionForm extends Model
     public function rules()
     {
         return [
-            ['projectId', 'required'],
+            ['projectId', 'required', 'on' => self::SCENARIO_CREATE],
             ['projectId', 'validateUserProjectId'],
+            [['title'], 'string', 'max' => 100],
+            [['title'], 'filter', 'filter' => 'strip_tags'],
+            [['autoScale', 'retinaScale'], 'boolean'],
+            [['type'], 'required'],
+            ['type', 'in', 'range' => array_keys(Version::getTypeLabels())],
+            ['subtype', 'validateSubtypeRange'],
+            ['subtype', 'required', 'when' => function ($model) {
+                if ($model->type !== Version::TYPE_DESKTOP) {
+                    return true;
+                }
+
+                return false;
+            }],
+
         ];
     }
 
     /**
-     * Checkes if the form user has a project ID.
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_CREATE] = [
+            'projectId', 'title', 'type', 'subtype',
+            'autoScale', 'retinaScale',
+        ];
+
+        $scenarios[self::SCENARIO_UPDATE] = [
+            'title', 'type', 'subtype',
+            'autoScale', 'retinaScale',
+        ];
+
+        return $scenarios;
+    }
+
+    /**
+     * Checkes if the form user is the owner of the provided project ID.
      * @param string $attribute
      * @param mixed  $params
      */
@@ -59,14 +123,46 @@ class VersionForm extends Model
     }
 
     /**
-     * Creates a Version model.
-     * @return Version|null The created version on success, otherwise - null.
+     * Subtype custom range validator.
+     * @param string $attribute
+     * @param mixed  $params
      */
-    public function save()
+    public function validateSubtypeRange($attribute, $params)
+    {
+        if (
+            ($this->type == Version::TYPE_TABLET && !array_key_exists($this->{$attribute}, Version::getTabletSubtypeLabels())) ||
+            ($this->type == Version::TYPE_MOBILE && !array_key_exists($this->{$attribute}, Version::getMobileSubtypeLabels()))
+        ) {
+            $this->addError($attribute, Yii::t('app', 'Invalid value.'));
+        }
+    }
+
+    /**
+     * Creates or updates a Version model.
+     * @param  Project|null $version
+     * @return Version|null The created/updated version on success, otherwise - null.
+     */
+    public function save(Version $version = null)
     {
         if ($this->validate()) {
-            $version            = new Version;
-            $version->projectId = (int) $this->projectId;
+            if (!$version) {
+                // create
+                $version = new Version;
+                $version->projectId = (int) $this->projectId;
+            }
+
+            $version->title = $this->title;
+            $version->type  = $this->type;
+
+            if ($this->type != Version::TYPE_DESKTOP) {
+                $version->subtype = $this->subtype;
+
+                $version->scaleFactor = $this->autoScale ? Version::AUTO_SCALE_FACTOR : Version::DEFAULT_SCALE_FACTOR;
+            } else {
+                $version->subtype = null;
+
+                $version->scaleFactor = $this->retinaScale ? Version::RETINA_SCALE_FACTOR : Version::DEFAULT_SCALE_FACTOR;
+            }
 
             if ($version->save()) {
                 return $version;

@@ -123,7 +123,7 @@ return array(
     'First name' => 'Emri',
     'Fit to screen' => 'Përshtat me ekranin',
     'For 2x pixel density designs.' => 'Për dizajne me 2x dëndësi pixel-i',
-    'For {projectType}' => 'Për {projectType}',
+    'For {versionType}' => 'Për {versionType}',
     'Forgotten password' => 'Fjalëkalim i harruar',
     'Forgotten password?' => 'Fjalëkalim i harruar?',
     'French' => 'Frëngjisht',

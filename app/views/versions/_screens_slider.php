@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use common\models\Project;
+use common\models\Version;
 use common\models\Screen;
 use common\models\ScreenComment;
 use common\components\helpers\CFileHelper;
@@ -16,18 +15,18 @@ use common\components\helpers\CFileHelper;
 $unreadCommentTargets = isset($unreadCommentTargets) ? $unreadCommentTargets : [];
 $activeScreenId       = isset($activeScreenId) ? $activeScreenId : null;
 
-if ($model->project->type == Project::TYPE_TABLET) {
+if ($model->type == Version::TYPE_TABLET) {
     $type = 'tablet';
-} elseif ($model->project->type == Project::TYPE_MOBILE) {
+} elseif ($model->type == Version::TYPE_MOBILE) {
     $type = 'mobile';
 } else {
     $type = 'desktop';
 }
 
 $generalSlideStyles = [];
-if ($model->project->subtype && !empty(Project::SUBTYPES[$model->project->subtype])) {
-    $generalSlideStyles['width']  = Project::SUBTYPES[$model->project->subtype][0] . 'px';
-    $generalSlideStyles['height'] = Project::SUBTYPES[$model->project->subtype][1] . 'px';
+if ($model->subtype && !empty(Version::SUBTYPES[$model->subtype])) {
+    $generalSlideStyles['width']  = Version::SUBTYPES[$model->subtype][0] . 'px';
+    $generalSlideStyles['height'] = Version::SUBTYPES[$model->subtype][1] . 'px';
 }
 
 $totalScreens = count($model->screens);
@@ -81,7 +80,7 @@ $isGuest      = Yii::$app->user->isGuest;
                         </div>
                     </li>
 
-                    <?php if ($model->project->type == Project::TYPE_DESKTOP): ?>
+                    <?php if ($model->type == Version::TYPE_DESKTOP): ?>
                         <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-ios-grid-view"></i></li>
                     <?php endif ?>
 
@@ -125,7 +124,7 @@ $isGuest      = Yii::$app->user->isGuest;
                     }
 
                     // scaling
-                    $scaleFactor = $model->project->getScaleFactor($originalWidth);
+                    $scaleFactor = $model->getScaleFactor($originalWidth);
                     $width       = $originalWidth / $scaleFactor;
                     $height      = $originalHeight / $scaleFactor;
 

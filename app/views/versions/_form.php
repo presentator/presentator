@@ -1,9 +1,12 @@
 <?php
 use yii\helpers\Html;
+use common\models\Version;
 use common\widgets\CActiveForm;
 
 /**
- * @var $model \app\models\VersionForm
+ * @var $model        \app\models\VersionForm
+ * @var $typesList    array
+ * @var $subtypesList array
  */
 
 $isUpdate = $model->isUpdate();
@@ -16,6 +19,7 @@ if ($isUpdate) {
     $formId    = 'version_create_form';
 }
 ?>
+
 <?php $form = CActiveForm::begin(['id' => $formId]); ?>
     <?= Html::hiddenInput('versionId', $versionId); ?>
 
@@ -24,6 +28,11 @@ if ($isUpdate) {
             'placeholder' => Yii::t('app', 'Version title (optional)')
         ]
     ])->label(false) ?>
+
+    <?= $this->render('_form_type_selection', [
+        'form'  => $form,
+        'model' => $model,
+    ]) ?>
 
     <div class="block text-center">
         <button class="btn btn-primary btn-cons btn-loader">

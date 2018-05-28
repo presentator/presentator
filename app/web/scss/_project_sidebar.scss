@@ -87,10 +87,16 @@
                 display: none;
                 content: none;
             }
-            .txt {
+            .version-title-holder {
                 display: inline-block;
                 vertical-align: top;
                 @include ellipsis;
+            }
+            .type-icon {
+                display: inline-block;
+                vertical-align: middle;
+                width: 18px;
+                text-align: left;
             }
             &:hover {
                 background: $lightGreyColor;
@@ -128,8 +134,6 @@
             cursor: pointer;
             text-decoration: none;
             @include transition(color 0.2s, opacity 0.3s, visibility 0.3s, transform 0.3s);
-            @include transform(translateY(10px));
-            @include hide;
             .ctrl-item {
                 line-height: inherit;
                 font-size: inherit;
@@ -148,12 +152,6 @@
             &:active {
                 transition-duration: 0.1s;
                 color: darken($dangerColor, 10%);
-            }
-        }
-        .nav-item:hover {
-            .ctrl-bar {
-                @include show;
-                @include transform(translateY(0));
             }
         }
     }

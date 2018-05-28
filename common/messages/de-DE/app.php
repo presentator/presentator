@@ -123,7 +123,7 @@ return array(
     'First name' => 'Vorname',
     'Fit to screen' => 'An Bildschirm anpassen',
     'For 2x pixel density designs.' => 'For 2x pixel density designs.',
-    'For {projectType}' => 'Für {projectType}',
+    'For {versionType}' => 'Für {versionType}',
     'Forgotten password' => 'Passwort vergessen',
     'Forgotten password?' => 'Passwort vergessen?',
     'French' => 'Französisch',

@@ -1,110 +1,28 @@
 <?php
+use yii\helpers\Url;
 use yii\helpers\Html;
 use common\models\Project;
 use common\widgets\CActiveForm;
 
 /**
- * @var $model        \app\models\ProjectForm
- * @var $typesList    array
- * @var $subtypesList array
- * @var $isNewRecord  boolean
+ * @var $model       \app\models\ProjectForm
+ * @var $isNewRecord boolean
  */
 
-if (!isset($isNewRecord)) {
-    $isNewRecord = true;
-}
-
-if ($isNewRecord) {
-    $formId = 'project_create_form';
-} else {
+$isUpdate = $model->isUpdate();
+if ($isUpdate) {
     $formId = 'project_update_form';
+} else {
+    $formId = 'project_create_form';
 }
+
+$project = $model->getProject();
 ?>
-<?php $form = CActiveForm::begin(['id' => $formId]); ?>
+<?php $form = CActiveForm::begin([
+    'id'      => $formId,
+    'options' => ['autocomplete' => 'off'],
+]); ?>
     <?= $form->field($model, 'title') ?>
-
-    <div class="bg-light-grey clear-after out-expand m-b-30 padded p-t-20 p-b-0">
-        <?=
-            $form->field($model, 'type', [
-                'options'  => ['class' => 'block'],
-                'template' => '{label}<div class="check-block m-b-30">{input}{error}{hint}</div>'
-            ])
-            ->radioList($typesList, [
-                'class' => ['row'],
-                'item' => function($index, $label, $name, $checked, $value) {
-                    $label   = Yii::t('app', 'For {projectType}', ['projectType' => $label]);
-                    $radioId = 'project_type_' . $value;
-
-                    if ($value == Project::TYPE_TABLET) {
-                        $icon = '<i class="ion ion-ipad"></i>';
-                    } elseif ($value == Project::TYPE_MOBILE) {
-                        $icon = '<i class="ion ion-iphone"></i>';
-                    } else {
-                        $icon = '<i class="ion ion-monitor"></i>';
-                    }
-
-                    return $return = '
-                        <div class="cols-4">
-                            <div class="check-item">
-                                ' . sprintf('<input type="radio" id="%s" name="%s" value="%s" %s>',
-                                    $radioId,
-                                    $name,
-                                    $value,
-                                    ($checked ? 'checked' : '')
-                                ) . '
-                                <label for="' . $radioId . '" class="check-label">
-                                    <span class="icon">' . $icon . '</span>
-                                    <span class="txt">' . $label . '</span>
-                                </label>
-                            </div>
-                        </div>
-                    ';
-                },
-            ]);
-        ?>
-
-        <?=
-            $form->field($model, 'subtype', [
-                'template' => '{label}{input}',
-                'options' => ['class' => 'form-group inline-options']
-            ])
-            ->dropDownList($subtypesList, [
-                'data-default' => [
-                    Project::TYPE_TABLET => 21,
-                    Project::TYPE_MOBILE => 31,
-                ],
-            ])
-            ->label(false);
-        ?>
-
-        <?=
-            $form->field($model, 'autoScale', [
-                    'options' => [
-                        'class' => 'form-group',
-                        'data-scale-group' => [Project::TYPE_MOBILE, Project::TYPE_TABLET]
-                    ]
-                ])
-                ->checkbox()
-                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'Auto scale/fit the uploaded screen to the device width.') . '"></i>', [
-                    'tag'   => 'span',
-                    'class' => 'hint-inline-block',
-                ]);
-        ?>
-
-        <?=
-            $form->field($model, 'retinaScale', [
-                    'options' => [
-                        'class' => 'form-group',
-                        'data-scale-group' => Project::TYPE_DESKTOP
-                    ]
-                ])
-                ->checkbox()
-                ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'For 2x pixel density designs.') . '"></i>', [
-                    'tag'   => 'span',
-                    'class' => 'hint-inline-block',
-                ]);
-        ?>
-    </div>
 
     <?=
         $form->field($model, 'isPasswordProtected', ['options' => ['class' => 'form-group m-b-20']])
@@ -128,11 +46,23 @@ if ($isNewRecord) {
 
     <div class="block text-center">
         <button class="btn btn-primary btn-cons m-t-10 btn-loader">
-            <?php if ($isNewRecord): ?>
-                <?= Yii::t('app', 'Create project') ?>
-            <?php else: ?>
+            <?php if ($isUpdate): ?>
                 <?= Yii::t('app', 'Save changes') ?>
+            <?php else: ?>
+                <?= Yii::t('app', 'Create project') ?>
             <?php endif ?>
         </button>
+
+        <?php if ($project): ?>
+            <div class="clearfix m-t-10"></div>
+
+            <a href="<?= Url::to(['projects/delete', 'id' => $project->id]) ?>"
+                class="danger-link hint-link project-delete-link"
+                data-method="post"
+                data-confirm="<?= Yii::t('app', 'Do you really want to delete project {projectTitle}?', ['projectTitle' => Html::encode($project->title)]) ?>"
+            >
+                <?= Yii::t('app', 'Delete project') ?>
+            </a>
+        <?php endif; ?>
     </div>
 <?php CActiveForm::end(); ?>

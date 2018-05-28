@@ -42,9 +42,7 @@ class Project extends CActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
-            $version = new Version;
-            $version->projectId = $this->id;
-            $version->save();
+            $this->createDefaultVersion();
 
             $this->createDefaultPreviews();
         }
@@ -197,6 +195,21 @@ class Project extends CActiveRecord
             Yii::getAlias('@mainWeb'),
             md5($this->id)
         );
+    }
+
+    /**
+     * Creates the initial/default project version.
+     * @return boolean
+     */
+    public function createDefaultVersion()
+    {
+        $version              = new Version;
+        $version->projectId   = $this->id;
+        $version->type        = Version::TYPE_DESKTOP;
+        $version->subtype     = null;
+        $version->scaleFactor = Version::DEFAULT_SCALE_FACTOR;
+
+        return $version->save();
     }
 
     /**

@@ -12,6 +12,8 @@ var VersionView = function(data) {
         'versionCreatePopup': '#version_create_popup',
         'versionTabs':        '#version_screens_tabs',
         'screensWrapper':     '.version-screens',
+        'typeSelect':         '[name="VersionForm[type]"]',
+        'subtypeSelect':      '#versionform-subtype',
 
         // urls
         'ajaxGetFormUrl':  '/versions/ajax-get-form',
@@ -164,6 +166,9 @@ VersionView.prototype.getVersionForm = function(versionId) {
     var self   = this;
     var $popup = versionId ? self.$versionEditPopup : self.$versionCreatePopup;
 
+    // clear previous content
+    self.$versionEditPopup.add(self.$versionCreatePopup).find('.popup-content .content').empty();
+
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
         url:  self.settings.ajaxGetFormUrl,
@@ -176,7 +181,18 @@ VersionView.prototype.getVersionForm = function(versionId) {
             $popup.find('.popup-content .content').first().html(response.formHtml);
             PR.openPopup($popup);
 
-            $popup.find('form').on('beforeSubmit', function(e) {
+            var $form = $popup.find('form');
+
+            // Custom select
+            $form.find(self.settings.subtypeSelect).selectify();
+
+            // Subtypes toggle handler
+            PR.bindSubtypesToggle($form.find(self.settings.typeSelect), $form.find(self.settings.subtypeSelect), false);
+
+            // Scales toggle handler
+            PR.bindScalesToggle($form.find(self.settings.typeSelect));
+
+            $form.on('beforeSubmit', function(e) {
                 self.submitVersionForm(this);
 
                 return false;
@@ -211,7 +227,8 @@ VersionView.prototype.submitVersionForm = function(form) {
             if (response.navItemHtml) {
                 if (response.isUpdate && response.version) {
                     $navItem = self.getNavItem(response.version.id);
-                    $navItem.replaceWith(response.navItemHtml);
+                    $navItem.replaceWith(response.navItemHtml)
+                    $navItem = self.getNavItem(response.version.id); // reload nav item
                 } else {
                     self.$navList.append(response.navItemHtml);
                     $navItem = self.getLastNavItem();
@@ -222,13 +239,13 @@ VersionView.prototype.submitVersionForm = function(form) {
                 self.$versionTabs.children('.tabs-content').append(response.contentItemHtml);
             }
 
+            self.activateVersion($navItem);
+
             self.checkIsOnlyOneVersion();
 
             if (response.isUpdate) {
                 $(document).trigger('versionUpdated', [$navItem]);
             } else {
-                self.activateVersion($navItem);
-
                 $(document).trigger('versionCreated', [$navItem]);
             }
         }
@@ -247,7 +264,6 @@ VersionView.prototype.deleteVersion = function(versionId) {
         console.warn('Missing version nav item.');
         return;
     }
-
 
     PR.abortXhr(self.deleteXHR);
     self.deleteXHR = $.ajax({

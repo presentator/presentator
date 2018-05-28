@@ -48,7 +48,7 @@ class ProjectsController extends AppController
     public function actionIndex()
     {
         $user        = Yii::$app->user->identity;
-        $projectForm = new ProjectForm(null, ['type' => Project::TYPE_DESKTOP]);
+        $projectForm = new ProjectForm();
 
         if (
             $projectForm->load(Yii::$app->request->post()) &&
@@ -58,12 +58,7 @@ class ProjectsController extends AppController
         }
 
         return $this->render('index', [
-            'projectForm'     => $projectForm,
-            'typesList'       => Project::getTypeLabels(),
-            'subtypesList'    => [
-                Project::TYPE_TABLET => Project::getTabletSubtypeLabels(),
-                Project::TYPE_MOBILE => Project::getMobileSubtypeLabels(),
-            ],
+            'projectForm' => $projectForm,
         ]);
     }
 
@@ -149,13 +144,7 @@ class ProjectsController extends AppController
             return [
                 'success'    => true,
                 'updateForm' => $this->render('_form', [
-                    'model'        => $projectForm,
-                    'typesList'    => Project::getTypeLabels(),
-                    'subtypesList' => [
-                        Project::TYPE_TABLET => Project::getTabletSubtypeLabels(),
-                        Project::TYPE_MOBILE => Project::getMobileSubtypeLabels(),
-                    ],
-                    'isNewRecord' => false,
+                    'model' => $projectForm,
                 ]),
             ];
         }

@@ -103,7 +103,7 @@ return array(
     'First name' => 'First name',
     'Fit to screen' => 'Fit to screen',
     'For 2x pixel density designs.' => 'For 2x pixel density designs.',
-    'For {projectType}' => 'For {projectType}',
+    'For {versionType}' => 'For {versionType}',
     'Forgotten password' => 'Forgotten password',
     'Forgotten password?' => 'Forgotten password?',
     'French' => 'French',

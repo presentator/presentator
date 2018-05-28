@@ -188,7 +188,26 @@ GET parameters:
     </tr>
 </table>
 
-## Project model
+## ProjectPreview model
+<table>
+    <tr>
+        <th style="width: 32%">Field</th>
+        <th style="width: 32%">Value</th>
+        <th style="width: 32%">Description</th>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">type</td>
+        <td style="width: 32%" class="code">1</td>
+        <td style="width: 32%"><p>View only</p></td>
+    </tr>
+    <tr>
+        <td style="width: 32%" class="code">type</td>
+        <td style="width: 32%" class="code">2</td>
+        <td style="width: 32%"><p>View and comment</p></td>
+    </tr>
+</table>
+
+## Version model
 <table>
     <tr>
         <th style="width: 32%">Field</th>
@@ -276,26 +295,7 @@ GET parameters:
     <tr>
         <td style="width: 32%" class="code">scaleFactor</td>
         <td style="width: 32%" class="code">2</td>
-        <td style="width: 32%"><p>Retian display scale factor</p></td>
-    </tr>
-</table>
-
-## ProjectPreview model
-<table>
-    <tr>
-        <th style="width: 32%">Field</th>
-        <th style="width: 32%">Value</th>
-        <th style="width: 32%">Description</th>
-    </tr>
-    <tr>
-        <td style="width: 32%" class="code">type</td>
-        <td style="width: 32%" class="code">1</td>
-        <td style="width: 32%"><p>View only</p></td>
-    </tr>
-    <tr>
-        <td style="width: 32%" class="code">type</td>
-        <td style="width: 32%" class="code">2</td>
-        <td style="width: 32%"><p>View and comment</p></td>
+        <td style="width: 32%"><p>Retina display scale factor</p></td>
     </tr>
 </table>
 

@@ -43,13 +43,6 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
                 </div>
             </div>
             <button type="button" class="btn btn-xs btn-primary btn-ghost block project-edit-handle"><?= Yii::t('app', 'Edit project') ?></button>
-            <div class="clearfix"></div>
-            <a href="<?= Url::to(['projects/delete', 'id' => $project->id]) ?>"
-                class="project-delete-link"
-                data-method="post"
-                data-confirm="<?= Yii::t('app', 'Do you really want to delete project {projectTitle}?', ['projectTitle' => Html::encode($project->title)]) ?>"
-            >
-            <?= Yii::t('app', 'Delete project') ?></a>
         </div>
 
         <nav class="nav">
@@ -111,7 +104,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Version edit popup -->
-<div id="version_edit_popup" class="popup popup-small">
+<div id="version_edit_popup" class="popup">
     <div class="popup-content">
         <h3 class="popup-title"><?= Yii::t('app', 'Edit version') ?></h3>
         <span class="popup-close close-icon"></span>
@@ -120,7 +113,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <!-- Version create popup -->
-<div id="version_create_popup" class="popup popup-small">
+<div id="version_create_popup" class="popup">
     <div class="popup-content">
         <h3 class="popup-title"><?= Yii::t('app', 'Create version') ?></h3>
         <span class="popup-close close-icon"></span>
@@ -236,8 +229,8 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 <?php
 $this->registerJsFile('/js/hotspots.js?v=1522585665');
 $this->registerJsFile('/js/pins.js?v=1522585665');
-$this->registerJsFile('/js/project-view.view.js?v=1522585665');
-$this->registerJsFile('/js/version.view.js?v=1522585665');
+$this->registerJsFile('/js/project-view.view.js?v=1526733334');
+$this->registerJsFile('/js/version.view.js?v=1526733334');
 $this->registerJsFile('/js/screen-comments.view.js?v=1522585665');
 $this->registerJsFile('/js/screen-hotspots.view.js?v=1522585665');
 $this->registerJsFile('/js/screen-fit.view.js?v=1522585665');

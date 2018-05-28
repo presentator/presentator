@@ -19,16 +19,6 @@ class ProjectForm extends Model
     public $title;
 
     /**
-     * @var integer
-     */
-    public $type;
-
-    /**
-     * @var integer
-     */
-    public $subtype;
-
-    /**
      * @var string
      */
     public $password;
@@ -61,39 +51,14 @@ class ProjectForm extends Model
     public function rules()
     {
         return [
-            [['title', 'type'], 'required'],
+            [['title'], 'required'],
             [['title', 'password'], 'string', 'max' => 255],
             ['changePassword', 'boolean'],
-            ['type', 'in', 'range' => array_keys(Project::getTypeLabels())],
-            ['subtype', 'validateSubtypeRange'],
-            ['subtype', 'required', 'when' => function ($model) {
-                if ($model->type != Project::TYPE_DESKTOP) {
-                    return true;
-                }
-
-                return false;
-            }],
         ];
     }
 
     /**
-     * Subtype custom range validator.
-     * @param string $attribute
-     * @param mixed  $params
-     */
-    public function validateSubtypeRange($attribute, $params)
-    {
-        if (
-            ($this->type === Project::TYPE_TABLET && !array_key_exists($this->subtype, Project::getTabletSubtypeLabels())) ||
-            ($this->type === Project::TYPE_MOBILE && !array_key_exists($this->subtype, Project::getMobileSubtypeLabels())) ||
-            ($this->subtype && !array_key_exists($this->subtype, Project::SUBTYPES))
-        ) {
-            $this->addError($attribute, Yii::t('app', 'Invalid value.'));
-        }
-    }
-
-    /**
-     * Creates or update a Project model.
+     * Creates or updates a Project model.
      * @param  Project|null $project
      * @return Project|null The created/updated project on success, otherwise - null.
      */
@@ -106,21 +71,30 @@ class ProjectForm extends Model
             }
 
             $project->title = $this->title;
-            $project->type  = (int) $this->type;
-
-            if ($this->type != Project::TYPE_DESKTOP) {
-                $project->subtype = (int) $this->subtype;
-            } else {
-                $project->subtype = null;
-            }
 
             if ($project->isNewRecord || $this->changePassword) {
                 $project->setPassword($this->password);
             }
 
-            if ($project->save()) {
-                $project->linkUser($this->user, false);
+            $transaction = Project::getDb()->beginTransaction();
+            $saveSuccess = false;
+            try {
+                if ($project->save()) {
+                    if ($this->user) {
+                        $project->linkUser($this->user, false);
+                    }
 
+                    $saveSuccess = true;
+
+                    $transaction->commit();
+                }
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+            } catch(\Throwable $e) { // PHP 7
+                $transaction->rollBack();
+            }
+
+            if ($saveSuccess) {
                 return $project;
             }
         }

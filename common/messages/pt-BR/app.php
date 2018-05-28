@@ -125,7 +125,7 @@ return array(
     'First name' => 'Primeiro nome',
     'Fit to screen' => 'Ajustar à tela',
     'For 2x pixel density designs.' => 'Para desenhos de 2x pixels de densidade.',
-    'For {projectType}' => 'Para {projectType}',
+    'For {versionType}' => 'Para {versionType}',
     'Forgotten password' => 'Senha esquecida',
     'Forgotten password?' => 'Esqueceu a senha?',
     'French' => 'Francês',

@@ -103,7 +103,7 @@ return array(
     'First name' => 'Име',
     'Fit to screen' => 'Преоразмери спрямо екрана',
     'For 2x pixel density designs.' => 'За екрани експортнати в 2x по-голяма резолюция.',
-    'For {projectType}' => 'За {projectType}',
+    'For {versionType}' => 'За {versionType}',
     'Forgotten password' => 'Забравена парола',
     'Forgotten password?' => 'Забравена парола?',
     'French' => 'Френски',

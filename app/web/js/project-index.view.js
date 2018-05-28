@@ -2,8 +2,6 @@ var ProjectIndex = function(data) {
     data = data || {};
 
     var defaults = {
-        'typeSelect':             '[name="ProjectForm[type]"]',
-        'subtypeSelect':          '#projectform-subtype',
         'onlyMyProjectsCheckbox': '#only_my_projects_toggle',
 
         // projects list
@@ -28,8 +26,6 @@ var ProjectIndex = function(data) {
     this.settings = $.extend({}, defaults, data);
 
     // cached selectors
-    this.$typeSelect             = $(this.settings.typeSelect);
-    this.$subtypeSelect          = $(this.settings.subtypeSelect);
     this.$onlyMyProjectsCheckbox = $(this.settings.onlyMyProjectsCheckbox);
     this.$projectsListWrapper    = $(this.settings.projectsListWrapper);
     this.$projectsList           = $(this.settings.projectsList);
@@ -57,15 +53,6 @@ var ProjectIndex = function(data) {
 ProjectIndex.prototype.init = function() {
     var self = this;
     var $document = $(document);
-
-    // Custom select
-    self.$subtypeSelect.selectify();
-
-    // Subtypes toggle handler
-    PR.bindSubtypesToggle(self.$typeSelect, self.$subtypeSelect);
-
-    // Scales toggle handler
-    PR.bindScalesToggle(self.$typeSelect);
 
     // Load more projects
     $document.on('click', self.settings.loadMoreProjectsHandle, function(e) {
@@ -130,48 +117,6 @@ ProjectIndex.prototype.init = function() {
             self.$searchInput.focus();
         }
     });
-};
-
-/**
- * Bind subtype field toggles.
- */
-ProjectIndex.prototype.subtypeToggle = function() {
-    var self = this;
-
-    var defaultSubtypes      = self.$subtypeSelect.data('default');
-    var $customSubtypeSelect = self.$subtypeSelect.closest('.custom-select');
-    var $activeSubtypes;
-
-    var toggle = function (typeVal) {
-        $activeSubtypes = $customSubtypeSelect.find('.option').hide()
-            .filter('[data-group="' + typeVal + '"]').show();
-
-        if (!$activeSubtypes.length) {
-            self.$subtypeSelect.closest('.form-group').stop(true, true).slideUp(300);
-        } else {
-            if ($activeSubtypes.filter('.active').length) {
-                self.$subtypeSelect.selectify('select', $activeSubtypes.filter('.active').data('value'));
-            } else if (defaultSubtypes[typeVal]) {
-                self.$subtypeSelect.selectify('select', defaultSubtypes[typeVal]);
-            } else {
-                self.$subtypeSelect.selectify('select', $activeSubtypes.first().data('value'));
-            }
-
-            self.$subtypeSelect.closest('.form-group').stop(true, true).slideDown(300);
-        }
-    };
-
-    self.$typeSelect.on('change', function() {
-        toggle($(this).val());
-    });
-
-    self.$typeSelect.closest('form').on('reset', function() {
-        setTimeout(function() {
-            toggle(self.$typeSelect.filter(':checked').val());
-        }, 50); // @see yiiactiveform.js:431
-    });
-
-    toggle(self.$typeSelect.filter(':checked').val());
 };
 
 /**

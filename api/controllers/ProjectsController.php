@@ -249,7 +249,6 @@ class ProjectsController extends ApiController
      *   ]
      * }
      *
-     * @apiUse 401
      *
      * @apiErrorExample {json} 400 Bad Request (example):
      * {
@@ -259,6 +258,10 @@ class ProjectsController extends ApiController
      *     "type": "Type is invalid."
      *   }
      * }
+     *
+     * @apiUse 401
+     *
+     * @apiUse 404
      */
     public function actionUpdate($id)
     {
@@ -394,6 +397,7 @@ class ProjectsController extends ApiController
      * @apiParam {Number} id Project id
      *
      * @apiUse 204
+     *
      * @apiUse 404
      */
     public function actionDelete($id)

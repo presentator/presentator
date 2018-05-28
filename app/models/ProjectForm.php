@@ -19,16 +19,6 @@ class ProjectForm extends Model
     public $title;
 
     /**
-     * @var integer
-     */
-    public $type;
-
-    /**
-     * @var integer
-     */
-    public $subtype;
-
-    /**
      * @var string
      */
     public $password;
@@ -44,18 +34,6 @@ class ProjectForm extends Model
     public $changePassword = false;
 
     /**
-     * Auto scale flag for mobile and tablet Project types.
-     * @var boolean
-     */
-    public $autoScale = false;
-
-    /**
-     * Retina scale flag for desktop Project types.
-     * @var boolean
-     */
-    public $retinaScale = false;
-
-    /**
      * Project model to update
      * @var null|Project
      */
@@ -69,7 +47,7 @@ class ProjectForm extends Model
     public function __construct(Project $project = null, $config = [])
     {
         if ($project) {
-            $this->loadProject($project);
+            $this->setProject($project);
         }
 
         parent::__construct($config);
@@ -82,13 +60,9 @@ class ProjectForm extends Model
     {
         return [
             'title'               => Yii::t('app', 'Title'),
-            'type'                => Yii::t('app', 'Type'),
-            'subtype'             => Yii::t('app', 'Subtype'),
             'password'            => Yii::t('app', 'Password'),
             'isPasswordProtected' => Yii::t('app', 'Is password protected (optional)'),
             'changePassword'      => Yii::t('app', 'Change password'),
-            'autoScale'           => Yii::t('app', 'Auto rescale'),
-            'retinaScale'         => Yii::t('app', '2x (Retina) rescale'),
         ];
     }
 
@@ -98,24 +72,9 @@ class ProjectForm extends Model
     public function rules()
     {
         return [
-            [['title', 'type'], 'required'],
+            [['title'], 'required'],
             [['title', 'password'], 'string', 'max' => 255],
-            [['isPasswordProtected', 'changePassword', 'autoScale', 'retinaScale'], 'boolean'],
-            ['type', 'in', 'range' => array_keys(Project::getTypeLabels())],
-            ['subtype', 'validateSubtypeRange'],
-            ['subtype', 'required', 'when' => function ($model) {
-                if ($model->type !== Project::TYPE_DESKTOP) {
-                    return true;
-                }
-
-                return false;
-            }, 'whenClient' => 'function (attribute, value) {
-                if (!$("#project_type_0").is(":checked")) {
-                    return true;
-                }
-
-                return false;
-            }'],
+            [['isPasswordProtected', 'changePassword'], 'boolean'],
             ['password', 'required', 'when' => function ($model) {
                 if ($this->project && !$this->project->isNewRecord) {
                     // update form...
@@ -143,48 +102,42 @@ class ProjectForm extends Model
     }
 
     /**
-     * Subtype custom range validator.
-     * @param string $attribute
-     * @param mixed  $params
-     */
-    public function validateSubtypeRange($attribute, $params)
-    {
-        if (
-            ($this->type == Project::TYPE_TABLET && !array_key_exists($this->{$attribute}, Project::getTabletSubtypeLabels())) ||
-            ($this->type == Project::TYPE_MOBILE && !array_key_exists($this->{$attribute}, Project::getMobileSubtypeLabels()))
-        ) {
-            $this->addError($attribute, Yii::t('app', 'Invalid value.'));
-        }
-    }
-
-    /**
      * Loads a single Project AR into the form model.
      */
-    public function loadProject(Project $project)
+    public function setProject(Project $project)
     {
         $this->project = $project;
         $this->title   = $project->title;
-        $this->type    = $project->type;
-        $this->subtype = $project->subtype;
 
         if ($project->passwordHash) {
             $this->isPasswordProtected = true;
         } else {
             $this->isPasswordProtected = false;
         }
+    }
 
-        $this->autoScale   = false;
-        $this->retinaScale = false;
-        if ($project->scaleFactor == Project::AUTO_SCALE_FACTOR) {
-            $this->autoScale   = true;
-        } elseif ($project->scaleFactor == Project::RETINA_SCALE_FACTOR) {
-            $this->retinaScale = true;
-        }
+    /**
+     * Getter for the `$project` property.
+     * @return null|Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Check whether the form is for update or create.
+     * @return boolean
+     */
+    public function isUpdate()
+    {
+        return $this->project && !$this->project->isNewRecord;
     }
 
     /**
      * Creates or update a Project model.
-     * @return Project|null The created/updated project on success, otherwise - null.
+     * @param  null|User    User to link to the created project.
+     * @return null|Project The created/updated project on success, otherwise - null.
      */
     public function save(User $user = null)
     {
@@ -192,17 +145,6 @@ class ProjectForm extends Model
             $project = $this->project ? $this->project : (new Project);
 
             $project->title = $this->title;
-            $project->type  = $this->type;
-
-            if ($this->type != Project::TYPE_DESKTOP) {
-                $project->subtype = $this->subtype;
-
-                $project->scaleFactor = $this->autoScale ? Project::AUTO_SCALE_FACTOR : Project::DEFAULT_SCALE_FACTOR;
-            } else {
-                $project->subtype = null;
-
-                $project->scaleFactor = $this->retinaScale ? Project::RETINA_SCALE_FACTOR : Project::DEFAULT_SCALE_FACTOR;
-            }
 
             if ($this->isPasswordProtected) {
                 if (!$project->passwordHash || $this->changePassword) {
