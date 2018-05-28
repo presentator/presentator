@@ -250,10 +250,8 @@ ProjectView.prototype.searchUsers = function(search) {
         type: 'GET',
         data: {'search': search}
     }).done(function(response) {
-        if (response.success) {
-            if (response.suggestionsHtml) {
-                self.$adminSuggestionsList.html(response.suggestionsHtml).show();
-            }
+        if (response.success && response.suggestionsHtml) {
+            self.$adminSuggestionsList.html(response.suggestionsHtml).show();
         }
     });
 };
