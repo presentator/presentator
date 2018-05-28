@@ -154,7 +154,11 @@ jQuery(function ($) {
         if (PR.isObject(request) && PR.isObject(request.responseJSON)) {
             PR.addNotification(request.responseJSON.message, request.responseJSON.success ? 'success' : 'danger');
         }
-    }).ajaxError(function (event, request, settings) {
+    }).ajaxError(function (event, jqxhr, settings, thrownError) {
+        if (thrownError === 'abort') {
+            return;
+        }
+
         PR.addNotification('An error occured! Please try again.', 'danger');
     }).ajaxComplete(function () {
         if (requestLoaderTimeout) {
