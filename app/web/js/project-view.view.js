@@ -4,10 +4,7 @@ var ProjectView = function(data) {
     var defaults = {
         'projectEditHandle':  '.project-edit-handle',
         'projectUpdatePopup': '#project_edit_popup',
-        'typeSelect':         '[name="ProjectForm[type]"]',
-        'subtypeSelect':      '#projectform-subtype',
-
-        'titleHolders':  '.project-title',
+        'titleHolders':       '.project-title',
 
         // project preview share
         'shareForm':   '#project_preview_share_form',
@@ -177,15 +174,6 @@ ProjectView.prototype.getUpdateForm = function() {
             PR.openPopup(self.$projectUpdatePopup);
 
             var $form = self.$projectUpdatePopup.find('form');
-
-            // Custom select
-            $form.find(self.settings.subtypeSelect).selectify();
-
-            // Subtypes toggle handler
-            PR.bindSubtypesToggle($form.find(self.settings.typeSelect), $form.find(self.settings.subtypeSelect), false);
-
-            // Scales toggle handler
-            PR.bindScalesToggle($form.find(self.settings.typeSelect));
 
             // Project update
             $form.on('beforeSubmit', function(e) {
