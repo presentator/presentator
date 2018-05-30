@@ -119,10 +119,13 @@ class ProjectShareFormTest extends \Codeception\Test\Unit
             // email check
             $this->tester->seeEmailIsSent();
             $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
+            $body = current($message->getChildren())->getBody();
+
             verify('To email should match', $message->getTo())->hasKey('valid_email@presentator.io');
-            verify('Body should contains a project preview url.', current($message->getChildren())->getBody())->contains(
+            verify('Body should contains a project preview url.', $body)->contains(
                 Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $preview->slug], true)
             );
+            verify('Body should contains the user message', $body)->contains('My test optional message...');
         });
     }
 }
