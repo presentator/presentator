@@ -120,16 +120,20 @@ class ProjectPreviewTest extends \Codeception\Test\Unit
      */
     public function testSendPreviewEmail()
     {
-        $to     = 'test123@presentator.io';
-        $model  = ProjectPreview::findOne(1001);
-        $result = $model->sendPreviewEmail($to);
+        $to          = 'test123@presentator.io';
+        $userMessage = 'MY_DEMO_MESSAGE';
+        $model       = ProjectPreview::findOne(1001);
+        $result      = $model->sendPreviewEmail($to, $userMessage);
 
         $this->tester->seeEmailIsSent();
         $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
+        $body = current($message->getChildren())->getBody();
+
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($to);
-        verify('Body should contains a preview url', current($message->getChildren())->getBody())->contains(
+        verify('Body should contains a preview url', $body)->contains(
             Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $model->slug], true)
         );
+        verify('Body should contains the user message', $body)->contains($userMessage);
     }
 }
