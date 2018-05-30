@@ -135,12 +135,14 @@ class ProjectPreview extends CActiveRecord
     /**
      * Sends a project preview invitation email.
      * @param  string|array $to
+     * @param  string       $message
      * @return boolean
      */
-    public function sendPreviewEmail($to)
+    public function sendPreviewEmail($to, $message = '')
     {
         return Yii::$app->mailer->compose('project_preview', [
                 'preview' => $this,
+                'message' => $message,
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($to)

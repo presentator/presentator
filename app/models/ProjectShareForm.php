@@ -133,7 +133,7 @@ class ProjectShareForm extends Model
             }
 
             if ($preview) {
-                return $preview->sendPreviewEmail($this->extractValidEmails());
+                return $preview->sendPreviewEmail($this->extractValidEmails(), $this->message);
             }
         }
 
