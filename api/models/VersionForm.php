@@ -165,6 +165,8 @@ class VersionForm extends Model
             }
 
             if ($version->save()) {
+                $version->refresh();
+
                 return $version;
             }
         }

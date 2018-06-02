@@ -132,4 +132,66 @@ class VersionTest extends \Codeception\Test\Unit
             verify($version->isTheOnlyOne())->true();
         });
     }
+
+    /**
+     * `Version::getTypeLabels()` method test.
+     */
+    public function testGetTypeLabels()
+    {
+        $labels = Version::getTypeLabels();
+
+        verify('Desktop type should be set', $labels)->hasKey(Version::TYPE_DESKTOP);
+        verify('Tablet type should be set', $labels)->hasKey(Version::TYPE_TABLET);
+        verify('Mobile type should be set', $labels)->hasKey(Version::TYPE_MOBILE);
+    }
+
+    /**
+     * `Version::getTabletSubtypeLabels()` method test.
+     */
+    public function testGetTabletSubtypeLabels()
+    {
+        $labels = Version::getTabletSubtypeLabels();
+
+        $expectedKeys = [21, 22, 23, 24];
+
+        verify($labels)->count(count($expectedKeys));
+        foreach ($expectedKeys as $key) {
+            verify($labels)->hasKey($key);
+        }
+    }
+
+    /**
+     * `Version::getMobileSubtypeLabels()` method test.
+     */
+    public function testGetMobileSubtypeLabels()
+    {
+        $labels = Version::getMobileSubtypeLabels();
+
+        $expectedKeys = [31, 32, 33, 34, 35, 36];
+
+        verify($labels)->count(count($expectedKeys));
+        foreach ($expectedKeys as $key) {
+            verify($labels)->hasKey($key);
+        }
+    }
+
+    /**
+     * `Version::getScaleFactor()` method test.
+     */
+    public function testGetScaleFactor()
+    {
+        $this->specify('Calculate auto scale factor based on subtype width', function() {
+            $model = Version::findOne(1004);
+
+            verify('Should return the default scale factor', $model->getScaleFactor(50))->equals(Version::DEFAULT_SCALE_FACTOR);
+            verify('Should calculate the scale factor (passed width is larger than the subtype one)', $model->getScaleFactor(1000))
+                ->equals(1000 / Version::SUBTYPES[$model->subtype][0]);
+        });
+
+        $this->specify('Return custom scale factor (not auto scale)', function() {
+            $model = Version::findOne(1003);
+
+            verify('Should return the Version model scale factor value', $model->getScaleFactor(1000))->equals(0.5);
+        });
+    }
 }

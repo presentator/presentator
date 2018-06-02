@@ -11,9 +11,7 @@ use common\tests\fixtures\ScreenCommentFixture;
 use common\tests\fixtures\ProjectPreviewFixture;
 use common\tests\fixtures\UserProjectRelFixture;
 use common\tests\fixtures\UserScreenCommentRelFixture;
-use common\models\User;
 use common\models\Version;
-use common\models\Project;
 
 /**
  * VersionsController functional tests.
@@ -131,6 +129,21 @@ class VersionsCest
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('"message":');
         $I->dontSeeRecordsCountChange(Version::className(), $oldCount);
+
+        $I->amGoingTo('try with invalid version form data');
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1003], [
+            'VersionForm' => [
+                'title'       => 'Some very long title...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim, lorem in bibendum.',
+                'type'        => Version::TYPE_TABLET,
+                'subtype'     => 123,
+                'autoScale'   => 'invalid_value',
+                'retinaScale' => 'invalid_value',
+            ],
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+        $I->dontSeeRecordsCountChange(Version::className(), $oldCount);
     }
 
     /**
@@ -152,7 +165,11 @@ class VersionsCest
             $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => $projectId]);
             $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => $projectId], [
                 'VersionForm' => [
-                    'title' => 'TEST_TITLE'
+                    'title'       => 'TEST_TITLE',
+                    'type'        => Version::TYPE_TABLET,
+                    'subtype'     => 21,
+                    'autoScale'   => false,
+                    'retinaScale' => false,
                 ],
             ]);
             $I->seeResponseCodeIs(200);
@@ -185,7 +202,22 @@ class VersionsCest
         $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1003], [
             'versionId' => 1001,
             'VersionForm' => [
-                'title'     => 'TEST_TITLE'
+                'title' => 'TEST_TITLE',
+            ],
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"message":');
+
+        $I->amGoingTo('try with invalid version form data');
+        $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => 1003], [
+            'versionId' => 1001,
+            'VersionForm' => [
+                'title'       => 'Some very long title...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim, lorem in bibendum.',
+                'type'        => Version::TYPE_TABLET,
+                'subtype'     => 123,
+                'autoScale'   => 'invalid_value',
+                'retinaScale' => 'invalid_value',
             ],
         ]);
         $I->seeResponseCodeIs(200);
@@ -209,11 +241,16 @@ class VersionsCest
             $I->amLoggedInAs($userId);
             $I->ensureAjaxPostActionAccess(['versions/ajax-save-form', 'projectId' => $projectId]);
             $I->sendAjaxPostRequest(['versions/ajax-save-form', 'projectId' => $projectId], [
-                'versionId' => 1001,
+                'versionId'   => 1001,
                 'VersionForm' => [
-                    'title' => 'TEST_TITLE'
+                    'title'       => '<script>TEST_TITLE</script>',
+                    'type'        => Version::TYPE_TABLET,
+                    'subtype'     => 21,
+                    'autoScale'   => false,
+                    'retinaScale' => false,
                 ],
             ]);
+
             $I->seeResponseCodeIs(200);
             $I->seeResponseContains('"success":true');
             $I->seeResponseContains('"message":');
@@ -221,7 +258,7 @@ class VersionsCest
             $I->seeResponseContains('"version":');
             $I->seeResponseContains('"navItemHtml":');
             $I->seeResponseContains('"contentItemHtml":');
-            $I->assertEquals(Version::findOne(1001)->title, 'TEST_TITLE');
+            $I->seeResponseContains('"TEST_TITLE"');
         }
     }
 

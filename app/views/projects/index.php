@@ -7,8 +7,6 @@ use common\models\User;
 /**
  * @var $this            \yii\web\View
  * @var $projectForm     \app\models\ProjectForm
- * @var $typesList       array
- * @var $subtypesList    array
  * @var $hasMoreProjects boolean
  * @var $commentCounters array
  */
@@ -42,7 +40,6 @@ $user = Yii::$app->user->identity;
         </div>
     </div>
 </div>
-
 
 <div id="projects_search_list_wrapper" style="display: none;">
     <h5>
@@ -90,17 +87,13 @@ $user = Yii::$app->user->identity;
         <h3 class="popup-title"><?= Yii::t('app', 'Create new project') ?></h3>
         <span class="popup-close close-icon"></span>
         <div class="content">
-            <?= $this->render('_form', [
-                'model'        => $projectForm,
-                'typesList'    => $typesList,
-                'subtypesList' => $subtypesList,
-            ]); ?>
+            <?= $this->render('_form', ['model' => $projectForm]); ?>
         </div>
     </div>
 </div>
 
 <?php
-$this->registerJsFile('/js/project-index.view.js?v=1507457981');
+$this->registerJsFile('/js/project-index.view.js?v=1527964703');
 $this->registerJs('
     var projectIndex = new ProjectIndex({
         ajaxLoadProjectsUrl:   "' . Url::to(['projects/ajax-load-more']) . '",

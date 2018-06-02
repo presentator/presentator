@@ -123,8 +123,6 @@ class PreviewCest
             'project'   => [
                 'id'       => 'integer',
                 'title'    => 'string',
-                'type'     => 'integer',
-                'subtype'  => 'integer|null',
                 'featured' => 'array|null',
                 'versions' => 'array',
             ]
@@ -147,8 +145,6 @@ class PreviewCest
             'project'   => [
                 'id'       => 'integer',
                 'title'    => 'string',
-                'type'     => 'integer',
-                'subtype'  => 'integer|null',
                 'featured' => 'array|null',
                 'versions' => 'array',
             ]

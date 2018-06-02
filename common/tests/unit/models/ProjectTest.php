@@ -118,46 +118,6 @@ class ProjectTest extends \Codeception\Test\Unit
     }
 
     /**
-     * `Project::getTypeLabels()` method test.
-     */
-    public function testGetTypeLabels()
-    {
-        $labels = Project::getTypeLabels();
-
-        verify('Desktop type should be set', $labels)->hasKey(Project::TYPE_DESKTOP);
-        verify('Tablet type should be set', $labels)->hasKey(Project::TYPE_TABLET);
-        verify('Mobile type should be set', $labels)->hasKey(Project::TYPE_MOBILE);
-    }
-
-    /**
-     * `Project::getTabletSubtypeLabels()` method test.
-     */
-    public function testGetTabletSubtypeLabels()
-    {
-        $labels = Project::getTabletSubtypeLabels();
-
-        verify($labels)->hasKey(21);
-        verify($labels)->hasKey(22);
-        verify($labels)->hasKey(23);
-        verify($labels)->hasKey(24);
-    }
-
-    /**
-     * `Project::getMobileSubtypeLabels()` method test.
-     */
-    public function testGetMobileSubtypeLabels()
-    {
-        $labels = Project::getMobileSubtypeLabels();
-
-        verify($labels)->hasKey(31);
-        verify($labels)->hasKey(32);
-        verify($labels)->hasKey(33);
-        verify($labels)->hasKey(34);
-        verify($labels)->hasKey(35);
-        verify($labels)->hasKey(36);
-    }
-
-    /**
      * `Project::getUploadDir()` method test.
      */
     public function testGetUploadDir()
@@ -168,6 +128,25 @@ class ProjectTest extends \Codeception\Test\Unit
         verify('Not to be empty', $str)->notEmpty();
         verify('Should begins with the public upload path', $str)->startsWith(Yii::getAlias('@mainWeb'));
         verify('Should contains a project identifier', $str)->contains('/' . md5($project->id));
+    }
+
+    /**
+     * `Project::createDefaultVersion()` method test.
+     */
+    public function testCreateDefaultVersion()
+    {
+        $project       = Project::findOne(1002);
+        $initialCount  = $project->getVersions()->count();
+        $result        = $project->createDefaultVersion();
+        $latestVersion = $project->getVersions()->orderBy(['createdAt' => SORT_DESC])->one();
+
+        verify('Method should succeed', $result)->true();
+        verify('New version should be created', $project->getVersions()->count())->equals($initialCount + 1);
+        verify('Version project id should match', $latestVersion->projectId)->equals($project->id);
+        verify('Version title should match', $latestVersion->title)->equals(null);
+        verify('Version type should match', $latestVersion->type)->equals(Version::TYPE_DESKTOP);
+        verify('Version subtype should match', $latestVersion->subtype)->equals(null);
+        verify('Version scaleFactor should match', $latestVersion->scaleFactor)->equals(Version::DEFAULT_SCALE_FACTOR);
     }
 
     /**
@@ -323,26 +302,6 @@ class ProjectTest extends \Codeception\Test\Unit
         $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($user->email);
-    }
-
-    /**
-     * `Project::getScaleFactor()` method test.
-     */
-    public function testGetScaleFactor()
-    {
-        $this->specify('Calculate auto scale factor based on subtype width', function() {
-            $model = Project::findOne(1003);
-
-            verify('Should return the default scale factor', $model->getScaleFactor(50))->equals(Project::DEFAULT_SCALE_FACTOR);
-            verify('Should calculate the scale factor (passed width is larger than the subtype one)', $model->getScaleFactor(1000))
-                ->equals(1000 / Project::SUBTYPES[$model->subtype][0]);
-        });
-
-        $this->specify('Return custom scale factor (not auto scale)', function() {
-            $model = Project::findOne(1002);
-
-            verify('Should return the Project model scale factor value', $model->getScaleFactor(1000))->equals(0.5);
-        });
     }
 
     /* ===============================================================
@@ -629,7 +588,6 @@ class ProjectTest extends \Codeception\Test\Unit
 
         $this->specify('With mention user setting check', function () use ($project) {
             $result = $project->findAllCommenters();
-
 
             verify('The result should be an array', is_array($result))->true();
             verify('Result count should match', $result)->count(2);

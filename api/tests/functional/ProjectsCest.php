@@ -7,7 +7,6 @@ use common\tests\fixtures\UserFixture;
 use common\tests\fixtures\ProjectFixture;
 use common\tests\fixtures\UserProjectRelFixture;
 use common\models\User;
-use common\models\Project;
 
 /**
  * ProjectsController API functional test.
@@ -69,8 +68,6 @@ class ProjectsCest
         $I->seeResponseMatchesJsonType([
             'id'       => 'integer',
             'title'    => 'string',
-            'type'     => 'integer',
-            'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'previews' => 'array',
         ]);
@@ -94,18 +91,14 @@ class ProjectsCest
     {
         $I->wantTo('Wrong project create attempt');
         $I->sendPOST('/projects', [
-            'title'   => '',
-            'type'    => -1,
-            'subtype' => -1,
+            'title' => '',
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
             'errors'  => [
-                'title'   => 'string',
-                'type'    => 'string',
-                'subtype' => 'string',
+                'title' => 'string',
             ],
         ]);
     }
@@ -116,9 +109,7 @@ class ProjectsCest
     public function createSuccess(FunctionalTester $I)
     {
         $data = [
-            'title'   => 'Test title',
-            'type'    => Project::TYPE_TABLET,
-            'subtype' => 21,
+            'title' => 'Test title',
         ];
         $I->wantTo('Correct project create attempt');
         $I->sendPOST('/projects', $data);
@@ -127,8 +118,6 @@ class ProjectsCest
         $I->seeResponseMatchesJsonType([
             'id'       => 'integer',
             'title'    => 'string',
-            'type'     => 'integer',
-            'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
             'previews' => 'array',
@@ -154,7 +143,6 @@ class ProjectsCest
         $I->wantTo('Try to update unaccessible or other user project');
         $I->sendPUT('/projects/1002', [
             'title' => 'Test title',
-            'type'  => Project::TYPE_DESKTOP,
         ]);
         $I->seeResponseCodeIs(404);
         $I->seeResponseIsJson();
@@ -171,18 +159,14 @@ class ProjectsCest
     {
         $I->wantTo('Wrong project update attempt');
         $I->sendPUT('/projects/1001', [
-            'title'   => '',
-            'type'    => -1,
-            'subtype' => -1,
+            'title' => '',
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
             'errors'  => [
-                'title'   => 'string',
-                'type'    => 'string',
-                'subtype' => 'string',
+                'title' => 'string',
             ],
         ]);
     }
@@ -193,9 +177,7 @@ class ProjectsCest
     public function updateSuccess(FunctionalTester $I)
     {
         $data = [
-            'title'   => 'Test title',
-            'type'    => Project::TYPE_TABLET,
-            'subtype' => 21,
+            'title' => 'Test title',
         ];
         $I->wantTo('Correct project update attempt');
         $I->sendPUT('/projects/1001', $data);
@@ -205,8 +187,6 @@ class ProjectsCest
         $I->seeResponseMatchesJsonType([
             'id'       => 'integer',
             'title'    => 'string',
-            'type'     => 'integer',
-            'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
             'previews' => 'array',
@@ -251,8 +231,6 @@ class ProjectsCest
         $I->seeResponseMatchesJsonType([
             'id'       => 'integer',
             'title'    => 'string',
-            'type'     => 'integer',
-            'subtype'  => 'integer|null',
             'featured' => 'string|null',
             'versions' => 'array',
             'previews' => 'array',

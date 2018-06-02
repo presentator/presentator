@@ -8,6 +8,7 @@ use common\tests\fixtures\ProjectFixture;
 use common\tests\fixtures\VersionFixture;
 use common\tests\fixtures\UserProjectRelFixture;
 use common\models\User;
+use common\models\Version;
 
 /**
  * VersionsController API functional test.
@@ -71,9 +72,13 @@ class VersionsCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
-            'id'        => 'integer',
-            'projectId' => 'integer',
-            'order'     => 'integer',
+            'id'          => 'integer',
+            'projectId'   => 'integer',
+            'title'       => 'string|null',
+            'type'        => 'integer',
+            'subtype'     => 'integer|null',
+            'scaleFactor' => 'integer|float',
+            'order'       => 'integer',
         ]);
     }
 
@@ -94,13 +99,24 @@ class VersionsCest
     public function createError(FunctionalTester $I)
     {
         $I->wantTo('Wrong version create attempt');
-        $I->sendPOST('/versions', ['projectId' => 1001]);
+        $I->sendPOST('/versions', [
+            'projectId'   => 1001,
+            'title'       => 'Some very long title...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim, lorem in bibendum.',
+            'type'        => -1,
+            'subtype'     => -1,
+            'autoScale'   => 'invalid_value',
+            'retinaScale' => 'invalid_value',
+        ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
             'errors'  => [
-                'projectId' => 'string',
+                'projectId'   => 'string',
+                'title'       => 'string',
+                'type'        => 'string',
+                'autoScale'   => 'string',
+                'retinaScale' => 'string',
             ],
         ]);
     }
@@ -111,12 +127,93 @@ class VersionsCest
     public function createSuccess(FunctionalTester $I)
     {
         $I->wantTo('Correct version create attempt');
-        $I->sendPOST('/versions', ['projectId' => 1002]);
+        $I->sendPOST('/versions', [
+            'projectId'   => 1002,
+            'title'       => 'Test title',
+            'type'        => Version::TYPE_TABLET,
+            'subtype'     => 21,
+            'autoScale'   => false,
+            'retinaScale' => false,
+        ]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
-            'projectId' => 'integer:=1002',
-            'order'     => 'integer',
+            'projectId'   => 'integer:=1002',
+            'order'       => 'integer',
+            'title'       => 'string',
+            'type'        => 'integer',
+            'subtype'     => 'integer|null',
+            'scaleFactor' => 'integer|float',
+        ]);
+    }
+
+    /* Update action
+    --------------------------------------------------------------- */
+    /**
+     * @param FunctionalTester $I
+     */
+    public function updateUnauthorized(FunctionalTester $I)
+    {
+        $I->wantTo('Check unauthorized access to update action');
+        $I->seeUnauthorizedAccess('/versions/1003', 'PUT');
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function updateError(FunctionalTester $I)
+    {
+        $I->wantTo('Wrong version update attempt');
+        $I->sendPUT('/versions/1003', [
+            'title'       => 'Some very long title...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim, lorem in bibendum.',
+            'type'        => -1,
+            'subtype'     => -1,
+            'autoScale'   => 'invalid_value',
+            'retinaScale' => 'invalid_value',
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => [
+                'title'       => 'string',
+                'type'        => 'string',
+                'autoScale'   => 'string',
+                'retinaScale' => 'string',
+            ],
+        ]);
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function updateSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Correct version update attempt');
+        $I->sendPUT('/versions/1003', [
+            'projectId'   => 1001, // should be ignored
+            'title'       => '<script>NEW_TITLE</script>',
+            'type'        => Version::TYPE_TABLET,
+            'subtype'     => 21,
+            'autoScale'   => true,
+            'retinaScale' => false,
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'projectId'   => 1002,
+            'title'       => 'NEW_TITLE',
+            'type'        => Version::TYPE_TABLET,
+            'subtype'     => 21,
+            'scaleFactor' => Version::AUTO_SCALE_FACTOR,
+        ]);
+        $I->seeResponseMatchesJsonType([
+            'projectId'   => 'integer',
+            'order'       => 'integer',
+            'title'       => 'string',
+            'type'        => 'integer',
+            'subtype'     => 'integer|null',
+            'scaleFactor' => 'integer|float',
         ]);
     }
 

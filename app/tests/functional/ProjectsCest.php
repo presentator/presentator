@@ -83,16 +83,12 @@ class ProjectsCest
         $I->submitForm('#project_create_form', [
             'ProjectForm' => [
                 'title'               => '',
-                'type'                => Project::TYPE_TABLET,
-                'subtype'             => 123,
                 'isPasswordProtected' => 1,
                 'password'            => '',
             ],
         ]);
         $I->seeElement('.field-projectform-title.has-error');
         $I->seeElement('.field-projectform-password.has-error');
-        $I->seeElement('.field-projectform-subtype.has-error');
-        $I->dontSeeElement('.field-projectform-type.has-error');
         $I->dontSeeElement('.field-projectform-ispasswordprotected.has-error');
         $I->seeCurrentUrlEquals(['projects/index']);
     }
@@ -110,8 +106,6 @@ class ProjectsCest
         $I->submitForm('#project_create_form', [
             'ProjectForm' => [
                 'title'               => 'My new test project title',
-                'type'                => Project::TYPE_TABLET,
-                'subtype'             => 21,
                 'isPasswordProtected' => 1,
                 'password'            => '123456',
             ],
@@ -269,12 +263,8 @@ class ProjectsCest
         $I->sendAjaxPostRequest(['projects/ajax-save-update-form', 'id' => 1001], [
             'ProjectForm' => [
                 'title'               => '',
-                'type'                => Project::TYPE_TABLET,
-                'subtype'             => 123,
                 'isPasswordProtected' => 1,
                 'password'            => '',
-                'autoScale'           => 'invalid_value',
-                'retinaScale'         => 'invalid_value',
             ],
         ]);
         $I->seeResponseCodeIs(200);
@@ -300,12 +290,8 @@ class ProjectsCest
             $I->sendAjaxPostRequest(['projects/ajax-save-update-form', 'id' => $projectId], [
                 'ProjectForm' => [
                     'title'               => 'New title',
-                    'type'                => Project::TYPE_TABLET,
-                    'subtype'             => 21,
                     'isPasswordProtected' => 1,
                     'password'            => '123456',
-                    'autoScale'           => false,
-                    'retinaScale'         => false,
                 ],
             ]);
             $I->seeResponseCodeIs(200);

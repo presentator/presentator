@@ -45,71 +45,58 @@ class ProjectFormTest extends \Codeception\Test\Unit
     }
 
     /**
-     * `ProjectForm::validateSubtypeRange()` method test.
+     * `ProjectForm::setProject()` method test.
      */
-    public function testValidateSubtypeRange()
+    public function testSetProject()
     {
-        $project = Project::findOne(1001);
+        $this->specify('Load password UNPROTECTED project', function () {
+            $model   = new ProjectForm();
+            $project = Project::findOne(1001);
+            $model->setProject($project);
 
-        $this->specify('Tablet/Mobile error attempt', function() use ($project) {
-            $model = new ProjectForm($project, [
-                'type'    => Project::TYPE_TABLET,
-                'subtype' => 31, // mismatch with mobile subtype
-            ]);
-            $model->validateSubtypeRange('subtype', []);
-
-            verify('Error message should be set', $model->errors)->hasKey('subtype');
+            verify('Model title should match', $model->title)->equals('Lorem ipsum title');
+            verify('Model should not be password protected', $model->isPasswordProtected)->false();
         });
 
-        $this->specify('Tablet/Mobile correct attempt', function() use ($project) {
-            $model = new ProjectForm($project, [
-                'type'    => Project::TYPE_TABLET,
-                'subtype' => 21,
-            ]);
-            $model->validateSubtypeRange('subtype', []);
+        $this->specify('Load password PROTECTED project', function () {
+            $model   = new ProjectForm();
+            $project = Project::findOne(1002);
+            $model->setProject($project);
 
-            verify('Error message should not be set', $model->errors)->hasntKey('subtype');
-        });
-
-        $this->specify('Desktop correct attempt', function() use ($project) {
-            $model = new ProjectForm($project, [
-                'type' => Project::TYPE_DESKTOP, // doesn't require subtype
-            ]);
-            $model->validateSubtypeRange('subtype', []);
-
-            verify('Error message should not be set', $model->errors)->hasntKey('subtype');
+            verify('Model title should match', $model->title)->equals('Lorem ipsum title');
+            verify('Model should be password protected', $model->isPasswordProtected)->true();
         });
     }
 
     /**
-     * `ProjectForm::loadProject()` method test.
+     * `ProjectForm::getProject()` method test.
      */
-    public function testLoadProject()
+    public function testGetProject()
     {
-        $this->specify('Load password UNPROTECTED project', function() {
-            $model   = new ProjectForm();
-            $project = Project::findOne(1001);
-            $model->loadProject($project);
+        $project = Project::findOne(1002);
+        $model   = new ProjectForm($project);
+        $result  = $model->getProject();
 
-            verify('Model title should match', $model->title)->equals('Lorem ipsum title');
-            verify('Model type should match', $model->type)->equals(Project::TYPE_DESKTOP);
-            verify('Model subtype should be null', $model->subtype)->null();
-            verify('Model autoScale should be false', $model->autoScale)->false();
-            verify('Model retinaScale should be true', $model->retinaScale)->true();
-            verify('Model should not be password protected', $model->isPasswordProtected)->false();
+        verify('Result should be instance of Project', $result)->isInstanceOf(Project::className());
+        verify('Loaded project id should match', $result->id)->equals($project->id);
+    }
+
+    /**
+     * `ProjectForm::isUpdate()` method test.
+     */
+    public function testIsUpdate()
+    {
+        $this->specify('Is update form', function () {
+            $project = Project::findOne(1001);
+            $model = new ProjectForm($project);
+
+            verify($model->isUpdate())->true();
         });
 
-        $this->specify('Load password PROTECTED project', function() {
+        $this->specify('Is create form', function () {
             $model   = new ProjectForm();
-            $project = Project::findOne(1002);
-            $model->loadProject($project);
 
-            verify('Model title should match', $model->title)->equals('Lorem ipsum title');
-            verify('Model type should match', $model->type)->equals(Project::TYPE_TABLET);
-            verify('Model subtype should match', $model->subtype)->equals(21);
-            verify('Model autoScale should be false', $model->autoScale)->false();
-            verify('Model retinaScale should be false', $model->retinaScale)->false();
-            verify('Model should be password protected', $model->isPasswordProtected)->true();
+            verify($model->isUpdate())->false();
         });
     }
 
@@ -120,45 +107,35 @@ class ProjectFormTest extends \Codeception\Test\Unit
     {
         $user = User::findOne(1002);
 
-        $this->specify('Error create attempt', function() use ($user) {
+        $this->specify('Error create attempt', function () use ($user) {
             $model = new ProjectForm(null, [
-                'type'                => 0,
-                'subtype'             => 0,
                 'isPasswordProtected' => true,
-                'retinaScale'         => 'invalid_value',
-                'autoScale'           => 'invalid_value',
             ]);
+
+            $totalUserProjects = $user->countProjects();
 
             $result = $model->save($user);
 
-            verify('Model should not save', $result)->null();
+            verify('Method should not succeed', $result)->null();
             verify('Title error message should be set', $model->errors)->hasKey('title');
-            verify('Type error message should be set', $model->errors)->hasKey('type');
-            verify('Subtype error message should not be set because not valid type is set', $model->errors)->hasntKey('subtype');
             verify('Password error message should be set', $model->errors)->hasKey('password');
-            verify('AutoScale error message should be set', $model->errors)->hasKey('autoScale');
-            verify('RetinaScale error message should be set', $model->errors)->hasKey('retinaScale');
+            verify('User projects count should not be changed', $user->countProjects())->equals($totalUserProjects);
         });
 
-        $this->specify('Success create attempt', function() use ($user) {
+        $this->specify('Success create attempt', function () use ($user) {
             $model = new ProjectForm(null, [
                 'title'               => 'My new project title',
-                'type'                => Project::TYPE_DESKTOP,
                 'isPasswordProtected' => true,
                 'password'            => '123456',
-                'autoScale'           => true,
-                'retinaScale'         => true,
             ]);
 
             $result = $model->save($user);
 
             verify('Model should not has any errors', $model->errors)->isEmpty();
-            verify('Model should return instance of Project', $result)->isInstanceOf(Project::className());
+            verify('Method should succeed and return instance of Project', $result)->isInstanceOf(Project::className());
             verify('Project title should be set', $result->title)->equals('My new project title');
-            verify('Project type should be set', $result->type)->equals(Project::TYPE_DESKTOP);
-            verify('Project scaleFactor should be set', $result->scaleFactor)->equals(Project::RETINA_SCALE_FACTOR);
-            verify('Project subtype should not be set', $result->subtype)->null();
             verify('Project passwordHash should be set', $result->passwordHash)->notEmpty();
+            verify('Project should be linked with the provided user', $user->findProjectById($result->id))->notEmpty();
         });
     }
 
@@ -169,52 +146,36 @@ class ProjectFormTest extends \Codeception\Test\Unit
     {
         $project = Project::findOne(1002);
 
-        $this->specify('Error update attempt', function() use ($project) {
+        $this->specify('Error update attempt', function () use ($project) {
             $model = new ProjectForm($project, [
                 'title'               => '',
-                'type'                => Project::TYPE_TABLET,
-                'subtype'             => 31,
                 'isPasswordProtected' => true,
                 'changePassword'      => true,
-                'retinaScale'         => false,
-                'autoScale'           => 'invalid_value',
             ]);
 
             $result = $model->save();
 
             $project->refresh();
 
-            verify('Model should not save', $result)->null();
+            verify('Model should not succeed', $result)->null();
             verify('Title error message should be set', $model->errors)->hasKey('title');
-            verify('Type error message should not be set', $model->errors)->hasntKey('type');
-            verify('Subtype error message should be set', $model->errors)->hasKey('subtype');
             verify('Password error message should be set', $model->errors)->hasKey('password');
-            verify('AutoScale error message should be set', $model->errors)->hasKey('autoScale');
-            verify('RetinaScale error message should not be set', $model->errors)->hasntKey('retinaScale');
             verify('Project title should not be changed', $project->title)->equals('Lorem ipsum title');
-            verify('Project subtype should not be changed', $project->subtype)->notEquals(31);
         });
 
-        $this->specify('Success update attempt', function() use ($project) {
+        $this->specify('Success update attempt', function () use ($project) {
             $model = new ProjectForm($project, [
                 'title'               => 'My new project title',
-                'type'                => Project::TYPE_MOBILE,
-                'subtype'             => 31,
                 'isPasswordProtected' => false,
-                'retinaScale'         => true,
-                'autoScale'           => true,
             ]);
 
             $result = $model->save();
 
             $project->refresh();
 
-            verify('Model should returns instance of Project', $result)->isInstanceOf(Project::className());
+            verify('Method should succeed and return instance of Project', $result)->isInstanceOf(Project::className());
             verify('Model should not has any errors', $model->errors)->isEmpty();
             verify('Project title should be changed', $project->title)->equals('My new project title');
-            verify('Project scaleFactor should be set', $result->scaleFactor)->equals(Project::AUTO_SCALE_FACTOR);
-            verify('Project type should be changed', $project->type)->equals(Project::TYPE_MOBILE);
-            verify('Project subtype should be changed', $project->subtype)->equals(31);
             verify('Project passwordHash should not be set', $project->passwordHash)->isEmpty();
         });
     }

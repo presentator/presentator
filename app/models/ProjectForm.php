@@ -136,7 +136,7 @@ class ProjectForm extends Model
 
     /**
      * Creates or update a Project model.
-     * @param  null|User    User to link to the created project.
+     * @param  null|User    User to link to the created/updated project.
      * @return null|Project The created/updated project on success, otherwise - null.
      */
     public function save(User $user = null)
