@@ -28,8 +28,6 @@ class ProjectsController extends ApiController
      *   {
      *     "id": 7,
      *     "title": "Test 1",
-     *     "type": 1,
-     *     "subtype": null,
      *     "createdAt": 1489904382,
      *     "updatedAt": 1489904382,
      *     "featured": null,
@@ -55,8 +53,6 @@ class ProjectsController extends ApiController
      *   {
      *     "id": 9,
      *     "title": "Test 2",
-     *     "type": 2,
-     *     "subtype": 21,
      *     "createdAt": 1489904385,
      *     "updatedAt": 1490286679,
      *     "featured": {
@@ -128,8 +124,6 @@ class ProjectsController extends ApiController
      * {
      *   "id": 11,
      *   "title": "My new project",
-     *   "type": 1,
-     *   "subtype": null,
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
      *   "featured": null,
@@ -137,6 +131,10 @@ class ProjectsController extends ApiController
      *     {
      *       "id": 23,
      *       "projectId": 11,
+     *       "title": "Test version",
+     *       "type": 1,
+     *       "subtype": null,
+     *       "scaleFactor": 1,
      *       "order": 1,
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,
@@ -214,8 +212,6 @@ class ProjectsController extends ApiController
      * {
      *   "id": 11,
      *   "title": "My new project",
-     *   "type": 1,
-     *   "subtype": null,
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
      *   "featured": null,
@@ -223,6 +219,10 @@ class ProjectsController extends ApiController
      *     {
      *       "id": 23,
      *       "projectId": 11,
+     *       "title": null,
+     *       "type": 1,
+     *       "subtype": null,
+     *       "scaleFactor": 1,
      *       "order": 1,
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,
@@ -326,6 +326,10 @@ class ProjectsController extends ApiController
      *     {
      *       "id": 23,
      *       "projectId": 11,
+     *       "title": "Version 101",
+     *       "type": 2,
+     *       "subtype": 21,
+     *       "scaleFactor": 0,
      *       "order": 1,
      *       "createdAt": 1490296359,
      *       "updatedAt": 1490296359,

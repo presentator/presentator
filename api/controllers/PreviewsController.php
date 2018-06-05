@@ -46,8 +46,6 @@ class PreviewsController extends ApiController
      *   "project": {
      *     "id": 9,
      *     "title": "test",
-     *     "type": 1,
-     *     "subtype": null,
      *     "createdAt": 1489904385,
      *     "updatedAt": 1490285838,
      *     "featured": {
@@ -70,6 +68,10 @@ class PreviewsController extends ApiController
      *       {
      *         "id": 21,
      *         "projectId": 9,
+     *         "title": null,
+     *         "type": 1,
+     *         "subtype": null,
+     *         "scaleFactor": 1,
      *         "order": 1,
      *         "createdAt": 1489904385,
      *         "updatedAt": 1489904385,

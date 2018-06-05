@@ -28,6 +28,10 @@ class VersionsController extends ApiController
      *   {
      *     "id": 19,
      *     "projectId": 7,
+     *     "title": null,
+     *     "type": 1,
+     *     "subtype": null,
+     *     "scaleFactor": 1,
      *     "order": 1,
      *     "createdAt": 1489904382,
      *     "updatedAt": 1489904382
@@ -35,7 +39,11 @@ class VersionsController extends ApiController
      *   {
      *     "id": 20,
      *     "projectId": 8,
-     *     "order": 1,
+     *     "title": "Custom title",
+     *     "type": 2,
+     *     "subtype": 21,
+     *     "scaleFactor": 0,
+     *     "order": 2,
      *     "createdAt": 1489904384,
      *     "updatedAt": 1489904384
      *   }
@@ -74,6 +82,10 @@ class VersionsController extends ApiController
      * {
      *   "id": 25
      *   "projectId": 7,
+     *   "title": "Custom title",
+     *   "type": 2,
+     *   "subtype": 21,
+     *   "scaleFactor": 0,
      *   "order": 2,
      *   "createdAt": 1490299034,
      *   "updatedAt": 1490299034,
@@ -129,7 +141,11 @@ class VersionsController extends ApiController
      * {
      *   "id": 25
      *   "projectId": 7,
-     *   "order": 2,
+     *   "title": null,
+     *   "type": 1,
+     *   "subtype": null,
+     *   "scaleFactor": 1,
+     *   "order": 1,
      *   "createdAt": 1490299034,
      *   "updatedAt": 1490299034,
      * }
@@ -187,7 +203,11 @@ class VersionsController extends ApiController
      * {
      *   "id": 25
      *   "projectId": 7,
-     *   "order": 2,
+     *   "title": null,
+     *   "type": 1,
+     *   "subtype": null,
+     *   "scaleFactor": 1,
+     *   "order": 1,
      *   "createdAt": 1490299034,
      *   "updatedAt": 1490299034,
      * }
