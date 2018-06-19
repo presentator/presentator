@@ -172,7 +172,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
                     autocomplete="off"
                     placeholder="<?= Yii::$app->params['fuzzyUsersSearch'] ? Yii::t('app', 'Type name or email to add a new admin') : Yii::t('app', 'Type user email to add a new admin') ?>"
                 >
-                <div id="admins_search_suggestions" class="input-dropdown" style="display: none;"></div>
+                <div id="admins_search_suggestions" class="input-dropdown" data-keyboard-nav="#admins_search_term_input" style="display: none;"></div>
             </div>
         </footer>
     </div>
@@ -229,7 +229,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 <?php
 $this->registerJsFile('/js/hotspots.js?v=1522585665');
 $this->registerJsFile('/js/pins.js?v=1522585665');
-$this->registerJsFile('/js/project-view.view.js?v=1527964703');
+$this->registerJsFile('/js/project-view.view.js?v=1529438625');
 $this->registerJsFile('/js/version.view.js?v=1527964703');
 $this->registerJsFile('/js/screen-comments.view.js?v=1527964703');
 $this->registerJsFile('/js/screen-hotspots.view.js?v=1527964703');

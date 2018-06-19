@@ -1162,5 +1162,78 @@ var PR = {
         }
 
         return template;
+    },
+
+    /**
+     * Binds keyboard nav events to any dropdown container.
+     *
+     * @param {Null|String} [dropdownSelector]
+     */
+    bindDropdownKeyboardNav: function (dropdownSelector) {
+        var $dropdowns = $(dropdownSelector || '.input-dropdown[data-keyboard-nav]');
+
+        $dropdowns.each(function (i, dropdown) {
+            var $dropdown    = $(dropdown).addClass('manual-hover');
+            var $targetInput = $($dropdown.data('keyboard-nav'));
+
+            if ($dropdown.data('dropdownKeyboardNavInited')) {
+                return; // already inited
+            }
+
+            // hover in handle
+            $dropdown.off('mousemove.dropdownOptionHover', '> div:not(.not-found)').on('mousemove.dropdownOptionHover', '> div:not(.not-found)', function (e) {
+                if (!$(this).hasClass('active')) {
+                    $dropdown.children().removeClass('active');
+                    $(this).addClass('active');
+                }
+            });
+
+            // hover out handle
+            $dropdown.off('mouseleave.dropdownOptionHover', '> div:not(.not-found)').on('mouseleave.dropdownOptionHover', '> div:not(.not-found)', function (e) {
+                $dropdown.children().removeClass('active');
+            });
+
+            // enter hanle
+            $targetInput.off('keydown.dropdownOptionSelect').on('keydown.dropdownOptionSelect', function (e) {
+                if (e.which == PR.keys.enter) {
+                    e.preventDefault();
+
+                    var $activeOption = $dropdown.children('.active');
+                    if ($activeOption.length) {
+                        $dropdown.trigger('dropdownOptionSelected', [$activeOption, $targetInput]);
+                    }
+                }
+            });
+
+            // up/down hanle
+            $targetInput.off('keydown.dropdownNavigation').on('keydown.dropdownNavigation', function (e) {
+                if (e.which != PR.keys.down && e.which != PR.keys.up) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                var $options      = $dropdown.children().not('.not-found');
+                var $activeOption = $options.filter('.active').removeClass('active').first();
+
+                if (!$activeOption.length) {
+                    $options.first().addClass('active');
+                } else if (e.which == PR.keys.down) {
+                    if ($activeOption.is(':last-child')) {
+                        $options.first().addClass('active');
+                    } else {
+                        $activeOption.next().addClass('active');
+                    }
+                } else if (e.which == PR.keys.up) {
+                    if ($activeOption.is(':first-child')) {
+                        $options.last().addClass('active');
+                    } else {
+                        $activeOption.prev().addClass('active');
+                    }
+                }
+            });
+
+            $dropdown.data('dropdownKeyboardNavInited', true);
+        });
     }
 };

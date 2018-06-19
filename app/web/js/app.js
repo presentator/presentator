@@ -29,8 +29,8 @@ jQuery(function ($) {
     PR.visibilityToggle();
     PR.lazyLoad();
     PR.colorPicker('.color-picker-input');
+    PR.bindDropdownKeyboardNav();
     PR.bindAjaxPopupAnimations();
-
     PR.cursorTooltipInit();
 
     $('.selectify-select').selectify();
@@ -149,6 +149,7 @@ jQuery(function ($) {
         }, 0); // reorder execution queue
 
         PR.colorPicker('.color-picker-input');
+        PR.bindDropdownKeyboardNav();
         $('.selectify-select').selectify();
 
         if (PR.isObject(request) && PR.isObject(request.responseJSON)) {

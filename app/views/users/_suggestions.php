@@ -7,10 +7,10 @@ use yii\helpers\Html;
 ?>
 
 <?php if (empty($users)): ?>
-    <div class="item"><?= Yii::t('app', 'No results found') ?></div>
+    <div class="item not-found"><?= Yii::t('app', 'No results found') ?></div>
 <?php else: ?>
-    <?php foreach ($users as $user): ?>
-        <div class="item user-suggestion-item" data-user-id="<?= $user->id ?>" data-value="<?= Html::encode($user->getIdentificator()) ?>">
+    <?php foreach ($users as $i => $user): ?>
+        <div class="item user-suggestion-item <?= $i == 0 ? 'active' : '' ?>" data-user-id="<?= $user->id ?>" data-value="<?= Html::encode($user->getIdentificator()) ?>">
             <?php if ($user->getFullName()): ?>
                 <?= Html::encode($user->getFullName()) ?>
                 (<?= Html::encode($user->email) ?>)

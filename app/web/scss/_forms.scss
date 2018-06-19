@@ -349,12 +349,26 @@ input[type="radio"] {
         &:last-child {
             border-bottom: 0;
         }
-        &:hover {
+        &:hover,
+        &.active {
             background: $lighterGreyColor;
         }
         &:active {
             transition-duration: 0.1s;
             background: $lightGreyColor;
+        }
+    }
+    &.manual-hover {
+        .item {
+            &:hover {
+                background: inherit;
+            }
+            &.active {
+                background: $lighterGreyColor;
+            }
+            &:active {
+                background: $lightGreyColor;
+            }
         }
     }
 }

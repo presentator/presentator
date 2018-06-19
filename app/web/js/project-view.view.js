@@ -1,4 +1,4 @@
-var ProjectView = function(data) {
+var ProjectView = function (data) {
     data = data || {};
 
     var defaults = {
@@ -54,51 +54,51 @@ var ProjectView = function(data) {
 /**
  * Init method
  */
-ProjectView.prototype.init = function() {
+ProjectView.prototype.init = function () {
     var self = this;
     var $document = $(document);
 
     // project update
-    $document.on('click', self.settings.projectEditHandle, function(e) {
+    $document.on('click', self.settings.projectEditHandle, function (e) {
         e.preventDefault();
 
         self.getUpdateForm();
     });
 
-    self.$previewLink.each(function(i, link) {
+    self.$previewLink.each(function (i, link) {
         $(link).html(PR.highlightLastStringPart($(link).attr('href')));
     });
 
     // Project share
-    self.$shareForm.on('beforeSubmit', function(e) {
+    self.$shareForm.on('beforeSubmit', function (e) {
         self.shareProject(this);
 
         return false;
     });
 
     // Admins search
-    self.$adminsSearchUserInput.on('input paste', function() {
+    self.$adminsSearchUserInput.on('input paste', function () {
         if (self.searchTrottle) {
             clearTimeout(self.searchTrottle);
         }
 
-        self.searchTrottle = setTimeout(function() {
+        self.searchTrottle = setTimeout(function () {
             self.searchUsers(self.$adminsSearchUserInput.val());
         }, 200);
     });
 
     // Add project admin from suggestions list
-    $document.on('click', self.settings.adminSuggestionItem, function(e) {
+    $document.on('click', self.settings.adminSuggestionItem, function (e) {
         e.preventDefault();
 
-        var $item = $(this);
-
-        self.$adminsSearchUserInput.val($item.data('value'));
-        self.addAdmin($item.data('user-id'), self.$adminsSearchProjectInput.val());
+        self.selectAdminSuggestionItem(this);
+    });
+    self.$adminSuggestionsList.on('dropdownOptionSelected', function (e, $activeOption, $targetInput) {
+        self.selectAdminSuggestionItem($activeOption);
     });
 
     // Remove project admin
-    $document.on('click', self.settings.adminListItem + ' ' + self.settings.adminRemoveHandle, function(e) {
+    $document.on('click', self.settings.adminListItem + ' ' + self.settings.adminRemoveHandle, function (e) {
         e.preventDefault();
 
         var $item = $(this).closest(self.settings.adminListItem);
@@ -110,7 +110,7 @@ ProjectView.prototype.init = function() {
 
     // Clear admin suggestion term input on outside click
     var $suggestionInputParent = self.$adminsSearchUserInput.closest('.form-group');
-    $document.on('click', function(e) {
+    $document.on('click', function (e) {
         if (
             self.$adminsSearchUserInput.val().length > 0 &&
             !$suggestionInputParent.is(e.target) &&
@@ -127,7 +127,7 @@ ProjectView.prototype.init = function() {
  * Handles sending project share email via ajax.
  * @param {String|Object|Null} form
  */
-ProjectView.prototype.shareProject = function(form) {
+ProjectView.prototype.shareProject = function (form) {
     var self  = this;
     var $form = $(form || self.$shareForm);
 
@@ -145,13 +145,13 @@ ProjectView.prototype.shareProject = function(form) {
         url:  ajaxUrl,
         type: 'POST',
         data: $form.serialize()
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success) {
-            setTimeout(function() {
+            setTimeout(function () {
                 PR.closePopup();
             }, 580); // animations delay
         } else if (response.errors) {
-            $.each(response.errors, function(name, errors) {
+            $.each(response.errors, function (name, errors) {
                 $form.yiiActiveForm('updateAttribute', 'projectshareform-' + name, errors);
             });
         }
@@ -161,14 +161,14 @@ ProjectView.prototype.shareProject = function(form) {
 /**
  * Renders project update form popup.
  */
-ProjectView.prototype.getUpdateForm = function() {
+ProjectView.prototype.getUpdateForm = function () {
     var self = this;
 
     PR.abortXhr(self.generalXHR);
     self.generalXHR = $.ajax({
         url:  self.settings.ajaxGetUpdateFormUrl,
         type: 'GET'
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success && response.updateForm) {
             self.$projectUpdatePopup.find('.popup-content .content').first().html(response.updateForm);
             PR.openPopup(self.$projectUpdatePopup);
@@ -176,7 +176,7 @@ ProjectView.prototype.getUpdateForm = function() {
             var $form = self.$projectUpdatePopup.find('form');
 
             // Project update
-            $form.on('beforeSubmit', function(e) {
+            $form.on('beforeSubmit', function (e) {
                 self.saveUpdateForm(this);
 
                 return false;
@@ -189,7 +189,7 @@ ProjectView.prototype.getUpdateForm = function() {
  * Handles project update form submit via ajax.
  * @param {String|Object|Null} form
  */
-ProjectView.prototype.saveUpdateForm = function(form) {
+ProjectView.prototype.saveUpdateForm = function (form) {
     var self  = this;
     var $form = $(form);
 
@@ -207,13 +207,13 @@ ProjectView.prototype.saveUpdateForm = function(form) {
         url:  ajaxUrl,
         type: 'POST',
         data: $form.serialize()
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success) {
             if (response.project) {
                 $(self.settings.titleHolders).text(response.project.title);
             }
 
-            setTimeout(function() {
+            setTimeout(function () {
                 PR.closePopup();
             }, 580); // animations delay
         }
@@ -224,7 +224,7 @@ ProjectView.prototype.saveUpdateForm = function(form) {
  * Performs users search via ajax.
  * @param {String} search
  */
-ProjectView.prototype.searchUsers = function(search) {
+ProjectView.prototype.searchUsers = function (search) {
     var self  = this;
 
     if (!search || search.length < 3) {
@@ -237,7 +237,7 @@ ProjectView.prototype.searchUsers = function(search) {
         url:  self.settings.ajaxSearchUsersUrl,
         type: 'GET',
         data: {'search': search}
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success && response.suggestionsHtml) {
             self.$adminSuggestionsList.html(response.suggestionsHtml).show();
         }
@@ -245,11 +245,25 @@ ProjectView.prototype.searchUsers = function(search) {
 };
 
 /**
+ * @param {Mixed} item
+ */
+ProjectView.prototype.selectAdminSuggestionItem = function (item) {
+    var $item = item ? $(item) : this.$adminSuggestionsList.find(this.settings.adminSuggestionItem).filter('.active').first();
+
+    if (!$item.length) {
+        return;
+    }
+
+    this.$adminsSearchUserInput.val($item.data('value'));
+    this.addAdmin($item.data('user-id'), this.$adminsSearchProjectInput.val());
+};
+
+/**
  * Links user to a project model via ajax.
  * @param {Number} userId
  * @param {Number} projectId
  */
-ProjectView.prototype.addAdmin = function(userId, projectId) {
+ProjectView.prototype.addAdmin = function (userId, projectId) {
     var self  = this;
 
     if (!userId || !projectId) {
@@ -264,7 +278,7 @@ ProjectView.prototype.addAdmin = function(userId, projectId) {
             'userId':    userId,
             'projectId': projectId,
         }
-    }).done(function(response) {
+    }).done(function (response) {
         self.$adminsSearchUserInput.val('');
         self.$adminSuggestionsList.hide();
 
@@ -279,7 +293,7 @@ ProjectView.prototype.addAdmin = function(userId, projectId) {
  * @param {Number} userId
  * @param {Number} projectId
  */
-ProjectView.prototype.removeAdmin = function(userId, projectId) {
+ProjectView.prototype.removeAdmin = function (userId, projectId) {
     var self  = this;
 
     if (!userId || !projectId) {
@@ -294,7 +308,7 @@ ProjectView.prototype.removeAdmin = function(userId, projectId) {
             'userId':    userId,
             'projectId': projectId,
         }
-    }).done(function(response) {
+    }).done(function (response) {
         if (response.success) {
             $(self.settings.adminListItem + '[data-user-id="' + userId + '"]').remove();
 
