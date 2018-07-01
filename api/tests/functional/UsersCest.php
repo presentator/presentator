@@ -117,7 +117,7 @@ class UsersCest
      */
     public function registerSuccess(FunctionalTester $I)
     {
-        $I->wantTo('Successfuly register a new user');
+        $I->wantTo('Successfully register a new user');
         $I->sendPOST('/users/register', [
             'email'         => 'test1232@presentator.io',
             'firstName'     => 'Test',
@@ -181,7 +181,7 @@ class UsersCest
         $user = User::findOne(1002);
         $I->haveHttpHeader('X-Access-Token', $user->generateJwtToken());
 
-        $I->wantTo('Successfuly update user model');
+        $I->wantTo('Successfully update user model');
         $I->sendPUT('/users/update', [
             'oldPassword'        => '123456',
             'newPassword'        => '654321',
