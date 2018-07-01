@@ -116,8 +116,6 @@ class ProjectsController extends ApiController
      * @apiHeader {String} X-Access-Token User authentication token
      *
      * @apiParam {String}  title      Project title
-     * @apiParam {Number}  type       Project type
-     * @apiParam {Number}  [subtype]  Project subtype (**required** only for projects with type `2 - tablet` or `3 - mobile`)
      * @apiParam {String}  [password] Project password (if has any)
      *
      * @apiSuccessExample {json} 200 Success response (example):
@@ -203,8 +201,6 @@ class ProjectsController extends ApiController
      *
      * @apiParam {Number}   id               Project id (`GET` parameter)
      * @apiParam {String}   title            Project title
-     * @apiParam {Number}   type             Project type
-     * @apiParam {Number}   [subtype]        Project subtype (**required** only for projects with type `2 - tablet` or `3 - mobile`)
      * @apiParam {String}   [password]       Project password (if has any)
      * @apiParam {Boolean}  [changePassword] Set to `true` if you want to change/remove the project password
      *
@@ -301,8 +297,6 @@ class ProjectsController extends ApiController
      * @apiSuccessExample {json} 200 Success response (example):
      * {
      *   "title": "My new project",
-     *   "type": 2,
-     *   "subtype": 21,
      *   "createdAt": 1490296356,
      *   "updatedAt": 1490296356,
      *   "id": 11,

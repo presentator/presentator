@@ -279,20 +279,6 @@
           },
           {
             "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "type",
-            "description": "<p>Project type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "subtype",
-            "description": "<p>Project subtype (<strong>required</strong> only for projects with type <code>2 - tablet</code> or <code>3 - mobile</code>)</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": true,
             "field": "password",
@@ -500,20 +486,6 @@
           },
           {
             "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "type",
-            "description": "<p>Project type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "subtype",
-            "description": "<p>Project subtype (<strong>required</strong> only for projects with type <code>2 - tablet</code> or <code>3 - mobile</code>)</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": true,
             "field": "password",
@@ -610,7 +582,7 @@
       "examples": [
         {
           "title": "200 Success response (example):",
-          "content": "{\n  \"title\": \"My new project\",\n  \"type\": 2,\n  \"subtype\": 21,\n  \"createdAt\": 1490296356,\n  \"updatedAt\": 1490296356,\n  \"id\": 11,\n  \"featured\": {\n    \"id\": 151,\n    \"versionId\": 23,\n    \"title\": \"attachment2\",\n    \"hotspots\": null,\n    \"order\": 1,\n    \"alignment\": 0,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n    \"createdAt\": 1489926572,\n    \"updatedAt\": 1489926572,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n    }\n  },\n  \"versions\": [\n    {\n      \"id\": 23,\n      \"projectId\": 11,\n      \"title\": \"Version 101\",\n      \"type\": 2,\n      \"subtype\": 21,\n      \"scaleFactor\": 0,\n      \"order\": 1,\n      \"createdAt\": 1490296359,\n      \"updatedAt\": 1490296359,\n      \"screens\": [\n        {\n          \"id\": 151,\n          \"versionId\": 23,\n          \"title\": \"attachment2\",\n          \"hotspots\": null,\n          \"order\": 1,\n          \"alignment\": 0,\n          \"background\": null,\n          \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n          \"createdAt\": 1489926572,\n          \"updatedAt\": 1489926572,\n          \"thumbs\": {\n            \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n            \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n          }\n        }\n      ]\n    }\n  ],\n  \"previews\": [\n    {\n      \"id\": 1,\n      \"projectId\": 11,\n      \"slug\": \"preview-slug-1\",\n      \"type\": 1,\n      \"createdAt\": 1524306495,\n      \"updatedAt\": 1524306495\n    },\n    {\n      \"id\": 2,\n      \"projectId\": 11,\n      \"slug\": \"preview-slug-2\",\n      \"type\": 2,\n      \"createdAt\": 1524306495,\n      \"updatedAt\": 1524306495\n    }\n  ]\n}",
+          "content": "{\n  \"title\": \"My new project\",\n  \"createdAt\": 1490296356,\n  \"updatedAt\": 1490296356,\n  \"id\": 11,\n  \"featured\": {\n    \"id\": 151,\n    \"versionId\": 23,\n    \"title\": \"attachment2\",\n    \"hotspots\": null,\n    \"order\": 1,\n    \"alignment\": 0,\n    \"background\": null,\n    \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n    \"createdAt\": 1489926572,\n    \"updatedAt\": 1489926572,\n    \"thumbs\": {\n      \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n      \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n    }\n  },\n  \"versions\": [\n    {\n      \"id\": 23,\n      \"projectId\": 11,\n      \"title\": \"Version 101\",\n      \"type\": 2,\n      \"subtype\": 21,\n      \"scaleFactor\": 0,\n      \"order\": 1,\n      \"createdAt\": 1490296359,\n      \"updatedAt\": 1490296359,\n      \"screens\": [\n        {\n          \"id\": 151,\n          \"versionId\": 23,\n          \"title\": \"attachment2\",\n          \"hotspots\": null,\n          \"order\": 1,\n          \"alignment\": 0,\n          \"background\": null,\n          \"imageUrl\": \"/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38.jpg\",\n          \"createdAt\": 1489926572,\n          \"updatedAt\": 1489926572,\n          \"thumbs\": {\n            \"medium\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_medium.jpg\",\n            \"small\": \"http://app.presentator.dev/uploads/projects/45c48cce2e2d7fbdea1afc51c7c6ad26/attachment2_1489926572_38_thumb_small.jpg\"\n          }\n        }\n      ]\n    }\n  ],\n  \"previews\": [\n    {\n      \"id\": 1,\n      \"projectId\": 11,\n      \"slug\": \"preview-slug-1\",\n      \"type\": 1,\n      \"createdAt\": 1524306495,\n      \"updatedAt\": 1524306495\n    },\n    {\n      \"id\": 2,\n      \"projectId\": 11,\n      \"slug\": \"preview-slug-2\",\n      \"type\": 2,\n      \"createdAt\": 1524306495,\n      \"updatedAt\": 1524306495\n    }\n  ]\n}",
           "type": "json"
         }
       ]
