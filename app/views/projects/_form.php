@@ -59,6 +59,7 @@ $project = $model->getProject();
             <a href="<?= Url::to(['projects/delete', 'id' => $project->id]) ?>"
                 class="danger-link hint-link project-delete-link"
                 data-method="post"
+                data-form="ignore_submitting_current_form"
                 data-confirm="<?= Yii::t('app', 'Do you really want to delete project {projectTitle}?', ['projectTitle' => Html::encode($project->title)]) ?>"
             >
                 <?= Yii::t('app', 'Delete project') ?>
