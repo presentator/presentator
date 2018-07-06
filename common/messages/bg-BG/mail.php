@@ -19,7 +19,7 @@
 return array(
     'For security reasons, we encourage you to change the generated password as soon as possible.' => 'Препоръчително е да подмениш автоматично генерираната парола възможно най-скоро.',
     'Successfully authenticated' => 'Успешна регистрация',
-    'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => 'Автоматично генерирахме парола за твоя акаунт, за да може да го ползваш без нуждата от авторизиране от 3-та страна.',
+    'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => 'Автоматично генерирахме парола за твоя акаунт, за да може да го ползваш без нуждата от оторизиране от 3-та страна.',
     'A new comment was left for project "{projectTitle}".' => 'Нов коментар беше оставен към проект "{projectTitle}".',
     'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
