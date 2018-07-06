@@ -16,10 +16,15 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Confirm email address change' => '',
     'Email change request' => '',
+    'For security reasons, we encourage you to change the generated password as soon as possible.' => 'Ze względów bezpieczeństwa zachęcamy do zmiany wygenerowanego hasła tak szybko, jak to możliwe.',
+    'Successfully authenticated' => 'Pomyślnym uwierzytelnieniu',
+    'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => 'Aby umożliwić logowanie z pominięciem uwierzytelniania za pomocą serwisu 3rd party, dodaliśmy losowe hasło do Twojego konta.',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
+    'You have been mentioned in a comment' => '',
+    'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'A new comment was left for project "{projectTitle}".' => 'Dodano nowy komentarz do projektu "{projectTitle}".',
     'Account activation' => 'Aktywacja konta',
     'Activate account' => 'Aktywuj konto',
@@ -28,7 +33,6 @@ return array(
     'Best Regards' => 'Pozdrawiamy',
     'Click on the button below for detail view and other options:' => 'Kliknij przycisk poniżej, aby zobaczyć widok szczegółowy i pozostałe opcje:',
     'Click on the button below to activate your account:' => 'Kliknij przycisk poniżej, aby aktywować swoje konto:',
-    'Click on the button below to continue:' => 'Kliknij przycisk poniżej, aby kontynuować:',
     'Click on the button below to explore the project:' => 'Kliknij przycisk poniżej, aby zapoznać się z projektem:',
     'Click on the button below to reset it and set a new one:' => 'Kliknij przycisk poniżej, aby je zresetować i ustawić nowe:',
     'Detail view' => 'Widok szczegółowy',
@@ -42,18 +46,13 @@ return array(
     'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. Jeśli nie chcesz otrzymywać więcej powiadomień o komentarzach, możesz wyłączyć je w ustawieniach konta na stronie Presentator.',
     'Password reset request' => 'Żądanie zresetowania hasła',
     'Presentator Team' => 'Zespół Presentator',
-    'Registered with Facebook' => 'Rejestracja poprzez Facebooka',
     'Reset password' => 'Zresetuj hasło',
     'Screen' => 'Ekran',
     'Thank you for registering to {appLink}.' => 'Dziękujemy za rejestrację w {appLink}.',
-    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => 'Aby umożliwić logowanie z pominięciem uwierzytelniania za pomocą serwisu Facebook, dodaliśmy losowe hasło do Twojego konta:',
     'View project' => 'Zobacz projekt',
     'We\'ve received a request to reset your account password.' => 'Otrzymaliśmy prośbę o zresetowanie hasła do Twojego konta.',
     'You are assigned as admin to project "{projectTitle}".' => 'Zostałeś przydzielony jako administrator w projekcie "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'Zostałeś poproszony o recenzję projektu "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Nie jesteś już administratorem projektu "{projectTitle}".',
-    'You have been mentioned in a comment' => '',
-    'You have been mentioned in a comment for project "{projectTitle}".' => '',
-    'You have successfully registered via Facebook.' => 'Zarejestrowałeś się pomyślnie za pomocą serwisu Facebook.',
     '{projectTitle} preview' => 'Podgląd {projectTitle}',
-);
+];

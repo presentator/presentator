@@ -1,6 +1,7 @@
 <?php
 namespace common\components\helpers;
 
+use Yii;
 use yii\base\Arrayable;
 use yii\helpers\ArrayHelper;
 
@@ -114,5 +115,30 @@ class CArrayHelper extends ArrayHelper
         } else {
             return [$object];
         }
+    }
+
+    /**
+     * Checks if the specified keys (dotnotation is also supported) are not empty.
+     * @param  array      $keys
+     * @param  null|array $data (if `null` will autoset `Yii:$app->params` instead)
+     * @return boolean
+     */
+    public static function hasNonEmptyValues(array $keys, array $data = null)
+    {
+        if (empty($keys)) {
+            return false;
+        }
+
+        if ($data === null) {
+            $data = Yii::$app->params;
+        }
+
+        foreach ($keys as $key) {
+            if (empty(CArrayHelper::getValue($data, $key))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

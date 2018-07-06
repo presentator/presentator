@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Type user email to add a new admin' => 'Type user email to add a new admin',
+    'Invalid hotspots format.' => 'Invalid hotspots format.',
+    'Login with Google' => 'Login with Google',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -250,6 +251,7 @@ return array(
     'To create your first project click on the button below:' => 'To create your first project click on the button below:',
     'Type' => 'Type',
     'Type name or email to add a new admin' => 'Type name or email to add a new admin',
+    'Type user email to add a new admin' => 'Type user email to add a new admin',
     'Type your password here...' => 'Type your password here...',
     'URL that will be send' => 'URL that will be send',
     'Unable to link {client} account. There is another user using it.' => 'Unable to link {client} account. There is another user using it.',
@@ -274,9 +276,9 @@ return array(
     'Warning! Do you really want to unlink yourself from the current project?' => 'Warning! Do you really want to unlink yourself from the current project?',
     'Write a comment...' => 'Write a comment...',
     'You can not delete the only one project version.' => 'You can not delete the only one project version.',
-    'You have successfully activated your account via Facebook.' => 'You have successfully activated your account via Facebook.',
+    'You have successfully activated your account via {client}.' => 'You have successfully activated your account via {client}.',
     'You have successfully logout! We hope to see you again soon.' => 'You have successfully logout! We hope to see you again soon.',
-    'You have successfully registered via Facebook.' => 'You have successfully registered via Facebook.',
+    'You have successfully registered via {client}.' => 'You have successfully registered via {client}.',
     'You must provide a valid project password.' => 'You must provide a valid project password.',
     'Your account was activated successfully.' => 'Your account was activated successfully.',
     'Your email address was successfully updated.' => 'Your email address was successfully updated.',

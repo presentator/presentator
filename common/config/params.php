@@ -66,6 +66,12 @@ return [
         'clientSecret' => '',
     ],
 
+    // Google+ auth client settings (to enable both properties must be set!)
+    'googleAuth' => [
+        'clientId'     => '',
+        'clientSecret' => '',
+    ],
+
     // ReCaptcha to prevent login brute force attacks (to enable both properties must be set!)
     'recaptcha' => [
         'siteKey' => '',

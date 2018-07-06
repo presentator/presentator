@@ -16,10 +16,15 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Confirm email address change' => '',
     'Email change request' => '',
+    'For security reasons, we encourage you to change the generated password as soon as possible.' => 'Por motivos de segurança, incentivamos você a alterar a senha gerada assim que possível.',
+    'Successfully authenticated' => 'Autenticado com sucesso',
+    'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => 'Para poder efetuar login sem o 3rd party, definimos uma senha aleatória para sua conta.',
     'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => '',
+    'You have been mentioned in a comment' => '',
+    'You have been mentioned in a comment for project "{projectTitle}".' => '',
     'A new comment was left for project "{projectTitle}".' => 'Um novo comentário para o projeto "{projectTitle}" foi escrito.',
     'Account activation' => 'Ativação de conta',
     'Activate account' => 'Ativar conta',
@@ -28,7 +33,6 @@ return array(
     'Best Regards' => 'Atenciosamente',
     'Click on the button below for detail view and other options:' => 'Clique no botão abaixo para visualização detalhada e outras opções:',
     'Click on the button below to activate your account:' => 'Clique no botão abaixo para ativar a sua conta:',
-    'Click on the button below to continue:' => 'Clique no botão abaixo para avançar:',
     'Click on the button below to explore the project:' => 'Clique no botão abaixo para explorar o projeto:',
     'Click on the button below to reset it and set a new one:' => 'Clique no botão abaixo para redefinir:',
     'Detail view' => 'Visualização detalhada',
@@ -42,18 +46,13 @@ return array(
     'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. Se não quiser receber mais notificações de comentário, atualize suas preferências nas configurações de conta do Presentator',
     'Password reset request' => 'Pedido de redefinição de senha enviado',
     'Presentator Team' => 'Time Presentator',
-    'Registered with Facebook' => 'Registrado com Facebook',
     'Reset password' => 'Redefinir senha',
     'Screen' => 'Tela',
     'Thank you for registering to {appLink}.' => 'Obrigado por se registar para {appLink}.',
-    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => 'Para poder efetuar login sem o Facebook, definimos uma senha aleatória para sua conta:',
     'View project' => 'Ver projeto',
     'We\'ve received a request to reset your account password.' => 'Recebemos um pedido para redefinir sua senha',
     'You are assigned as admin to project "{projectTitle}".' => 'Você foi escolhido como administrador do projeto "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'Você foi convidado para revisar o design de "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Você não é mais um administrador do projeto "{projectTitle}".',
-    'You have been mentioned in a comment' => '',
-    'You have been mentioned in a comment for project "{projectTitle}".' => '',
-    'You have successfully registered via Facebook.' => 'Você se registrou com sucesso usando Facebook.',
     '{projectTitle} preview' => 'visualização de {projectTitle}',
-);
+];

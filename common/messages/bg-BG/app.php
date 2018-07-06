@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return array(
-    'Type user email to add a new admin' => 'Имейл адрес на потребителя',
+    'Invalid hotspots format.' => 'Невалиден формат на данните.',
+    'Login with Google' => 'Вход с Google',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -250,6 +251,7 @@ return array(
     'To create your first project click on the button below:' => 'За да създадеш първия си проект, кликни на бутона по-долу:',
     'Type' => 'Тип',
     'Type name or email to add a new admin' => 'Име или имейл адрес на потребителя',
+    'Type user email to add a new admin' => 'Имейл адрес на потребителя',
     'Type your password here...' => 'Парола на проекта...',
     'URL that will be send' => 'URL адрес, който ще бъде изпратен',
     'Unable to link {client} account. There is another user using it.' => 'Възникна грешка при линкването на {client}.',
@@ -274,9 +276,9 @@ return array(
     'Warning! Do you really want to unlink yourself from the current project?' => 'Внимание! Наистина ли вече не искаш да си администратор на текущия проект?',
     'Write a comment...' => 'Напиши коментар...',
     'You can not delete the only one project version.' => 'Не може да изтриеш единствената версия на проекта.',
-    'You have successfully activated your account via Facebook.' => 'Успешно активира профила си чрез Facebook.',
+    'You have successfully activated your account via {client}.' => 'Успешно активира профила си чрез {client}.',
     'You have successfully logout! We hope to see you again soon.' => 'Успешно се отписахте!',
-    'You have successfully registered via Facebook.' => 'Успешна регистрация с Facebook.',
+    'You have successfully registered via {client}.' => 'Успешна регистрация с {client}.',
     'You must provide a valid project password.' => 'Невалидна парола на проект.',
     'Your account was activated successfully.' => 'Профилът ти бе активиран успешно.',
     'Your email address was successfully updated.' => 'Твоят имейл адрес беше успешно обновен!',

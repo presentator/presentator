@@ -520,19 +520,19 @@ class User extends CActiveRecord implements IdentityInterface
     }
 
     /**
-     * Sends a Facebook register email with the auto generated password string.
+     * Sends auth register email with the auto generated password string.
      * @param  string $password
      * @return boolean
      */
-    public function sendFacebookRegisterEmail($password)
+    public function sendAuthRegisterEmail($password)
     {
-        $message = Yii::$app->mailer->compose('fb_register', [
+        $message = Yii::$app->mailer->compose('auth_register', [
                 'user'     => $this,
                 'password' => $password,
             ])
             ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
             ->setTo($this->email)
-            ->setSubject('Presentator - ' . Yii::t('mail', 'Registered with Facebook'))
+            ->setSubject('Presentator - ' . Yii::t('mail', 'Successfully authenticated'))
         ;
 
         // force direct send

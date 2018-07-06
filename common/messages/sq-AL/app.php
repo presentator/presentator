@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -28,6 +28,8 @@ return array(
     'Edit' => '',
     'Fade' => '',
     'Inactive' => '',
+    'Invalid hotspots format.' => '',
+    'Login with Google' => '',
     'None' => '',
     'Password confirmation' => '',
     'Regular user' => '',
@@ -274,9 +276,9 @@ return array(
     'Warning! Do you really want to unlink yourself from the current project?' => 'Kujdes! A do me të vërtetë të shkëpusësh veten nga projekti aktual?',
     'Write a comment...' => 'Shkruaj një koment...',
     'You can not delete the only one project version.' => 'Nuk mund të fshish versionin e vetëm të projektit.',
-    'You have successfully activated your account via Facebook.' => 'Ke aktivizuar me sukses llogarinë tëndë nëpërmjet Facebook.',
+    'You have successfully activated your account via {client}.' => 'Ke aktivizuar me sukses llogarinë tëndë nëpërmjet {client}.',
     'You have successfully logout! We hope to see you again soon.' => 'Je çkyçur me sukses! Shpresojmë që të të shohim përsëri së shpejti.',
-    'You have successfully registered via Facebook.' => 'Je regjistruar me sukses nëpërmjet Facebook.',
+    'You have successfully registered via {client}.' => 'Je regjistruar me sukses nëpërmjet {client}.',
     'You must provide a valid project password.' => 'Duhet të japesh një fjalëkalim projekti të vlefshëm.',
     'Your account was activated successfully.' => 'Llogaria jote u aktivizua me sukses.',
     'Your email address was successfully updated.' => 'Adresa jote e email-it u përditësua me sukses.',
@@ -285,4 +287,4 @@ return array(
     'of' => 'i',
     'or' => 'ose',
     '{projectTitle} - Projects' => '{projectTitle} - Projekte',
-);
+];

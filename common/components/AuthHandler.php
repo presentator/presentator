@@ -68,7 +68,9 @@ class AuthHandler
                     }
 
                     Yii::$app->session->setFlash('success',
-                        Yii::t('app', 'You have successfully activated your account via Facebook.')
+                        Yii::t('app', 'You have successfully activated your account via {client}.', [
+                            'client' => $this->client->getTitle(),
+                        ])
                     );
                 } elseif (!$user) {
                     // create new user
@@ -82,7 +84,7 @@ class AuthHandler
                         ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 3], // min 3 chars
                         ['0123456789', 3],                 // min 3 chars
                     ];
-                    $password = Yii::$app->security->generateRandomString(10, $alphabet);
+                    $password = Yii::$app->security->generateRandomString(12, $alphabet);
                     $user->setPassword($password);
 
                     if (!$user->save()) {
@@ -96,10 +98,12 @@ class AuthHandler
                     }
 
                     Yii::$app->session->setFlash('success',
-                        Yii::t('app', 'You have successfully registered via Facebook.')
+                        Yii::t('app', 'You have successfully registered via {client}.', [
+                            'client' => $this->client->getTitle(),
+                        ])
                     );
 
-                    $user->sendFacebookRegisterEmail($password);
+                    $user->sendAuthRegisterEmail($password);
                 }
 
                 // link

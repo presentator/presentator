@@ -187,6 +187,22 @@ class UserTest extends \Codeception\Test\Unit
     }
 
     /**
+     * `User::sendAuthRegisterEmail()` method test.
+     */
+    public function testSendAuthRegisterEmail()
+    {
+        $user     = User::findOne(1003);
+        $password = 'MY_NEW_PASSWORD';
+        $result   = $user->sendAuthRegisterEmail($password);
+
+        $this->tester->seeEmailIsSent();
+        $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
+        verify('Mail method should succeed', $result)->true();
+        verify('Receiver email should match', $message->getTo())->hasKey($user->email);
+        verify('Body should contains the provided password.', current($message->getChildren())->getBody())->contains($password);
+    }
+
+    /**
      * `User::getStatusLabels()` method test.
      */
     public function testGetStatusLabels()

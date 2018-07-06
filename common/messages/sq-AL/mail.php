@@ -16,10 +16,14 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Confirm email address change' => 'Konfirmo ndryshimin e adresës së email-it',
-    'Email change request' => 'Kërkesë për ndryshimin e email-it',
-    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'Kemi marrë një kërkesë për ndryshimin e email-it të llogarisë tënde në Presentator nga {oldEmail} në {newEmail}.',
+return [
+    'For security reasons, we encourage you to change the generated password as soon as possible.' => '',
+    'Successfully authenticated' => '',
+    'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => '',
+    'Click on the button below to continue:' => '@@Kliko mbi butonin më poshtë për të vazhduar:@@',
+    'Registered with Facebook' => '@@Regjistruar me Facebook@@',
+    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => '@@Për tu kyçur pa nevojën e vertëtimit nëpërmjet Facebook, ne vendosëm një fjalëkalim të rastësishëm për llogarinë tënde:@@',
+    'You have successfully registered via Facebook.' => '@@Je regjistruar me sukses nëpërmjet Facebook.@@',
     'A new comment was left for project "{projectTitle}".' => 'Një koment i ri është lënë në projektin "{projectTitle}".',
     'Account activation' => 'Aktivizim llogarie',
     'Activate account' => 'Aktivizo llogarinë',
@@ -28,10 +32,11 @@ return array(
     'Best Regards' => 'Gjithë të mirat',
     'Click on the button below for detail view and other options:' => 'Kliko mbi butoni më poshtë për pamjen e detajuar dhe zgjedhje të tjera:',
     'Click on the button below to activate your account:' => 'Kliko mbi butonin më poshtë për të aktivizuar llogarinë tënde:',
-    'Click on the button below to continue:' => 'Kliko mbi butonin më poshtë për të vazhduar:',
     'Click on the button below to explore the project:' => 'Kliko mbi butonin më poshtë për të eksploruar projektin:',
     'Click on the button below to reset it and set a new one:' => 'Kliko mbi butonin më poshtë për ta rivendosur:',
+    'Confirm email address change' => 'Konfirmo ndryshimin e adresës së email-it',
     'Detail view' => 'Pamja e detajuar',
+    'Email change request' => 'Kërkesë për ndryshimin e email-it',
     'Explore project' => 'Eksploro projektin',
     'From' => 'Nga',
     'Hello' => 'Përshëndetje',
@@ -42,18 +47,16 @@ return array(
     'P.S. If you don\'t want to receive any comments notifications, you could update your preferences at your Presentator account settings page.' => 'P.S. Nëse nuk do të marrësh më njoftime komentesh, mund të përditësosh preferencat e tua në faqen e konfigurimeve në llogarinë tënde Presentator.',
     'Password reset request' => 'Kërkesë për rivendosje fjalëkalimi',
     'Presentator Team' => 'Skuadra Presentator',
-    'Registered with Facebook' => 'Regjistruar me Facebook',
     'Reset password' => 'Rivendos password',
     'Screen' => 'Imazh',
     'Thank you for registering to {appLink}.' => 'Faleminderit që u regjistruat në {appLink}.',
-    'To be able to login without the need of Facebook authentication, we have set a random password for your account:' => 'Për tu kyçur pa nevojën e vertëtimit nëpërmjet Facebook, ne vendosëm një fjalëkalim të rastësishëm për llogarinë tënde:',
     'View project' => 'Shiko projektin',
+    'We\'ve received a request to change your Presentator account email address from {oldEmail} to {newEmail}.' => 'Kemi marrë një kërkesë për ndryshimin e email-it të llogarisë tënde në Presentator nga {oldEmail} në {newEmail}.',
     'We\'ve received a request to reset your account password.' => 'Kemi marrë një kërkesë për rivendosjen e fjalëkalimit të llogarisë tënde.',
     'You are assigned as admin to project "{projectTitle}".' => 'Je caktuar si administrator për projektin "{projectTitle}".',
     'You are invited to review the design for "{projectTitle}".' => 'Je i/e ftuar për të rishikuar dizajnin për "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Nuk je më një administrator në projektin "{projectTitle}".',
     'You have been mentioned in a comment' => 'Je përmendur në një koment',
     'You have been mentioned in a comment for project "{projectTitle}".' => 'Je përmendur në një koment për projektin "{projectTitle}".',
-    'You have successfully registered via Facebook.' => 'Je regjistruar me sukses nëpërmjet Facebook.',
     '{projectTitle} preview' => '{projectTitle} parapamje',
-);
+];
