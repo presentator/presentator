@@ -35,7 +35,7 @@ $user = Yii::$app->user->identity;
     <div class="filter-item max-width">
         <div id="projects_search_bar" class="search-bar">
             <label id="projects_search_handle" class="search-icon" for="projects_search_input"><i class="ion ion-ios-search"></i></label>
-            <span id="projects_search_clear" class="search-clear clear-projects-search"><i class="ion ion-backspace"></i></span>
+            <span id="projects_search_clear" class="search-clear clear-projects-search"><i class="ion ion-md-close-circle"></i></span>
             <input type="text" id="projects_search_input" class="search-input" placeholder="<?= Yii::t('app', 'Search for projects...') ?>">
         </div>
     </div>
@@ -63,7 +63,7 @@ $user = Yii::$app->user->identity;
             <div class="content">
                 <div class="table-wrapper">
                     <div class="table-cell">
-                        <span class="icon"><i class="ion ion-ios-plus-outline"></i></span>
+                        <span class="icon icon-circle"><i class="ion ion-ios-add"></i></span>
                         <span class="txt"><?= Yii::t('app', 'Create new project') ?></span>
                     </div>
                 </div>

@@ -240,11 +240,11 @@ button, .btn {
             line-height: inherit;
             vertical-align: top;
             font-size: 16px;
-            &.ion-link {
-                font-size: 18px;
+            &.ion-md-link {
+                font-size: 19px;
                 color: $primaryColor;
             }
-            &.ion-android-share-alt {
+            &.ion-md-share {
                 color: $successColor;
             }
         }
@@ -421,7 +421,7 @@ input[type="radio"] {
                 @include transition(background 0.2s, border 0.2s, transform 0.1s);
             }
             &:after {
-                content: "\f122";
+                content: "\f2bc";
                 display: block;
                 position: absolute;
                 left: 0;
@@ -647,7 +647,7 @@ input[type="radio"] {
         @include border-radius($baseRadius);
         @include transition(color 0.2s, background 0.2s, border 0.2s);
         &:after {
-            content: "\f120";
+            content: "\f14a";
             position: absolute;
             right: 10px;
             top: 10px;
@@ -684,8 +684,11 @@ input[type="radio"] {
     }
     .icon {
         margin: 0 0 10px;
-        font-size: 24px;
-        line-height: 1;
+        font-size: 22px;
+        line-height: 27px;
+        .ion-ios-laptop {
+            font-size: 26px;
+        }
     }
     &.compact {
         .row {

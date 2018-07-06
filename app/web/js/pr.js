@@ -722,8 +722,8 @@ var PR = {
             var initialColor = $(input).val() || '#eff2f8';
 
             var $colorPickerHandle = $('<span class="color-picker-input-handle"></span>');
-            var $resetHandle       = $('<span class="color-picker-ctrl reset"><i class="ion ion-close"></i></span>');
-            var $applyHandle       = $('<span class="color-picker-ctrl apply"><i class="ion ion-checkmark"></i></span>');
+            var $resetHandle       = $('<span class="color-picker-ctrl reset"><i class="ion ion-md-close"></i></span>');
+            var $applyHandle       = $('<span class="color-picker-ctrl apply"><i class="ion ion-md-checkmark"></i></span>');
 
             $input.wrap('<div class="color-picker-input-wrapper"></div>');
             $colorPickerHandle.insertAfter(input);

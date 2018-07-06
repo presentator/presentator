@@ -39,7 +39,7 @@
         &:after {
             // no image icon
             $size: 50px;
-            content: "\f3f5";
+            content: "\f108";
             display: block;
             position: absolute;
             z-index: 0;
@@ -51,8 +51,8 @@
             height: $size;
             line-height: $size;
             text-align: center;
-            font-size: 40px;
-            color: $greyColor;
+            font-size: 38px;
+            color: darken($lighterGreyColor, 5%);
             font-family: $iconFont;
             @include animation(primary-color-pulse 1.5s infinite linear);
         }
@@ -313,10 +313,18 @@
             @include transition(color 0.2s, transform 0.2s);
         }
         .icon {
-            font-size: 72px;
-            line-height: 1;
+            $size: 65px;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 40px;
+            width: $size;
+            height: $size;
+            line-height: $size;
             font-weight: normal;
+            text-align: center;
             margin-bottom: 20px;
+            background: $lighterGreyColor;
+            @include border-radius($size);
         }
         .txt {
             font-size: 22px;

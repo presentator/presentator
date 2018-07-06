@@ -194,7 +194,7 @@
             &:before {
                 // no image icon
                 $size: 50px;
-                content: "\f3f5";
+                content: "\f108";
                 display: block;
                 position: absolute;
                 z-index: 0;
@@ -206,7 +206,7 @@
                 line-height: $size;
                 text-align: center;
                 font-size: 46px;
-                color: $greyColor;
+                color: darken($lighterGreyColor, 5%);
                 font-family: $iconFont;
                 @include animation(primary-color-pulse 1.5s infinite linear);
             }

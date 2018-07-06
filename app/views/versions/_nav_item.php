@@ -29,7 +29,7 @@ if ($model->title) {
 
     <div class="ctrl-bar">
         <span class="ctrl-item version-edit" data-cursor-tooltip="<?= Yii::t('app', 'Edit version') ?>">
-            <i class="ion ion-edit"></i>
+            <i class="ion ion-md-create"></i>
         </span>
     </div>
 </li>

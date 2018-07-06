@@ -23,7 +23,7 @@ $lazyLoadPriority = isset($lazyLoadPriority) ? $lazyLoadPriority : 'medium';
         <div class="content">
             <div class="table-wrapper">
                 <div class="table-cell">
-                    <span class="icon"><i class="ion ion-ios-plus-outline"></i></span>
+                    <span class="icon icon-circle"><i class="ion ion-ios-add"></i></span>
                     <span class="txt"><?= Yii::t('app', 'Add screens') ?></span>
                 </div>
             </div>

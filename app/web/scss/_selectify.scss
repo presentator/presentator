@@ -23,15 +23,15 @@
         @include user-select(none);
         &:after {
             $arrowHeight: 20px;
-            content: "\f104";
+            content: "\f280";
             position: absolute;
-            right: 15px;
+            right: 10px;
             top: 50%;
             margin-top: -($arrowHeight / 2);
             height: $arrowHeight;
             line-height: $arrowHeight;
             font-family: $iconFont;
-            font-size: 13px;
+            font-size: 16px;
             @include transition(transform 0.2s);
         }
     }

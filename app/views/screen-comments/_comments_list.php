@@ -20,7 +20,7 @@ $showDelete = isset($showDelete) ? $showDelete : true;
 
             <?php if ($showDelete): ?>
                 <span class="delete-handle comment-delete">
-                    <i class="ion ion-trash-a"></i>
+                    <i class="ion ion-md-trash"></i>
                 </span>
             <?php endif ?>
         </div>

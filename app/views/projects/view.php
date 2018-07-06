@@ -33,13 +33,13 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
         <div class="meta">
             <div class="btn-group m-b-30">
                 <div class="item admins" data-popup="#admins_popup" data-cursor-tooltip="<?= Yii::t('app', 'Manage admins') ?>">
-                    <i class="ion ion-android-people"></i>
+                    <i class="ion ion-md-people"></i>
                 </div>
                 <div class="item links" data-popup="#links_popup" data-cursor-tooltip="<?= Yii::t('app', 'Links') ?>">
-                    <i class="ion ion-link"></i>
+                    <i class="ion ion-md-link"></i>
                 </div>
                 <div class="item share" data-popup="#share_popup" data-cursor-tooltip="<?= Yii::t('app', 'Share') ?>">
-                    <i class="ion ion-android-share-alt"></i>
+                    <i class="ion ion-md-share"></i>
                 </div>
             </div>
             <button type="button" class="btn btn-xs btn-primary btn-ghost block project-edit-handle"><?= Yii::t('app', 'Edit project') ?></button>
@@ -53,7 +53,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
             </ul>
             <div class="block m-t-30 p-l-30 p-r-30">
                 <button type="button" id="version_create" class="btn btn-xs btn-success block" data-project-id="<?= $project->id ?>">
-                    <i class="ion ion-plus m-r-5"></i>
+                    <i class="ion ion-md-add m-r-5"></i>
                     <span class="txt"><?= Yii::t('app', 'New version') ?></span>
                 </button>
             </div>
@@ -76,7 +76,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
 </div>
 
 <div id="screens_bulk_panel" class="fixed-panel" style="display: none;">
-    <span class="close screen-bulk-reset"><i class="ion ion-close"></i></span>
+    <span class="close screen-bulk-reset"><i class="ion ion-md-close"></i></span>
     <div class="table-wrapper">
         <div class="table-cell min-width">
             <div class="form-group form-group-sm no-margin versions-select">
@@ -202,7 +202,7 @@ $viewAndCommentUrl = $project->getPreviewUrl(ProjectPreview::TYPE_VIEW_AND_COMME
                 </div>
 
                 <div class="content dz-message">
-                    <i class="ion ion-android-upload"></i>
+                    <i class="ion ion-md-cloud-upload"></i>
                     <p><?= Yii::t('app', 'Click or drop here to upload') ?> <em>(png, jpg)</em></p>
                 </div>
             </div>

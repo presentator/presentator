@@ -18,7 +18,7 @@ $hasAvatar = !empty($model->getAvatarUrl());
     </div>
     <div class="table-cell max-width p-l-10">
         <a href="#" class="danger-link hint-link m-l-5 delete-avatar" data-action-confirm="<?= Yii::t('app', 'Do you really want to delete the user avatar?') ?>" <?= !$hasAvatar ? 'style="display: none"' : ''; ?>>
-            <i class="ion ion-trash-a"></i>
+            <i class="ion ion-md-trash"></i>
             <span class="txt"><?= Yii::t('app', 'Delete avatar') ?></span>
         </a>
     </div>
@@ -36,7 +36,7 @@ $hasAvatar = !empty($model->getAvatarUrl());
                 </div>
 
                 <div class="content dz-message">
-                    <i class="ion ion-android-upload"></i>
+                    <i class="ion ion-md-cloud-upload"></i>
                     <p><?= Yii::t('app', 'Click or drop here to upload') ?> <em>(png, jpg)</em></p>
                 </div>
             </div>

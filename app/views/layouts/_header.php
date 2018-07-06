@@ -24,13 +24,13 @@ $user = Yii::$app->user->identity;
                 <ul>
                     <li>
                         <a href="<?= $user->type == User::TYPE_SUPER ? Url::to(['users/update', 'id' => $user->id]) : Url::to(['users/settings']) ?>">
-                            <i class="ion ion-android-settings"></i>
+                            <i class="ion ion-md-settings"></i>
                             <span class="txt"><?= Yii::t('app', 'Settings') ?></span>
                         </a>
                     </li>
                     <li>
                         <a href="<?= Url::to(['site/logout']) ?>" data-method="post" class="danger-link">
-                            <i class="ion ion-log-out"></i>
+                            <i class="ion ion-md-log-out"></i>
                             <span class="txt"><?= Yii::t('app', 'Logout') ?></span>
                         </a>
                     </li>

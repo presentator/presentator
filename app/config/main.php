@@ -48,6 +48,14 @@ return [
                     'clientId'     => $params['facebookAuth']['clientId'],
                     'clientSecret' => $params['facebookAuth']['clientSecret'],
                 ],
+                'google' => [
+                    'class'        => 'yii\authclient\clients\Google',
+                    'clientId'     => $params['googleAuth']['clientId'],
+                    'clientSecret' => $params['googleAuth']['clientSecret'],
+                    'normalizeUserAttributeMap' => [
+                        'email' => ['emails', 0, 'value'],
+                    ],
+                ],
             ],
         ],
         'reCaptcha' => [

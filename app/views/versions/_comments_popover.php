@@ -21,6 +21,6 @@ use yii\helpers\Html;
             <?php endif ?>
             <textarea id="comment_form_message_input" class="reply-input message-input" placeholder="<?= Yii::t('app', 'Write a comment...') ?>" autocomplete="off"></textarea>
         </div>
-        <button class="reply-btn" title="<?= Yii::t('app', 'Send') ?>"><i class="ion ion-forward"></i></button>
+        <button class="reply-btn" title="<?= Yii::t('app', 'Send') ?>"><i class="ion ion-ios-send"></i></button>
     </form>
 </div>

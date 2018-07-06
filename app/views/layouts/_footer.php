@@ -11,7 +11,7 @@ use common\widgets\LanguageSwitch;
             <?php if (!empty(Yii::$app->params['githubUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['githubUrl'] ?>" class="icon-link github-link" target="_blank">
-                        <i class="ion ion-social-github"></i>
+                        <i class="ion ion-logo-github"></i>
                         <span class="txt">GitHub</span>
                     </a>
                 </li>
@@ -20,7 +20,7 @@ use common\widgets\LanguageSwitch;
             <?php if (!empty(Yii::$app->params['facebookUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="icon-link fb-link" target="_blank">
-                        <i class="ion ion-social-facebook"></i>
+                        <i class="ion ion-logo-facebook"></i>
                         <span class="txt">Facebook</span>
                     </a>
                 </li>
@@ -29,7 +29,7 @@ use common\widgets\LanguageSwitch;
             <?php if (!empty(Yii::$app->params['supportUrl'])): ?>
                 <li>
                     <a href="<?= Yii::$app->params['supportUrl'] ?>" class="icon-link heart-link" target="_blank">
-                        <i class="ion ion-heart"></i>
+                        <i class="ion ion-md-heart"></i>
                         <span class="txt"><?= Yii::t('app', 'Support us') ?></span>
                     </a>
                 </li>

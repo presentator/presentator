@@ -14,7 +14,7 @@ $hasFeaturedScreen = !empty($model->featuredScreen);
     <div class="content">
         <?php if ($newComments > 0): ?>
             <div class="pin pin-warning" data-cursor-tooltip="<?= Yii::t('app', 'Has unread comments')?>">
-                <i class="ion ion-ios-bell"></i>
+                <i class="ion ion-ios-notifications"></i>
             </div>
         <?php endif ?>
 
@@ -27,7 +27,7 @@ $hasFeaturedScreen = !empty($model->featuredScreen);
 
             <div class="overlay-item top-right">
                 <div class="dropdown-handle more-options">
-                    <i class="ion ion-android-more-horizontal" data-bind="clickToggle" data-target=".dropdown-menu" data-class="active" data-isolate="parent"></i>
+                    <i class="ion ion-ios-more" data-bind="clickToggle" data-target=".dropdown-menu" data-class="active" data-isolate="parent"></i>
                     <div class="dropdown-menu small compact">
                         <ul>
                             <li>

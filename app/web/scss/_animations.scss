@@ -171,11 +171,11 @@
 }
 
 @keyframes primary-color-pulse {
-    0% { color: inherit; }
-    25% { color: $primaryColor; }
-    50% { color: $successColor; }
+    0% { color: darken($lighterGreyColor, 5%); }
+    25% { color: $successColor; }
+    50% { color: $primaryColor; }
     75% { color: $dangerColor; }
-    100% { color: inherit; }
+    100% { color: darken($lighterGreyColor, 5%); }
 }
 
 @keyframes popover-show {

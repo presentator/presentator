@@ -57,7 +57,7 @@ if ($top + $height > $maxY) {
     <?php endif  ?>
 >
     <?php if ($showControls): ?>
-        <span class="remove-handle context-menu-ignore"><i class="ion ion-trash-a"></i></span>
+        <span class="remove-handle context-menu-ignore"><i class="ion ion-md-trash"></i></span>
         <span class="resize-handle context-menu-ignore"></span>
     <?php endif ?>
 </div>

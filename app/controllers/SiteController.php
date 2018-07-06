@@ -5,6 +5,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\ErrorException;
 use yii\base\InvalidParamException;
+use yii\web\NotFoundHttpException;
 use yii\db\IntegrityException;
 use yii\web\BadRequestHttpException;
 use yii\helpers\ArrayHelper;
@@ -81,9 +82,9 @@ class SiteController extends AppController
     public function actionError()
     {
         $exception = Yii::$app->errorHandler->exception;
+
         if ($exception === null) {
-            Yii::$app->getResponse()->redirect(['site/entrance'])->send();
-            return;
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $this->layout = 'clean';

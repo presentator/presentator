@@ -28,11 +28,11 @@ $subtypesList = [
                 $radioId = 'version_type_' . $value;
 
                 if ($value == Version::TYPE_TABLET) {
-                    $icon = '<i class="ion ion-ipad"></i>';
+                    $icon = '<i class="ion ion-ios-tablet-portrait"></i>';
                 } elseif ($value == Version::TYPE_MOBILE) {
-                    $icon = '<i class="ion ion-iphone"></i>';
+                    $icon = '<i class="ion ion-ios-phone-portrait"></i>';
                 } else {
-                    $icon = '<i class="ion ion-monitor"></i>';
+                    $icon = '<i class="ion ion-ios-laptop"></i>';
                 }
 
                 return $return = '
@@ -77,7 +77,7 @@ $subtypesList = [
                 ]
             ])
             ->checkbox()
-            ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'Auto scale/fit the uploaded screen to the device width.') . '"></i>', [
+            ->hint('<i class="ion ion-ios-help-circle" data-cursor-tooltip="' . Yii::t('app', 'Auto scale/fit the uploaded screen to the device width.') . '"></i>', [
                 'tag'   => 'span',
                 'class' => 'hint-inline-block',
             ]);
@@ -91,7 +91,7 @@ $subtypesList = [
                 ]
             ])
             ->checkbox()
-            ->hint('<i class="ion ion-help-circled" data-cursor-tooltip="' . Yii::t('app', 'For 2x pixel density designs.') . '"></i>', [
+            ->hint('<i class="ion ion-ios-help-circle" data-cursor-tooltip="' . Yii::t('app', 'For 2x pixel density designs.') . '"></i>', [
                 'tag'   => 'span',
                 'class' => 'hint-inline-block',
             ]);

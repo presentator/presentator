@@ -59,6 +59,7 @@
             text-align: center;
             height: inherit;
             line-height: inherit;
+            color: $greyColor;
             @include transition(color 0.2s, background 0.2s);
             &:hover {
                 background: $lighterGreyColor;
@@ -116,9 +117,12 @@
                 &.active {
                     background: $lighterGreyColor;
                 }
+                &.screens-handle.active {
+                    background: none;
+                }
             }
             i {
-                font-size: 23px;
+                font-size: 20px;
             }
         }
     }
@@ -134,7 +138,6 @@
         }
         &.preview-handle,
         &.hotspots-handle {
-            color: $primaryColor;
             .bubble {
                 color: #fff;
                 background: $primaryColor;
@@ -145,7 +148,6 @@
             }
         }
         &.comments-handle {
-            color: $dangerColor;
             .bubble {
                 color: #fff;
                 background: $dangerColor;
@@ -166,9 +168,6 @@
                 transition-duration: 0.1s;
                 background: $lightGreyColor;
             }
-            i {
-                font-size: 21px;
-            }
         }
         &.info-handle {
             & > i {
@@ -178,7 +177,7 @@
     }
 
     .bubble {
-        $size: 17px;
+        $size: 16px;
         position: absolute;
         z-index: 1;
         left: 50%;
@@ -190,7 +189,7 @@
         font-size: 11px;
         font-family: $baseFont;
         background: $lightGreyColor;
-        margin-left: 15px - ($size / 2);
+        margin-left: 14.5px - ($size / 2);
         @include border-radius($size);
     }
 
@@ -215,7 +214,7 @@
         i {
             font-size: 20px;
         }
-        i.ion-android-home {
+        i.ion-md-home {
             font-size: 17px;
         }
         .title {

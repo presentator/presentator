@@ -60,9 +60,9 @@ $totalScreens = count($activeVersion->screens);
         <nav class="panel-menu">
             <div class="ctrl-wrapper ctrl-left">
                 <ul>
-                    <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-android-arrow-back"></i></li>
+                    <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-md-arrow-back"></i></li>
                     <li class="ctrl-item info-handle">
-                        <i class="ion ion-ios-information-outline"></i>
+                        <i class="ion ion-ios-information-circle-outline"></i>
                         <div class="dropdown-menu info-dropdown">
                             <h6 class="title m-b-10" title="<?= Html::encode($project->title) ?>"><?= Html::encode($project->title) ?></h6>
                             <span class="hint"><?= Yii::t('app', 'Project admins') ?></span>
@@ -79,13 +79,13 @@ $totalScreens = count($activeVersion->screens);
                                     <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->email == $user->email): ?>
                                         <div class="table-cell p-l-10 min-width">
                                             <a href="<?= Url::to(['site/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>">
-                                                <i class="ion ion-android-home"></i>
+                                                <i class="ion ion-md-home"></i>
                                             </a>
                                         </div>
                                     <?php endif ?>
                                     <div class="table-cell p-l-10 min-width">
                                         <a href="mailto: <?= Html::encode($user->email) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Send an email') ?>">
-                                            <i class="ion ion-ios-email"></i>
+                                            <i class="ion ion-ios-mail"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -125,17 +125,16 @@ $totalScreens = count($activeVersion->screens);
 
                         <?php if ($allowComment): ?>
                             <li id="panel_preview_handle" class="ctrl-item preview-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Preview mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip">
-                                <i class="ion ion-ios-eye-outline"></i>
+                                <i class="ion ion-md-eye"></i>
                             </li>
                             <li id="panel_comments_handle" class="ctrl-item comments-handle" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
-                                <i class="ion ion-ios-chatboxes-outline"></i>
+                                <i class="ion ion-md-chatboxes"></i>
                                 <span class="bubble comments-counter">0</span>
                             </li>
                         <?php endif ?>
 
                         <li id="panel_screens_handle" class="ctrl-item screens-handle" data-cursor-tooltip="<?= Yii::t('app', 'All screens') ?>">
-                            <i class="ion ion-ios-photos active-icon"></i>
-                            <i class="ion ion-ios-photos-outline inactive-icon"></i>
+                            <i class="ion ion-md-photos"></i>
                         </li>
                     </ul>
                 </div>
@@ -154,10 +153,10 @@ $totalScreens = count($activeVersion->screens);
                     </li>
 
                     <?php if ($activeVersion->type == Version::TYPE_DESKTOP): ?>
-                        <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-ios-grid-view"></i></li>
+                        <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-md-grid"></i></li>
                     <?php endif ?>
 
-                    <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-android-arrow-forward"></i></li>
+                    <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-md-arrow-forward"></i></li>
                 </ul>
             </div>
         </nav>

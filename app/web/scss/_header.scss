@@ -8,7 +8,7 @@
     @include user-select(none);
     &:after {
         // arrow
-        content: "\f35f";
+        content: "\f280";
         display: inline-block;
         vertical-align: middle;
         font-family: $iconFont;
@@ -47,7 +47,7 @@
         font-weight: 300;
         text-decoration: none;
         &:after {
-            content: "\f3d3";
+            content: "\f3d1";
             display: inline-block;
             vertical-align: middle;
             font-family: $iconFont;

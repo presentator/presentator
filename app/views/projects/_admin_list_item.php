@@ -36,7 +36,7 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->id == $user->id) {
         </div>
         <div class="table-cell min-width">
             <a href="#" class="remove-handle" data-cursor-tooltip="<?= Yii::t('app', 'Unlink admin') ?>">
-                <i class="ion ion-trash-a"></i>
+                <i class="ion ion-md-trash"></i>
             </a>
         </div>
     </div>

@@ -37,7 +37,7 @@ AppAsset::register($this);
         <?php endif; ?>
 
         <div id="notifications_wrapper" class="notifications-wrapper"></div>
-        <div id="global_loader" class="global-loader"><i class="ion ion-load-c"></i></div>
+        <div id="global_loader" class="global-loader"><i class="ion ion-ios-radio"></i></div>
     <?php $this->endBody() ?>
 </body>
 </html>

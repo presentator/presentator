@@ -127,8 +127,8 @@
                 $slider.data('pr.slider', settings);
 
                 if (settings.nav) {
-                    var $prevHandle = $('<nav class="slider-nav-item prev"><i class="ion ion-android-arrow-back"></i></nav>');
-                    var $nextHandle = $('<nav class="slider-nav-item next"><i class="ion ion-android-arrow-forward"></i></nav>');
+                    var $prevHandle = $('<nav class="slider-nav-item prev"><i class="ion ion-md-arrow-back"></i></nav>');
+                    var $nextHandle = $('<nav class="slider-nav-item next"><i class="ion ion-md-arrow-forward"></i></nav>');
                     $slider.append($prevHandle);
                     $slider.append($nextHandle);
 

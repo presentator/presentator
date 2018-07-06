@@ -41,7 +41,7 @@ $isGuest      = Yii::$app->user->isGuest;
         <nav class="panel-menu">
             <div class="ctrl-wrapper ctrl-left">
                 <ul>
-                    <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-android-arrow-back"></i></li>
+                    <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-md-arrow-back"></i></li>
 
                     <?php if ($totalScreens > 0): ?>
                         <li class="ctrl-item screen-info ctrl-text hint">
@@ -57,14 +57,18 @@ $isGuest      = Yii::$app->user->isGuest;
             <div class="ctrl-wrapper ctrl-center">
                 <ul>
                     <li id="panel_preview_handle" class="ctrl-item preview-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Preview mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip">
-                        <i class="ion ion-ios-eye-outline"></i>
+                        <i class="ion ion-md-eye"></i>
                     </li>
-                    <li id="panel_hotspots_handle" class="ctrl-item hotspots-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Hotspots mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip"><i class="ion ion-ios-crop"></i></li>
+                    <li id="panel_hotspots_handle" class="ctrl-item hotspots-handle active" data-cursor-tooltip="<?= Yii::t('app', 'Hotspots mode') ?>" data-cursor-tooltip-class="hotspots-mode-tooltip">
+                        <i class="ion ion-md-expand"></i>
+                    </li>
                     <li id="panel_comments_handle" class="ctrl-item comments-handle" data-cursor-tooltip="<?= Yii::t('app', 'Comments mode') ?>" data-cursor-tooltip-class="comments-mode-tooltip">
-                        <i class="ion ion-ios-chatboxes-outline"></i>
+                        <i class="ion ion-md-chatboxes"></i>
                         <span class="bubble comments-counter">0</span>
                     </li>
-                    <li id="panel_settings_handle" class="ctrl-item settings-handle" data-cursor-tooltip="<?= Yii::t('app', 'Screen settings') ?>"><i class="ion ion-ios-gear-outline"></i></li>
+                    <li id="panel_settings_handle" class="ctrl-item settings-handle" data-cursor-tooltip="<?= Yii::t('app', 'Screen settings') ?>">
+                        <i class="ion ion-md-settings"></i>
+                    </li>
                 <ul>
             </div>
 
@@ -81,10 +85,10 @@ $isGuest      = Yii::$app->user->isGuest;
                     </li>
 
                     <?php if ($model->type == Version::TYPE_DESKTOP): ?>
-                        <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-ios-grid-view"></i></li>
+                        <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-md-grid"></i></li>
                     <?php endif ?>
 
-                    <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-android-arrow-forward"></i></li>
+                    <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-md-arrow-forward"></i></li>
                 </ul>
             </div>
         </nav>
@@ -92,7 +96,7 @@ $isGuest      = Yii::$app->user->isGuest;
 
     <div class="version-slider-content">
         <div class="close-handle-wrapper">
-            <span class="close-handle close-screen-edit"><i class="ion ion-ios-close-empty"></i></span>
+            <span class="close-handle close-screen-edit"><i class="ion ion-ios-close"></i></span>
         </div>
 
         <div class="slider-items">
@@ -193,13 +197,13 @@ $isGuest      = Yii::$app->user->isGuest;
         <?= $this->render('_comments_popover'); ?>
 
         <div id="hotspots_bulk_panel" class="fixed-panel hotspots-bulk-panel" style="display: none;">
-            <span class="close hotspots-bulk-reset"><i class="ion ion-close"></i></span>
+            <span class="close hotspots-bulk-reset"><i class="ion ion-md-close"></i></span>
 
             <div class="table-wrapper">
                 <div class="table-cell min-width">
                     <button id="hotspots_bulk_screens_select" type="button" class="btn btn-sm btn-primary btn-ghost hotspots-bulk-screens-btn">
                         <?= Yii::t('app', 'Duplicate on screen') ?>
-                        <i class="ion ion-android-arrow-dropdown m-l-5"></i>
+                        <i class="ion ion-md-arrow-dropdown m-l-5"></i>
 
                         <div id="hotspots_bulk_screens_popover" class="popover hotspots-bulk-screens-popover bottom-left">
                             <div class="popover-thumbs-wrapper">

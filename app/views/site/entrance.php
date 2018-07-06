@@ -11,6 +11,7 @@ use common\widgets\LanguageSwitch;
  * @var $loginForm          \app\models\LoginForm
  * @var $registerForm       \app\models\RegisterForm
  * @var $hasFbConfig        boolean
+ * @var $hasGoogleConfig    boolean
  * @var $hasReCaptchaConfig boolean
  */
 
@@ -52,17 +53,37 @@ $this->title = Yii::t('app', 'Login');
                     </div>
                 </div>
 
-                <?php if ($hasFbConfig): ?>
+                <?php if ($hasFbConfig || $hasGoogleConfig): ?>
                     <footer class="footer m-t-0 text-center m-t-0">
-                        <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>"
-                            class="facebook-link"
-                            data-window="facebookLogin"
-                            data-width="990"
-                            data-height="700"
-                        >
-                            <i class="ion ion-social-facebook"></i>
-                            <span class="txt"><?= Yii::t('app', 'Login with Facebook') ?></span>
-                        </a>
+                        <div class="auth-group">
+                            <?php if ($hasFbConfig): ?>
+                                <div class="auth-group-item">
+                                    <a href="<?= Url::to(['site/auth', 'authclient' => 'facebook']) ?>"
+                                        class="auth-group-link facebook-link"
+                                        data-window="facebookLogin"
+                                        data-width="990"
+                                        data-height="700"
+                                    >
+                                        <i class="ion ion-logo-facebook"></i>
+                                        <span class="txt"><?= Yii::t('app', 'Login with Facebook') ?></span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($hasGoogleConfig): ?>
+                                <div class="auth-group-item">
+                                    <a href="<?= Url::to(['site/auth', 'authclient' => 'google']) ?>"
+                                        class="auth-group-link google-link"
+                                        data-window="googleLogin"
+                                        data-width="990"
+                                        data-height="700"
+                                    >
+                                        <i class="ion ion-logo-google"></i>
+                                        <span class="txt"><?= Yii::t('app', 'Login with Google') ?></span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </footer>
                 <?php endif; ?>
             <?php endif ?>

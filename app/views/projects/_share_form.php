@@ -30,7 +30,7 @@ if ($model->project && $model->project->previews) {
                     ' . Yii::t('app', 'URL that will be send') . ':
                     <a href="' . $viewUrl . '" class="preview-link view" target="_blank" data-cursor-tooltip="' . Yii::t('app', 'Open link in new tab') . '">' . $viewUrl . '</a>
                     <a href="' . $viewAndCommentUrl . '" class="preview-link view-and-comment" target="_blank" data-cursor-tooltip="' . Yii::t('app', 'Open link in new tab') . '">' . $viewAndCommentUrl . '</a>
-                    <i class="ion ion-link"></i>
+                    <i class="ion ion-md-link"></i>
                 </div>'
             );
     ?>

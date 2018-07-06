@@ -545,7 +545,7 @@ ul {
     @include border-radius($baseRadius);
     @include box-shadow(0px 3px 10px 0px rgba(44, 75, 137, 0.07));
     &:before {
-        content: "\f147";
+        content: "\f108";
         position: absolute;
         z-index: -1;
         left: 50%;
@@ -595,7 +595,7 @@ ul {
     border: 2px solid $greyColor;
     @include border-radius(50%);
     &:before {
-        content: "\f3a0";
+        content: "\f345";
         position: absolute;
         z-index: -1;
         left: 50%;
@@ -864,7 +864,7 @@ ul {
             font-size: 20px;
             line-height: inherit;
             vertical-align: top;
-            &.ion-android-share-alt {
+            &.ion-md-share {
                 font-size: 18px;
             }
             &[class*="ion-ios-"] {
@@ -962,7 +962,7 @@ ul {
     }
     &:after {
         $iconSize: 25px;
-        content: "\f120";
+        content: "\f14a";
         position: absolute;
         z-index: 3;
         top: 50%;
@@ -1225,6 +1225,7 @@ img.lazy-load {
         right: 20px;
         top: 50%;
         cursor: pointer;
+        font-size: 16px;
         height: $height;
         line-height: $height;
         margin-top: -($height / 2);
@@ -1450,7 +1451,7 @@ img.lazy-load {
         }
         &.highlight {
             &:after {
-                content: "\f36b";
+                content: "\f12e";
                 position: absolute;
                 left: 0;
                 top: -2px;

@@ -74,7 +74,7 @@ $this->title = Yii::t('app', 'Dashboard') ;
             <div class="content">
                 <div class="table-wrapper">
                     <div class="table-cell">
-                        <span class="icon"><i class="ion ion-ios-plus-outline"></i></span>
+                        <span class="icon icon-circle"><i class="ion ion-ios-add"></i></span>
                         <span class="txt"><?= Yii::t('app', 'Create new project') ?></span>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ $this->title = Yii::t('app', 'Dashboard') ;
         <p><?= Yii::t('app', 'To create your first project click on the button below:') ?></p>
         <div class="block m-t-30 m-b-30">
             <a href="<?= Url::to(['projects/index', '#' => 'project_create_popup']) ?>" class="block btn btn-lg btn-cons btn-success">
-                <i class="ion ion-plus m-r-5"></i>
+                <i class="ion ion-md-add m-r-5"></i>
                 <span class="txt"><?= Yii::t('app', 'Create my first project') ?></span>
             </a>
         </div>

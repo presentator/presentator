@@ -43,7 +43,7 @@ $this->title = Yii::t('app', 'Forgotten password');
                             <button class="btn btn-success btn-cons"><?= Yii::t('app', 'Send') ?></button>
                             <div class="block m-t-20 text-small">
                                 <a href="<?= Url::to(['site/entrance', '#' => 'login']) ?>">
-                                    <i class="ion ion-android-arrow-back"></i>
+                                    <i class="ion ion-md-arrow-back"></i>
                                     <span><?= Yii::t('app', 'Back to login') ?></span>
                                 </a>
                             </div>

@@ -69,7 +69,7 @@ use common\widgets\CActiveForm;
                 </div>
 
                 <div class="content dz-message">
-                    <i class="ion ion-android-upload"></i>
+                    <i class="ion ion-md-cloud-upload"></i>
                     <p><?= Yii::t('app', 'Click or drop here to replace the screen image') ?> <em>(png, jpg)</em></p>
                 </div>
             </div>

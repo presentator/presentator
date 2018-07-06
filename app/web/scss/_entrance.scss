@@ -113,6 +113,26 @@
             }
         }
     }
+
+    // auth links
+    .auth-group {
+        display: flex;
+        width: 100%;
+        .auth-group-item {
+            flex-grow: 1;
+            flex-basis: 0;
+            border-left: 1px solid $greyColor;
+            padding: 0 5px;
+            text-align: center;
+            a, .btn {
+                display: inline-block;
+                vertical-align: top;
+            }
+            &:first-child {
+                border-left: 0px;
+            }
+        }
+    }
 }
 
 /* ---- Diagonal container ---- */

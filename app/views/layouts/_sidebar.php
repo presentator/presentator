@@ -13,16 +13,16 @@ $action     = Yii::$app->controller->action->id;
     <nav class="main-menu">
         <ul>
             <li class="<?= ($controller === 'site' && $action === 'index') ? 'active' : ''?>">
-                <a href="<?= Url::to(['site/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>"><i class="ion ion-home"></i></a>
+                <a href="<?= Url::to(['site/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Dashboard') ?>"><i class="ion ion-md-home"></i></a>
             </li>
             <li class="<?= ($controller === 'projects') ? 'active' : ''?>">
-                <a href="<?= Url::to(['projects/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Projects') ?>"><i class="ion ion-social-buffer"></i></a>
+                <a href="<?= Url::to(['projects/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Projects') ?>"><i class="ion ion-ios-apps"></i></a>
             </li>
             <li class="<?= ($controller === 'users') ? 'active' : ''?>">
                 <?php if ($user->type == User::TYPE_SUPER): ?>
                     <a href="<?= Url::to(['users/index']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Users') ?>"><i class="ion ion-ios-people"></i></a>
                 <?php else: ?>
-                    <a href="<?= Url::to(['users/settings']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Settings') ?>"><i class="ion ion-android-settings"></i></a>
+                    <a href="<?= Url::to(['users/settings']) ?>" data-cursor-tooltip="<?= Yii::t('app', 'Settings') ?>"><i class="ion ion-md-settings"></i></a>
                 <?php endif ?>
             </li>
         </ul>
@@ -30,7 +30,7 @@ $action     = Yii::$app->controller->action->id;
 
     <?php if (!empty(Yii::$app->params['issuesUrl'])): ?>
         <a href="<?= Yii::$app->params['issuesUrl'] ?>" class="bug-report" target="_blank" data-cursor-tooltip="<?= Yii::t('app', 'Create GitHub issue') ?>">
-            <i class="ion ion-bug"></i>
+            <i class="ion ion-ios-bug"></i>
         </a>
     <?php endif ?>
 </aside>

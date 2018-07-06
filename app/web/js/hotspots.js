@@ -84,7 +84,7 @@ Hotspots.prototype.drawBind = function() {
 
                 self.$hotspot = $(
                     '<div id="hotspot_' + Date.now() + '" class="' + self.settings.hotspot.substr(1) + '" data-transition="fade">' +
-                        '<span class="' + self.settings.removeHandle.substr(1) + '"><i class="ion ion-trash-a"></i></span>' +
+                        '<span class="' + self.settings.removeHandle.substr(1) + '"><i class="ion ion-md-trash"></i></span>' +
                         '<span class="' + self.settings.resizeHandle.substr(1) + '"></span>' +
                     '</div>'
                 );
