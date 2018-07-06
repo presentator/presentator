@@ -6,7 +6,6 @@ use yii\helpers\Html;
  * @var $this yii\web\View
  * @var $name    string
  * @var $message string
- * @var $exception Exception
  */
 
 $this->title = $name;
@@ -23,9 +22,12 @@ $this->title = $name;
             <article class="content">
                 <h1><?= Html::encode($this->title) ?></h1>
 
-                <div class="alert alert-danger">
+                <?php if (!empty($message)): ?>
+                <div class="alert alert-danger p-r-10 p-l-10">
                     <?= nl2br(Html::encode($message)) ?>
                 </div>
+                <?php endif; ?>
+
                 <p>
                     <?= Yii::t('app', 'The above error occurred while the Web server was processing your request.') ?>
                 </p>
@@ -36,7 +38,7 @@ $this->title = $name;
             <div class="clearfix m-b-30"></div>
 
             <a href="<?= Url::home() ?>" class="btn btn-primary">
-                <i class="ion ion-android-arrow-back m-r-5"></i>
+                <i class="ion ion-md-arrow-back m-r-5"></i>
                 <span class="txt"><?= Yii::t('app', 'Back to homepage') ?></span>
             </a>
         </div>

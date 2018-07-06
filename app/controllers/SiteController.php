@@ -14,6 +14,7 @@ use app\models\PasswordResetForm;
 use app\models\PasswordResetRequestForm;
 use common\models\User;
 use common\components\AuthHandler;
+use common\components\helpers\CArrayHelper;
 
 /**
  * Site controller.
@@ -80,15 +81,17 @@ class SiteController extends AppController
     public function actionError()
     {
         $exception = Yii::$app->errorHandler->exception;
-        if ($exception !== null) {
-            $this->layout = 'clean';
-
-            return $this->render('error', [
-                'name'      => ($exception instanceof Exception || $exception instanceof ErrorException) ? $exception->getName() : Yii::t('app', 'Error'),
-                'exception' => $exception,
-                'message'   => $exception->getMessage(),
-            ]);
+        if ($exception === null) {
+            Yii::$app->getResponse()->redirect(['site/entrance'])->send();
+            return;
         }
+
+        $this->layout = 'clean';
+
+        return $this->render('error', [
+            'name'    => ($exception instanceof Exception || $exception instanceof ErrorException) ? $exception->getName() : Yii::t('app', 'Error'),
+            'message' => $exception->getMessage(),
+        ]);
     }
 
     /**
@@ -128,21 +131,9 @@ class SiteController extends AppController
         $this->view->params['bodyClass'] = 'full-page';
         $this->view->params['globalWrapperClass'] = 'auth-panel-wrapper';
 
-        $hasFbConfig = false;
-        if (
-            !empty(Yii::$app->params['facebookAuth']['clientId']) &&
-            !empty(Yii::$app->params['facebookAuth']['clientSecret'])
-        ) {
-            $hasFbConfig = true;
-        }
-
-        $hasReCaptchaConfig = false;
-        if (
-            !empty(Yii::$app->params['recaptcha']['siteKey']) &&
-            !empty(Yii::$app->params['recaptcha']['secretKey'])
-        ) {
-            $hasReCaptchaConfig = true;
-        }
+        $hasFbConfig        = CArrayHelper::hasNonEmptyValues(['facebookAuth.clientId', 'facebookAuth.clientSecret']);
+        $hasGoogleConfig    = CArrayHelper::hasNonEmptyValues(['googleAuth.clientId', 'googleAuth.clientSecret']);
+        $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
 
         $isLoginAttemp      = true;
         $loginForm          = new LoginForm();
@@ -179,6 +170,7 @@ class SiteController extends AppController
             'loginForm'          => $loginForm,
             'registerForm'       => $registerForm,
             'hasFbConfig'        => $hasFbConfig,
+            'hasGoogleConfig'    => $hasGoogleConfig,
             'hasReCaptchaConfig' => $hasReCaptchaConfig,
         ]);
     }
