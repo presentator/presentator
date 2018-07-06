@@ -50,9 +50,9 @@ $this->title = Yii::t('app', 'Settings');
 </div>
 
 <?php
-$this->registerJsFile('/js/hotspots.js?v=1521905187');
-$this->registerJsFile('/js/avatar.view.js?v=1521905187');
-$this->registerJsFile('/js/profile.view.js?v=1521905187');
+$this->registerJsFile('/js/hotspots.js?v=1530894118');
+$this->registerJsFile('/js/avatar.view.js?v=1530894118');
+$this->registerJsFile('/js/profile.view.js?v=1530894118');
 $this->registerJs('
     var avatarView = new AvatarView({
         maxUploadSize:           ' . CArrayHelper::getValue(Yii::$app->params, 'maxUploadSize', 15) . ',

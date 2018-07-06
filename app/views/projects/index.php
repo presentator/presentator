@@ -93,7 +93,7 @@ $user = Yii::$app->user->identity;
 </div>
 
 <?php
-$this->registerJsFile('/js/project-index.view.js?v=1527964703');
+$this->registerJsFile('/js/project-index.view.js?v=1530894118');
 $this->registerJs('
     var projectIndex = new ProjectIndex({
         ajaxLoadProjectsUrl:   "' . Url::to(['projects/ajax-load-more']) . '",
