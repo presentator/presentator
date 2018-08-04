@@ -28,7 +28,7 @@ $project = $model->getProject();
         $form->field($model, 'isPasswordProtected', ['options' => ['class' => 'form-group m-b-20']])
             ->checkbox(['data-toggle' => '#password_block'])
     ?>
-    <div class="block" id="password_block">
+    <div class="block" id="password_block" style="display: none">
         <?php
             if ($model->isPasswordProtected) {
                 echo $form->field($model, 'changePassword', ['options' => ['class' => 'form-group m-b-20']])
