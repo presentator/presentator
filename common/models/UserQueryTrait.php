@@ -47,7 +47,7 @@ trait UserQueryTrait
         }
 
         return $query->andWhere(['or like', Project::tableName() . '.title', $searchParts])
-            ->orderBy([Project::tableName() . '.createdAt' => SORT_ASC])
+            ->orderBy([Project::tableName() . '.createdAt' => SORT_DESC])
             ->limit($limit)
             ->offset($offset)
             ->all();
