@@ -1,6 +1,11 @@
 @include selection(rgba($primaryColor, 0.6), #fff);
 @include scrollbar();
 
+// disable transitions while the page is still loading
+.preload * {
+    @include transition(none !important);
+}
+
 html {
     width: 100%;
     height: 100%;
