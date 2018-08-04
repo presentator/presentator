@@ -194,7 +194,7 @@ class UsersCest
         $formData = [
             'firstName' => '1234',
             'lastName'  => '123456',
-            'email'     => 'test_change@presentator.io',
+            'email'     => 'test2_change@presentator.io',
             'password'  => '1234',
         ];
 
@@ -271,7 +271,7 @@ class UsersCest
         $user = User::findOne(1002);
         $formData = [
             'firstName' => 'Ipsum',
-            'email'     => 'test_change@presentator.io',
+            'email'     => 'test2_change@presentator.io',
             'password'  => '123456',
         ];
 

@@ -568,7 +568,7 @@ class ProjectTest extends \Codeception\Test\Unit
         $project = Project::findOne(1001);
 
         $this->specify('Nonexisting ProjectPreview model', function () use ($project) {
-            $preview = $project->findPreviewByType('invalid_type');
+            $preview = $project->findPreviewByType(999); // invalid type
             verify($preview)->null();
         });
 

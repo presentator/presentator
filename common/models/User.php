@@ -396,7 +396,10 @@ class User extends CActiveRecord implements IdentityInterface
      */
     public function changeEmail($newEmail)
     {
-        if (static::isEmailChangeTokenValid($this->emailChangeToken, $newEmail)) {
+        if (
+            static::isEmailChangeTokenValid($this->emailChangeToken, $newEmail) &&
+            !User::findOne(['email' => $newEmail])
+        ) {
             $this->email = $newEmail;
 
             $this->removeEmailChangeToken();
@@ -672,10 +675,16 @@ class User extends CActiveRecord implements IdentityInterface
         $offset = 0
     )
     {
+        $connection = Yii::$app->db;
+
         $query = static::find()->distinct();
 
         if ($fuzzySearch) {
-            $nameExpression = new Expression("UPPER(CONCAT_WS(' ', `firstName`, `lastName`))");
+            $nameExpression = new Expression(sprintf(
+                "UPPER(CONCAT_WS(' ', %s, %s))",
+                $connection->quoteColumnName('firstName'),
+                $connection->quoteColumnName('lastName')
+            ));
             $query->where([
                 'or',
                 ['like', $nameExpression, strtoupper($search)],

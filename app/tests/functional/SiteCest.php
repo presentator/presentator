@@ -349,7 +349,7 @@ class SiteCest
         $user = User::findOne(1001); // inactive user
 
         $I->wantTo('Change the email address for an inactive user');
-        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change@presentator.io']);
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test1_change@presentator.io']);
         $I->seeResponseCodeIs(400);
         $I->see('Bad Request');
         $I->see('Invalid or expired email change token.');
@@ -362,7 +362,7 @@ class SiteCest
     {
         $user = User::findOne(1002); // user with no email change token
 
-        $newEmail         = 'test_change@presentator.io';
+        $newEmail         = 'test2_change@presentator.io';
         $emailChangeToken = md5($newEmail) . '_' . time();
 
         $I->wantTo('Change the email address for a user with no emailChangeToken set');
@@ -380,7 +380,7 @@ class SiteCest
         $user = User::findOne(1003); // user with expired email change token
 
         $I->wantTo('Change the email address for a user with expired emailChangeToken');
-        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change@presentator.io']);
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test3_change@presentator.io']);
         $I->seeResponseCodeIs(400);
         $I->see('Bad Request');
         $I->see('Invalid or expired email change token.');
@@ -397,7 +397,7 @@ class SiteCest
         $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test5@presentator.io']);
         $I->seeResponseCodeIs(400);
         $I->see('Bad Request');
-        $I->see('The email test5@presentator.io seems to be already registered');
+        $I->see('Invalid or expired email change token.');
     }
 
     /**
@@ -408,7 +408,7 @@ class SiteCest
         $user = User::findOne(1005);
 
         $I->wantTo('Successfully change user email address');
-        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test_change2@presentator.io']);
+        $I->amOnPage(['site/change-email', 'token' => $user->emailChangeToken, 'email' => 'test5_change@presentator.io']);
         $I->seeResponseCodeIs(200);
         $I->seeFlash('success');
     }

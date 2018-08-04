@@ -259,12 +259,8 @@ class SiteController extends AppController
     {
         $user = User::findByEmailChangeToken($token);
 
-        try {
-            if (!$user || !$user->changeEmail($email)) {
-                throw new BadRequestHttpException('Invalid or expired email change token.');
-            }
-        } catch (IntegrityException $e) {
-            throw new BadRequestHttpException('The email ' . $email . ' seems to be already registered.');
+        if (!$user || !$user->changeEmail($email)) {
+            throw new BadRequestHttpException('Invalid or expired email change token.');
         }
 
         Yii::$app->session->setFlash('success', Yii::t('app', 'Your email address was successfully updated.'));

@@ -89,7 +89,7 @@ class VersionsController extends AppController
         $project = $user->findProjectById($projectId);
 
         if ($project) {
-            $version = $project->findVersionById($versionId);
+            $version = $versionId ? $project->findVersionById($versionId) : null;
             $model   = new VersionForm($project, $version);
 
             $this->layout = 'blank';
@@ -125,9 +125,10 @@ class VersionsController extends AppController
         $project = $user->findProjectById($projectId);
 
         if ($project) {
-            $version  = $project->findVersionById($request->post('versionId', -1));
-            $model    = new VersionForm($project, $version);
-            $isUpdate = $model->isUpdate();
+            $versionId = $request->post('versionId', null);
+            $version   = $versionId ? $project->findVersionById($versionId) : null;
+            $model     = new VersionForm($project, $version);
+            $isUpdate  = $model->isUpdate();
 
             if ($model->load($request->post()) && $model->save()) {
                 $navItemHtml = $this->renderPartial('_nav_item', ['model' => $model->version]);

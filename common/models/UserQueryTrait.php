@@ -46,7 +46,7 @@ trait UserQueryTrait
                 ->andWhere([UserProjectRel::tableName() . '.userId' => $this->id]);
         }
 
-        return $query->andWhere(['like', Project::tableName() . '.title', $searchParts])
+        return $query->andWhere(['or like', Project::tableName() . '.title', $searchParts])
             ->orderBy([Project::tableName() . '.createdAt' => SORT_ASC])
             ->limit($limit)
             ->offset($offset)

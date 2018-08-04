@@ -870,7 +870,7 @@ class UserTest extends \Codeception\Test\Unit
             $user     = User::findOne(1002);
             $oldEmail = $user->email;
 
-            $result = $user->changeEmail('test_change@presentator.io');
+            $result = $user->changeEmail('test2_change@presentator.io');
             $user->refresh();
 
             verify('Should return false', $result)->false();
@@ -881,7 +881,7 @@ class UserTest extends \Codeception\Test\Unit
             $user     = User::findOne(1003);
             $oldEmail = $user->email;
 
-            $result = $user->changeEmail('test_change@presentator.io');
+            $result = $user->changeEmail('test3_change@presentator.io');
             $user->refresh();
 
             verify('Should return false', $result)->false();
@@ -890,13 +890,18 @@ class UserTest extends \Codeception\Test\Unit
 
         $this->specify('Fail changing the email address for user with valid emailChangeToken but duplicating email address record', function () {
             $user = User::findOne(1004);
+            $oldEmail = $user->email;
 
-            $user->changeEmail('test5@presentator.io');
-        }, ['throws' => IntegrityException::class]);
+            $result = $user->changeEmail('test5@presentator.io');
+            $user->refresh();
+
+            verify('Should return false', $result)->false();
+            verify('Email should not be changed', $user->email)->equals($oldEmail);
+        });
 
         $this->specify('Successfully change the email address for user with valid emailChangeToken', function () {
             $user     = User::findOne(1005);
-            $newEmail = 'test_change2@presentator.io';
+            $newEmail = 'test5_change@presentator.io';
 
             $result = $user->changeEmail($newEmail);
             $user->refresh();
@@ -1040,10 +1045,9 @@ class UserTest extends \Codeception\Test\Unit
      */
     public function testSearchProjects()
     {
-
         $this->specify('Search by non matching project title string', function () {
             $user     = User::findOne(1003);
-            $projects = $user->searchProjects('non matching title');
+            $projects = $user->searchProjects('non matching');
 
             verify('Should be empty', $projects)->count(0);
         });

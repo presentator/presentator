@@ -1,6 +1,8 @@
 <?php
 namespace common\models;
 
+use Yii;
+
 /**
  * Project model query trait.
  * @author Gani Georgiev <gani.georgiev@gmail.com>
@@ -88,6 +90,8 @@ trait ProjectQueryTrait
      */
     public function findAllCommenters($checkMentionSetting = true)
     {
+        $connection = Yii::$app->db;
+
         $query = ScreenComment::find()
             ->distinct()
             ->select([
@@ -99,7 +103,13 @@ trait ProjectQueryTrait
             ->innerJoinWith('screen.project', false)
             ->leftJoin(
                 User::tableName(),
-                sprintf('%s.email = %s.from', User::tableName(), ScreenComment::tableName())
+                sprintf(
+                    '%s.%s = %s.%s',
+                    $connection->quoteTableName(User::tableName()),
+                    $connection->quoteColumnName('email'),
+                    $connection->quoteTableName(ScreenComment::tableName()),
+                    $connection->quoteColumnName('from')
+                )
             )
             ->where([
                 Project::tableName() . '.id'   => $this->id,
@@ -110,7 +120,13 @@ trait ProjectQueryTrait
         if ($checkMentionSetting) {
             $query->leftJoin(
                 UserSetting::tableName(),
-                sprintf('%s.userId = %s.id', UserSetting::tableName(), User::tableName())
+                sprintf(
+                    '%s.%s = %s.%s',
+                    $connection->quoteTableName(UserSetting::tableName()),
+                    $connection->quoteColumnName('userId'),
+                    $connection->quoteTableName(User::tableName()),
+                    $connection->quoteColumnName('id')
+                )
             )
             ->andWhere([
                 'or',
