@@ -177,7 +177,7 @@ jQuery(function ($) {
 
 // Page load identifier
 $(window).on('load', function () {
-    $('html').addClass('page-loaded');
+    $('html').removeClass('preload').addClass('page-loaded');
 
     // auto hide/slideUp items
     $('[data-auto-hide]').each(function (i, item) {
