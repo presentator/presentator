@@ -56,6 +56,14 @@ return [
                         'email' => ['emails', 0, 'value'],
                     ],
                 ],
+                'gitlab' => [
+                    'class' => 'yiiauth\gitlab\GitLabClient',
+                    'domain' => $params['gitlabAuth']['domain'],
+                    'clientId' => $params['gitlabAuth']['clientId'],
+                    'clientSecret' => $params['gitlabAuth']['clientSecret'],
+                    'returnUrl' => $params['publicUrl']  . '/site/auth?authclient=gitlab',
+                    'scope' => 'read_user',
+                ]
             ],
         ],
         'reCaptcha' => [
