@@ -12,6 +12,7 @@ use common\widgets\LanguageSwitch;
  * @var $registerForm       \app\models\RegisterForm
  * @var $hasFbConfig        boolean
  * @var $hasGoogleConfig    boolean
+ * @var $hasGitlabConfig    boolean
  * @var $hasReCaptchaConfig boolean
  */
 
@@ -53,7 +54,7 @@ $this->title = Yii::t('app', 'Login');
                     </div>
                 </div>
 
-                <?php if ($hasFbConfig || $hasGoogleConfig): ?>
+                <?php if ($hasFbConfig || $hasGoogleConfig || $hasGitlabConfig): ?>
                     <footer class="footer m-t-0 text-center m-t-0">
                         <div class="auth-group">
                             <?php if ($hasFbConfig): ?>
@@ -80,6 +81,17 @@ $this->title = Yii::t('app', 'Login');
                                     >
                                         <i class="ion ion-logo-google"></i>
                                         <span class="txt"><?= Yii::t('app', 'Login with Google') ?></span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($hasGitlabConfig): ?>
+                                <div class="auth-group-item">
+                                    <a href="<?= Url::to(['site/auth', 'authclient' => 'gitlab']) ?>"
+                                        class="auth-group-link gitlab-link"
+                                    >
+                                        <img src="/images/gitlab_logo.svg" alt="Gitlab logo">
+                                        <span class="txt"><?= Yii::t('app', 'Login with Gitlab') ?></span>
                                     </a>
                                 </div>
                             <?php endif; ?>

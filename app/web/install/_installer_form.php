@@ -168,6 +168,32 @@
     </div>
 
     <div class="form-group">
+        <input type="checkbox" id="enable_gitlab_auth" data-toggle="#gitlab_auth_settings">
+        <label for="enable_gitlab_auth">Enable Gitlab Authentication</label>
+
+        <div id="gitlab_auth_settings" class="row m-t-15">
+        <div class="cols-6">
+                <div class="form-group m-b-0">
+                    <label for="params_gitlab_domain">Gitlab Auth - Domain</label>
+                    <input type="text" id="params_gitlab_domain" name="params[gitlabAuth][domain]">
+                </div>
+            </div>
+            <div class="cols-6">
+                <div class="form-group m-b-0">
+                    <label for="params_gitlab_client_id">Gitlab Auth - Client id</label>
+                    <input type="text" id="params_gitlab_client_id" name="params[gitlabAuth][clientId]">
+                </div>
+            </div>
+            <div class="cols-6">
+                <div class="form-group m-b-0">
+                    <label for="params_gitlab_client_id">Gitlab Auth - Client secret</label>
+                    <input type="text" id="params_gitlab_client_id" name="params[gitlabAuth][clientSecret]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
         <input type="checkbox" id="enable_recaptcha" data-toggle="#login_protect">
         <label for="enable_recaptcha">Enable ReCaptcha Login Protection</label>
         <div class="clearfix"></div>

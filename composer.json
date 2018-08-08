@@ -29,6 +29,9 @@
         "codeception/specify": "~0.4.0",
         "codeception/verify": "~0.4.0"
     },
+    "suggest": {
+        "yiiauth/gitlab": "Allows sign-in with Gitlab"
+    },
     "config": {
         "process-timeout": 1800,
         "fxp-asset": {

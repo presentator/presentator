@@ -1001,7 +1001,8 @@ ul {
 
 /* ---- Social links ---- */
 .facebook-link,
-.google-link {
+.google-link,
+.gitlab-link {
     font-size: $baseFontSize;
     text-decoration: none;
     i {
@@ -1009,6 +1010,9 @@ ul {
         font-weight: normal;
         vertical-align: middle;
         margin: -3px 5px 0 0;
+    }
+    img {
+        width: 19px;
     }
 }
 .facebook-link {
@@ -1023,6 +1027,16 @@ ul {
     color: $color;
     &:hover {
         color: darken($color, 15%);
+    }
+}
+.gitlab-link {
+    $color: #FC6D26;
+    color: $color;
+    &:hover {
+        color: darken($color, 15%);
+    }
+    span {
+        line-height: 1.1rem;
     }
 }
 
