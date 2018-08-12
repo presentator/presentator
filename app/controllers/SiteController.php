@@ -132,20 +132,10 @@ class SiteController extends AppController
         $this->view->params['bodyClass'] = 'full-page';
         $this->view->params['globalWrapperClass'] = 'auth-panel-wrapper';
 
+        $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
         $hasFbConfig        = CArrayHelper::hasNonEmptyValues(['facebookAuth.clientId', 'facebookAuth.clientSecret']);
         $hasGoogleConfig    = CArrayHelper::hasNonEmptyValues(['googleAuth.clientId', 'googleAuth.clientSecret']);
-        
-        /**
-         * Check that Gitlab auth is configured and Gitlab client installed
-         */
-        $gitlabLoginBackend = class_exists(\yiiauth\gitlab\GitLabClient::class);
-        $hasGitlabConfig    = CArrayHelper::hasNonEmptyValues(['gitlabAuth.domain', 'gitlabAuth.clientId', 'gitlabAuth.clientSecret']);
-        if ($hasGitlabConfig && !$gitlabLoginBackend) {
-            Yii::warning('Gitlab auth config has been filled but Gitlab client is missing. You need to install the yiiauth/gitlab package.');
-        }
-        $hasGitlabConfig    = $hasGitlabConfig && $gitlabLoginBackend;
-
-        $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
+        $hasGitlabConfig    = CArrayHelper::hasNonEmptyValues(['gitlabAuth.clientId', 'gitlabAuth.clientSecret']);
 
         $isLoginAttemp      = true;
         $loginForm          = new LoginForm();
@@ -181,10 +171,10 @@ class SiteController extends AppController
             'isLoginAttemp'      => $isLoginAttemp,
             'loginForm'          => $loginForm,
             'registerForm'       => $registerForm,
+            'hasReCaptchaConfig' => $hasReCaptchaConfig,
             'hasFbConfig'        => $hasFbConfig,
             'hasGoogleConfig'    => $hasGoogleConfig,
             'hasGitlabConfig'    => $hasGitlabConfig,
-            'hasReCaptchaConfig' => $hasReCaptchaConfig,
         ]);
     }
 

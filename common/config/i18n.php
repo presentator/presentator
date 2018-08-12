@@ -35,9 +35,13 @@ return [
         '.hgignore',
         '.hgkeep',
         '/docs',
+        '/docker',
         '/vendor',
         '/messages',
         '/BaseYii.php',
+        '/common/tests',
+        '/app/tests',
+        '/api/tests',
     ],
     'only' => [
         '*.php',
