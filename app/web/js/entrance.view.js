@@ -2,19 +2,23 @@ var EntranceView = function(data) {
     data = data || {};
 
     var defaults = {
-        'authTabs':        '#auth_tabs',
-        'authPanel':       '#auth_panel',
-        'diagonalBg':      '#diagonal_bg',
-        'scrollContainer': '#global_wrapper',
+        'authTabs':           '#auth_tabs',
+        'authPanel':          '#auth_panel',
+        'diagonalBg':         '#diagonal_bg',
+        'scrollContainer':    '#global_wrapper',
+        'authLinksContainer': '.auth-group',
+        'authLinks':          '.auth-group-link',
     };
 
     this.settings = $.extend({}, defaults, data);
 
     // commonly used selectors
-    this.$authTabs        = $(this.settings.authTabs);
-    this.$authPanel       = $(this.settings.authPanel);
-    this.$diagonalBg      = $(this.settings.diagonalBg);
-    this.$scrollContainer = $(this.settings.scrollContainer);
+    this.$authTabs           = $(this.settings.authTabs);
+    this.$authPanel          = $(this.settings.authPanel);
+    this.$diagonalBg         = $(this.settings.diagonalBg);
+    this.$scrollContainer    = $(this.settings.scrollContainer);
+    this.$authLinksContainer = $(this.settings.authLinksContainer);
+    this.$authLinks          = $(this.settings.authLinks);
 
     // diagonal bg animation helpers
     this.prevDeg = null;
@@ -37,13 +41,17 @@ EntranceView.prototype.init = function() {
         }
     });
 
+    self.alignAuthLinks();
+
     self.recalcDiagonalAngle();
 
-    $(document).on('remove', function() {
+    $(window).on('load resize recalcDiagonalAngle', function() {
+        self.alignAuthLinks();
+
         self.recalcDiagonalAngle();
     });
 
-    $(window).on('load resize recalcDiagonalAngle', function() {
+    $(document).on('remove', function() {
         self.recalcDiagonalAngle();
     });
 
@@ -87,4 +95,23 @@ EntranceView.prototype.recalcDiagonalAngle = function() {
     });
 
     self.prevDeg = self.currDeg;
+};
+
+/**
+ * Ensures that each auth link is aligned properly.
+ */
+EntranceView.prototype.alignAuthLinks = function() {
+    var self = this;
+
+    // reset
+    self.$authLinksContainer.removeClass('full-icon-row');
+
+    var firstLinkHeight = self.$authLinks.first().height();
+    self.$authLinks.each(function (i, link) {
+        if ($(link).height() != firstLinkHeight) {
+            self.$authLinksContainer.addClass('full-icon-row');
+
+            return false;
+        }
+    });
 };

@@ -72,6 +72,14 @@ return [
         'clientSecret' => '',
     ],
 
+    // GitLab auth client settings (to enable both properties must be set!)
+    'gitlabAuth' => [
+        'clientId'     => '',
+        'clientSecret' => '',
+        // (optional) specify GitLab installation domain (default to 'https://gitlab.com')
+        // 'domain' => '',
+    ],
+
     // ReCaptcha to prevent login brute force attacks (to enable both properties must be set!)
     'recaptcha' => [
         'siteKey' => '',

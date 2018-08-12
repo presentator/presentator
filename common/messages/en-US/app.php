@@ -16,9 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Invalid hotspots format.' => 'Invalid hotspots format.',
-    'Login with Google' => 'Login with Google',
+return [
+    'Login with GitLab' => 'Login with GitLab',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -121,6 +120,7 @@ return array(
     'Inactive' => 'Inactive',
     'Invalid HEX color code.' => 'Invalid HEX color code.',
     'Invalid format.' => 'Invalid format.',
+    'Invalid hotspots format.' => 'Invalid hotspots format.',
     'Invalid login credentials.' => 'Invalid login credentials.',
     'Invalid old password.' => 'Invalid old password.',
     'Invalid password.' => 'Invalid password.',
@@ -141,6 +141,7 @@ return array(
     'Load more projects' => 'Load more projects',
     'Login' => 'Login',
     'Login with Facebook' => 'Login with Facebook',
+    'Login with Google' => 'Login with Google',
     'Logout' => 'Logout',
     'Manage admins' => 'Manage admins',
     'Manage project admins' => 'Manage project admins',
@@ -287,4 +288,4 @@ return array(
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-);
+];

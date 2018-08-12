@@ -1001,14 +1001,27 @@ ul {
 
 /* ---- Social links ---- */
 .facebook-link,
-.google-link {
+.google-link,
+.gitlab-link {
     font-size: $baseFontSize;
     text-decoration: none;
+    .txt {
+        line-height: 20px;
+    }
+    i, img, .txt {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    i, img {
+        margin: -1px 5px 0 0;
+    }
     i {
         font-size: 19px;
         font-weight: normal;
-        vertical-align: middle;
-        margin: -3px 5px 0 0;
+    }
+    img {
+        width: 20px;
+        height: auto;
     }
 }
 .facebook-link {
@@ -1023,6 +1036,13 @@ ul {
     color: $color;
     &:hover {
         color: darken($color, 15%);
+    }
+}
+.gitlab-link {
+    $color: #FC6D26;
+    color: $color;
+    &:hover {
+        color: darken($color, 12%);
     }
 }
 
@@ -1311,7 +1331,7 @@ img.lazy-load {
     line-height: 12px;
     font-weight: normal;
     max-width: 200px;
-    word-break: break-all;
+    word-break: break-word;
     background: rgba($overlayColor, 0.8);
     @include border-radius($baseRadius);
     @include user-select(none);

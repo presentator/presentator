@@ -16,9 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Invalid hotspots format.' => 'Невалиден формат на данните.',
-    'Login with Google' => 'Вход с Google',
+return [
+    'Login with GitLab' => 'Вход с GitLab',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -121,6 +120,7 @@ return array(
     'Inactive' => 'Неактивен',
     'Invalid HEX color code.' => 'Невалиден HEX формат',
     'Invalid format.' => 'Невалиден формат',
+    'Invalid hotspots format.' => 'Невалиден формат на данните.',
     'Invalid login credentials.' => 'Невалидни входни данни.',
     'Invalid old password.' => 'Неправилна парола.',
     'Invalid password.' => 'Неправилна парола.',
@@ -141,6 +141,7 @@ return array(
     'Load more projects' => 'Още проекти',
     'Login' => 'Вход',
     'Login with Facebook' => 'Вход с Facebook',
+    'Login with Google' => 'Вход с Google',
     'Logout' => 'Изход',
     'Manage admins' => 'Управление на администраторите',
     'Manage project admins' => 'Управление на администраторите',
@@ -287,4 +288,4 @@ return array(
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-);
+];

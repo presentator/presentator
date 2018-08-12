@@ -122,7 +122,7 @@
             flex-grow: 1;
             flex-basis: 0;
             border-left: 1px solid $greyColor;
-            padding: 0 5px;
+            padding: 0 7px;
             text-align: center;
             a, .btn {
                 display: inline-block;
@@ -130,6 +130,16 @@
             }
             &:first-child {
                 border-left: 0px;
+            }
+        }
+        &.full-icon-row {
+            .auth-group-item {
+                .icon {
+                    margin-right: 0;
+                }
+                .txt {
+                    width: 100%;
+                }
             }
         }
     }

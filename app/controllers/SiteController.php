@@ -132,9 +132,10 @@ class SiteController extends AppController
         $this->view->params['bodyClass'] = 'full-page';
         $this->view->params['globalWrapperClass'] = 'auth-panel-wrapper';
 
+        $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
         $hasFbConfig        = CArrayHelper::hasNonEmptyValues(['facebookAuth.clientId', 'facebookAuth.clientSecret']);
         $hasGoogleConfig    = CArrayHelper::hasNonEmptyValues(['googleAuth.clientId', 'googleAuth.clientSecret']);
-        $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
+        $hasGitlabConfig    = CArrayHelper::hasNonEmptyValues(['gitlabAuth.clientId', 'gitlabAuth.clientSecret']);
 
         $isLoginAttemp      = true;
         $loginForm          = new LoginForm();
@@ -170,9 +171,10 @@ class SiteController extends AppController
             'isLoginAttemp'      => $isLoginAttemp,
             'loginForm'          => $loginForm,
             'registerForm'       => $registerForm,
+            'hasReCaptchaConfig' => $hasReCaptchaConfig,
             'hasFbConfig'        => $hasFbConfig,
             'hasGoogleConfig'    => $hasGoogleConfig,
-            'hasReCaptchaConfig' => $hasReCaptchaConfig,
+            'hasGitlabConfig'    => $hasGitlabConfig,
         ]);
     }
 

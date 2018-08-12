@@ -12,6 +12,7 @@ use common\widgets\LanguageSwitch;
  * @var $registerForm       \app\models\RegisterForm
  * @var $hasFbConfig        boolean
  * @var $hasGoogleConfig    boolean
+ * @var $hasGitlabConfig    boolean
  * @var $hasReCaptchaConfig boolean
  */
 
@@ -53,8 +54,8 @@ $this->title = Yii::t('app', 'Login');
                     </div>
                 </div>
 
-                <?php if ($hasFbConfig || $hasGoogleConfig): ?>
-                    <footer class="footer m-t-0 text-center m-t-0">
+                <?php if ($hasFbConfig || $hasGoogleConfig || $hasGitlabConfig): ?>
+                    <footer class="footer p-l-5 p-r-5 m-t-0 text-center m-t-0">
                         <div class="auth-group">
                             <?php if ($hasFbConfig): ?>
                                 <div class="auth-group-item">
@@ -64,7 +65,7 @@ $this->title = Yii::t('app', 'Login');
                                         data-width="990"
                                         data-height="700"
                                     >
-                                        <i class="ion ion-logo-facebook"></i>
+                                        <i class="icon ion ion-logo-facebook"></i>
                                         <span class="txt"><?= Yii::t('app', 'Login with Facebook') ?></span>
                                     </a>
                                 </div>
@@ -78,8 +79,22 @@ $this->title = Yii::t('app', 'Login');
                                         data-width="990"
                                         data-height="700"
                                     >
-                                        <i class="ion ion-logo-google"></i>
+                                        <i class="icon ion ion-logo-google"></i>
                                         <span class="txt"><?= Yii::t('app', 'Login with Google') ?></span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($hasGitlabConfig): ?>
+                                <div class="auth-group-item">
+                                    <a href="<?= Url::to(['site/auth', 'authclient' => 'gitlab']) ?>"
+                                        class="auth-group-link gitlab-link"
+                                        data-window="gitlabLogin"
+                                        data-width="990"
+                                        data-height="700"
+                                    >
+                                        <img class="icon" src="/images/gitlab_logo.svg" alt="GitLab logo">
+                                        <span class="txt"><?= Yii::t('app', 'Login with GitLab') ?></span>
                                     </a>
                                 </div>
                             <?php endif; ?>
@@ -94,7 +109,7 @@ $this->title = Yii::t('app', 'Login');
 </div>
 
 <?php
-$this->registerJsFile('/js/entrance.view.js?v=1507457981');
+$this->registerJsFile('/js/entrance.view.js?v=1533989626');
 $this->registerJs('
     var entrance = new EntranceView();
 ', View::POS_READY, 'entrance-js');
