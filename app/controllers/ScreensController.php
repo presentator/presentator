@@ -459,6 +459,7 @@ class ScreensController extends AppController
         $sizesUpdate       = 0;
         $linksUpdate       = 0;
         $transitionsUpdate = 0;
+        $linkTypesUpdate   = 0;
 
         foreach ($oldHotspots as $id => $props) {
             if (!isset($newHotspots[$id])) {
@@ -486,6 +487,10 @@ class ScreensController extends AppController
             if (CArrayHelper::getValue($props, 'transition') != CArrayHelper::getValue($newHotspots[$id], 'transition')) {
                 $transitionsUpdate++;
             }
+
+            if (CArrayHelper::getValue($props, 'link_type') != CArrayHelper::getValue($newHotspots[$id], 'link_type')) {
+                $linkTypesUpdate++;
+            }
         }
 
         $created = count($newHotspots) - (count($oldHotspots) - $deleted);
@@ -497,6 +502,7 @@ class ScreensController extends AppController
             'sizesUpdate'       => $sizesUpdate,
             'linksUpdate'       => $linksUpdate,
             'transitionsUpdate' => $transitionsUpdate,
+            'linkTypesUpdate' => $linkTypesUpdate,
         ];
     }
 }

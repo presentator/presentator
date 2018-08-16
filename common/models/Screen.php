@@ -48,6 +48,10 @@ class Screen extends CActiveRecord
     const TRANSITION_SLIDE_TOP    = 'slide-top';
     const TRANSITION_SLIDE_BOTTOM = 'slide-bottom';
 
+    // Hotspot link types
+    const LINK_TYPE_SCREEN        = 'screen';
+    const LINK_TYPE_OVERLAY       = 'overlay';
+
     /**
      * @var boolean
      */
@@ -226,6 +230,18 @@ class Screen extends CActiveRecord
             self::TRANSITION_SLIDE_RIGHT  => Yii::t('app', 'Slide right'),
             self::TRANSITION_SLIDE_TOP    => Yii::t('app', 'Slide top'),
             self::TRANSITION_SLIDE_BOTTOM => Yii::t('app', 'Slide bottom'),
+        ];
+    }
+
+    /**
+     * Returns translated screen hotspot link type labels list.
+     * @return array
+     */
+    public static function getLinkTypeLabels()
+    {
+        return [
+            self::LINK_TYPE_SCREEN        => Yii::t('app', 'Screen'),
+            self::LINK_TYPE_OVERLAY       => Yii::t('app', 'Screen as Overlay'),
         ];
     }
 

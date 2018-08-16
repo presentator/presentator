@@ -15,7 +15,7 @@ class HotspotsValidator extends Validator
     /**
      * Array list with valid hotspot attributes.
      */
-    const VALID_ATTRIBUTES = ['width', 'height', 'top', 'left', 'link', 'transition'];
+    const VALID_ATTRIBUTES = ['width', 'height', 'top', 'left', 'link', 'transition', 'link_type'];
 
     /**
      * Array list with required hotspot attributes.
@@ -51,6 +51,7 @@ class HotspotsValidator extends Validator
         $valid            = true;
         $hotspots         = is_array($value) ? $value : ((array) json_decode($value, true));
         $validTransitions = array_keys(Screen::getTransitionLabels());
+        $validLinkTypes   = array_keys(Screen::getLinkTypeLabels());
 
         foreach ($hotspots as $hotspot) {
             if (!is_array($hotspot)) {
@@ -90,6 +91,15 @@ class HotspotsValidator extends Validator
             if (
                 !empty($hotspot['transition']) &&
                 !in_array($hotspot['transition'], $validTransitions)
+            ) {
+                $valid = false;
+                break;
+            }
+
+            // validate link_type attribute
+            if (
+                !empty($hotspot['link_type']) &&
+                !in_array($hotspot['link_type'], $validLinkTypes)
             ) {
                 $valid = false;
                 break;

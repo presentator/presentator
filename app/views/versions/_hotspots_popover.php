@@ -22,6 +22,17 @@ use common\models\Screen;
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="form-group form-group-sm hotspot-link-type-select-wrapper">
+                    <label for="hotspot_popover_link_type_select">
+                      <?= Yii::t('app', 'Link to'); ?>
+                    </label>
+                    <select id="hotspot_popover_link_type_select">
+                        <option value="" disabled><?= Yii::t('app', 'Choose type of link...') ?></option>
+                        <?php foreach (Screen::getLinkTypeLabels() as $key => $value): ?>
+                            <option value="<?= $key ?>"><?= $value ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="hotspot-screens-list">
                     <?php foreach ($screens as $screen): ?>
                         <div class="box popover-thumb hotspot-popover-screen"

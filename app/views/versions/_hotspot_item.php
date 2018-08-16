@@ -52,6 +52,7 @@ if ($top + $height > $maxY) {
     style="width: <?= $width ?>px; height: <?= $height ?>px; top: <?= $top ?>px; left: <?= $left ?>px"
     data-link="<?= Html::encode(ArrayHelper::getValue($spot, 'link', '')); ?>"
     data-transition="<?= Html::encode(ArrayHelper::getValue($spot, 'transition', Screen::TRANSITION_FADE)); ?>"
+    data-link-type="<?= Html::encode(ArrayHelper::getValue($spot, 'link_type', Screen::LINK_TYPE_SCREEN)); ?>"
     <?php if ($showControls): ?>
         data-context-menu="#hotspot_context_menu"
     <?php endif  ?>

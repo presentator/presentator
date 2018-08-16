@@ -179,7 +179,8 @@
             padding-bottom: 0;
             padding-left: 0;
             padding-right: 0;
-            .hotspot-transition-select-wrapper {
+            .hotspot-transition-select-wrapper,
+            .hotspot-link-type-select-wrapper {
                 padding: 0 $tabSpacing;
                 display: flex;
                 align-items: center;

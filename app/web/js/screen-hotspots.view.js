@@ -9,6 +9,7 @@ var ScreenHotspotsView = function(data) {
         'hotspotPopoverScreen':           '.hotspot-popover-screen',
         'hotspotPopoverScreensWrapper':   '.hotspot-screens-list',
         'hotspotPopoverTransitionSelect': '#hotspot_popover_transition_select',
+        'hotspotPopoverLinkTypeSelect':   '#hotspot_popover_link_type_select',
         'hotspotPopoverUrlInput':         '#hotspot_popover_url_input',
         'hotspotPopoverUrlBtn':           '#hotspot_popover_url_btn',
         'hotspotsWrapper':                '#hotspots_wrapper',
@@ -132,6 +133,34 @@ ScreenHotspotsView.prototype.init = function() {
         var $popover = $(this).closest(self.settings.hotspotPopover);
 
         PR.setData($activeHotspot, 'transition', $(this).val());
+
+        // don't close the popover if a screen is not selected yet
+        if (!$popover.find(self.settings.hotspotPopoverScreen + '.active').length) {
+            return;
+        }
+
+        self.saveHotspots($activeHotspot.closest(self.settings.versionSliderItem).data('screen-id'), function(response) {
+            if (response.success) {
+                self.deselectHotspot($activeHotspot);
+            }
+
+            if ($activeHotspot.data('isNew')) {
+                $activeHotspot.data('isNew', false);
+                $activeHotspot.trigger('newHotspotSaved', [$activeHotspot]);
+            }
+        });
+    });
+
+    // link_type select
+    $document.on('change', self.settings.hotspotPopover + ' ' + self.settings.hotspotPopoverLinkTypeSelect, function(e) {
+        var $activeHotspot = $('body').find('.hotspot.selected');
+        if (!$activeHotspot.length) {
+            return;
+        }
+
+        var $popover = $(this).closest(self.settings.hotspotPopover);
+
+        PR.setData($activeHotspot, 'link_type', $(this).val());
 
         // don't close the popover if a screen is not selected yet
         if (!$popover.find(self.settings.hotspotPopoverScreen + '.active').length) {
@@ -360,7 +389,8 @@ ScreenHotspotsView.prototype.getHotspotsData = function(screenId) {
             'width':      $hotspot.outerWidth(true) * scaleFactor,
             'height':     $hotspot.outerHeight(true) * scaleFactor,
             'link':       $hotspot.data('link') || null,
-            'transition': $hotspot.data('transition') || null
+            'transition': $hotspot.data('transition') || null,
+            'link_type':  $hotspot.data('linkType') || null
         };
 
         $hotspot.data('original-left', result[hotspotId].left)
@@ -495,6 +525,7 @@ ScreenHotspotsView.prototype.repositionPopover = function (hotspot) {
         }
 
         $popover.find(self.settings.hotspotPopoverTransitionSelect).val($hotspot.data('transition') || 'fade');
+        $popover.find(self.settings.hotspotPopoverLinkTypeSelect).val($hotspot.data('linkType') || 'screen');
     }
 };
 
