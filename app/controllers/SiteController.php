@@ -142,6 +142,11 @@ class SiteController extends AppController
         $registerForm       = new RegisterForm();
         $wrongLoginAttempts = Yii::$app->session->get(self::SESSION_LOGIN_ATTEMPTS_KEY, 0);
 
+        // show recaptcha on too many wrong login attempts
+        if ($wrongLoginAttempts >= 2 && $hasReCaptchaConfig) {
+            $loginForm->scenario = LoginForm::SCENARIO_RECAPTCHA;
+        }
+
         // each separate post data is prefixed with the appropriate form name
         // so we can use the `Model::load()` method to detect which form was actually submitted
         $postData = Yii::$app->request->post();
@@ -160,11 +165,6 @@ class SiteController extends AppController
             if ($registerForm->register()) {
                 Yii::$app->session->setFlash('registerSuccess');
             }
-        }
-
-        // show recaptcha on too many wrong login attempts
-        if ($wrongLoginAttempts >= 3 && $hasReCaptchaConfig) {
-            $loginForm->scenario = LoginForm::SCENARIO_RECAPTCHA;
         }
 
         return $this->render('entrance', [
