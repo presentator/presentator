@@ -1000,9 +1000,7 @@ ul {
 }
 
 /* ---- Social links ---- */
-.facebook-link,
-.google-link,
-.gitlab-link {
+.social-link {
     font-size: $baseFontSize;
     text-decoration: none;
     .txt {
@@ -1026,26 +1024,40 @@ ul {
 }
 .facebook-link {
     $color: #3b5998;
-    color: $color;
+    i {
+        color: $color;
+    }
     &:hover {
-        color: lighten($color, 10%);
+        color: $color;
     }
 }
 .google-link {
     $color: #e45353;
-    color: $color;
+    i {
+        color: $color;
+    }
     &:hover {
-        color: darken($color, 15%);
+        color: $color;
     }
 }
 .gitlab-link {
-    $color: #FC6D26;
-    color: $color;
+    $color: #fc6d26;
+    i {
+        color: $color;
+    }
     &:hover {
-        color: darken($color, 12%);
+        color: $color;
     }
 }
-
+.github-link {
+    $color: #24292f;
+    i {
+        color: $color;
+    }
+    &:hover {
+        color: $color;
+    }
+}
 
 /* ---- Profile card ---- */
 .profile-card {

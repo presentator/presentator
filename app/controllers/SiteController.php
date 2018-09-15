@@ -135,6 +135,7 @@ class SiteController extends AppController
         $hasReCaptchaConfig = CArrayHelper::hasNonEmptyValues(['recaptcha.siteKey', 'recaptcha.secretKey']);
         $hasFbConfig        = CArrayHelper::hasNonEmptyValues(['facebookAuth.clientId', 'facebookAuth.clientSecret']);
         $hasGoogleConfig    = CArrayHelper::hasNonEmptyValues(['googleAuth.clientId', 'googleAuth.clientSecret']);
+        $hasGithubConfig    = CArrayHelper::hasNonEmptyValues(['githubAuth.clientId', 'githubAuth.clientSecret']);
         $hasGitlabConfig    = CArrayHelper::hasNonEmptyValues(['gitlabAuth.clientId', 'gitlabAuth.clientSecret']);
 
         $isLoginAttemp      = true;
@@ -174,6 +175,7 @@ class SiteController extends AppController
             'hasReCaptchaConfig' => $hasReCaptchaConfig,
             'hasFbConfig'        => $hasFbConfig,
             'hasGoogleConfig'    => $hasGoogleConfig,
+            'hasGithubConfig'    => $hasGithubConfig,
             'hasGitlabConfig'    => $hasGitlabConfig,
         ]);
     }

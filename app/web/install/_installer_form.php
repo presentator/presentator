@@ -168,6 +168,26 @@
     </div>
 
     <div class="form-group">
+        <input type="checkbox" id="enable_github_auth" data-toggle="#github_auth_settings">
+        <label for="enable_github_auth">Enable GitHub Authentication</label>
+
+        <div id="github_auth_settings" class="row m-t-15">
+            <div class="cols-6">
+                <div class="form-group m-b-0">
+                    <label for="params_github_client_id">GitHub Auth - Client id</label>
+                    <input type="text" id="params_github_client_id" name="params[githubAuth][clientId]">
+                </div>
+            </div>
+            <div class="cols-6">
+                <div class="form-group m-b-0">
+                    <label for="params_github_client_id">GitHub Auth - Client secret</label>
+                    <input type="text" id="params_github_client_id" name="params[githubAuth][clientSecret]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
         <input type="checkbox" id="enable_gitlab_auth" data-toggle="#gitlab_auth_settings">
         <label for="enable_gitlab_auth">Enable GitLab Authentication</label>
 

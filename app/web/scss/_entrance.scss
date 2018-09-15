@@ -121,7 +121,7 @@
         .auth-group-item {
             flex-grow: 1;
             flex-basis: 0;
-            border-left: 1px solid $greyColor;
+            border-left: 1px solid lighten($greyColor, 3%);
             padding: 0 7px;
             text-align: center;
             a, .btn {

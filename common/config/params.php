@@ -72,6 +72,12 @@ return [
         'clientSecret' => '',
     ],
 
+    // GitHub auth client settings (to enable both properties must be set!)
+    'githubAuth' => [
+        'clientId'     => '',
+        'clientSecret' => '',
+    ],
+
     // GitLab auth client settings (to enable both properties must be set!)
     'gitlabAuth' => [
         'clientId'     => '',
