@@ -63,7 +63,7 @@ return [
                     'scope'        => 'user:email'
                 ],
                 'gitlab' => [
-                    'class'        => 'yiiauth\gitlab\GitLabClient',
+                    'class'        => 'common\components\GitLabAuthClient',
                     'domain'       => (!empty($params['gitlabAuth']['domain']) ? $params['gitlabAuth']['domain'] : 'https://gitlab.com'),
                     'clientId'     => $params['gitlabAuth']['clientId'],
                     'clientSecret' => $params['gitlabAuth']['clientSecret'],
