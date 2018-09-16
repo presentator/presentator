@@ -26,10 +26,12 @@
             text-decoration: underline;
         }
         i {
+            color: inherit;
             font-size: 16px;
             margin-right: 5px;
         }
         &:hover {
+            color: inherit;
             .txt {
                 text-decoration: none;
             }
