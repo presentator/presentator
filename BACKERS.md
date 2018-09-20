@@ -21,6 +21,7 @@ You can join them in supporting Presentator development by visiting our [Support
 
 ## PayPal
 - Militsa Dimitrova - €25.00 EUR
+- Jérémie Kornobis - €15.00 EUR
 - Stan Vladimirov - €10.00 EUR
 - A. Kelemen - €5.00 EUR
 - Erika Mayiras - €5.00 EUR
