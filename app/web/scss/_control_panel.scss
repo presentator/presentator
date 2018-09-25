@@ -59,7 +59,7 @@
             text-align: center;
             height: inherit;
             line-height: inherit;
-            color: $greyColor;
+            color: darken($greyColor, 8%);
             @include transition(color 0.2s, background 0.2s);
             &:hover {
                 background: $lighterGreyColor;
