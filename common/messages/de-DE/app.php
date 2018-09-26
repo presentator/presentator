@@ -104,7 +104,7 @@ return array(
     'Fit to screen' => 'An Bildschirm anpassen',
     'For 2x pixel density designs.' => 'Für Designs mit 2-facher Pixeldichte.',
     'For {projectType}' => 'Für {projectType}',
-    'For {versionType}' => 'Für {versionType}',
+    'For {versionType}' => '{versionType}',
     'Forgotten password' => 'Passwort vergessen',
     'Forgotten password?' => 'Passwort vergessen?',
     'French' => 'Französisch',
