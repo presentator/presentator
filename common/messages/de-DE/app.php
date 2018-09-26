@@ -40,7 +40,7 @@ return array(
     'All screens' => 'Alle Screens',
     'Allow to read and leave comments' => 'Erlaube das Lesen und Hinterlassen von Kommentaren',
     'Are you really sure you want to delete user {userEmail}?' => 'Möchtest du den Nutzer {userEmail} wirklich löschen?',
-    'Auto rescale' => 'Auto rescale',
+    'Auto rescale' => 'Automatische Skalierung',
     'Auto scale/fit the uploaded screen to the device width.' => 'Automatische Skalierung/Passe den Screen an die Breite des Geräts an.',
     'Avatar' => 'Avatar',
     'Back to all projects' => 'Zurück zur Projektübersicht',
