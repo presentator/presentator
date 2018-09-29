@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Confirm email address change' => '',
     'Email change request' => '',
     'For security reasons, we encourage you to change the generated password as soon as possible.' => 'Ze względów bezpieczeństwa zachęcamy do zmiany wygenerowanego hasła tak szybko, jak to możliwe.',
@@ -55,4 +55,4 @@ return [
     'You are invited to review the design for "{projectTitle}".' => 'Zostałeś poproszony o recenzję projektu "{projectTitle}".',
     'You are no longer an administrator to project "{projectTitle}".' => 'Nie jesteś już administratorem projektu "{projectTitle}".',
     '{projectTitle} preview' => 'Podgląd {projectTitle}',
-];
+);

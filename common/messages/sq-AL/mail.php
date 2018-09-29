@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'For security reasons, we encourage you to change the generated password as soon as possible.' => '',
     'Successfully authenticated' => '',
     'We have generated a random password for your account in order to be able to login without the need of 3rd party authentication.' => '',
@@ -59,4 +59,4 @@ return [
     'You have been mentioned in a comment' => 'Je përmendur në një koment',
     'You have been mentioned in a comment for project "{projectTitle}".' => 'Je përmendur në një koment për projektin "{projectTitle}".',
     '{projectTitle} preview' => '{projectTitle} parapamje',
-];
+);
