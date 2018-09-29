@@ -114,7 +114,7 @@ return [
     ],
 
     // the current application running version used for update checks (will be auto changed on update)
-    'currentVersion' => '1.11.1',
+    'currentVersion' => '1.11.2',
 
     // url to a service that checks whether the provided version is the latest one
     'versionCheckUrl' => 'https://presentator.io/downloads/check',
