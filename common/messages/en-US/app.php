@@ -16,8 +16,8 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
-    'Login with GitLab' => 'Login with GitLab',
+return array(
+    'Or sign in with:' => 'Or sign in with:',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -140,8 +140,6 @@ return [
     'Links' => 'Links',
     'Load more projects' => 'Load more projects',
     'Login' => 'Login',
-    'Login with Facebook' => 'Login with Facebook',
-    'Login with Google' => 'Login with Google',
     'Logout' => 'Logout',
     'Manage admins' => 'Manage admins',
     'Manage project admins' => 'Manage project admins',
@@ -288,4 +286,4 @@ return [
     'of' => 'of',
     'or' => 'or',
     '{projectTitle} - Projects' => '{projectTitle} - Projects',
-];
+);

@@ -16,9 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
-    'Or sign in with:' => 'Или вход с:',
-    'Login with GitLab' => 'Вход с GitLab',
+return array(
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -141,8 +139,6 @@ return [
     'Links' => 'URL адреси на проекта',
     'Load more projects' => 'Още проекти',
     'Login' => 'Вход',
-    'Login with Facebook' => 'Вход с Facebook',
-    'Login with Google' => 'Вход с Google',
     'Logout' => 'Изход',
     'Manage admins' => 'Управление на администраторите',
     'Manage project admins' => 'Управление на администраторите',
@@ -162,6 +158,7 @@ return [
     'Oops, an error occurred while processing your request.' => 'Възникна грешка при изпълнението на заявката.',
     'Oops, the selected version does not have any screens.' => 'Избраната версия няма екрани.',
     'Open link in new tab' => 'Отвори в нов таб',
+    'Or sign in with:' => 'Или вход с:',
     'Password' => 'Парола',
     'Password confirm' => 'Потвърждение на паролата',
     'Password confirmation' => 'Потвърждение на паролата',
@@ -289,4 +286,4 @@ return [
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-];
+);

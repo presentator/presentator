@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -31,8 +31,8 @@ return [
     'Fade' => '',
     'Inactive' => '',
     'Invalid hotspots format.' => '',
-    'Login with GitLab' => 'Acessar com GitLab',
     'None' => '',
+    'Or sign in with:' => '',
     'Password confirmation' => '',
     'Regular user' => '',
     'Replacing with different sized image could result in hotspots and comments position disorder!' => '',
@@ -162,8 +162,6 @@ return [
     'Links' => 'Links',
     'Load more projects' => 'Carregar mais projetos',
     'Login' => 'Login',
-    'Login with Facebook' => 'Acessar com Facebook',
-    'Login with Google' => 'Acessar com Google',
     'Logout' => 'Sair',
     'Manage admins' => 'Gerencia administradores',
     'Manage project admins' => 'Gerenciar administradores de projeto',
@@ -288,4 +286,4 @@ return [
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projetos',
-];
+);
