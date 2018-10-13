@@ -137,7 +137,7 @@
         cursor: pointer;
         line-height: 1;
         font-size: 12px;
-        opacity: 0.8;
+        opacity: 0.9;
         background: $lighterGreyColor;
         border: 1px solid $greyColor;
         @include user-select(none);
@@ -300,8 +300,7 @@
     // Nav
     &.no-slides {
         .slider-nav-handle {
-            opacity: 0.5;
-            @include pointer-events(none);
+            display: none;
         }
     }
 

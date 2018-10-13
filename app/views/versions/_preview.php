@@ -211,7 +211,7 @@ $totalScreens = count($activeVersion->screens);
                         }
 
                         // background color
-                        $background = ($screen->background ? $screen->background : '#eff2f8');
+                        $background = ($screen->background ? $screen->background : '#eff2f3');
 
                         // image dimensions
                         $originalWidth  = 0;

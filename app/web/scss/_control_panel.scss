@@ -13,7 +13,7 @@
         position: relative;
     }
     .panel-content {
-        background: $lightGreyColor;
+        background: $lighterGreyColor;
     }
     .panel-menu {
         height: $controlPanelMenuHeight;
@@ -59,7 +59,7 @@
             text-align: center;
             height: inherit;
             line-height: inherit;
-            color: darken($greyColor, 8%);
+            color: $txtColor;
             @include transition(color 0.2s, background 0.2s);
             &:hover {
                 background: $lighterGreyColor;

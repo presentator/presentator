@@ -106,7 +106,7 @@
                 background: darken($lightGreyColor, 2%);
             }
             &.active {
-                color: $successColor;
+                color: $primaryColor;
                 background: $lightGreyColor;
             }
             &.anim-start {
@@ -130,7 +130,7 @@
             line-height: $height;
             margin-top: -($height / 2);
             font-size: 14px;
-            color: $greyColor;
+            color: darken($greyColor, 10%);
             cursor: pointer;
             text-decoration: none;
             @include transition(color 0.2s, opacity 0.3s, visibility 0.3s, transform 0.3s);

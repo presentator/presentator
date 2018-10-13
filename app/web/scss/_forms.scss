@@ -70,10 +70,10 @@ button, .btn {
     &.btn-success {
         background: $successColor;
         &:hover {
-            background: darken($successColor, 10%);
+            background: darken($successColor, 5%);
         }
         &:active {
-            background: darken($successColor, 15%);
+            background: darken($successColor, 8%);
         }
     }
     &.btn-danger {
