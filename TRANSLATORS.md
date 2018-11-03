@@ -8,7 +8,12 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 ### Albanian
 
-- Elio Qoshi ([http://www.elioqoshi.me](http://www.elioqoshi.me))
+- Elio Qoshi ([https://www.elioqoshi.me](http://www.elioqoshi.me))
+
+
+### Czech
+
+- Jan Vince ([https://www.vince.cz](https://www.vince.cz))
 
 
 ### French
@@ -33,6 +38,14 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 - Leandro Oliveira ([http://leandro.design](http://leandro.design))
 - Tiago Soares ([tfsoares](https://www.transifex.com/user/profile/tfsoares/))
+
+
+### Russian
+
+- Константин Дубина ([unr](https://www.transifex.com/user/profile/unr/))
+- Egor Kubasov ([egorkubasov](https://www.transifex.com/user/profile/egorkubasov/))
+- Dmitriy Nekrashevich ([Dmitriy.N](https://www.transifex.com/user/profile/Dmitriy.N/))
+- Roman Voznyuk ([voznyuk](https://www.transifex.com/user/profile/voznyuk/))
 
 
 ### Spanish
