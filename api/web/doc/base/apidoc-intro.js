@@ -65,7 +65,7 @@ Each API response could be localized with the `lang` GET parameter:
 ```
 ?lang=bg
 ```
-Currently available language codes are: `bg`, `de`, `en`, `es`, `fr`, `pl`, `pt-br`, `sq-al`.
+Currently available language codes are: `bg`, `de`, `en`, `es`, `fr`, `pl`, `pt-br`, `sq-al`, `cz`, `ru`.
 
 If the `lang` parameter is not set, the API will try to detect it via **GeoIP**.
  */
