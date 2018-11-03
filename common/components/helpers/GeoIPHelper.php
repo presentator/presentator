@@ -37,6 +37,10 @@ class GeoIPHelper
             $lang = 'pt-br';
         } elseif ($countryCode === 'sq' || $countryCode === 'al' || $countryCode === 'sq-al') {
             $lang = 'sq-al';
+        } elseif ($countryCode === 'cz') {
+            $lang = 'cz';
+        } elseif ($countryCode === 'ru') {
+            $lang = 'ru';
         } else {
             $lang = $default;
         }

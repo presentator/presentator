@@ -89,7 +89,7 @@ $this->title = Yii::t('app', 'Dashboard') ;
         <?php endforeach; ?>
     </div>
     <div class="block text-center">
-        <a href="<?= Url::to('projects/index') ?>" class="btn btn-primary btn-ghost btn-cons"><?= Yii::t('app', 'All projects') ?></a>
+        <a href="<?= Url::to(['projects/index']) ?>" class="btn btn-primary btn-ghost btn-cons"><?= Yii::t('app', 'All projects') ?></a>
     </div>
 <?php else: ?>
     <div class="welcome-panel">

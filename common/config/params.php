@@ -111,6 +111,8 @@ return [
         'de'    => 'de-DE',
         'es'    => 'es-ES',
         'sq-al' => 'sq-AL',
+        'cz'    => 'cs-CZ',
+        'ru'    => 'ru-RU',
     ],
 
     // the current application running version used for update checks (will be auto changed on update)
