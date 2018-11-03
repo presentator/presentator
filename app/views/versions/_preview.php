@@ -61,6 +61,7 @@ $totalScreens = count($activeVersion->screens);
             <div class="ctrl-wrapper ctrl-left">
                 <ul>
                     <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-md-arrow-back"></i></li>
+
                     <li class="ctrl-item info-handle">
                         <i class="ion ion-ios-information-circle-outline"></i>
                         <div class="dropdown-menu info-dropdown">

@@ -41,7 +41,12 @@ $isGuest      = Yii::$app->user->isGuest;
         <nav class="panel-menu">
             <div class="ctrl-wrapper ctrl-left">
                 <ul>
-                    <li id="slider_prev_handle" class="ctrl-item slider-nav-handle slider-prev"><i class="ion ion-md-arrow-back"></i></li>
+                    <li id="slider_prev_handle"
+                        class="ctrl-item slider-nav-handle slider-prev"
+                        data-cursor-tooltip="<?= Yii::t('app', 'Previous screen') ?>"
+                    >
+                        <i class="ion ion-md-arrow-back"></i>
+                    </li>
 
                     <?php if ($totalScreens > 0): ?>
                         <li class="ctrl-item screen-info ctrl-text hint">
@@ -88,7 +93,12 @@ $isGuest      = Yii::$app->user->isGuest;
                         <li id="panel_toggle_screen_fit_handle"  class="ctrl-item toggle-screen-fit-handle" data-cursor-tooltip="<?= Yii::t('app', 'Fit to screen') ?>"><i class="ion ion-md-grid"></i></li>
                     <?php endif ?>
 
-                    <li id="slider_next_handle" class="ctrl-item slider-nav-handle slider-next"><i class="ion ion-md-arrow-forward"></i></li>
+                    <li id="slider_next_handle"
+                        class="ctrl-item slider-nav-handle slider-next"
+                        data-cursor-tooltip="<?= Yii::t('app', 'Next screen') ?>"
+                    >
+                        <i class="ion ion-md-arrow-forward"></i>
+                    </li>
                 </ul>
             </div>
         </nav>
