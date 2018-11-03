@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -26,6 +26,7 @@ return array(
     'Confirmation email was sent to {pendingEmail}.' => '',
     'Create' => '',
     'Create user' => '',
+    'Czech' => '',
     'Date Modified' => '',
     'Do you really want to replace the screen image?' => '',
     'Edit' => '',
@@ -34,11 +35,13 @@ return array(
     'Image' => '',
     'Inactive' => '',
     'Invalid hotspots format.' => '',
+    'Next screen' => '',
     'None' => '',
     'Notifications' => '',
     'Or sign in with:' => '',
     'Password confirmation' => '',
     'Pending' => '',
+    'Previous screen' => '',
     'Profile' => '',
     'Receive an email when someone mentions you' => '',
     'Registrations from {domain} domain are not allowed.' => '',
@@ -46,6 +49,7 @@ return array(
     'Replacing with different sized image could result in hotspots and comments position disorder!' => '',
     'Reset search' => '',
     'Resolved' => '',
+    'Russian' => '',
     'Search for users...' => '',
     'Show only my projects' => '',
     'Show resolved' => '',
@@ -286,4 +290,4 @@ return array(
     'of' => 'de',
     'or' => 'o',
     '{projectTitle} - Projects' => '{projectTitle} - Proyectos',
-);
+];

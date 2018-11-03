@@ -16,11 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Invalid hotspots format.' => 'Ungültiges Datenformat.',
-    'Or sign in with:' => 'Oder melde dich an:',
-    'You have successfully activated your account via {client}.' => 'Dein Konto wurde erfolgreich mit {client} verbunden.',
-    'You have successfully registered via {client}.' => 'Du hat dich erfolgreich via {client} registriert.',
+return [
+    'Czech' => 'Tschechisch',
+    'Next screen' => 'Nächster',
+    'Previous screen' => 'Vorige',
+    'Russian' => 'Russisch',
     '2x (Retina) rescale' => '2x (Retina) Neuskalierung',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Querformat)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Hochformat)</em>',
@@ -123,6 +123,7 @@ return array(
     'Inactive' => 'Inaktiv',
     'Invalid HEX color code.' => 'Ungültiger HEX Farbcode',
     'Invalid format.' => 'Ungültiges Format',
+    'Invalid hotspots format.' => 'Ungültiges Datenformat.',
     'Invalid login credentials.' => 'Ungültige Zugangsdaten',
     'Invalid old password.' => 'Ungültiges aktuelles Passwort',
     'Invalid password.' => 'Ungültiges Passwort',
@@ -161,6 +162,7 @@ return array(
     'Oops, an error occurred while processing your request.' => 'Upps, bei der Bearbeitung deiner Anfrage ist ein Fehler aufgetreten.',
     'Oops, the selected version does not have any screens.' => 'Upps, die ausgewählte Version besitzt keine Screens.',
     'Open link in new tab' => 'Öffne Link in neuem Tab',
+    'Or sign in with:' => 'Oder melde dich an:',
     'Password' => 'Passwort',
     'Password confirm' => 'Passwort bestätigen',
     'Password confirmation' => 'Passwortbestätigung',
@@ -277,7 +279,9 @@ return array(
     'Warning! Do you really want to unlink yourself from the current project?' => 'Warnung! Willst du die Verknüpfung deines eigenen Kontos mit dem Projekt wirklich aufheben?',
     'Write a comment...' => 'Schreibe einen Kommentar...',
     'You can not delete the only one project version.' => 'Du kannst nicht die einzige Version dieses Projekts löschen.',
+    'You have successfully activated your account via {client}.' => 'Dein Konto wurde erfolgreich mit {client} verbunden.',
     'You have successfully logout! We hope to see you again soon.' => 'Abmeldung erfolgreich. Auf Wiedersehen!',
+    'You have successfully registered via {client}.' => 'Du hat dich erfolgreich via {client} registriert.',
     'You must provide a valid project password.' => 'Du musst ein gültiges Projektpasswort angeben.',
     'Your account was activated successfully.' => 'Dein Konto wurde erfolgreich aktiviert.',
     'Your email address was successfully updated.' => 'Deine E-Mail Adresse wurde geändert.',
@@ -286,4 +290,4 @@ return array(
     'of' => 'von',
     'or' => 'oder',
     '{projectTitle} - Projects' => '{projectTitle} - Projekte',
-);
+];

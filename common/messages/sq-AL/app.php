@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -24,16 +24,20 @@ return array(
     'Choose screen transition...' => '',
     'Create' => '',
     'Create user' => '',
+    'Czech' => '',
     'Date Modified' => '',
     'Edit' => '',
     'Fade' => '',
     'Inactive' => '',
     'Invalid hotspots format.' => '',
+    'Next screen' => '',
     'None' => '',
     'Or sign in with:' => '',
     'Password confirmation' => '',
+    'Previous screen' => '',
     'Regular user' => '',
     'Reset search' => '',
+    'Russian' => '',
     'Search for users...' => '',
     'Show only my projects' => '',
     'Slide bottom' => '',
@@ -286,4 +290,4 @@ return array(
     'of' => 'i',
     'or' => 'ose',
     '{projectTitle} - Projects' => '{projectTitle} - Projekte',
-);
+];

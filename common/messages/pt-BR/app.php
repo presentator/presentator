@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -26,17 +26,21 @@ return array(
     'Confirmation email was sent to {pendingEmail}.' => '',
     'Create' => '',
     'Create user' => '',
+    'Czech' => '',
     'Date Modified' => '',
     'Edit' => '',
     'Fade' => '',
     'Inactive' => '',
     'Invalid hotspots format.' => '',
+    'Next screen' => '',
     'None' => '',
     'Or sign in with:' => '',
     'Password confirmation' => '',
+    'Previous screen' => '',
     'Regular user' => '',
     'Replacing with different sized image could result in hotspots and comments position disorder!' => '',
     'Reset search' => '',
+    'Russian' => '',
     'Search for users...' => '',
     'Show only my projects' => '',
     'Slide bottom' => '',
@@ -286,4 +290,4 @@ return array(
     'of' => 'de',
     'or' => 'ou',
     '{projectTitle} - Projects' => '{projectTitle} - Projetos',
-);
+];

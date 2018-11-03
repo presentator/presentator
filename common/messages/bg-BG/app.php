@@ -16,7 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
+    'Czech' => 'Чешки',
+    'Next screen' => 'Следващ екран',
+    'Previous screen' => 'Предишен екран',
+    'Russian' => 'Руски',
     '2x (Retina) rescale' => '2x (Retina) rescale',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Landscape)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Portrait)</em>',
@@ -286,4 +290,4 @@ return array(
     'of' => 'от',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекти',
-);
+];

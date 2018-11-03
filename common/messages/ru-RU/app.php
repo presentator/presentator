@@ -16,8 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Or sign in with:' => 'Или войти через',
+return [
+    'Czech' => 'Чешский',
+    'Next screen' => 'Следующий экран',
+    'Previous screen' => 'Предыдущий экран',
+    'Russian' => 'Русский',
     '2x (Retina) rescale' => '2x (Retina) масштабирование',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Ландшафтный)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Портретный)</em>',
@@ -159,6 +162,7 @@ return array(
     'Oops, an error occurred while processing your request.' => 'Упс, произошла ошибка при обработке вашего запроса.',
     'Oops, the selected version does not have any screens.' => 'Упс, в этой версии нет экранов.',
     'Open link in new tab' => 'Открыть ссылку в новой вкладке',
+    'Or sign in with:' => 'Или войти через',
     'Password' => 'Пароль',
     'Password confirm' => 'Подтверждение пароля',
     'Password confirmation' => 'Подтверждение пароля',
@@ -286,4 +290,4 @@ return array(
     'of' => 'из',
     'or' => 'или',
     '{projectTitle} - Projects' => '{projectTitle} - Проекты',
-);
+];

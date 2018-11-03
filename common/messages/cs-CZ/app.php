@@ -16,8 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array(
-    'Or sign in with:' => 'Nebo se přihlaste pomocí:',
+return [
+    'Czech' => 'Čeština',
+    'Next screen' => 'Další',
+    'Previous screen' => 'Předchozí',
+    'Russian' => 'Ruština',
     '2x (Retina) rescale' => 'Změnit měřítku 2x (Retina)',
     '320x480 <em>(Landscape)</em>' => '320x480 <em>(Na šířku)</em>',
     '320x480 <em>(Portrait)</em>' => '320x480 <em>(Na výšku)</em>',
@@ -159,6 +162,7 @@ return array(
     'Oops, an error occurred while processing your request.' => 'Jejda, při zpracování žádosti došlo k chybě.',
     'Oops, the selected version does not have any screens.' => 'Jejda, vybraná verze nemá žádné obrazovky.',
     'Open link in new tab' => 'Otevřít odkaz na nové záložce',
+    'Or sign in with:' => 'Nebo se přihlaste pomocí:',
     'Password' => 'Heslo',
     'Password confirm' => 'Potvrzení hesla',
     'Password confirmation' => 'Potvrzení hesla',
@@ -286,4 +290,4 @@ return array(
     'of' => 'z',
     'or' => 'nebo',
     '{projectTitle} - Projects' => '{projectTitle} - Projekty',
-);
+];
