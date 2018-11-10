@@ -13,6 +13,7 @@ You can join them in supporting Presentator development by visiting our [Support
 #### Sponsor
 
 #### Generous Backer
+- [Ryan Gorley (Freehive)](https://freehive.com/)
 - [Ura Design](https://ura.design/)
 - [Xaviju](https://xaviju.github.io/)
 
