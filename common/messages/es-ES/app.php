@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Active' => '',
     'Albanian' => '',
     'Are you really sure you want to delete user {userEmail}?' => '',
@@ -290,4 +290,4 @@ return [
     'of' => 'de',
     'or' => 'o',
     '{projectTitle} - Projects' => '{projectTitle} - Proyectos',
-];
+);

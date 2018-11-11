@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Czech' => 'Čeština',
     'Next screen' => 'Další',
     'Previous screen' => 'Předchozí',
@@ -290,4 +290,4 @@ return [
     'of' => 'z',
     'or' => 'nebo',
     '{projectTitle} - Projects' => '{projectTitle} - Projekty',
-];
+);
