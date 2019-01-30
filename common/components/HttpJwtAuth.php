@@ -1,7 +1,7 @@
 <?php
 namespace common\components;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\filters\auth\AuthInterface;
 use yii\web\UnauthorizedHttpException;
 use common\models\User;
@@ -38,7 +38,7 @@ use common\models\User;
  *
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-class HttpJwtAuth extends Object implements AuthInterface
+class HttpJwtAuth extends BaseObject implements AuthInterface
 {
     /**
      * @inheritdoc
