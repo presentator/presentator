@@ -18,6 +18,7 @@ return [
         ],
         'request' => [
             'csrfParam' => '_csrf-app-main',
+            'enableCsrfCookie' => true,
         ],
         'session' => [
             // this is the name of the session cookie used for login on the app

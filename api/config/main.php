@@ -12,6 +12,9 @@ return [
     'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
     'components' => [
+        'request' => [
+            'enableCsrfCookie' => false,
+        ],
         'response' => [
             'format' => \yii\web\Response::FORMAT_JSON,
         ],
