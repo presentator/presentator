@@ -1,5 +1,5 @@
 {
-    "name": "Presentator",
+    "name": "ganigeorgiev/presentator",
     "description": "Web design presentation and collaboration platform.",
     "keywords": ["yii2", "design", "presentation", "collaboration"],
     "homepage": "https://www.presentator.io/",
@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.0",
-        "yiisoft/yii2": "2.0.13.3",
+        "yiisoft/yii2": "~2.0.13",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "yiisoft/yii2-authclient": "~2.1",
