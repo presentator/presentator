@@ -149,18 +149,18 @@
 
     <div class="form-group">
         <input type="checkbox" id="enable_google_auth" data-toggle="#google_auth_settings">
-        <label for="enable_google_auth">Enable Google+ Authentication</label>
+        <label for="enable_google_auth">Enable Google Authentication</label>
 
         <div id="google_auth_settings" class="row m-t-15">
             <div class="cols-6">
                 <div class="form-group m-b-0">
-                    <label for="params_google_client_id">Google+ Auth - Client id</label>
+                    <label for="params_google_client_id">Google Auth - Client id</label>
                     <input type="text" id="params_google_client_id" name="params[googleAuth][clientId]">
                 </div>
             </div>
             <div class="cols-6">
                 <div class="form-group m-b-0">
-                    <label for="params_google_client_id">Google+ Auth - Client secret</label>
+                    <label for="params_google_client_id">Google Auth - Client secret</label>
                     <input type="text" id="params_google_client_id" name="params[googleAuth][clientSecret]">
                 </div>
             </div>
