@@ -21,9 +21,12 @@ $changeUrl = Yii::$app->mainUrlManager->createUrl([
         'newEmail' => $newEmail,
     ]) ?>
 </p>
+
 <p style="text-align: center;">
-    <a href="<?= $changeUrl ?>" class="btn"><?= Yii::t('mail', 'Confirm email address change') ?></a>
+    <a href="<?= Html::encode($changeUrl) ?>" class="btn"><?= Yii::t('mail', 'Confirm email address change') ?></a>
+    <a href="<?= Html::encode($changeUrl) ?>" class="hint"><?= Html::encode($changeUrl) ?></a>
 </p>
+
 <p>
     <?= Yii::t('mail', "If you think that this message is a mistake or you need any further help, don't hesitate to contact us at {supportEmail}.", [
         'supportEmail' => Html::mailto(Yii::$app->params['supportEmail']),

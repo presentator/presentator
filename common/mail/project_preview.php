@@ -21,8 +21,8 @@ $previewUrl = Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $p
 <?php endif; ?>
 
 <p style="text-align: center;">
-    <a href="<?= $previewUrl ?>" class="btn"><?= Yii::t('mail', 'View project') ?></a><br/>
-    <a href="<?= $previewUrl ?>" class="hint"><?= $previewUrl ?></a>
+    <a href="<?= Html::encode($previewUrl) ?>" class="btn"><?= Yii::t('mail', 'View project') ?></a><br/>
+    <a href="<?= Html::encode($previewUrl) ?>" class="hint"><?= Html::encode($previewUrl) ?></a>
 </p>
 <p>
     <?= Yii::t('mail', "If you need any further help don't hesitate to contact us at {supportEmail}.", [

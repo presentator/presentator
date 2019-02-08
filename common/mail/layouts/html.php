@@ -24,7 +24,7 @@ use yii\helpers\Url;
         }
         body, html,
         .global-wrapper {
-            color: #9ca6b3;
+            color: #676d7d;
             background: #eff2f8;
             font-size: 14px;
             line-height: 24px;
@@ -62,11 +62,11 @@ use yii\helpers\Url;
             border: 0;
         }
         a {
-            color: #9ca6b3 !important;
+            color: #676d7d !important;
             text-decoration: underline !important;
         }
         a:hover {
-            color: #9ca6b3 !important;
+            color: #676d7d !important;
             text-decoration: none !important;
         }
         .btn {
@@ -92,8 +92,12 @@ use yii\helpers\Url;
             background: #1cc080 !important;
         }
         .hint {
-            font-size: 12px;
-            line-height: 14px;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 12px !important;
+            line-height: 16px !important;
+            color: #9ca6b3 !important;
+            margin-bottom: 10px;
         }
         .shadowed {
             border-radius: 3px;
@@ -109,7 +113,7 @@ use yii\helpers\Url;
         .header {
             display: block;
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             color: #fff;
             background-color: #322956;
             background-image: url(<?= Url::to('@web/images/pattern.png', true) ?>);
@@ -186,10 +190,6 @@ use yii\helpers\Url;
                             <p>Presentator - Your designs deserve it!</p>
                         </td>
                         <td style="width: 50%; text-align: right;">
-                            <?php if (!empty(Yii::$app->params['facebookUrl'])): ?>
-                                <a href="<?= Yii::$app->params['facebookUrl'] ?>" class="social-icon">Facebook</a>
-                            <?php endif ?>
-                            |
                             <a href="mailto:<?= Yii::$app->params['supportEmail'] ?>" class="social-icon"><?= Yii::$app->params['supportEmail'] ?></a>
                         </td>
                     </tr>
