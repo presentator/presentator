@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
-    var sass_options = {
+    const sass = require('node-sass');
+
+    var sassOptions = {
+        implementation: sass,
         outputStyle: 'compressed', //'nested', 'expanded', 'compact', 'compressed'
         sourceComments: false, //'none', 'normal', 'map'
     };
@@ -50,7 +53,7 @@ module.exports = function(grunt) {
         sass: {
             // main app CSS
             app: {
-                options: sass_options,
+                options: sassOptions,
                 files: {'app/web/css/style.css': [
                     'app/web/scss/style.scss'
                 ]}

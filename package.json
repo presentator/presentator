@@ -8,13 +8,13 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~1.0.1",
+    "grunt": "^1.0.3",
     "grunt-apidoc": "~0.11.0",
     "grunt-cli": "~1.2.0",
     "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "~1.0.0",
-    "grunt-sass": "*",
-    "node-sass": "^4.7.2"
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^3.0.2",
+    "node-sass": "^4.11.0"
   },
   "apidoc": {
     "name": "Presentator.io API",
