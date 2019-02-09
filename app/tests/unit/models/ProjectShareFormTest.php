@@ -2,6 +2,7 @@
 namespace app\tests\models;
 
 use Yii;
+use yii\helpers\Html;
 use common\tests\fixtures\UserFixture;
 use common\tests\fixtures\ProjectFixture;
 use common\tests\fixtures\ProjectPreviewFixture;
@@ -123,7 +124,7 @@ class ProjectShareFormTest extends \Codeception\Test\Unit
 
             verify('To email should match', $message->getTo())->hasKey('valid_email@presentator.io');
             verify('Body should contains a project preview url.', $body)->contains(
-                Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $preview->slug], true)
+                Html::encode(Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $preview->slug], true))
             );
             verify('Body should contains the user message', $body)->contains('My test optional message...');
         });

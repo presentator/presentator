@@ -2,6 +2,7 @@
 namespace app\tests\models;
 
 use Yii;
+use yii\helpers\Html;
 use common\tests\fixtures\UserFixture;
 use common\tests\fixtures\UserSettingFixture;
 use common\models\User;
@@ -221,11 +222,11 @@ class UserProfileFormTest extends \Codeception\Test\Unit
             $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
             verify('Receiver email should match', $message->getTo())->hasKey($newEmail);
             verify('Body should contains an email change url', current($message->getChildren())->getBody())->contains(
-                Yii::$app->mainUrlManager->createUrl([
+                Html::encode(Yii::$app->mainUrlManager->createUrl([
                     'site/change-email',
                     'token' => $user->emailChangeToken,
                     'email' => $newEmail,
-                ], true)
+                ], true))
             );
         });
     }

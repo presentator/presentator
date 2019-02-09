@@ -2,6 +2,7 @@
 namespace common\tests\unit\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\db\ActiveQuery;
 use common\models\User;
 use common\models\Project;
@@ -285,7 +286,7 @@ class ProjectTest extends \Codeception\Test\Unit
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($user->email);
         verify('Body should contains a project url', current($message->getChildren())->getBody())->contains(
-            Yii::$app->mainUrlManager->createUrl(['projects/view', 'id' => $model->id], true)
+            Html::encode(Yii::$app->mainUrlManager->createUrl(['projects/view', 'id' => $model->id], true))
         );
     }
 

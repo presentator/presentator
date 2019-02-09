@@ -2,6 +2,7 @@
 namespace common\tests\unit\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\db\ActiveQuery;
 use common\models\Project;
 use common\models\ProjectPreview;
@@ -132,7 +133,7 @@ class ProjectPreviewTest extends \Codeception\Test\Unit
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($to);
         verify('Body should contains a preview url', $body)->contains(
-            Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $model->slug], true)
+            Html::encode(Yii::$app->mainUrlManager->createUrl(['preview/view', 'slug' => $model->slug], true))
         );
         verify('Body should contains the user message', $body)->contains($userMessage);
     }

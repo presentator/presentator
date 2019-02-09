@@ -2,6 +2,7 @@
 namespace common\tests\unit\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\base\NotSupportedException;
@@ -143,7 +144,7 @@ class UserTest extends \Codeception\Test\Unit
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($user->email);
         verify('Body should contains an activation url', current($message->getChildren())->getBody())->contains(
-            Yii::$app->mainUrlManager->createUrl(['site/activation', 'email' => $user->email, 'token' => $user->getActivationToken()], true)
+            Html::encode(Yii::$app->mainUrlManager->createUrl(['site/activation', 'email' => $user->email, 'token' => $user->getActivationToken()], true))
         );
     }
 
@@ -160,7 +161,7 @@ class UserTest extends \Codeception\Test\Unit
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($user->email);
         verify('Body should contains an activation url', current($message->getChildren())->getBody())->contains(
-            Yii::$app->mainUrlManager->createUrl(['site/reset-password', 'token' => $user->passwordResetToken], true)
+            Html::encode(Yii::$app->mainUrlManager->createUrl(['site/reset-password', 'token' => $user->passwordResetToken], true))
         );
     }
 
@@ -178,11 +179,7 @@ class UserTest extends \Codeception\Test\Unit
         verify('Mail method should succeed', $result)->true();
         verify('Receiver email should match', $message->getTo())->hasKey($newEmail);
         verify('Body should contains an email change url', current($message->getChildren())->getBody())->contains(
-            Yii::$app->mainUrlManager->createUrl([
-                'site/change-email',
-                'token' => $user->emailChangeToken,
-                'email' => $newEmail,
-            ], true)
+            Html::encode(Yii::$app->mainUrlManager->createUrl(['site/change-email', 'token' => $user->emailChangeToken, 'email' => $newEmail], true))
         );
     }
 

@@ -2,6 +2,7 @@
 namespace api\tests\models;
 
 use Yii;
+use yii\helpers\Html;
 use common\tests\fixtures\UserFixture;
 use common\tests\fixtures\UserSettingFixture;
 use common\models\User;
@@ -92,7 +93,7 @@ class RegisterFormTest extends \Codeception\Test\Unit
             $this->tester->seeEmailIsSent();
             $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
             verify('Body should contains an activation url', current($message->getChildren())->getBody())->contains(
-                Yii::$app->mainUrlManager->createUrl(['site/activation', 'email' => $result->email, 'token' => $result->getActivationToken()], true)
+                Html::encode(Yii::$app->mainUrlManager->createUrl(['site/activation', 'email' => $result->email, 'token' => $result->getActivationToken()], true))
             );
         });
     }

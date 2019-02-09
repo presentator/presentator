@@ -2,6 +2,7 @@
 namespace common\tests\unit\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\db\ActiveQuery;
 use common\models\User;
 use common\models\Screen;
@@ -436,13 +437,13 @@ class ScreenCommentTest extends \Codeception\Test\Unit
 
                 verify('Receiver email should match', in_array($to, $validEmails))->true();
                 verify('Body should contains a reply url', current($message->getChildren())->getBody())->contains(
-                    Yii::$app->mainUrlManager->createUrl([
+                    Html::encode(Yii::$app->mainUrlManager->createUrl([
                         'projects/view',
                         'id'             => $model->screen->project->id,
                         'screen'         => $model->screen->id,
                         'comment_target' => ($model->replyTo ? $model->replyTo : $model->id),
                         'reply_to'       => $model->id
-                    ], true)
+                    ], true))
                 );
             }
         });
@@ -457,13 +458,13 @@ class ScreenCommentTest extends \Codeception\Test\Unit
             $message = $this->tester->grabLastSentEmail()->getSwiftMessage();
             verify('Receiver email should match', $message->getTo())->hasKey('test4@presentator.io');
             verify('Body should contains a preview url', current($message->getChildren())->getBody())->contains(
-                Yii::$app->mainUrlManager->createUrl([
+                Html::encode(Yii::$app->mainUrlManager->createUrl([
                     'projects/view',
                     'id'             => $model->screen->project->id,
                     'screen'         => $model->screen->id,
                     'comment_target' => ($model->replyTo ? $model->replyTo : $model->id),
                     'reply_to'       => $model->id
-                ], true)
+                ], true))
             );
         });
     }
