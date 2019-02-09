@@ -22,7 +22,7 @@ $activationUrl = Yii::$app->mainUrlManager->createUrl(['site/activation', 'email
 
 <p style="text-align: center;">
     <a href="<?= Html::encode($activationUrl) ?>" class="btn"><?= Yii::t('mail', 'Activate account') ?></a><br/>
-    <a href="<?= Html::encode($activationUrl) ?>" class="hint"><?= Html::encode($activationUrl) ?></a>
+    <a href="<?= Html::encode($activationUrl) ?>" class="hint"><?= $activationUrl ?></a>
 </p>
 
 <p>

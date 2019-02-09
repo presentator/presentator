@@ -23,7 +23,7 @@ $projectUrl = Yii::$app->mainUrlManager->createUrl(['projects/view', 'id' => $pr
 
 <p style="text-align: center;">
     <a href="<?= Html::encode($projectUrl) ?>" class="btn"><?= Yii::t('mail', 'Explore project') ?></a><br/>
-    <a href="<?= Html::encode($projectUrl) ?>" class="hint"><?= Html::encode($projectUrl) ?></a>
+    <a href="<?= Html::encode($projectUrl) ?>" class="hint"><?= $projectUrl ?></a>
 </p>
 
 <p>

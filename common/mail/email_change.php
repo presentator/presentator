@@ -24,7 +24,7 @@ $changeUrl = Yii::$app->mainUrlManager->createUrl([
 
 <p style="text-align: center;">
     <a href="<?= Html::encode($changeUrl) ?>" class="btn"><?= Yii::t('mail', 'Confirm email address change') ?></a>
-    <a href="<?= Html::encode($changeUrl) ?>" class="hint"><?= Html::encode($changeUrl) ?></a>
+    <a href="<?= Html::encode($changeUrl) ?>" class="hint"><?= $changeUrl ?></a>
 </p>
 
 <p>

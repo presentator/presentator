@@ -20,7 +20,7 @@ $resetUrl = Yii::$app->mainUrlManager->createUrl(['site/reset-password', 'token'
 
 <p style="text-align: center;">
     <a href="<?= Html::encode($resetUrl) ?>" class="btn"><?= Yii::t('mail', 'Reset password') ?></a> <br/>
-    <a href="<?= Html::encode($resetUrl) ?>" class="hint"><?= Html::encode($resetUrl) ?></a>
+    <a href="<?= Html::encode($resetUrl) ?>" class="hint"><?= $resetUrl ?></a>
 </p>
 
 <p>

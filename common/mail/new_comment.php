@@ -28,7 +28,7 @@ $replyUrl = Yii::$app->mainUrlManager->createUrl([
 <p><?= Yii::t('mail', 'Click on the button below for detail view and other options:') ?></p>
 <p style="text-align: center;">
     <a href="<?= Html::encode($replyUrl) ?>" class="btn"><?= Yii::t('mail', 'Detail view') ?></a><br/>
-    <a href="<?= Html::encode($replyUrl) ?>" class="hint"><?= Html::encode($replyUrl) ?></a>
+    <a href="<?= Html::encode($replyUrl) ?>" class="hint"><?= $replyUrl ?></a>
 </p>
 
 <p>

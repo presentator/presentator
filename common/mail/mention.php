@@ -24,7 +24,7 @@ $previewUrl = $comment->screen->project->getPreviewUrl(ProjectPreview::TYPE_VIEW
 
 <p style="text-align: center;">
     <a href="<?= Html::encode($previewUrl) ?>" class="btn"><?= Yii::t('mail', 'View project') ?></a><br/>
-    <a href="<?= Html::encode($previewUrl) ?>" class="hint"><?= Html::encode($previewUrl) ?></a>
+    <a href="<?= Html::encode($previewUrl) ?>" class="hint"><?= $previewUrl ?></a>
 </p>
 
 <p>
