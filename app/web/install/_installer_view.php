@@ -6,7 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Presentator Installer</title>
     <link href="../css/style.css" rel="stylesheet">
-    <link href="../images/favicon.png" rel="shortcut icon" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+    <link rel="manifest" href="../images/site.webmanifest">
+    <link rel="mask-icon" href="../images/safari-pinned-tab.svg" color="#152598">
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Presentator">
+    <meta name="application-name" content="Presentator">
+    <meta name="msapplication-TileColor" content="#152598">
+    <meta name="msapplication-config" content="../images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
 </head>
 <body>
     <div id="global_wrapper" class="global-wrapper padded">
