@@ -19,17 +19,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? (Html::encode($this->title) . ' - ') : '' ?>Presentator</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-    <link rel="manifest" href="/images/site.webmanifest">
-    <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#152598">
-    <link rel="shortcut icon" href="/images/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Presentator">
-    <meta name="application-name" content="Presentator">
-    <meta name="msapplication-TileColor" content="#152598">
-    <meta name="msapplication-config" content="/images/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
+    <?= $this->render('_favicon_tags') ?>
     <?php $this->head() ?>
 </head>
 <body class="<?= isset($this->params['bodyClass']) ? $this->params['bodyClass'] : ''; ?> lang-<?= substr(Yii::$app->language, 0, 2) ?>">

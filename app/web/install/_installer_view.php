@@ -10,11 +10,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
     <link rel="manifest" href="../images/site.webmanifest">
-    <link rel="mask-icon" href="../images/safari-pinned-tab.svg" color="#152598">
+    <link rel="mask-icon" href="../images/safari-pinned-tab.svg" color="#322a55">
     <link rel="shortcut icon" href="../images/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Presentator">
-    <meta name="application-name" content="Presentator">
-    <meta name="msapplication-TileColor" content="#152598">
+    <meta name="msapplication-TileColor" content="#322a55">
     <meta name="msapplication-config" content="../images/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 </head>
