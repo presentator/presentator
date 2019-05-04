@@ -89,7 +89,6 @@ class SiteCest
         $I->seeElement('[name="LoginForm[email]"]');
         $I->seeElement('[name="LoginForm[password]"]');
         $I->seeElement('a.forgotten-password');
-        $I->seeElement('a.facebook-link');
     }
 
     /**
