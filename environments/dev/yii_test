@@ -23,7 +23,7 @@ $config = yii\helpers\ArrayHelper::merge(
 );
 
 // `enableCsrfCookie` is added for unit/function tests because `yii\web\Request` is used
-// bur for test console application `yii\console\Request` is used and such property doesn't exist
+// but for test console application `yii\console\Request` is used and such property doesn't exist
 unset($config['components']['request']['enableCsrfCookie']);
 
 $application = new yii\console\Application($config);
