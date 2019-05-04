@@ -58,7 +58,7 @@
                 <label for="email_encryption">* Mailer Encryption</label>
                 <select id="email_encryption" name="mailer[encryption]" required>
                     <option value="ssl" selected>SSL</option>
-                    <option value="tls">TSL</option>
+                    <option value="tls">TLS</option>
                 </select>
             </div>
         </div>
