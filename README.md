@@ -9,7 +9,7 @@ Its main goal is to enable web designers to create simple dynamic prototypes and
 > **IMPORTANT NOTE:**
 Presentator is now being redesigned and rewritten from scratch (the code becomes much cleaner by removing the `app` component and using the REST API as primary backend interface + vue/vuex for frontend).
 Current version  is still maintained, but new functionality will be added to v2 (check [v2.0.0 milestone](https://github.com/ganigeorgiev/presentator/milestone/10) page for some of the already planned enhancements).
-The new version is expected to be released **mid May/June 2019** (but no hard deadlines).
+The new version will be released ~~mid May/June 2019~~ at the **end of July 2019** (but no hard deadlines).
 
 ## Quick navigation
 - [Getting started](https://github.com/ganigeorgiev/presentator/wiki)
