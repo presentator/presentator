@@ -1,7 +1,7 @@
 Presentator Starter
 ======================================================================
 
-Presentator Starter is a skeleton Presentator installation setup best suited for production environments.
+Presentator Starter is a skeleton Presentator installation setup best suited for production environment.
 
 It wraps all required components for a Presentator installation in a single package and allows seamless upgrades just by using [Composer](https://getcomposer.org/).
 
