@@ -1,6 +1,6 @@
 {
     "name": "presentator/spa",
-    "description": "Presentator v2 SPA",
+    "description": "Presentator v2 SPA (for presentator/starter)",
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
     "support": {
