@@ -1,0 +1,16 @@
+{
+    "name": "presentator/spa",
+    "description": "Presentator v2 SPA",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://github.com/ganigeorgiev/presentator/issues?state=open",
+        "source": "https://github.com/ganigeorgiev/presentator-spa"
+    },
+    "authors": [
+        {
+            "name":  "Gani Georgiev",
+            "email": "gani.georgiev@gmail.com"
+        }
+    ]
+}
