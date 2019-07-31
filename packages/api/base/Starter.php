@@ -20,8 +20,8 @@ use Composer\Util\Filesystem;
  *
  * In order to change some of the default methods behavior, you could define the following properties under the `extra[starter]` key:
  * `spaConfig` - Used by `self::linkSpa()`. SPA config settings that will be injected as inline `APP_CONFIG` js object in the spa application (default to empty array).
- * `spaSrc`    - Used by `self::linkSpa()`. SPA source directory to copy (default to `vendor/npm-asset/presentator-spa/dist`).
- * `spaDest`   - Used by `self::linkSpa()`. SPA target directory where the `spaSrc` content will be placed (default to `presentator/web`).
+ * `spaSrc`    - Used by `self::linkSpa()`. SPA source directory to copy (default to `vendor/presentator/spa/dist/`).
+ * `spaDest`   - Used by `self::linkSpa()`. SPA target directory where the `spaSrc` content will be placed (default to `web/`).
  *
  * Example usage in `composer.json`:
  * ```json
@@ -131,8 +131,8 @@ class Starter
         $extra    = $composer->getPackage()->getExtra();
         $root     = getcwd();
 
-        $spaSrc     = $root . '/' . ($extra[self::EXTRA_BASE_KEY][self::EXTRA_SPA_SRC_KEY]  ?? 'vendor/npm-asset/presentator-spa/dist');
-        $spaDest    = $root . '/' . ($extra[self::EXTRA_BASE_KEY][self::EXTRA_SPA_DEST_KEY] ?? 'presentator/web');
+        $spaSrc     = $root . '/' . ($extra[self::EXTRA_BASE_KEY][self::EXTRA_SPA_SRC_KEY]  ?? 'vendor/presentator/spa/dist');
+        $spaDest    = $root . '/' . ($extra[self::EXTRA_BASE_KEY][self::EXTRA_SPA_DEST_KEY] ?? 'web');
         $spaConfig  = (array) ($extra[self::EXTRA_BASE_KEY][self::EXTRA_SPA_CONFIG_KEY] ?? []);
 
         if (!file_exists($spaSrc) || !is_dir($spaSrc)) {
