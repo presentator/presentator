@@ -9,8 +9,10 @@ You can join them in supporting Presentator development by visiting our [Support
 ## Patreon
 
 #### Genereous Sponsor
+> none
 
 #### Sponsor
+> none
 
 #### Generous Backer
 - [Ryan Gorley (Freehive)](https://freehive.com/)

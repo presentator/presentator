@@ -1,7 +1,0 @@
-class_name: UnitTester
-bootstrap: false
-modules:
-    enabled:
-        - Yii2:
-            cleanup: false
-            part: [fixtures, email]

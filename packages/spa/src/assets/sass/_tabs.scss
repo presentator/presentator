@@ -1,0 +1,64 @@
+.tabs {
+    @extend %block;
+
+    // header
+    .tabs-header {
+        display: flex;
+        width: 100%;
+        position: relative;
+        margin: 0 0 $baseSpacing;
+        border-bottom: 2px solid $borderColor;
+        .tab-item {
+            position: relative;
+            float: left;
+            padding: $smallSpacing;
+            text-decoration: none;
+            cursor: pointer;
+            color: $lightTxtColor;
+            font-size: $largeFontSize;
+            transition: color $baseAnimationSpeed;
+            outline: none;
+            @include user-select(none);
+            &:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -2px;
+                width: 100%;
+                height: 2px;
+                background: $primaryColor;
+                transform: rotateY(90deg);
+                transition: opacity $prolongedAnimationSpeed,
+                            visibility $prolongedAnimationSpeed,
+                            transform $prolongedAnimationSpeed;
+                @include hide;
+            }
+            &:focus,
+            &:hover {
+                color: $txtColor;
+            }
+            &.active {
+                color: $primaryColor;
+                &:before {
+                    @include show;
+                    transform: rotateY(0deg);
+                }
+            }
+        }
+    }
+
+    // content
+    .tabs-content {
+        @extend %block;
+        position: relative;
+        .tab-item {
+            @extend %clear-after;
+            width: 100%;
+            display: none;
+            &.active {
+                display: block;
+                animation: tabActivate $prolongedAnimationSpeed + ($prolongedAnimationSpeed / 2);
+            }
+        }
+    }
+}

@@ -1,8 +1,0 @@
-class_name: FunctionalTester
-bootstrap: false
-modules:
-    enabled:
-        - Asserts
-        - Yii2:
-            part: [fixtures, email]
-        - \console\tests\Helper\Functional

@@ -1,0 +1,29 @@
+.project-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    // content
+    .content {
+        flex-grow: 1;
+        .link {
+            @extend %block;
+            line-height: 1;
+        }
+        .label {
+            margin: 5px 5px 0 0;
+        }
+    }
+}
+
+.project-links-list {
+    @extend %block;
+    .project-link {
+        padding: $baseSpacing 0;
+        border-bottom: 1px solid $lightBorderColor;
+        @include vertical-list-item-animation;
+        &:first-child {
+            border-top: 1px solid $lightBorderColor;
+        }
+    }
+}

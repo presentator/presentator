@@ -1,0 +1,483 @@
+.box {
+    @extend %block;
+    position: relative;
+    border-radius: $baseRadius;
+    background: #fff;
+    padding: 2px;
+    color: $txtColor;
+    outline-color: $borderColor;
+    text-decoration: none;
+    border: 0px;
+    transition: box-shadow $baseAnimationSpeed;
+    @include shadowize;
+
+    // controls/handles
+    .box-ctrl {
+        $ctrlSpacing: 12px;
+        display: inline-block;
+        vertical-align: top;
+        position: absolute;
+        z-index: 1;
+        left: $ctrlSpacing;
+        top: $ctrlSpacing;
+        outline: 0;
+        padding: 0;
+        margin: 0;
+        color: #fff;
+        line-height: 1;
+        text-decoration: none;
+        transition: transform $baseAnimationSpeed,
+                    opacity $baseAnimationSpeed,
+                    visibility $baseAnimationSpeed,
+                    color $baseAnimationSpeed;
+        @include hide;
+        @include user-select(none);
+        & > i {
+            font-size: 20px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .dropdown {
+            border: 0;
+        }
+        .form-group {
+            margin: 0;
+            input[type="checkbox"] ~ label {
+                $checkboxSize: 22px;
+                border: 0;
+                &:before {
+                    @include shadowize;
+                    border: 0;
+                    top: 0;
+                    margin: 0;
+                    width: $checkboxSize;
+                    height: $checkboxSize;
+                }
+                &:after {
+                    top: 0;
+                    margin: 0;
+                    width: $checkboxSize;
+                    height: $checkboxSize;
+                    line-height: $checkboxSize;
+                }
+            }
+        }
+        &.top-left {
+            transform: translateY(-5px);
+        }
+        &.top-right {
+            left: auto;
+            right: $ctrlSpacing;
+            transform: translateY(-5px);
+        }
+        &.bottom-left {
+            top: auto;
+            bottom: $ctrlSpacing;
+            transform: translateY(5px);
+        }
+        &.bottom-right {
+            top: auto;
+            left: auto;
+            bottom: $ctrlSpacing;
+            right: $ctrlSpacing;
+            transform: translateY(5px);
+        }
+        &.center {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            i {
+                font-size: 30px;
+            }
+        }
+        &.handle {
+            cursor: pointer;
+            &:active {
+                > i {
+                    transform: scale(0.9);
+                }
+            }
+        }
+    }
+
+    // thumb
+    .box-thumb {
+        @extend %block;
+        position: relative;
+        z-index: 0;
+        height: 240px;
+        border-radius: inherit;
+        background: $lightBorderColor;
+        overflow: hidden;
+        @include user-select(none);
+        .img,
+        .crop-wrapper {
+            position: absolute;
+            z-index: 0;
+            vertical-align: top;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: inherit;
+        }
+        .crop-wrapper {
+            min-width: 100%;
+            text-align: center;
+            max-height: 100%;
+            .img {
+                position: relative;
+                transform: none;
+                left: auto;
+                top: auto;
+                display: inline-block;
+                vertical-align: top;
+            }
+        }
+        i.img {
+            font-size: 40px;
+            line-height: 1;
+            color: $darkBorderColor;
+        }
+        .img-alt {
+            font-size: 24px;
+            line-height: 1;
+            color: $darkBorderColor;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        .thumb-overlay {
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: $overlayColor;
+            border-radius: inherit;
+            @include shadowize;
+            @include hide;
+            transition: background ($baseAnimationSpeed / 2),
+                        opacity $baseAnimationSpeed,
+                        visibility $baseAnimationSpeed;
+        }
+    }
+
+    // content
+    .box-content {
+        @extend %block;
+        position: relative;
+        padding: $smallSpacing - 2;
+        .title {
+            @extend %block;
+            margin: 0;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: $largeFontSize;
+            font-weight: normal;
+            transition: color $baseAnimationSpeed;
+            @include ellipsis;
+            &:hover {
+                color: $primaryColor;
+            }
+        }
+        .meta {
+            margin: 10px 0 0;
+        }
+        .beacon {
+            top: $smallSpacing;
+            right: $smallSpacing;
+        }
+    }
+
+    // badge
+    .badge {
+        position: absolute;
+        z-index: 10;
+        right: -7px;
+        top: -7px;
+    }
+
+    // beacon
+    .beacon {
+        right: 0;
+        top: 0;
+    }
+
+    // bg color layout
+    &.box-color {
+        .thumb-overlay {
+            background: none;
+        }
+    }
+
+    // compact layout
+    &.box-compact {
+        .box-ctrl > i {
+            font-size: 18px;
+        }
+        .box-thumb {
+            i.img {
+                font-size: 36px;
+            }
+        }
+        .box-content {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            .title {
+                font-size: $baseFontSize;
+                line-height: $baseLineHeight;
+            }
+            .meta {
+                margin-top: 5px;
+            }
+        }
+    }
+
+    // states
+    &:hover {
+        @include shadowize(0px 0px 0px 2px $borderColor);
+    }
+    &:hover,
+    &.active {
+        .box-ctrl {
+            transform: scale(1);
+            @include show;
+            &.center {
+                transform: translate(-50%, -50%);
+            }
+        }
+        .box-thumb {
+            .thumb-overlay {
+                @include show;
+            }
+        }
+    }
+    &.active {
+        .box-ctrl input[type="checkbox"] ~ label:after {
+            color: $warningColor;
+        }
+        .box-thumb {
+            .thumb-overlay {
+                background: rgba($warningColor, 0.8);
+            }
+        }
+    }
+    &.sortable-ghost {
+        opacity: 0.5;
+    }
+}
+
+// placeholder box
+.box.box-placeholder {
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: $primaryColor;
+    padding: $baseSpacing;
+    box-shadow: none;
+    background: none;
+    border: 2px dashed $borderColor;
+    transition: box-shadow $baseAnimationSpeed,
+                background $baseAnimationSpeed,
+                color $baseAnimationSpeed;
+    @include v-align-helper;
+    @include user-select(none);
+    .icon, .title {
+        @extend %block;
+        line-height: 1;
+    }
+    .icon {
+        margin: $smallSpacing 0;
+        font-size: 55px;
+        transition: transform $baseAnimationSpeed;
+    }
+    .title {
+        margin: 0;
+    }
+    &.box-compact {
+        .icon {
+            font-size: 36px;
+        }
+    }
+
+    // states
+    &:hover,
+    &.dz-drag-hover,
+    &:active {
+        .icon {
+            transform: scale(1.1);
+        }
+    }
+    &:hover,
+    &.dz-drag-hover,
+    &.dz-uploading {
+        background: $lightBorderColor;
+    }
+    &.dz-drag-hover {
+        opacity: 1;
+        @include shadowize;
+    }
+    &:active {
+        transition-duration: 0.1s;
+        background: darken($lightBorderColor, 3%);
+    }
+}
+
+// composite/btns box
+.box.box-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-shadow: none;
+    background: none;
+    border: 2px dashed $borderColor;
+    @include user-select(none);
+    .box-btn {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-grow: 1;
+        flex-basis: 0;
+        cursor: pointer;
+        outline: 0;
+        padding: $smallSpacing 5px;
+        text-align: center;
+        text-decoration: none;
+        border-bottom: 2px dashed $borderColor;
+        transition: color $baseAnimationSpeed, background $baseAnimationSpeed;
+        &:first-child {
+            border-top-left-radius: $baseRadius;
+            border-top-right-radius: $baseRadius;
+        }
+        &:last-child {
+            border-bottom: 0;
+            border-bottom-left-radius: $baseRadius;
+            border-bottom-right-radius: $baseRadius;
+        }
+        .icon, .title {
+            @extend %block;
+            margin: 10px 0;
+        }
+        .icon {
+            font-size: 18px;
+        }
+        &:hover,
+        &:active {
+            color: $primaryColor;
+            background: $lightBorderColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: darken($lightBorderColor, 3%);
+        }
+    }
+}
+
+// base/default list
+.boxes-list {
+    @include items-per-row(6);
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    .box {
+        margin-bottom: $baseSpacing;
+        &:not(.sortable-ghost) {
+            animation: stepInTop $prolongedAnimationSpeed;
+        }
+    }
+    &.sort-started {
+        // reset boxes hover state on drag
+        .box {
+            animation-iteration-count: 0;
+            @include shadowize;
+            .thumb-overlay {
+                display: none;
+            }
+        }
+    }
+}
+
+.projects-list {
+    @include items-per-row(7);
+    @media screen and (max-width: 2850px) {
+        @include items-per-row(6);
+    }
+    @media screen and (max-width: 2200px) {
+        @include items-per-row(5);
+    }
+    @media screen and (max-width: 1800px) {
+        @include items-per-row(4);
+    }
+    @media screen and (max-width: 1300px) {
+        @include items-per-row(3);
+    }
+    @media screen and (max-width: 980px) {
+        @include items-per-row(2);
+    }
+    @media screen and (max-width: 650px) {
+        @include items-per-row(1);
+    }
+}
+
+.screens-list {
+    @include items-per-row(8);
+    @media screen and (max-width: 2600px) {
+        @include items-per-row(7);
+    }
+    @media screen and (max-width: 2100px) {
+        @include items-per-row(6);
+    }
+    @media screen and (max-width: 1700px) {
+        @include items-per-row(5);
+    }
+    @media screen and (max-width: 1480px) {
+        @include items-per-row(4);
+    }
+    @media screen and (max-width: 1250px) {
+        @include items-per-row(3);
+    }
+    @media screen and (max-width: 920px) {
+        @include items-per-row(2);
+    }
+    @media screen and (max-width: 650px) {
+        @include items-per-row(1);
+    }
+}
+
+.assets-list {
+    @include items-per-row(10);
+    @media screen and (max-width: 3000px) {
+        @include items-per-row(9);
+    }
+    @media screen and (max-width: 2700px) {
+        @include items-per-row(8);
+    }
+    @media screen and (max-width: 2300px) {
+        @include items-per-row(7);
+    }
+    @media screen and (max-width: 1850px) {
+        @include items-per-row(6);
+    }
+    @media screen and (max-width: 1500px) {
+        @include items-per-row(5);
+    }
+    @media screen and (max-width: 1250px) {
+        @include items-per-row(4);
+    }
+    @media screen and (max-width: 900px) {
+        @include items-per-row(3);
+    }
+    @media screen and (max-width: 650px) {
+        @include items-per-row(2);
+    }
+    @media screen and (max-width: 400px) {
+        @include items-per-row(1);
+    }
+
+    .box {
+        animation: none !important;
+    }
+    .box-thumb {
+        height: 190px;
+    }
+}

@@ -1,0 +1,571 @@
+@include selection($txtColor);
+
+@include scrollbar;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: 1000px;
+    background: $bodyColor;
+}
+
+body {
+    position: relative;
+    z-index: 0;
+    color: $txtColor;
+    font-family: $baseFontFamily;
+    font-size: $baseFontSize;
+    font-weight: $baseFontWeight;
+    line-height: $baseLineHeight;
+    overflow-x: hidden;
+    overflow-y: auto; // fallback
+    overflow-y: overlay;
+    outline-color: $primaryColor;
+}
+
+p {
+    margin: 10px 0;
+}
+
+a, .default-link {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: underline;
+    outline-color: inherit;
+    transition: color $baseAnimationSpeed;
+    &:hover {
+        text-decoration: none;
+    }
+    i, .txt {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+.icon-link,
+.prev-link,
+.next-link {
+    text-decoration: none;
+    i, .txt {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    i {
+        font-size: 16px;
+        margin-right: 3px;
+        transition: transform $baseAnimationSpeed;
+    }
+    .txt ~ i {
+        margin-right: 0;
+        margin-left: 3px;
+    }
+}
+.prev-link:hover {
+    i {
+        transform: translateX(-2px);
+    }
+}
+.next-link:hover {
+    i {
+        transform: translateX(2px);
+    }
+}
+
+hr {
+    @extend %block;
+    height: 1px;
+    border: 0;
+    outline: 0;
+    background: $lightBorderColor;
+}
+
+code {
+    font-family: monospace;
+    padding: 3px 5px;
+    border-radius: $baseRadius;
+    background: $lightBorderColor;
+}
+
+small {
+    font-size: $smallFontSize;
+    line-height: $smallLineHeight;
+    i.fe, .txt {
+        display: inline-block;
+        vertical-align: top;
+        line-height: inherit;
+    }
+}
+
+b, strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+sub {
+    font-size: 10px;
+    vertical-align: sub;
+}
+
+sup {
+    font-size: 10px;
+    vertical-align: super;
+}
+
+blockquote {
+    @extend %block;
+    margin: 10px 0;
+    font-style: italic;
+    padding-left: $smallSpacing;
+    border-left: 2px solid $primaryColor;
+}
+
+// headings
+@for $i from 1 through 6 {
+    h#{$i} {
+        @extend %h#{$i};
+    }
+}
+
+// lists
+ul, ol {
+    padding-left: 10px;
+    margin: 10px 0;
+    li {
+        position: relative;
+        margin: 5px 0;
+    }
+}
+ul {
+    list-style-type: none;
+    li {
+        padding-left: 20px;
+        &:before {
+            content: "";
+            display: inline-block;
+            vertical-align: top;
+            position: absolute;
+            left: 5px;
+            top: 9px;
+            width: 5px;
+            height: 5px;
+            background: $primaryColor;
+            border-radius: $baseRadius;
+        }
+    }
+}
+ol {
+    padding-left: 28px;
+    list-style: decimal outside none;
+    li {
+        padding-left: 2px;
+    }
+}
+
+// tables
+table, .table {
+    width: 100%;
+    background: #fff;
+    border-collapse: collapse;
+    border-radius: $baseRadius;
+    vertical-align: top;
+    @include shadowize;
+    td, th {
+        text-align: left;
+        padding: 15px 15px;
+        vertical-align: inherit;
+        border-bottom: 1px solid $lightBorderColor;
+    }
+    th {
+        font-weight: bold;
+        background: $lightBorderColor;
+    }
+    tr {
+        transition: box-shadow $baseAnimationSpeed;
+    }
+    > :first-child > tr:first-child {
+        border-top-left-radius: $baseRadius;
+        border-top-right-radius: $baseRadius;
+        td:first-child,
+        th:first-child {
+            border-top-left-radius: $baseRadius;
+        }
+        td:last-child,
+        th:last-child {
+            border-top-right-radius: $baseRadius;
+        }
+    }
+    > :last-child > tr:last-child {
+        border-bottom-left-radius: $baseRadius;
+        border-bottom-right-radius: $baseRadius;
+        td, th {
+            border-bottom: 0;
+        }
+        td:first-child,
+        th:first-child {
+            border-bottom-left-radius: $baseRadius;
+        }
+        td:last-child,
+        th:last-child {
+            border-bottom-right-radius: $baseRadius;
+        }
+    }
+    tbody tr:hover {
+        z-index: 2;
+        @include shadowize(inset 2px 0px 0px $primaryColor);
+    }
+    .min-width {
+        width: 1%;
+        white-space: nowrap;
+    }
+    .max-width {
+        width: 99%;
+    }
+}
+
+// align helpers
+.txt-left {
+    text-align: left !important;
+}
+.txt-right {
+    text-align: right !important;
+}
+.txt-center {
+    text-align: center !important;
+}
+.float-left {
+    float: left !important;
+}
+.float-right {
+    float: right !important;
+}
+.v-align-top {
+    vertical-align: top !important;
+}
+.v-align-middle {
+    vertical-align: middle !important;
+}
+.v-align-bottom {
+    vertical-align: bottom !important;
+}
+
+// spacing helpers
+.p-small {
+    padding: $smallSpacing !important;
+}
+.p-base {
+    padding: $baseSpacing !important;
+}
+.p-large {
+    padding: $largeSpacing !important;
+}
+.m-small {
+    margin: $smallSpacing !important;
+}
+.m-base {
+    margin: $baseSpacing !important;
+}
+.m-large {
+    margin: $largeSpacing !important;
+}
+@each $side in $sidesList {
+    .p-#{nth($side, 1)}-small {
+        padding-#{nth($side, 2)}: $smallSpacing !important;
+    }
+    .p-#{nth($side, 1)}-base {
+        padding-#{nth($side, 2)}: $baseSpacing !important;
+    }
+    .p-#{nth($side, 1)}-large {
+        padding-#{nth($side, 2)}: $largeSpacing !important;
+    }
+    .m-#{nth($side, 1)}-small {
+        margin-#{nth($side, 2)}: $smallSpacing !important;
+    }
+    .m-#{nth($side, 1)}-base {
+        margin-#{nth($side, 2)}: $baseSpacing !important;
+    }
+    .m-#{nth($side, 1)}-large {
+        margin-#{nth($side, 2)}: $largeSpacing !important;
+    }
+}
+@for $i from 0 through 8 {
+    $val: $i * 5;
+    .p-#{$val} {
+        padding: #{$val}px !important;
+    }
+    .m-#{$val} {
+        margin: #{$val}px !important;
+    }
+    @each $side in $sidesList {
+        .p-#{nth($side, 1)}-#{$val} {
+            padding-#{nth($side, 2)}: #{$val}px !important;
+        }
+        .m-#{nth($side, 1)}-#{$val} {
+            margin-#{nth($side, 2)}: #{$val}px !important;
+        }
+    }
+}
+
+// containers
+#app {
+    min-height: 100vh;
+}
+.app-body {
+    min-height: 100vh;
+    padding-left: $sidebarWidth;
+}
+.app-main {
+    position: relative;
+    z-index: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 100vh;
+    padding: ($baseSpacing - 5) $baseSpacing;
+}
+.container-wrapper {
+    display: block;
+    margin: 0 auto;
+    width: $baseContainerWrapperWidth;
+    max-width: 100%;
+    &.container-wrapper-sm {
+        width: $smallContainerWrapperWidth;
+    }
+    &.container-wrapper-lg {
+        width: $largeContainerWrapperWidth;
+    }
+}
+.clearfix,
+.block {
+    @extend %block;
+    @extend %clear-after;
+}
+.content {
+    @extend %content;
+}
+.flex-block {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    &:after {
+        content: none;
+        display: none;
+    }
+}
+.relative {
+    position: relative;
+}
+.hidden {
+    display: none !important;
+}
+.soft-hidden {
+    visibility: hidden;
+}
+.scroll-block {
+    overflow: auto;
+}
+.disabled-block {
+    opacity: 0.6;
+    @include pointer-events(none);
+}
+.flex-fill-block {
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.full-page-flex {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    background: $bodyColor;
+}
+.full-height {
+    height: 100%;
+}
+.max-full-height {
+    max-height: 100%;
+}
+.full-width {
+    width: 100%;
+}
+.max-full-width {
+    max-width: 100%;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.shadowize {
+    @include shadowize;
+}
+.no-shadow {
+    box-shadow: none !important;
+}
+.no-bg {
+    background: none !important;
+}
+.no-r {
+    border-radius: 0px !important;
+}
+.no-b {
+    border: 0px !important;
+}
+@each $side in $sidesList {
+    .no-b-#{nth($side, 1)} {
+        border-#{nth($side, 2)}: 0px !important;
+    }
+}
+
+// css columns grouping
+@for $i from 1 through 6 {
+    .css-cols-#{$i} {
+        column-count: $i;
+    }
+}
+
+// text and background color helpers
+@each $color in $colorsList {
+    .txt-#{nth($color, 1)} {
+        color: nth($color, 2) !important;
+    }
+    .bg-#{nth($color, 1)} {
+        background: nth($color, 2) !important;
+    }
+    .link-#{nth($color, 1)} {
+        cursor: pointer;
+        text-decoration: none;
+        color: nth($color, 2) !important;
+        outline-color: nth($color, 2);
+        transition: opacity $baseAnimationSpeed;
+        @include user-select(none);
+        &:hover {
+            opacity: 0.8;
+        }
+        &:active {
+            opacity: 1;
+        }
+    }
+}
+.link-hint {
+    cursor: pointer;
+    color: $lightTxtColor;
+    text-decoration: none;
+    transition: color $baseAnimationSpeed;
+    @include user-select(none);
+    &:hover {
+        color: $txtColor;
+    }
+}
+.link-fade {
+    opacity: 0.6;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity $baseAnimationSpeed;
+    @include user-select(none);
+    &:hover {
+        opacity: 1;
+    }
+}
+.txt-fade {
+    opacity: 0.6;
+}
+.txt-hint {
+    color: $lightTxtColor !important;
+}
+.txt-break {
+    word-break: break-all;
+}
+.txt-nowrap {
+    white-space: nowrap;
+}
+.txt-normal {
+    font-weight: normal;
+}
+.txt-bold {
+    font-weight: bold;
+}
+.txt-base {
+    font-size: $baseFontSize;
+}
+.txt-small {
+    @extend small;
+}
+.txt-large {
+    font-size: $largeFontSize;
+}
+.txt-uppercase {
+    text-transform: uppercase;
+}
+.txt-lowercase {
+    text-transform: lowercase;
+}
+.txt-monospace {
+    font-family: monospace;
+}
+
+// transform initial position helpers
+.transform-bottom-right {
+    transform-origin: bottom right !important;
+}
+.transform-bottom-left {
+    transform-origin: bottom left !important;
+}
+.transform-top-left {
+    transform-origin: top left !important;
+}
+.transform-top-right {
+    transform-origin: top right !important;
+}
+
+[contenteditable="true"] {
+    outline: 0;
+    cursor: pointer;
+    border-color: $primaryColor;
+    border-radius: $baseRadius;
+    transition: padding $baseAnimationSpeed,
+                color $baseAnimationSpeed,
+                background $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed !important;
+    &:empty:before {
+        content: attr(data-placeholder);
+        display: block;
+        color: $lightTxtColor;
+    }
+    &:hover,
+    &:focus {
+        box-shadow: 0px 0px 0px 2px $borderColor;
+    }
+    &:focus {
+        padding-left: 4px;
+        padding-right: 4px;
+        background: #fff;
+        color: $txtColor;
+        text-overflow: initial !important;
+    }
+}
+
+.dz-clickable {
+    cursor: pointer;
+    & > * {
+        @include pointer-events(none);
+    }
+}
+.dz-drag-hover {
+    opacity: 0.8;
+}
+.dz-uploading {
+    @include pointer-events(none);
+}
+
+.no-pointer-events {
+    @include pointer-events(none);
+}
+
+[tabindex="-1"] {
+    outline: 0;
+}

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+./api composer install
+./api php init --env=Development --overwrite=n
+./api php yii migrate --interactive=0
+./api php yii_test migrate --interactive=0
+./spa npm install

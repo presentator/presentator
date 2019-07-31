@@ -1,0 +1,142 @@
+.search-bar {
+    $barHeight: $largeFieldHeight;
+    position: relative;
+    z-index: 0;
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    background: $lightBorderColor;
+    border-radius: $baseRadius;
+    height: $barHeight;
+    transition: box-shadow $baseAnimationSpeed;
+    margin: 0 0 $baseSpacing;
+
+    & > :first-child {
+        border-top-left-radius: $baseRadius;
+        border-bottom-left-radius: $baseRadius;
+    }
+    & > :last-child {
+        border-top-right-radius: $baseRadius;
+        border-bottom-right-radius: $baseRadius;
+    }
+
+    // filter
+    .search-filter {
+        border: 0;
+        width: auto;
+        min-width: 100px;
+        max-width: 100%;
+        height: 100%;
+        background-color: darken($lightBorderColor, 3%);
+        border-radius: inherit;
+        box-shadow: none;
+        color: $lightTxtColor;
+        cursor: pointer;
+        &:hover,
+        &:active {
+            color: $txtColor;
+        }
+        &:active {
+            background-color: $borderColor;
+        }
+    }
+
+    // loader
+    .loader {
+        align-self: center;
+    }
+
+    // input
+    .search-input {
+        position: relative;
+        z-index: 0;
+        border: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        box-shadow: none;
+    }
+    .search-clear {
+        $size: $barHeight - 15;
+        position: absolute;
+        z-index: 2;
+        right: 7px;
+        top: 50%;
+        text-align: center;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        margin-top: -($size / 2);
+        text-decoration: none;
+        cursor: pointer;
+        color: $lightTxtColor;
+        border-radius: $baseRadius;
+        transition: background $baseAnimationSpeed,
+                    transform $baseAnimationSpeed,
+                    opacity $baseAnimationSpeed,
+                    visibility $baseAnimationSpeed,
+                    color $baseAnimationSpeed;
+        @include user-select(none);
+        &:before {
+            content: "\e9c1";
+            display: inline-block;
+            vertical-align: top;
+            font-family: $iconFont;
+            font-size: 22px;
+        }
+        & ~ .search-input {
+            padding-right: $size + 20;
+        }
+        &:hover,
+        &:active {
+            color: $dangerColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: $borderColor;
+        }
+    }
+    .search-input-wrapper {
+        $searchIconSize: 30px;
+        position: relative;
+        width: 100%;
+        &:before {
+            content: "\e94b";
+            font-family: $iconFont;
+            display: inline-block;
+            vertical-align: top;
+            position: absolute;
+            left: $smallSpacing;
+            top: 50%;
+            width: $searchIconSize;
+            height: $searchIconSize;
+            line-height: $searchIconSize;
+            margin-top: -($searchIconSize / 2);
+            font-size: 22px;
+            color: $lightTxtColor;
+            transition: color $baseAnimationSpeed;
+            @include pointer-events(none);
+        }
+        .search-input {
+            padding-left: $searchIconSize + 20px; // make space for the search icon
+        }
+        .search-clear {
+            @include hide;
+            transform: translateX(10px);
+        }
+        &.active {
+            &:before {
+                color: $txtColor;
+            }
+            .search-clear {
+                @include show;
+                transform: scale(1);
+            }
+        }
+    }
+
+    &:focus-within {
+        box-shadow: 0px 0px 0px 2px $borderColor;
+    }
+}

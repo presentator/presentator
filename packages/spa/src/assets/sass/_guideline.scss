@@ -1,0 +1,87 @@
+.guideline-section {
+    @extend %block;
+    position: relative;
+
+    // header
+    .section-header {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        min-height: 50px;
+        margin: 0 0 $smallSpacing;
+        line-height: $largeLineHeight;
+        border-radius: $baseRadius;
+        background: $lightBorderColor;
+        .title,
+        .description {
+            display: inline-block;
+            vertical-align: middle;
+            width: auto;
+            margin: 0;
+            line-height: inherit;
+        }
+        .title {
+            margin-right: 7px;
+        }
+        .description {
+            margin: 0 3px;
+        }
+        .ctrl-item {
+            $size: 24px;
+            outline: 0;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            min-width: $size;
+            padding: 0 4px;
+            height: $size;
+            line-height: $size;
+            text-align: center;
+            border-radius: $baseRadius;
+            cursor: pointer;
+            color: $lightTxtColor;
+            text-decoration: none;
+            @include user-select(none);
+            transition: color $baseAnimationSpeed,
+                        background $baseAnimationSpeed;
+            i, .txt {
+                display: inline-block;
+                vertical-align: top;
+            }
+            .txt {
+                font-size: $smallFontSize;
+            }
+            i {
+                font-size: 16px;
+                line-height: inherit;
+            }
+            .dropdown {
+                left: 0;
+                right: auto;
+                white-space: nowrap;
+            }
+            &:hover {
+                color: $txtColor;
+            }
+            &:focus,
+            &:active,
+            &.active {
+                color: $txtColor;
+                background: $borderColor;
+            }
+        }
+    }
+
+    // content
+    .section-content {
+        @extend %block;
+    }
+}
+
+.guideline-sections-list {
+    @extend %block;
+    .guideline-section {
+        margin: 0;
+        animation: stepInTop $prolongedAnimationSpeed;
+    }
+}

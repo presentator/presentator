@@ -1,0 +1,468 @@
+.preview-nav {
+    $size: 120px;
+    display: block;
+    position: fixed;
+    z-index: 4;
+    top: 50%;
+    left: -($size / 2);
+    padding-left: ($size / 2) - 10;
+    margin-top: -($size / 2) - $previewBarHeight;
+    outline: 0;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    width: $size;
+    height: $size;
+    line-height: $size;
+    border-radius: $size;
+    background: rgba($overlayColor, 0.3);
+    transition: background $baseAnimationSpeed,
+                transform $baseAnimationSpeed;
+    transform: translateX(-25%);
+    @include user-select(none);
+    &.nav-right {
+        left: auto;
+        padding-left: 0;
+        right: -($size / 2);
+        padding-right: ($size / 2) - 10;
+        transform: translateX(25%);
+    }
+    &.nav-disabled {
+        @include pointer-events(none);
+        background: rgba($overlayColor, 0.1);
+    }
+    &:hover {
+        transform: translateX(0px);
+        background: rgba($overlayColor, 0.5);
+    }
+    &:active {
+        transition-duration: 0.1s;
+        background: rgba($overlayColor, 0.6);
+    }
+}
+
+.preview-screen-holder {
+    @extend %block;
+    position: relative;
+    z-index: auto;
+    outline: 0;
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    text-align: center;
+    @include user-select(none);
+    .screen {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        z-index: 0;
+        width: auto;
+        height: auto;
+        max-width: none;
+    }
+    .screen-inner-wrapper {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+    }
+    .screen-wrapper {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        outline: 0;
+        max-width: 100%;
+        max-height: 100%;
+        overflow: auto; // fallback
+        overflow: overlay;
+        scroll-behavior: auto;
+        border-radius: inherit;
+        // clear inline-block spaces
+        font-size: 0;
+        line-height: 0;
+        background: url('#{$imagesPath}/transp-pattern.png');
+        & > * {
+            font-size: $baseFontSize;
+            line-height: $baseLineHeight;
+        }
+        &.resizing {
+            cursor: se-resize;
+            .screen {
+                cursor: inherit;
+            }
+        }
+        &.dragging {
+            cursor: move;
+            .screen {
+                cursor: inherit;
+            }
+        }
+    }
+
+    // fixed header and footer
+    .fixed-screen-header,
+    .fixed-screen-footer {
+        display: block;
+        position: sticky;
+        z-index: 5;
+        top: 0;
+        .fixed-screen-overflow-wrapper {
+            display: inline-flex;
+            vertical-align: top;
+            overflow: hidden;
+            max-height: 100%;
+        }
+        .fixed-screen-content-wrapper {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    .fixed-screen-footer {
+        top: auto;
+        bottom: 0;
+        .fixed-screen-content-wrapper {
+            align-self: flex-end;
+        }
+    }
+
+    // transition states
+    .old-active-screen {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 0;
+    }
+    .new-active-screen {
+        z-index: 1;
+    }
+
+    .overlay-screen-wrapper {
+        position: absolute;
+        z-index: 5;
+        left: 50%;
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%);
+        // positions
+        &.position-top-left {
+            top: 0;
+            bottom: auto;
+            left: 0;
+            right: auto;
+            transform: none;
+        }
+        &.position-top-center {
+            top: 0;
+            bottom: auto;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
+        &.position-top-right {
+            top: 0;
+            bottom: auto;
+            left: auto;
+            right: 0;
+            transform: none;
+        }
+        &.position-bottom-left {
+            top: auto;
+            bottom: 0;
+            left: 0;
+            right: auto;
+            transform: none;
+        }
+        &.position-bottom-center {
+            top: auto;
+            bottom: 0;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
+        &.position-bottom-right {
+            top: auto;
+            bottom: 0;
+            left: auto;
+            right: 0;
+            transform: none;
+        }
+        // animations
+        &.transition-fade {
+            .screen {
+                animation: fadeIn $screenAnimationSpeed;
+            }
+            &.closing .screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+        }
+        &.transition-slide-left {
+            .screen {
+                animation: stepInLeft $screenAnimationSpeed;
+            }
+            &.closing .screen {
+                animation: stepOutLeft  $screenAnimationSpeed forwards;
+            }
+        }
+        &.transition-slide-right {
+            .screen {
+                animation: stepInRight $screenAnimationSpeed;
+            }
+            &.closing .screen {
+                animation: stepOutRight $screenAnimationSpeed forwards;
+            }
+        }
+        &.transition-slide-top {
+            .screen {
+                animation: stepInTop $screenAnimationSpeed;
+            }
+            &.closing .screen {
+                animation: stepOutTop $screenAnimationSpeed forwards;
+            }
+        }
+        &.transition-slide-bottom {
+            .screen {
+                animation: stepInBottom $screenAnimationSpeed;
+            }
+            &.closing .screen {
+                animation: stepOutBottom $screenAnimationSpeed forwards;
+            }
+        }
+        &.closing {
+            .hotspot,
+            .comment-pin {
+                display: none !important;
+            }
+        }
+    }
+
+    &.align-center {
+        text-align: center;
+        .old-active-screen {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    &.align-left {
+        text-align: left;
+    }
+    &.align-right {
+        text-align: right;
+        .old-active-screen {
+            left: auto;
+            right: 0;
+        }
+    }
+    &.mobile {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        padding: 10px 5px;
+        background: $borderColor;
+        border-radius: 10px;
+        @include shadowize;
+        .preview-nav {
+            transform: translateX(0px);
+        }
+    }
+    &.desktop {
+        .screen-wrapper {
+            width: 100%;
+        }
+    }
+
+    &.transitioning {
+        .hotspot,
+        .comment-pin {
+            display: none !important;
+        }
+        .screen-wrapper {
+            overflow: hidden;
+        }
+        .new-active-screen {
+            // used to prevent flickering during js screens rendering
+            // in combination with 0.1s new active screen animation delay
+            opacity: 0;
+        }
+        &.transition-fade {
+            .old-active-screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+            .new-active-screen {
+                animation: fadeIn ($screenAnimationSpeed - 0.1s) 0.1s forwards;
+            }
+        }
+        &.transition-slide-left {
+            .old-active-screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+            .new-active-screen {
+                animation: screenSlideLeft ($screenAnimationSpeed - 0.1s) 0.1s forwards;
+            }
+        }
+        &.transition-slide-right {
+            .old-active-screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+            .new-active-screen {
+                animation: screenSlideRight ($screenAnimationSpeed - 0.1s) 0.1s forwards;
+            }
+        }
+        &.transition-slide-top {
+            .old-active-screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+            .new-active-screen {
+                animation: screenSlideTop ($screenAnimationSpeed - 0.1s) 0.1s forwards;
+            }
+        }
+        &.transition-slide-bottom {
+            .old-active-screen {
+                animation: fadeOut $screenAnimationSpeed forwards;
+            }
+            .new-active-screen {
+                animation: screenSlideBottom ($screenAnimationSpeed - 0.1s) 0.1s forwards;
+            }
+        }
+    }
+}
+
+.preview-close-handle {
+    $size: 34px;
+    position: absolute;
+    z-index: 100;
+    right: $smallSpacing;
+    top: $smallSpacing;
+    width: $size;
+    height: $size;
+    line-height: $size;
+    border-radius: $size;
+    text-align: center;
+    color: #fff;
+    opacity: 0.6;
+    background: $dangerColor;
+    transition: opacity $baseAnimationSpeed, transform $baseAnimationSpeed;
+    text-decoration: none;
+    cursor: pointer;
+    @include shadowize;
+    &:before {
+        content: "\e905";
+        font-family: $iconFont;
+        line-height: inherit;
+        font-size: 14px;
+    }
+    &:hover,
+    &:active {
+        opacity: 1;
+    }
+    &:active {
+        transition-duration: 0.1s;
+        transform: scale(1.1);
+    }
+}
+
+.preview-screens-panel {
+    @extend %block;
+    @extend %clear-after;
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: #fff;
+    .thumbs-list {
+        padding: $smallSpacing;
+        white-space: nowrap;
+        .thumb {
+            float: none;
+            width: 120px;
+            margin: 0 $smallSpacing 0 0;
+        }
+    }
+    .preview-bar ~ & {
+        border-bottom: 0;
+        border-top: 1px solid $lightBorderColor;
+    }
+}
+
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    background: $bodyColor;
+    .preview-screen-holder {
+        align-self: center;
+        &.desktop {
+            height: 100%;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+    }
+    .preview-bar {
+        position: relative;
+        z-index: 10;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        top: auto;
+        .screen-title {
+            @include ellipsis;
+            max-width: 250px;
+        }
+    }
+    .preview-bar,
+    .preview-screens-panel {
+        flex-shrink: 0;
+    }
+
+    // modes
+    &.hotspots-mode {
+        .screen {
+            cursor: crosshair;
+        }
+        .preview-screen-holder.mobile {
+            background: $primaryColor;
+        }
+    }
+    &.comments-mode {
+        .screen {
+            cursor: crosshair;
+        }
+        .preview-screen-holder.mobile {
+            background: $dangerColor;
+        }
+    }
+    &.preview-mode {
+        .hotspot {
+            opacity: 0;
+        }
+        &.preview-mode-hints {
+            .hotspot {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+// hide hotspot popover on resizing
+.resizer-active {
+    .hotspot-popover-holder {
+        .popover-overlay {
+            opacity: 0 !important;
+            visibility: hidden;
+        }
+    }
+    .hotspot-popover {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}

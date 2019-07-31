@@ -1,0 +1,186 @@
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 100vh;
+    background: $primaryColor;
+    color: $primaryHintColor;
+    padding: ($baseSpacing - 5) $baseSpacing;
+
+    .app-logo-wrapper {
+        @extend %block;
+        text-align: center;
+        .app-logo {
+            display: inline-block;
+            vertical-align: top;
+            text-decoration: none;
+            white-space: nowrap;
+            .img, .txt {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .txt {
+                font-size: 24px;
+                line-height: 1;
+                color: #fff;
+                font-weight: bold;
+                margin-top: -10px;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .app-footer {
+        a {
+            color: $primaryHintColor;
+            &:hover {
+                color: #fff;
+            }
+        }
+        .languages-select {
+            .selected-language {
+                color: $primaryHintColor;
+                background-color: lighten($primaryColor, 3%);
+            }
+            &:hover,
+            &.active {
+                .selected-language {
+                    background-color: lighten($primaryColor, 6%);
+                }
+            }
+            &.active {
+                .selected-language {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    .auth-panel {
+        border: 0;
+        color: $txtColor;
+        .forgotten-password-link {
+            float: right;
+            font-size: $smallFontSize;
+            line-height: $smallLineHeight;
+            margin: 10px 0 0;
+            text-decoration: none;
+        }
+    }
+
+    .auth-clients-bar {
+        @extend %block;
+        text-align: center;
+        .heading {
+            @extend %block;
+            text-align: center;
+            margin: 0;
+        }
+        .auth-client {
+            $circleSize: 55px;
+            $iconSize: 23px;
+            display: inline-block;
+            vertical-align: middle;
+            width: $circleSize;
+            height: $circleSize;
+            border-radius: $circleSize;
+            line-height: $circleSize - 2;
+            border: 1px solid $borderColor;
+            text-align: center;
+            cursor: pointer;
+            outline: 0;
+            text-decoration: none;
+            transition: background $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed;
+            @include shadowize;
+            @include v-align-helper;
+
+            // states
+            &:hover,
+            &:focus,
+            &:active {
+                background: $lightBorderColor;
+                @include shadowize(0px 0px 0px 1px $borderColor);
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $borderColor;
+            }
+
+            // client icons
+            &:after {
+                content: "\e991";
+                display: inline-block;
+                vertical-align: middle;
+                font-family: $iconFont;
+                width: $iconSize;
+                height: $iconSize;
+                font-size: 20px;
+                color: $lightTxtColor;
+                line-height: $iconSize;
+                background-repeat: none;
+                background-position: center;
+                background-size: 100%;
+            }
+            &.google:after {
+                content: "";
+                background-image: url('#{$imagesPath}/google-logo.svg');
+            }
+            &.facebook:after {
+                content: "";
+                background-image: url('#{$imagesPath}/facebook-logo.svg');
+            }
+            &.twitter:after {
+                content: "";
+                background-image: url('#{$imagesPath}/twitter-logo.svg');
+            }
+            &.dribbble:after {
+                content: "";
+                background-image: url('#{$imagesPath}/dribbble-logo.svg');
+            }
+            &.github:after {
+                content: "";
+                background-image: url('#{$imagesPath}/github-logo.svg');
+            }
+            &.gitlab:after {
+                content: "";
+                background-image: url('#{$imagesPath}/gitlab-logo.svg');
+            }
+            &.dummy {
+                border-color: $lightBorderColor;
+                background: $lightBorderColor;
+                @include pointer-events(none);
+                &:after {
+                    content: "";
+                    display: none;
+                }
+            }
+        }
+        .auth-clients-list {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            .auth-client {
+                margin: 10px 8px 0;
+            }
+        }
+    }
+
+    .auth-meta {
+        @extend %block;
+        text-align: center;
+        .txt, i, .btn {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        a {
+            color: $primaryHintColor;
+            text-decoration: none;
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+}

@@ -1,0 +1,319 @@
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+}
+
+@keyframes stepInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes stepOutBottom {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@keyframes stepInTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes stepOutTop {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes stepInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes stepOutLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+@keyframes stepInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes stepOutRight {
+    0% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0px);
+    }
+    35% {
+        transform: translateX(3px);
+    }
+    65% {
+        transform: translateX(-3px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes tabActivate {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    30% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes tooltipShow {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes tooltipHide {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes popupPanelShow {
+    0% {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes popupPanelHide {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes progressBar {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+
+@keyframes previewPanel {
+    0% {
+        max-height: 0;
+    }
+    100% {
+        max-height: 160px;
+    }
+}
+.previewPanel-enter-active {
+    animation: previewPanel $prolongedAnimationSpeed ease;
+}
+.previewPanel-leave-active {
+    animation: previewPanel $baseAnimationSpeed ease-in reverse;
+}
+
+@keyframes screenSlideLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@keyframes screenSlideRight {
+    0% {
+        opacity: 1;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@keyframes screenSlideTop {
+    0% {
+        opacity: 1;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@keyframes screenSlideBottom {
+    0% {
+        opacity: 1;
+        transform: translateY(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@each $color in $colorsList {
+    @keyframes beacon-#{nth($color, 1)} {
+        0% {
+            box-shadow: 0px 0px 0px 0px rgba(nth($color, 2), 0.6);
+        }
+        100% {
+            box-shadow: 0px 0px 0px 10px rgba(nth($color, 2), 0);
+        }
+    }
+}
+
+@keyframes unreadComment {
+    0% {
+        background: $dangerColor;
+        @include shadowize(0px 0px 0px 0px rgba($dangerColor, 0.6));
+    }
+    50% {
+        background: lighten($dangerColor, 15%);
+    }
+    100% {
+        background: $dangerColor;
+        @include shadowize(0px 0px 0px 10px rgba($dangerColor, 0));
+    }
+}
+
+@keyframes sidebarPanel {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: $sidebarPanelWidth;
+    }
+}
+.sidebarPanel-enter-active {
+    animation: sidebarPanel $prolongedAnimationSpeed ease;
+}
+.sidebarPanel-leave-active {
+    animation: sidebarPanel $baseAnimationSpeed ease-in reverse;
+}

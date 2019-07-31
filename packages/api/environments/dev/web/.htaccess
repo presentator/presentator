@@ -1,0 +1,13 @@
+RewriteEngine on
+
+# Enable CORS by default
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "PUT, GET, POST, DELETE, HEAD, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization, cache-control, x-requested-with, x-preview-token"
+Header set Access-Control-Expose-Headers "X-Pagination-Total-Count, X-Pagination-Page-Count, X-Pagination-Per-Page, X-Pagination-Current-Page"
+
+# If a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Otherwise forward it to index.php
+RewriteRule . index.php

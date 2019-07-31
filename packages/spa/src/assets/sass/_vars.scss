@@ -1,0 +1,81 @@
+// colors
+// -------------------------------------------------------------------
+$txtColor:         #454c69;
+$lightTxtColor:    lighten($txtColor, 26%);
+$primaryColor:     #4038ab;
+$primaryHintColor: lighten($primaryColor, 22%);
+$bodyColor:        #f5f7fb;
+$borderColor:      #d1dae7;
+$lightBorderColor: #ecf0f5;
+$darkBorderColor:  #b6c4d9;
+$successColor:     #38dcc9;
+$warningColor:     #f9a635;
+$dangerColor:      #de3a64;
+$overlayColor:     rgba($txtColor, 0.9);
+
+$colorsList: (
+    ('white',        #fff,              $primaryColor),
+    ('primary',      $primaryColor,     #fff),
+    ('success',      $successColor,     #fff),
+    ('danger',       $dangerColor,      #fff),
+    ('warning',      $warningColor,     #fff),
+    ('default',      $txtColor,         #fff),
+    ('border',       $borderColor,      $txtColor),
+    ('dark-border',  $darkBorderColor,  $txtColor),
+    ('light-border', $lightBorderColor, $txtColor),
+);
+
+// sizes
+// -------------------------------------------------------------------
+$baseFontSize:  14px;
+$smallFontSize: 13px;
+$largeFontSize: 15px;
+
+$baseLineHeight:  23px;
+$smallLineHeight: 19px;
+$largeLineHeight: 26px;
+
+$baseSpacing:  30px;
+$smallSpacing: 15px;
+$largeSpacing: 60px;
+
+$baseFieldHeight:  42px;
+$smallFieldHeight: 34px;
+$largeFieldHeight: 50px;
+
+$sidebarWidth: 80px;
+$sidebarPanelWidth: 370px;
+
+$previewBarHeight: 65px;
+
+$baseContainerWrapperWidth:  850px;
+$largeContainerWrapperWidth: 1200px;
+$smallContainerWrapperWidth: 500px;
+
+// animations speed
+// -------------------------------------------------------------------
+$baseAnimationSpeed:         0.2s;
+$prolongedAnimationSpeed:    0.35s;
+$popupAnimationSpeed:        0.3s;
+$screenAnimationSpeed:       0.35s;
+$notificationAnimationSpeed: 0.5s;
+$pulseAnimationSpeed:        1.8s;
+$loaderAnimationSpeed:       1s;
+
+// others
+// -------------------------------------------------------------------
+$fontsPath:      '../fonts';
+$imagesPath:     '../images';
+$baseFont:       'Ubuntu';
+$iconFont:       'feather-icons';
+$loaderIconCode: '\e955';
+$baseFontFamily: $baseFont, Arial, Helvetica, sans-serif;
+$baseFontWeight: 400;
+$baseRadius:     8px;
+
+$sidesList: (
+    ('l', 'left'),
+    ('r', 'right'),
+    ('t', 'top'),
+    ('b', 'bottom'),
+);

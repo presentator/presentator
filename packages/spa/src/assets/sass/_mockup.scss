@@ -1,0 +1,99 @@
+.browser {
+    $topBarHeight: 25px;
+    $topBarBtnSize: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    width: 300px;
+    height: 200px;
+    background: #fff;
+    border-radius: $baseRadius;
+    position: relative;
+    padding-top: $topBarHeight;
+    text-align: center;
+    overflow: hidden;
+    @include shadowize;
+    &:before { // top bar
+        content: "";
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: $topBarHeight;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+        background: $lightBorderColor;
+    }
+    &:after { // top bar btns
+        content: "";
+        position: absolute;
+        z-index: 2;
+        left: 10px;
+        top: ($topBarHeight - $topBarBtnSize) / 2;
+        width: $topBarBtnSize;
+        height: $topBarBtnSize;
+        border-radius: $topBarBtnSize;
+        background: $borderColor;
+        box-shadow: ($topBarBtnSize + 5) 0px 0px 0px $borderColor,
+                    (2 * $topBarBtnSize + 10) 0px 0px 0px $borderColor;
+    }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    i {
+        font-size: 40px;
+        line-height: 1;
+        display: inline-block;
+        vertical-align: top;
+        color: inherit;
+        color: $borderColor;
+    }
+    .txt {
+        color: $lightBorderColor;
+        font-size: 30px;
+        line-height: 1;
+        font-weight: bold;
+    }
+}
+
+.mockup-bg {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 50%;
+    width: 100%;
+    padding-bottom: 100%;
+    background: $lightBorderColor;
+}
+
+.mockup {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 350px;
+    max-width: 100%;
+    animation: stepInTop $prolongedAnimationSpeed;
+    .mockup-bg {
+        animation: scaleIn $prolongedAnimationSpeed;
+    }
+    .browser {
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        width: 75%;
+        height: 65%;
+        transform: translateX(-50%);
+        animation: fadeIn $prolongedAnimationSpeed;
+        &.secondary {
+            z-index: 0;
+            margin-left: -5%;
+        }
+        &.primary {
+            z-index: 1;
+            top: 10%;
+            margin-left: 5%;
+        }
+    }
+}

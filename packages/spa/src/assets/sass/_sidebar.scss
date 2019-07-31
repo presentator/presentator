@@ -1,0 +1,250 @@
+// common sidebar container elements
+.app-sidebar-section {
+    width: 100%;
+    padding: 18px;
+    .form-group {
+        margin: 0;
+    }
+    &.app-sidebar-header,
+    &.app-sidebar-footer {
+        flex-shrink: 0;
+    }
+    &.app-sidebar-header {
+        padding-bottom: 10px;
+    }
+    &.app-sidebar-content {
+        flex-grow: 1;
+        max-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto; // fallback
+        overflow-y: overlay;
+    }
+}
+
+// primary sidebar
+.app-sidebar {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: $sidebarWidth;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: $primaryColor;
+    color: lighten($primaryColor, 20%);
+
+    // app logo
+    .logo {
+        display: inline-block;
+        vertical-align: top;
+        text-decoration: none;
+        padding: 0px;
+        width: 100%;
+        text-align: center;
+        img, svg {
+            display: inline-block;
+            vertical-align: top;
+            width: 94%;
+            height: auto;
+        }
+    }
+
+    // account section
+    .user-profile {
+        position: relative;
+        outline: 0;
+        cursor: pointer;
+        text-decoration: none;
+        .dropdown {
+            top: auto;
+            left: 0;
+            border: 0;
+            bottom: 100%;
+            margin-top: 0;
+            margin-bottom: 10px;
+            box-shadow: 0px 3px 8px 0px rgba(#0e104d, 0.1);
+        }
+        .avatar {
+            @include shadowize;
+            background: lighten($primaryColor, 2%);
+            color: inherit;
+        }
+    }
+
+    // main menu
+    .main-menu {
+        @extend %block;
+        text-align: center;
+        .menu-delimiter {
+            @extend %block;
+            color: $primaryHintColor;
+            font-size: $smallFontSize;
+            line-height: $smallLineHeight;
+            margin: 0 0 5px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .menu-item {
+            @extend %block;
+            @include v-align-helper;
+            @include shadowize;
+            position: relative;
+            cursor: pointer;
+            height: 44px;
+            margin: 0 0 $smallSpacing;
+            border-radius: $baseRadius;
+            color: lighten($primaryColor, 30%);
+            background: darken($primaryColor, 6%);
+            text-decoration: none;
+            text-align: center;
+            transition: color $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed,
+                        background $baseAnimationSpeed;
+            i {
+                display: inline-block;
+                vertical-align: middle;
+                color: inherit;
+                font-size: 17.5px;
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &:hover {
+                color: #fff;
+                background: darken($primaryColor, 10%);
+            }
+            &:active {
+                color: #fff;
+                z-index: 2;
+                outline: 0;
+                transition-duration: 0s;
+                background: darken($primaryColor, 15%);
+                @include shadowize(0px 0px 0px 2px lighten($primaryColor, 12%));
+            }
+            &.menu-item-secondary {
+                color: lighten($primaryColor, 25%);
+                background: lighten($primaryColor, 4%);
+                &:hover {
+                    color: lighten($primaryColor, 40%);
+                    background: lighten($primaryColor, 6%);
+                }
+                &:active {
+                    background: lighten($primaryColor, 5%);
+                }
+            }
+            &.active {
+                color: #fff;
+                background: lighten($primaryColor, 12%);
+            }
+        }
+        .menu-item-group {
+            margin: 0 0 $smallSpacing;
+            border-radius: $baseRadius;
+            .menu-item {
+                margin: 0;
+                border-radius: 0;
+                border-top: 1px solid darken($primaryColor, 15%);
+                &:first-child {
+                    border-top: 0;
+                    border-top-left-radius: $baseRadius;
+                    border-top-right-radius: $baseRadius;
+                }
+                &:last-child {
+                    border-bottom-left-radius: $baseRadius;
+                    border-bottom-right-radius: $baseRadius;
+                }
+            }
+        }
+    }
+
+    // meta menu
+    .meta-menu {
+        @extend %block;
+        .menu-item {
+            position: relative;
+            $size: 30px;
+            display: block;
+            margin: 0 auto 10px;
+            width: $size;
+            height: $size;
+            line-height: $size;
+            text-align: center;
+            border-radius: $size;
+            color: inherit;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color $baseAnimationSpeed,
+                        background $baseAnimationSpeed;
+            i, .txt {
+                vertical-align: top;
+                line-height: inherit;
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &:hover {
+                color: #fff;
+                background: darken($primaryColor, 4%);
+            }
+            &:active {
+                color: #fff;
+                transition-duration: 0.1s;
+                box-shadow: 0px 0px 0px 2px lighten($primaryColor, 12%);
+            }
+            &.active {
+                color: #fff;
+                background: lighten($primaryColor, 12%);
+            }
+        }
+    }
+}
+
+// sidebar panel
+.app-sidebar-panel {
+    @include shadowize;
+    overflow: hidden;
+    position: absolute;
+    z-index: 99;
+    left: $sidebarWidth;
+    top: 0;
+    width: $sidebarPanelWidth;
+    height: 100%;
+    padding: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: $txtColor;
+    text-align: left;
+    .app-sidebar-section {
+        margin: 0;
+        padding: 20px;
+        width: $sidebarPanelWidth; // required for the overflow animation
+    }
+    .app-sidebar-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        .title {
+            margin: 0;
+            width: auto;
+            line-height: 1;
+            flex-grow: 1;
+            text-align: left;
+        }
+        .list-ctrls {
+            flex-shrink: 1;
+        }
+    }
+    .app-sidebar-content {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}

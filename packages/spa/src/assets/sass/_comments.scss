@@ -1,0 +1,292 @@
+// pin
+.comment-pin {
+    $size: 36px;
+    display: block;
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    width: $size;
+    height: $size;
+    color: #fff;
+    text-align: center;
+    line-height: $size;
+    border-radius: $size;
+    border-top-left-radius: $baseRadius;
+    background: $dangerColor;
+    transition: background $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed;
+    counter-increment: comments;
+    @include user-select(none);
+    @include shadowize;
+    &:after {
+        content: counter(comments);
+    }
+    &.loader {
+        &:before {
+            font-size: 18px;
+        }
+        &:after {
+            content: none;
+        }
+    }
+    &:hover {
+        @include shadowize(0px 0px 0px 4px rgba($dangerColor, 0.3));
+    }
+    &.unread {
+        animation: unreadComment $pulseAnimationSpeed linear infinite;
+    }
+    &.active {
+        z-index: 100;
+        animation: none;
+        background: $warningColor;
+        @include shadowize(0px 0px 0px 4px rgba($warningColor, 0.3));
+    }
+    &.completed {
+        background: $successColor;
+        &.unread {
+            animation: unreadComment $pulseAnimationSpeed linear infinite;
+        }
+        &:hover,
+        &.active {
+            @include shadowize(0px 0px 0px 4px rgba($successColor, 0.3));
+        }
+    }
+}
+.comment-pins-list {
+    @extend %block;
+    counter-reset: comments;
+}
+
+// comments/replies list
+.comment-list-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    color: $txtColor;
+    text-align: left;
+    font-size: $baseFontSize;
+    line-height: $smallLineHeight;
+    & > * {
+        margin-left: 10px;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+    .content {
+        flex-grow: 1;
+        flex-shrink: 1;
+        .message {
+            @extend %content;
+            margin-top: 5px;
+        }
+        .meta {
+            margin-top: 5px;
+        }
+        .name, .date {
+            display: inline;
+        }
+    }
+    .avatar {
+        width: 42px;
+        flex-shrink: 0;
+    }
+    .list-ctrls {
+        align-self: flex-start;
+    }
+
+    // styles
+    &.handle {
+        cursor: pointer;
+        outline: 0;
+        padding: 10px !important;
+        margin: 0 0 $smallSpacing;
+        background: #fff;
+        text-decoration: none;
+        border-radius: $baseRadius;
+        transition: border-color $baseAnimationSpeed,
+                    background $baseAnimationSpeed;
+        border: 1px solid $lightBorderColor;
+        @include user-select(none);
+        @include shadowize;
+        &:hover {
+            background: $lightBorderColor;
+        }
+        &:active,
+        &.active {
+            transition-duration: 0.1s;
+            border-color: $borderColor;
+            background: $borderColor;
+        }
+    }
+}
+.comments-list {
+    @extend %block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .comment-list-item {
+        padding: $smallSpacing 0;
+    }
+}
+
+.comment-message-form {
+    position: relative;
+    &:first-child {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+    &:last-child {
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+    & > :first-child {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+    & > :last-child {
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+    .form-group {
+        margin: 0;
+        z-index: 1;
+        background: none;
+        input, textarea, select {
+            box-shadow: none;
+            background: inherit;
+            border: 0;
+            border-radius: inherit;
+            padding-left: $smallSpacing;
+            padding-right: $smallSpacing;
+        }
+        .input-group {
+            border: 0;
+            border-radius: ihherit;
+            background: inherit;
+            box-shadow: none;
+            .input-addon {
+                border: 0;
+                border-top: 1px solid transparent;
+                border-bottom: 1px solid transparent;
+            }
+        }
+        .help-block {
+            padding: 5px $smallSpacing;
+            line-height: $smallLineHeight - 4;
+        }
+        &.has-error {
+            input, textarea, select,
+            .input-group, .input-addon {
+                box-shadow: none;
+            }
+            .help-block-error {
+                margin-top: -10px;
+            }
+        }
+    }
+    .email-field {
+        border-bottom: 1px solid $lightBorderColor;
+    }
+    .message-field {
+        textarea {
+            min-height: 0;
+            height: 88px;
+            padding-top: ($smallSpacing - 3);
+            padding-bottom: ($smallSpacing - 3);
+            line-height: $baseLineHeight - 2;
+            resize: none;
+            border-radius: inherit;
+        }
+        .input-dropdown {
+            border: 0;
+            max-height: 120px;
+            box-shadow: 0px 0px 0px 1px #ffffff;
+        }
+    }
+    .submit-icon {
+        $size: 25px;
+        position: absolute;
+        z-index: 2;
+        bottom: 8px;
+        right: 8px;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 16px;
+        border: 0;
+        border-radius: $baseRadius;
+        color: $primaryColor;
+        transition: color $baseAnimationSpeed,
+                    background $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed;
+        @include user-select(none);
+        i {
+            line-height: inherit;
+        }
+        &:hover,
+        &:active {
+            color: #fff;
+            background: $primaryColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: darken($primaryColor, 5%);
+            box-shadow: 0px 0px 0px 2px lighten($primaryColor, 20%);
+        }
+    }
+}
+
+.comment-popover {
+    padding: 0;
+    .popover-content > :first-child {
+        border-top-left-radius: $baseRadius;
+        border-top-right-radius: $baseRadius;
+    }
+    .popover-content > :last-child {
+        border-bottom-left-radius: $baseRadius;
+        border-bottom-right-radius: $baseRadius;
+    }
+    .resolved-checkbox {
+        $vPadding: 7px;
+        display: block;
+        width: auto;
+        margin: 0;
+        padding: $vPadding $smallSpacing;
+        font-size: $smallFontSize;
+        border-bottom: 1px solid $lightBorderColor;
+        input[type="checkbox"] ~ label {
+            $checkSize: 19px;
+            padding-left: $checkSize + 7;
+            line-height: $checkSize;
+            &:before,
+            &:after {
+                width: $checkSize;
+                height: $checkSize;
+                line-height: $checkSize;
+                left: $smallSpacing;
+                top: $vPadding + 1;
+            }
+            &:after {
+                font-size: $baseFontSize;
+                margin-top: 1px;
+            }
+        }
+    }
+    .comment-message-form {
+        background: $bodyColor;
+    }
+    .comments-list {
+        padding-left: $smallSpacing;
+        padding-right: $smallSpacing;
+        max-height: 410px;
+        & ~ .comment-message-form {
+            border-top: 1px solid $lightBorderColor;
+        }
+    }
+}

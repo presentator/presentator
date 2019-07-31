@@ -1,0 +1,55 @@
+{
+    "name": "presentator/starter",
+    "description": "Skeleton Presentator v2 installation setup",
+    "keywords": ["starter", "skeleton", "presentator-starter", "design", "collaboration", "yii2"],
+    "minimum-stability": "dev",
+    "type": "project",
+    "authors": [
+        {
+            "name":  "Gani Georgiev",
+            "email": "gani.georgiev@gmail.com"
+        }
+    ],
+    "require": {
+        "presentator/api": "dev-master"
+    },
+    "config": {
+        "platform": {
+            "php": "7.1.0"
+        },
+        "optimize-autoloader": true,
+        "process-timeout":     1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "/home/gani/projects/presentator/packages/api"
+        },
+        {
+            "type": "composer",
+            "url":  "https://asset-packagist.org"
+        }
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "presentator\\api\\base\\Starter::postRun"
+        ],
+        "post-update-cmd": [
+            "presentator\\api\\base\\Starter::postRun"
+        ],
+        "post-create-project-cmd": [
+            "presentator\\api\\base\\Starter::postRun"
+        ]
+    },
+    "extra": {
+        "starter": {
+            "spaConfig": {
+                "VUE_APP_API_URL": "/api",
+                "VUE_APP_FIRESTORE_PROJECT_ID": ""
+            }
+        }
+    }
+}

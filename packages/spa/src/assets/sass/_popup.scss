@@ -1,0 +1,213 @@
+.popup {
+    $closeHandleSize: 25px;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+    outline: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include v-align-helper;
+
+    // overlay
+    .popup-overlay {
+        position: fixed;
+        z-index: -1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($txtColor, 0.85);
+    }
+
+    // generic close handle
+    .popup-close-handle {
+        display: inline-block;
+        vertical-align: top;
+        width: $closeHandleSize;
+        height: $closeHandleSize;
+        line-height: $closeHandleSize;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        background: none;
+        text-decoration: none;
+        border-radius: $baseRadius !important;
+        transition: background $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed;
+        @include user-select(none);
+        &:before {
+            content: "\e905";
+            display: inline-block;
+            vertical-align: top;
+            font-family: $iconFont;
+            font-size: 19px;
+            font-weight: normal;
+        }
+        &:hover {
+            background: rgba(#fff, 0.2);
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: rgba(#fff, 0.4);
+            box-shadow: 0px 0px 0px 2px rgba(#fff, 0.6);
+        }
+    }
+
+    // header/footer ctrls
+    .side-ctrl {
+        $size: 27px;
+        position: absolute;
+        z-index: 2;
+        display: inline-block;
+        vertical-align: top;
+        top: 0;
+        left: 0;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: $baseRadius;
+        font-size: 18px;
+        color: $lightTxtColor;
+        transition: color $baseAnimationSpeed,
+                    background $baseAnimationSpeed;
+        @include user-select(none);
+        i {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+        }
+        &.side-ctrl-right {
+            left: auto;
+            right: 0;
+        }
+        &:hover,
+        &:active {
+            color: $txtColor;
+        }
+        &:active {
+            background: $lightBorderColor;
+        }
+    }
+
+
+    // panel
+    .popup-content {
+        @extend %content;
+        padding: 0 $baseSpacing;
+        margin: $baseSpacing 0;
+        .outside-popup-content {
+            @extend %content;
+            width: auto;
+            background: $lightBorderColor;
+            padding: ($baseSpacing - 5) $baseSpacing;
+            margin-left: -$baseSpacing;
+            margin-right: -$baseSpacing;
+        }
+    }
+    .popup-header,
+    .popup-footer {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 $baseSpacing;
+        margin: ($baseSpacing - 5) 0;
+        & > :first-child {
+            margin-top: 0;
+        }
+        & > :last-child {
+            margin-bottom: 0;
+        }
+    }
+    .popup-header {
+        text-align: center;
+        position: relative;
+        .title {
+            width: 100%;
+            margin: 0;
+        }
+        .side-ctrl-left {
+            margin-left: $baseSpacing;
+        }
+        .side-ctrl-right {
+            margin-right: $baseSpacing;
+        }
+    }
+    .popup-panel {
+        @include shadowize;
+        border: 0;
+        background: #fff;
+        border-radius: $baseRadius;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        margin: $baseSpacing 0 $largeSpacing;
+        width: 550px;
+        text-align: left;
+        .popup-close-handle {
+            position: absolute;
+            top: -($closeHandleSize + 5);
+            right: 0;
+        }
+        & > :first-child {
+            border-top-left-radius: $baseRadius;
+            border-top-right-radius: $baseRadius;
+            & > :first-child {
+                border-top-left-radius: inherit;
+                border-top-right-radius: inherit;
+            }
+        }
+        & > :last-child {
+            border-bottom-left-radius: $baseRadius;
+            border-bottom-right-radius: $baseRadius;
+            & > :last-child {
+                border-bottom-left-radius: inherit;
+                border-bottom-right-radius: inherit;
+            }
+        }
+    }
+
+    // sizes
+    &.popup-sm {
+        .popup-panel {
+            width: 440px;
+        }
+    }
+    &.popup-lg {
+        .popup-panel {
+            width: 800px;
+        }
+    }
+
+    // states
+    &.active {
+        display: block;
+        .popup-overlay {
+            animation: fadeIn $popupAnimationSpeed;
+        }
+        .popup-panel {
+            animation: popupPanelShow $popupAnimationSpeed;
+        }
+    }
+    &.is-closing {
+        display: block;
+        .popup-overlay {
+            animation: fadeOut $popupAnimationSpeed forwards;
+        }
+        .popup-panel {
+            animation: popupPanelHide $popupAnimationSpeed forwards;
+        }
+    }
+}
+
+body.popup-active {
+    overflow: hidden;
+}

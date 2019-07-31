@@ -1,0 +1,244 @@
+@mixin appearance ($value) {
+    -moz-appearance:    $value;
+    -webkit-appearance: $value;
+    appearance:         $value;
+}
+
+@mixin pointer-events ($value: none) {
+    -webkit-pointer-events: $value;
+    -moz-pointer-events:    $value;
+    -ms-pointer-events:     $value;
+    -o-pointer-events:      $value;
+    pointer-events:         $value;
+}
+
+@mixin filter ($value...) {
+    -webkit-filter: $value;
+    filter:         $value;
+}
+
+@mixin user-select ($value: none) {
+    -webkit-user-select: $value;
+    -moz-user-select:    $value;
+    -ms-user-select:     $value;
+    -o-user-select:      $value;
+    user-select:         $value;
+}
+
+@mixin white-space-pre-wrap () {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+}
+
+@mixin placeholder ($color) {
+    &::-webkit-input-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &:-moz-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &::-moz-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+    &:-ms-input-placeholder {
+        opacity: 1;
+        color: $color;
+    }
+}
+
+@mixin selection ($bgColor, $textColor: #fff) {
+    &::-moz-selection {
+        color: $textColor;
+        background: $bgColor;
+    }
+    &::selection {
+        color: $textColor;
+        background: $bgColor;
+    }
+}
+
+@mixin scrollbar($trackColor: $lightBorderColor, $thumbColor: $darkBorderColor, $width: 7px) {
+    // chrome scrollbar styles
+    &::-webkit-scrollbar {
+        width: $width;
+        height: $width;
+        border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: $trackColor;
+        border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: $thumbColor;
+        &:hover {
+            background: darken($thumbColor, 5%);
+        }
+        &:active {
+            background: darken($thumbColor, 10%);
+        }
+    }
+
+    @if & {
+        // firefox scrollbar
+        scrollbar-color: $thumbColor $trackColor;
+        scrollbar-width: thin;
+
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+        scroll-behavior: smooth;
+    } @else {
+        html {
+            // firefox scrollbar
+            scrollbar-color: $thumbColor $trackColor;
+            scrollbar-width: thin;
+
+            // https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+            scroll-behavior: smooth;
+
+            * {
+                scrollbar-width: inherit;
+            }
+        }
+    }
+}
+
+@mixin block-colors($prefix, $states: false, $solid: true, $transp: true) {
+    @each $color in $colorsList {
+        @if $solid {
+            &.#{$prefix}-#{nth($color, 1)} {
+                background: nth($color, 2);
+                color: nth($color, 3);
+                outline-color: darken(nth($color, 2), 10%);
+                ul li:before {
+                    color: nth($color, 3);
+                }
+
+                @if $states {
+                    box-shadow: 0px 2px 5px 0px rgba(nth($color, 2), 0.25);
+                    &:hover,
+                    &:focus {
+                        background: darken(nth($color, 2), 7%);
+                    }
+                    &:active {
+                        transition-duration: 0.1s;
+                        background: darken(nth($color, 2), 10%);
+                        @if (lightness(lighten(nth($color, 2), 25%)) > 92) {
+                            box-shadow: 0px 3px 5px 0px rgba(nth($color, 2), 0.25),
+                                        0px 0px 0px 2px nth($color, 2);
+                        } @else {
+                            box-shadow: 0px 3px 5px 0px rgba(nth($color, 2), 0.3),
+                                        0px 0px 0px 2px lighten(nth($color, 2), 25%);
+                        }
+                    }
+                }
+            }
+        }
+
+        @if $transp {
+            &.#{$prefix}-transp-#{nth($color, 1)} {
+                $transpLightness: 40%;
+                @while $transpLightness > 5 and lightness(lighten(nth($color, 2), $transpLightness)) > 94 {
+                  $transpLightness: $transpLightness - 0.5;
+                }
+
+                background: lighten(nth($color, 2), $transpLightness);
+                color: darken(nth($color, 2), 5%);
+                outline-color: darken(nth($color, 2), 5%);
+                ul li:before {
+                    background: nth($color, 2);
+                }
+
+                @if $states {
+                    box-shadow: 0px 2px 5px 0px rgba(nth($color, 2), 0.15);
+                    &:hover,
+                    &:focus {
+                        background: lighten(nth($color, 2), $transpLightness - 3);
+                    }
+                    &:active {
+                        transition-duration: 0.1s;
+                        box-shadow: 0px 2px 5px 0px rgba(nth($color, 2), 0.15),
+                                    0px 0px 0px 2px nth($color, 2);
+                        background: lighten(nth($color, 2), $transpLightness - 5);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin shadowize($value...) {
+    box-shadow: 0px 3px 10px 0px rgba(#0e104d, 0.07), $value;
+}
+
+@mixin clear-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+        margin: 0;
+        padding: 0;
+        &:before {
+            content: none;
+        }
+    }
+}
+
+@mixin v-align-helper {
+    font-size: 0; /* remove inline-block whitespaces */
+    &:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 0;
+        height: 100%;
+    }
+    & > div, & > span, & > article, & > section {
+        font-size: $baseFontSize; /* reset */
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+@mixin hide {
+    opacity: 0;
+    visibility: hidden;
+}
+@mixin show($opacity: 1) {
+    opacity: $opacity;
+    visibility: visible;
+}
+
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+@mixin items-per-row ($count: 3, $spacing: $baseSpacing, $selector: '.box') {
+    width: auto;
+    margin-left: -($spacing / 2);
+    margin-right: -($spacing / 2);
+    #{$selector} {
+        float: left;
+        clear: none;
+        width: calc(#{100% / $count} - #{$spacing});
+        margin: 0 ($spacing / 2) $spacing;
+    }
+}
+
+@mixin vertical-list-item-animation($speed: $prolongedAnimationSpeed) {
+    animation: fadeIn ($speed);
+    @for $i from 2 through 15 {
+        &:nth-child(#{$i}) {
+            opacity: 0;
+            animation: stepInTop ($speed) (0.1s * $i) forwards;
+        }
+    }
+}

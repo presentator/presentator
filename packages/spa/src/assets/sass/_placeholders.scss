@@ -1,0 +1,84 @@
+%block {
+    display: block;
+    width: 100%;
+    clear: both;
+}
+
+%clear-before {
+    &:before {
+        content: "";
+        width: 100%;
+        clear: both;
+        display: table;
+    }
+}
+
+%clear-after {
+    &:after {
+        content: "";
+        width: 100%;
+        clear: both;
+        display: table;
+    }
+}
+
+// headings
+%heading {
+    font-weight: 300;
+    font-family: $baseFontFamily;
+    margin: 20px 0 10px 0;
+}
+%h1 {
+    @extend %heading;
+    font-size: $baseFontSize + 12;
+    line-height: $baseLineHeight + 10;
+}
+%h2 {
+    @extend %heading;
+    font-size: $baseFontSize + 10;
+    line-height: $baseLineHeight + 8;
+}
+%h3 {
+    @extend %heading;
+    font-size: $baseFontSize + 8;
+    line-height: $baseLineHeight + 6;
+}
+%h4 {
+    @extend %heading;
+    font-size: $baseFontSize + 6;
+    line-height: $baseLineHeight + 4;
+}
+%h5 {
+    @extend %heading;
+    font-size: $baseFontSize + 4;
+    line-height: $baseLineHeight + 2;
+}
+%h6 {
+    @extend %heading;
+    font-size: $baseFontSize + 2;
+    line-height: $baseLineHeight;
+}
+
+%content {
+    @extend %block;
+    & > :first-child {
+        margin-top: 0px !important;
+    }
+    & > :last-child {
+        margin-bottom: 0px !important;
+    }
+}
+
+%panel {
+    @include shadowize;
+    background: #fff;
+    border-radius: $baseRadius;
+    & > :first-child {
+        border-top-right-radius: $baseRadius;
+        border-top-left-radius: $baseRadius;
+    }
+    & > :last-child {
+        border-bottom-right-radius: $baseRadius;
+        border-bottom-left-radius: $baseRadius;
+    }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "presentator-vue",
+  "version": "0.0.1",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --modern",
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/messages/**/*.json' --output './i18n-report.json'"
+  },
+  "dependencies": {
+    "dropzone": "^5.5.1",
+    "firebase": "^6.3.3",
+    "moment": "^2.24.0",
+    "presentator-client": "^0.0.1",
+    "vue": "^2.6.10",
+    "vue-i18n": "^8.12.0",
+    "vue-router": "^3.0.7",
+    "vuedraggable": "^2.23.0",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.2",
+    "@vue/cli-plugin-eslint": "^3.9.2",
+    "@vue/cli-service": "^3.9.3",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-i18n": "^0.6.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

@@ -1,0 +1,81 @@
+.app-footer {
+    @extend %block;
+    @extend %clear-after;
+    font-size: $smallFontSize;
+    line-height: $smallLineHeight;
+    color: $lightTxtColor;
+
+    a {
+        color: $lightTxtColor;
+        text-decoration: none;
+        &:hover {
+            color: $txtColor;
+        }
+    }
+
+    // info/meta container
+    .info {
+        float: left;
+        width: auto;
+        display: flex;
+        align-items: center;
+        .info-item {
+            position: relative;
+            float: left;
+            margin-left: $smallSpacing;
+            padding-left: $smallSpacing;
+            &:before {
+                content: "|";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                line-height: 20px;
+                margin-top: -10px;
+                opacity: 0.3;
+            }
+            i, .txt {
+                display: inline-block;
+                vertical-align: top;
+                line-height: inherit;
+            }
+            .txt + i,
+            i + .txt {
+                margin-left: 5px;
+            }
+            &:first-child {
+                margin-left: 0;
+                padding-left: 0;
+            }
+            &.handle {
+                cursor: pointer;
+                transition: color $baseAnimationSpeed;
+                &:hover {
+                    color: $txtColor;
+                }
+            }
+        }
+    }
+
+    // credits container
+    .credits {
+        float: right;
+        margin: 0;
+    }
+
+    @media screen and (max-width: 900px) {
+        .info,
+        .credits {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: $smallSpacing 0;
+        }
+        .info {
+            .info-item {
+                display: inline-block;
+                vertical-align: top;
+                float: none;
+            }
+        }
+    }
+}

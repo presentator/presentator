@@ -1,0 +1,48 @@
+.user-list-item {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    & > * {
+        margin-left: $smallSpacing;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+    .avatar {
+        transition: box-shadow $baseAnimationSpeed;
+    }
+
+    // states
+    &:hover {
+        .avatar {
+            @include shadowize(0px 0px 0px 2px $borderColor);
+        }
+    }
+}
+
+.users-list {
+    @extend %block;
+    .user-list-item {
+        margin: 0 0 $baseSpacing;
+        @include vertical-list-item-animation;
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -$smallSpacing;
+            width: 100%;
+            height: 1px;
+            background: $lightBorderColor;
+        }
+        &:last-child {
+            margin-bottom: 0;
+            border-bottom: 0;
+            &:after {
+                content: none;
+                display: none;
+            }
+        }
+    }
+}

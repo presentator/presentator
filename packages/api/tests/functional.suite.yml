@@ -1,0 +1,9 @@
+suite_namespace: presentator\api\tests\functional
+class_name: FunctionalTester
+bootstrap: false
+modules:
+    enabled:
+        - Yii2:
+            part: [orm, fixtures, email]
+        - REST:
+            depends: Yii2

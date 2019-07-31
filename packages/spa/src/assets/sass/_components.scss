@@ -1,0 +1,779 @@
+.alert {
+    @extend %content;
+    position: relative;
+    padding: 13px 15px;
+    border-radius: $baseRadius;
+    background: $txtColor;
+    color: #fff;
+    outline-color: #fff;
+    @include block-colors('alert');
+
+    ul li:before {
+        background: #fff;
+    }
+    .close-handle {
+        $size: 18px;
+        position: absolute;
+        right: 10px;
+        top: 15px;
+        width: $size;
+        height: $size;
+        opacity: 0.6;
+        line-height: $size;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        outline-color: $primaryColor;
+        transition: opacity $baseAnimationSpeed, transform $baseAnimationSpeed;
+        @include user-select(none);
+        &:before {
+            content: "\e905";
+            font-family: $iconFont;
+            font-size: 16px;
+        }
+        & ~ .content {
+            padding-right: 25px;
+        }
+        &:hover,
+        &:active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        &:active {
+            transition-duration: 0s;
+            transform: scale(1.2);
+        }
+    }
+
+    &.alert-sm {
+        padding: 10px 12px;
+        .close-handle {
+            top: 12px;
+        }
+    }
+}
+
+.label {
+    display: inline-block;
+    vertical-align: top;
+    padding: 4px 5px;
+    border-radius: $baseRadius;
+    color: #fff;
+    white-space: nowrap;
+    text-decoration: none;
+    background: $txtColor;
+    font-size: $smallFontSize;
+    line-height: $smallFontSize + 2;
+    @include user-select(none);
+    @include block-colors('label');
+    i, .txt {
+        display: inline-block;
+        vertical-align: top;
+        line-height: inherit;
+    }
+    i ~ .txt {
+        margin-left: 3px;
+    }
+    .txt ~ i {
+        margin-right: 3px;
+    }
+}
+
+.badge {
+    $size: 22px;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    vertical-align: top;
+    width: $size;
+    height: $size;
+    line-height: $size;
+    text-align: center;
+    border-radius: $size;
+    background: $txtColor;
+    color: #fff;
+    font-size: $smallFontSize;
+    box-shadow: 0px 2px 5px 0px rgba(#0e104d, 0.2);
+    @include block-colors('badge', false, true, false);
+    @include user-select(none);
+    i {
+        display: inline-block;
+        vertical-align: top;
+        line-height: inherit;
+    }
+}
+
+.beacon {
+    $size: 5px;
+    position: absolute;
+    z-index: 2;
+    right: 3px;
+    top: 0px;
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    background: $txtColor;
+    @include block-colors('beacon', false, true, false);
+    animation: beacon-default $pulseAnimationSpeed linear infinite;
+
+    // styles
+    @each $color in $colorsList {
+        &.beacon-#{nth($color, 1)} {
+            animation: beacon-#{nth($color, 1)} $pulseAnimationSpeed linear infinite;
+        }
+    }
+
+    // sizes
+    &.beacon-lg {
+        $size: 8px;
+        width: $size;
+        height: $size;
+    }
+}
+
+.panel {
+    @extend %panel;
+    padding-top: 0.1px; // margin top clear "fix"
+    padding-bottom: 0.1px; // margin bottom clear "fix"
+    .panel-content {
+        @extend %block;
+        padding: 0 $baseSpacing;
+        margin: $baseSpacing 0;
+    }
+    .panel-title {
+        @extend %block;
+        padding: 0 $baseSpacing;
+        margin: $baseSpacing 0;
+        line-height: 1;
+        text-align: center;
+    }
+}
+
+.avatar {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    width: 48px;
+    height: auto;
+    max-width: 100%;
+    border-radius: 50%;
+    background: $lightBorderColor;
+    color: $lightTxtColor;
+    @include shadowize;
+    &:before { // square helper
+        content: "";
+        display: block;
+        padding-top: 100%;
+    }
+    img, svg, i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        line-height: 1;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    i {
+        font-size: 19px;
+        vertical-align: middle;
+    }
+    &.avatar-sm {
+        width: 40px;
+    }
+    &.avatar-lg {
+        width: 80px;
+    }
+}
+
+.thumb {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    width: 100px;
+    height: auto;
+    max-width: 100%;
+    border-radius: $baseRadius;
+    background: $lightBorderColor;
+    color: $lightTxtColor;
+    transition: box-shadow $baseAnimationSpeed;
+    @include shadowize(0px 0px 0px 1px $lightBorderColor);
+    @include user-select(none);
+    &:before { // square helper
+        content: "";
+        display: block;
+        padding-top: 100%;
+    }
+    img, svg, i {
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        line-height: 1;
+        transform: translate(-50%, -50%);
+    }
+    img {
+        width: 100%;
+        height: auto;
+    }
+    i {
+        font-size: 22px;
+        vertical-align: middle;
+    }
+
+    &.thumb-handle {
+        cursor: pointer;
+        &:after { // active overlay
+            content: "";
+            display: block;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: rgba($primaryColor, 0.4);
+            transition: opacity $baseAnimationSpeed,
+                        visibility $baseAnimationSpeed;
+            @include hide;
+        }
+        &:hover {
+            @include shadowize(0px 0px 0px 2px $borderColor);
+        }
+    }
+    &.active {
+        @include shadowize(0px 0px 0px 2px $primaryColor !important);
+        &.thumb-handle:after {
+            @include show;
+        }
+    }
+}
+
+.dropdown {
+    display: table; // used to auto expand in case of nowrap children
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+    min-width: 150px;
+    overflow: auto;
+    background: #fff;
+    border-radius: $baseRadius;
+    border: 1px solid $lightBorderColor;
+    padding: 0;
+    outline: 0;
+    cursor: default;
+    line-height: 22px;
+    font-size: $baseFontSize;
+    text-align: left;
+    transition: transform $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed,
+                opacity $baseAnimationSpeed,
+                visibility $baseAnimationSpeed;
+    transform: translateY(-5px);
+    @include shadowize;
+    @include hide;
+    @include pointer-events(none);
+    hr {
+        margin: 5px 0;
+        background: $lightBorderColor;
+    }
+    .dropdown-item {
+        @extend %block;
+        outline: 0;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        text-decoration: none;
+        color: $txtColor;
+        font-size: inherit;
+        line-height: inherit;
+        transition: color $baseAnimationSpeed;
+        white-space: nowrap;
+        @include user-select(none);
+        i, .txt {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+        }
+        i {
+            font-size: 16px;
+            margin-right: 8px;
+        }
+        &:hover,
+        &.active,
+        &.highlight {
+            color: $primaryColor;
+        }
+        &.highlight {
+            font-weight: bold;
+        }
+        &.placeholder {
+            @include pointer-events(none);
+            color: $lightTxtColor;
+        }
+        &.disabled {
+            opacity: 0.6;
+            @include pointer-events(none);
+        }
+    }
+    &.dropdown-sm {
+        min-width: 110px;
+        padding: 2px 0;
+        line-height: 20px;
+        font-size: $smallFontSize;
+        .dropdown-item {
+            padding-top: 2px;
+            padding-bottom: 2px;
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+    &.dropdown-compact {
+        padding: 2px 0;
+        line-height: 20px;
+        .dropdown-item {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+    }
+    &.dropdown-wrapped {
+        display: block;
+        width: 100%;
+        .dropdown-item {
+            white-space: normal;
+        }
+    }
+    &.dropdown-thumbs-list {
+        @include items-per-row (4, $smallSpacing, '.thumb');
+        max-height: 200px;
+        overflow: auto;
+        padding-top: $smallSpacing;
+        padding-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    &.active,
+    .active > & {
+        transform: scale(1);
+        @include show;
+        @include pointer-events(auto);
+    }
+}
+
+.popover {
+    $padding: $smallSpacing + 5;
+    @extend %content;
+    position: absolute;
+    z-index: 101;
+    left: 0;
+    top: 0;
+    margin: 0;
+    outline: 0;
+    cursor: default;
+    padding: $padding;
+    width: 400px;
+    background: #fff;
+    color: $txtColor;
+    border-radius: $baseRadius;
+    line-height: $baseLineHeight;
+    font-size: $baseFontSize;
+    text-align: left;
+    border: 1px solid $lightBorderColor;
+    transition: transform $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed,
+                opacity $baseAnimationSpeed,
+                visibility $baseAnimationSpeed;
+    transform: translateY(-5px) scale(0.8);
+    box-shadow: 0px 4px 8px 0px rgba(#0e104d, 0.1);
+    @include hide;
+    @include pointer-events(none);
+    .row {
+        margin-right: -($padding / 2);
+        margin-left: -($padding / 2);
+    }
+    %col {
+        padding-right: ($padding / 2);
+        padding-left: ($padding / 2);
+    }
+    .form-group {
+        margin: 0 0 $padding;
+    }
+    .outside-popover-content {
+        display: block;
+        width: auto;
+        margin-left: -$padding;
+        margin-right: -$padding;
+        background: $lightBorderColor;
+    }
+
+    .popover-content {
+        position: relative;
+        z-index: 1;
+        border-radius: inherit;
+    }
+
+    // layouts
+    &.popover-sm {
+        width: 270px;
+        .form-group {
+            margin: 0 0 $smallSpacing;
+        }
+    }
+
+    // states
+    &.active,
+    .active > & {
+        transform: none;
+        @include show;
+        @include pointer-events(auto);
+    }
+}
+
+.popover-overlay {
+    position: fixed;
+    display: block;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($overlayColor, 0.4);
+    transition: opacity $baseAnimationSpeed, visibility $baseAnimationSpeed;
+    animation: fadeIn $baseAnimationSpeed;
+}
+
+.languages-select {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    outline: 0;
+    width: auto;
+    .selected-language {
+        @extend %block;
+        @extend %clear-after;
+        cursor: pointer;
+        padding: 2px 5px;
+        outline: 0;
+        font-size: $smallFontSize;
+        color: $lightTxtColor;
+        background: inherit;
+        background: darken($bodyColor, 6%);
+        border-radius: $baseRadius;
+        transition: background $baseAnimationSpeed,
+                    color $baseAnimationSpeed;
+        @include user-select(none);
+        &:before { // dropdown arrow
+            content: "\e9e8";
+            float: right;
+            margin-left: 3px;
+            font-family: $iconFont;
+        }
+    }
+    .dropdown {
+        display: block;
+        top: auto;
+        bottom: 100%;
+        margin-top: 0;
+        margin-bottom: 10px;
+        max-height: 335px;
+    }
+    &.loading {
+        .selected-language:before {
+            content: $loaderIconCode;
+            animation: spin $loaderAnimationSpeed linear infinite;
+        }
+    }
+    &:hover,
+    &:focus,
+    &.active {
+        .selected-language {
+            background: darken($bodyColor, 10%);
+        }
+    }
+    &.active {
+        .selected-language {
+            color: $txtColor;
+            &:before {
+                content: "\e9e1";
+            }
+        }
+    }
+}
+
+.hotspot {
+    display: block;
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    outline: 0;
+    cursor: pointer;
+    min-width: 18px;
+    min-height: 18px;
+    width: 100px;
+    height: 100px;
+    background: rgba($primaryColor, 0.2);
+    border-radius: $baseRadius;
+    transition: opacity $baseAnimationSpeed,
+                background $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed;
+    @include shadowize(inset 0px 0px 0px 1px $primaryColor);
+    @include user-select(none);
+    .resize-handle {
+        $size: 12px;
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        width: 0;
+        height: 0;
+        border: ($size / 2) solid transparent;
+        border-right-color: $primaryColor;
+        border-bottom-color: $primaryColor;
+        transition: opacity $baseAnimationSpeed,
+                    visibility $baseAnimationSpeed,
+                    transform $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed;
+        transform-origin: bottom right;
+        transform: scale(0.5);
+        @include hide;
+        &:hover {
+            cursor: se-resize;
+        }
+    }
+
+    // states
+    &.resizing {
+        z-index: 4;
+    }
+    &:hover,
+    &:active {
+        z-index: 4;
+        background: rgba($primaryColor, 0.4);
+        // @include shadowize(inset 0px 0px 0px 2px $primaryColor);
+        .resize-handle {
+            @include show;
+            transform: scale(1);
+            &:hover,
+            &:active {
+                transform: scale(1.2);
+            }
+        }
+    }
+    &.highlight {
+        $highlightColor: $successColor;
+        background: rgba($highlightColor, 0.2);
+        @include shadowize(inset 0px 0px 0px 1px $highlightColor);
+        .resize-handle {
+            border-bottom-color: $highlightColor;
+            border-right-color: $highlightColor;
+        }
+        &:hover,
+        &:active {
+            background: rgba($highlightColor, 0.3);
+        }
+    }
+    &.active {
+        $activeColor: $warningColor;
+        z-index: 100;
+        background: rgba($activeColor, 0.4);
+        @include shadowize(inset 0px 0px 0px 2px $activeColor);
+        .resize-handle {
+            border-bottom-color: $activeColor;
+            border-right-color: $activeColor;
+        }
+        &:hover,
+        &:active {
+            background: rgba($activeColor, 0.4);
+        }
+    }
+    &.incognito {
+        opacity: 0;
+    }
+}
+
+.loader {
+    display: inline-block;
+    vertical-align: top;
+    &:before {
+        content: $loaderIconCode;
+        display: inline-block;
+        width: 25px;
+        line-height: inherit;
+        font-size: 22px;
+        font-family: $iconFont;
+        text-align: center;
+        animation: spin $loaderAnimationSpeed linear infinite;
+    }
+    &.loader-lg {
+        &:before {
+            width: 38px;
+            font-size: 38px;
+        }
+    }
+    &.loader-blend {
+        color: $darkBorderColor;
+    }
+}
+
+.progress-bar {
+    @extend %block;
+    overflow: hidden;
+    position: relative;
+    border-radius: $baseRadius;
+    height: 10px;
+    background: $borderColor;
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40%;
+        height: 100%;
+        background: $successColor;
+        border-radius: inherit;
+        animation: progressBar 0.8s infinite;
+    }
+}
+
+.tooltip-directive {
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    padding: 2px 5px;
+    font-size: $smallFontSize;
+    line-height: $smallFontSize + 4;
+    color: #fff;
+    text-align: center;
+    background: $overlayColor;
+    border-radius: $baseRadius;
+    opacity: 0;
+    max-width: 250px;
+    white-space: pre-line;
+    animation: tooltipHide $baseAnimationSpeed forwards;
+    @include pointer-events(none);
+    &.active {
+        animation: tooltipShow $baseAnimationSpeed forwards;
+    }
+}
+
+
+// list controls
+.list-ctrl-item {
+    $size: 25px;
+    float: left;
+    height: $size;
+    width: $size;
+    line-height: $size;
+    text-align: center;
+    color: $lightTxtColor;
+    cursor: pointer;
+    outline: 0;
+    font-size: $baseFontSize;
+    text-decoration: none;
+    border-radius: $baseRadius;
+    transition: color $baseAnimationSpeed, background $baseAnimationSpeed;
+    @include user-select(none);
+    i {
+        display: inline-block;
+        vertical-align: top;
+        line-height: inherit;
+    }
+    &:hover,
+    &:active {
+        color: $txtColor;
+    }
+    &:active {
+        transition-duration: 0.1s;
+        background: $lightBorderColor;
+    }
+    &.ctrl-primary {
+        &:hover,
+        &:active {
+            color: $primaryColor;
+        }
+    }
+    &.ctrl-danger {
+        &:hover,
+        &:active {
+            color: $dangerColor;
+        }
+    }
+    &.ctrl-success {
+        &:hover,
+        &:active {
+            color: $successColor;
+        }
+    }
+    &.ctrl-warning {
+        &:hover,
+        &:active {
+            color: $warningColor;
+        }
+    }
+}
+.list-ctrls {
+    @extend %clear-after;
+    white-space: nowrap;
+    flex-shrink: 0;
+    .list-ctrl-item {
+        margin-left: 5px;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+// meta row
+.meta {
+    @extend %block;
+    @extend %clear-after;
+    .meta-item {
+        position: relative;
+        float: left;
+        font-size: $smallFontSize;
+        line-height: $smallLineHeight;
+        color: $lightTxtColor;
+        a {
+            color: inherit;
+            text-decoration: none;
+            &:hover {
+                color: $txtColor;
+            }
+        }
+        .label {
+            padding: 2px 4px;
+        }
+        i, .txt {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+        }
+        i + .txt,
+        .txt + i {
+            margin-left: 4px;
+        }
+        &:after {
+            content: "|";
+            color: $borderColor;
+            font-size: 12px;
+            margin: 0 8px;
+        }
+        &:last-child {
+            &:after {
+                content: none;
+                display: none;
+            }
+        }
+    }
+}

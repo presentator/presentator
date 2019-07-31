@@ -1,0 +1,120 @@
+.notifications-wrapper {
+    $notificationSpacing: 20px;
+    $notificationWidth: 390px;
+    position: fixed;
+    z-index: 999999;
+    top: $notificationSpacing;
+    left: 50%;
+    width: $notificationWidth;
+    height: 0;
+    margin-left: -($notificationWidth / 2);
+    text-align: center;
+    overflow: visible;
+    .notification {
+        $iconSize: 30px;
+        @extend %block;
+        position: relative;
+        z-index: 1;
+        max-width: 100%;
+        min-width: 100px;
+        background: #fff;
+        margin: 0 0 $notificationSpacing;
+        padding: $smallSpacing $smallSpacing $smallSpacing ($smallSpacing + $iconSize);
+        border-radius: $baseRadius;
+        color: $txtColor;
+        border-left: 2px solid $txtColor;
+        line-height: $smallLineHeight;
+        text-align: left;
+        @include shadowize();
+        transition: opacity $notificationAnimationSpeed,
+                    transform $notificationAnimationSpeed;
+        &:before {
+            content: "\e9e9";
+            position: absolute;
+            display: inline-block;
+            vertical-align: top;
+            left: ($smallSpacing / 2);
+            top: 50%;
+            width: $iconSize;
+            height: $iconSize;
+            line-height: $iconSize;
+            margin-top: -($iconSize / 2);
+            font-size: 19px;
+            text-align: center;
+            font-family: $iconFont;
+        }
+        .close-handle {
+            $size: 18px;
+            position: absolute;
+            right: 10px;
+            top: 16px;
+            width: $size;
+            height: $size;
+            opacity: 0.4;
+            line-height: $size;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            outline-color: $primaryColor;
+            transition: opacity $baseAnimationSpeed, transform $baseAnimationSpeed;
+            @include user-select(none);
+            &:before {
+                content: "\e905";
+                font-family: $iconFont;
+                font-size: 15px;
+            }
+            & ~ .content {
+                padding-right: 25px;
+            }
+            &:hover,
+            &:active {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            &:active {
+                transition-duration: 0s;
+                transform: scale(1.2);
+            }
+        }
+        &.notification-success {
+            border-left-color: $successColor;
+            &:before {
+                color: $successColor;
+            }
+        }
+        &.notification-danger {
+            border-left-color: $dangerColor;
+            &:before {
+                content: "\e907";
+                color: $dangerColor;
+            }
+        }
+        &.notification-warning {
+            border-left-color: $warningColor;
+            &:before {
+                content: "\ea12";
+                color: $warningColor;
+            }
+        }
+        &.is-repeated {
+            &:before {
+                animation: shake $baseAnimationSpeed;
+            }
+        }
+    }
+
+    // list
+    .notifications-list {
+        @extend %block;
+        position: relative;
+    }
+    .notifications-list-enter,
+    .notifications-list-leave-to {
+        opacity: 0;
+        z-index: 0;
+        transform: translateY(-30px);
+    }
+    .notifications-list-leave-active {
+        position: absolute;
+    }
+}

@@ -1,0 +1,106 @@
+.app-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 ($baseSpacing - 5);
+
+    .label {
+        margin-right: 5px;
+    }
+
+    .icon-btn {
+        $size: 32px;
+        display: inline-block;
+        vertical-align: top;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        color: $lightTxtColor;
+        border-radius: $baseRadius;
+        font-size: 18px;
+        transition: color $baseAnimationSpeed, background $baseAnimationSpeed;
+        i {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+        }
+        &:hover {
+            color: $primaryColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: $lightBorderColor;
+        }
+    }
+
+    // breadcrumbs
+    .breadcrumb-item {
+        @extend %h3;
+        position: relative;
+        float: left;
+        margin: 0;
+        outline: 0;
+        color: $lightTxtColor;
+        border-radius: $baseRadius;
+        &:last-child,
+        &[contenteditable="true"]:focus {
+            color: $txtColor;
+        }
+    }
+    a.breadcrumb-item {
+        text-decoration: none;
+        transition: color $baseAnimationSpeed;
+        &:hover {
+            color: $txtColor;
+        }
+        &:focus {
+            border-radius: $baseRadius;
+            box-shadow: 0px 0px 0px 2px $borderColor;
+        }
+        &:active {
+            box-shadow: none;
+        }
+    }
+    .breadcrumbs {
+        @extend %clear-after;
+        flex-grow: 0;
+        flex-shrink: 1;
+        width: auto;
+        margin-right: 10px;
+        color: $lightTxtColor;
+        .breadcrumb-item {
+            $delimiterWidth: 30px;
+            margin-right: $delimiterWidth;
+            &:after {
+                content: "\e9e6";
+                display: inline-block;
+                vertical-align: middle;
+                position: absolute;
+                top: 50%;
+                right: -$delimiterWidth;
+                width: $delimiterWidth;
+                text-align: center;
+                font-family: $iconFont;
+                font-weight: normal;
+                font-size: 18px;
+                line-height: 1;
+                color: $borderColor;
+                transform: translateY(-50%);
+                @include pointer-events(none);
+            }
+            &:last-child {
+                margin-right: 0;
+                &:after {
+                    content: none;
+                    display: none;
+                }
+            }
+        }
+    }
+}

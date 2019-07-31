@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+./api ./vendor/codeception/codeception/codecept "$@"

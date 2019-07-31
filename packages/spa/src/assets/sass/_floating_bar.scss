@@ -1,0 +1,259 @@
+.floating-bar {
+    @extend %block;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    height: 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px -1px 10px 0px rgba(#0e104d, 0.1);
+    text-align: center;
+    transition: height $baseAnimationSpeed,
+                transform $baseAnimationSpeed;
+
+    // dropdowns
+    .dropdown {
+        bottom: 100%;
+        top: auto;
+        margin-top: 0;
+        margin-bottom: 5px;
+        display: none !important;
+    }
+
+    // visibility toggle
+    .visibility-toggle {
+        position: absolute;
+        z-index: -1;
+        bottom: 100%;
+        right: 0px;
+        margin: 0;
+        padding: 4px 7px;
+        color: $lightTxtColor;
+        font-size: $smallFontSize;
+        line-height: 1;
+        background: $borderColor;
+        border-top-left-radius: $baseRadius;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        transition: color $baseAnimationSpeed, background $baseAnimationSpeed;
+        @include user-select(none);
+        &:hover,
+        &:active {
+            color: $txtColor;
+        }
+        &:active {
+            transition-duration: 0.1s;
+            background: $darkBorderColor;
+        }
+    }
+
+    // controls
+    .ctrl-item {
+        outline: 0;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+        padding: 3px 5px;
+        border-radius: $baseRadius;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        color: $lightTxtColor;
+        transition: color $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed,
+                    background $baseAnimationSpeed;
+        @include user-select(none);
+        &:first-child {
+            margin-left: 0;
+        }
+        .txt, i {
+            display: inline-block;
+            vertical-align: top;
+            line-height: inherit;
+        }
+        .pin {
+            $size: 18px;
+            position: absolute;
+            display: inline-block;
+            vertical-align: top;
+            z-index: 2;
+            right: 0;
+            top: 0;
+            width: $size;
+            height: $size;
+            line-height: $size;
+            text-align: center;
+            font-size: 11px;
+            border-radius: $size;
+            background: $borderColor;
+            animation: scaleIn $baseAnimationSpeed;
+        }
+        &:hover,
+        &:active,
+        &.active,
+        &.focus {
+            color: $txtColor;
+        }
+        &:hover,
+        &.highlight {
+            background: $lightBorderColor;
+        }
+        &:active,
+        &.active {
+            transition-duration: 0.1s;
+            background: darken($lightBorderColor, 5%);
+        }
+        &.ctrl-item-circle {
+            $circleSize: 45px;
+            width: $circleSize;
+            height: $circleSize;
+            line-height: $circleSize;
+            border-radius: $circleSize;
+            padding: 0;
+            font-size: 17px;
+            .beacon {
+                top: 5px;
+                right: 5px;
+            }
+            &:after {
+                content: "";
+                display: inline-block;
+                vertical-align: top;
+                position: absolute;
+                left: 0;
+                bottom: -($previewBarHeight - $circleSize) / 2;
+                width: 75%;
+                left: 10%;
+                height: 4px;
+                border-top-left-radius: $baseRadius;
+                border-top-right-radius: $baseRadius;
+                transform: translateY(5px);
+                transition: opacity $baseAnimationSpeed,
+                            visibility $baseAnimationSpeed,
+                            transform $baseAnimationSpeed;
+                background: $txtColor;
+                box-shadow: 0px -1px 9px 0px $txtColor;
+                @include hide;
+            }
+            &.highlight {
+                background: none;
+                &:after {
+                    @include show;
+                    transform: scale(1);
+                }
+            }
+
+            @each $color in $colorsList {
+                &.ctrl-item-#{nth($color, 1)} {
+                    .pin {
+                        color: nth($color, 3);
+                        background: nth($color, 2);
+                    }
+                    &:after {
+                        background: nth($color, 2);
+                        box-shadow: 0px -1px 9px 0px nth($color, 2);
+                    }
+                    &:hover,
+                    &:active,
+                    &.active,
+                    &.highlight {
+                        color: nth($color, 2);
+                    }
+                }
+            }
+        }
+    }
+    .ctrl-item-info {
+        .title {
+            @include ellipsis;
+            max-width: 220px;
+        }
+    }
+
+    // controls container
+    .nav {
+        display: inline-flex;
+        align-items: center;
+        height: 100%;
+        width: auto;
+        text-align: left;
+        // animation styles
+        transform: scale(0.9);
+        transition: opacity $baseAnimationSpeed,
+                    visibility $baseAnimationSpeed,
+                    transform $baseAnimationSpeed;
+        @include hide;
+        & > .form-group {
+            margin: 0;
+        }
+        .popover {
+            top: auto;
+            left: auto;
+            right: auto;
+            bottom: 100%;
+            margin-bottom: 5px;
+        }
+        .ctrl-item,
+        .btn {
+            flex-shrink: 0;
+        }
+    }
+    .nav-left,
+    .nav-right {
+        position: absolute;
+        top: 0;
+        left: $smallSpacing;
+    }
+    .nav-left {
+        transform: translateX(-20px) scale(0.9);
+        .popover {
+            left: 0;
+        }
+    }
+    .nav-right {
+        left: auto;
+        right: $smallSpacing;
+        transform: translateX(20px) scale(0.9);
+        .popover {
+            right: 0;
+        }
+    }
+    .nav-center {
+        position: relative;
+        .popover {
+            left: 50%;
+            transform: transalteX(-50%);
+        }
+    }
+
+    // states
+    &.with-sidebar {
+        right: 0;
+        left: $sidebarWidth;
+        width: auto;
+    }
+    &.active {
+        height: $previewBarHeight;
+        .dropdown {
+            display: block !important;
+        }
+        .nav {
+            @include show;
+            transform: scale(1);
+        }
+    }
+
+    &.preview-bar {
+        @media screen and (max-width: 1100px) {
+            .nav-left,
+            .nav-right {
+                max-width: calc(50% - 100px);
+            }
+        }
+    }
+}

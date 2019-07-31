@@ -1,0 +1,898 @@
+.btn {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    border: 0;
+    margin: 0;
+    z-index: 0;
+    outline: 0;
+    padding: (($baseFieldHeight - $baseLineHeight) / 2) $smallSpacing;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    font-family: $baseFontFamily;
+    font-size: $baseFontSize;
+    line-height: $baseLineHeight;
+    text-decoration: none;
+    background: $txtColor;
+    border-radius: $baseRadius;
+    transition: background $baseAnimationSpeed,
+                color $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed,
+                border-radius $baseAnimationSpeed;
+    @include appearance(none);
+    @include user-select(none);
+    @include block-colors('btn', true);
+
+    .txt, i {
+        display: inline-block;
+        vertical-align: top;
+        line-height: inherit;
+        z-index: 1;
+    }
+    i {
+        font-size: 17px;
+        text-align: center;
+    }
+    i + .txt,
+    .txt + i {
+        margin-right: 0px;
+        margin-left: 4px;
+    }
+
+    // btn dropdown/select
+    &.btn-dropdown {
+        text-align: left;
+        padding-right: 45px;
+        &:after {
+            content: "\e9e8";
+            display: inline-block;
+            vertical-align: top;
+            position: absolute;
+            z-index: 0;
+            right: 0;
+            top: 0;
+            padding: 0 8px;
+            height: 100%;
+            font-size: 17px;
+            line-height: $baseFieldHeight;
+            font-family: $iconFont;
+            background: rgba(#fff, 0.3);
+            border-top-right-radius: $baseRadius;
+            border-bottom-right-radius: $baseRadius;
+        }
+        .dropdown {
+            cursor: default;
+            display: block;
+            width: 100%;
+            padding-left: $smallSpacing;
+            padding-right: $smallSpacing;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: 0;
+            transform: scale(0.95);
+            .dropdown-item {
+                padding-left: 0;
+                white-space: normal;
+                i, .txt {
+                    display: inline;
+                }
+            }
+        }
+        &:active,
+        &.active {
+            box-shadow: none;
+        }
+        &.active {
+            z-index: 1;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            &:after {
+                content: "\e9e1";
+            }
+            @include shadowize(0px 0px 0px 2px $borderColor);
+            .dropdown {
+                transform: translateY(0px);
+                @include shadowize(0px 0px 0px 2px $borderColor);
+            }
+        }
+        @each $color in $colorsList {
+            &.btn-#{nth($color, 1)} {
+                &:after {
+                    background: darken(nth($color, 2), 5%);
+                }
+                &.active {
+                    @include shadowize(0px 0px 0px 2px nth($color, 2));
+                    .dropdown {
+                        @include shadowize(0px 0px 0px 2px nth($color, 2));
+                    }
+                }
+            }
+        }
+    }
+
+    // sizes
+    &.btn-block {
+        width: 100%;
+        min-width: 0;
+    }
+    &.btn-cons {
+        min-width: 120px;
+    }
+    &.btn-cons-sm {
+        min-width: 90px;
+    }
+    &.btn-cons-lg {
+        min-width: 150px;
+    }
+    &.btn-cons-xl {
+        min-width: 220px;
+    }
+    &.btn-sm {
+        font-size: $smallFontSize;
+        line-height: $smallLineHeight;
+        padding: (($smallFieldHeight - $smallLineHeight) / 2) 10px;
+        &.btn-dropdown {
+            padding-right: 35px;
+            &:after {
+                padding: 0 5px;
+                line-height: $smallFieldHeight;
+            }
+            .dropdown {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+        i {
+            font-size: 15px;
+        }
+    }
+    &.btn-lg {
+        font-size: $largeFontSize;
+        line-height: $largeLineHeight;
+        padding: (($largeFieldHeight - $largeLineHeight) / 2) $smallSpacing;
+        &.btn-dropdown {
+            padding-right: 50px;
+            &:after {
+                padding: 0 10px;
+                line-height: $largeFieldHeight;
+            }
+        }
+        i {
+            font-size: 18px;
+        }
+    }
+
+    // states
+    &.btn-loader {
+        .txt, i {
+            animation: fadeIn $baseAnimationSpeed;
+        }
+    }
+    &.btn-loader-active {
+        @include pointer-events(none);
+        .txt, i {
+            animation: scaleOut $baseAnimationSpeed forwards;
+        }
+        &:before {
+            $size: 25px;
+            content: $loaderIconCode;
+            display: inline-block;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: $size;
+            height: $size;
+            line-height: $size;
+            margin-top: -($size / 2);
+            margin-left: -($size / 2);
+            font-size: 22px;
+            font-family: $iconFont;
+            text-align: center;
+            animation: scaleIn $baseAnimationSpeed, spin $loaderAnimationSpeed $baseAnimationSpeed linear infinite;
+        }
+        &.btn-sm:before {
+            font-size: 19px;
+        }
+    }
+    &.btn-faded {
+        opacity: 0.7;
+        transition: background $baseAnimationSpeed,
+                    color $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed,
+                    opacity $baseAnimationSpeed;
+        &:hover,
+        &:focus,
+        &:active {
+            opacity: 1;
+        }
+    }
+    &.btn-disabled {
+        opacity: 0.7;
+        @include pointer-events(none);
+    }
+    &:hover,
+    &:focus,
+    &:active {
+        z-index: 1;
+    }
+}
+.btns-group {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    .btn {
+        border-radius: 0;
+        float: left;
+        &:before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background: rgba(#000, 0.1);
+        }
+    }
+    .btn:first-child {
+        border-top-left-radius: $baseRadius;
+        border-bottom-left-radius: $baseRadius;
+        &:before {
+            content: none;
+            display: none;
+        }
+    }
+    .btn:last-child {
+        border-top-right-radius: $baseRadius;
+        border-bottom-right-radius: $baseRadius;
+    }
+}
+
+%field {
+    @include shadowize();
+    display: inline-block;
+    vertical-align: top;
+    outline: 0;
+    margin: 0;
+    border: 1px solid $borderColor;
+    border-radius: $baseRadius;
+    font-family: $baseFontFamily;
+    font-size: $baseFontSize;
+    line-height: $baseLineHeight;
+    text-align: left;
+    background-color: #fff;
+    color: $txtColor;
+    height: $baseFieldHeight;
+    padding: (($baseFieldHeight - $baseLineHeight) / 2) 12px;
+    transition: background-color $baseAnimationSpeed,
+                color $baseAnimationSpeed,
+                box-shadow $baseAnimationSpeed;
+    @include placeholder($lightTxtColor);
+    &:focus {
+        outline: 0;
+        z-index: 1;
+        @include shadowize(0px 0px 0px 1px $borderColor);
+    }
+    &[disabled] {
+        background: $lightBorderColor !important;
+    }
+}
+
+input,
+textarea,
+select {
+    @extend %field;
+}
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto !important;
+    height: auto !important;
+    padding: auto !important;
+}
+input[type="color"] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding: 5px !important;
+    &::-webkit-color-swatch-wrapper {
+        padding: 0;
+        border-radius: $baseRadius;
+    }
+    &::-moz-color-swatch-wrapper {
+        padding: 0;
+        border-radius: $baseRadius;
+    }
+    &::-webkit-color-swatch {
+        border: 0px;
+        border-radius: $baseRadius;
+    }
+    &::-moz-color-swatch {
+        border: 0px;
+        border-radius: $baseRadius;
+    }
+}
+
+textarea {
+    min-height: 115px;
+}
+select {
+    @include appearance(none);
+    line-height: $baseLineHeight - 2;
+    padding-left: 10px;
+    padding-right: 30px;
+    background-image: url('#{$imagesPath}/chevron-down.svg');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 14px;
+    background-blend-mode: normal;
+}
+
+label {
+    outline: 0;
+}
+
+.form-group {
+    @extend %block;
+    @extend %clear-after;
+    outline: 0;
+    position: relative;
+    margin: 0 0 $baseSpacing;
+    label,
+    %field {
+        @extend %block;
+    }
+    label {
+        margin: 0 0 8px;
+        .txt, i {
+            line-height: inherit;
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    .help-block {
+        @extend %block;
+        margin: 5px 0 0;
+        font-size: $smallFontSize;
+        line-height: $smallLineHeight;
+        color: $lightTxtColor;
+        &.help-block-error {
+            color: $dangerColor;
+        }
+    }
+    .input-dropdown {
+        width: 100%;
+        max-height: 200px;
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: -($baseRadius / 2);
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border: 1px solid $borderColor;
+    }
+    .input-dropdown.active,
+    &.active .input-dropdown {
+        display: block;
+    }
+
+    // checkbox/radio controls
+    input[type="checkbox"],
+    input[type="radio"] {
+        position: absolute;
+        left: -2000px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        @include pointer-events(none);
+        & ~ label {
+            $handleSize: 22px;
+            display: inline-block;
+            vertical-align: top;
+            width: auto;
+            z-index: 0;
+            margin: 0;
+            padding: 0 0 0 ($handleSize + 8px);
+            @include user-select(none);
+            &:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 1px;
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: top;
+                z-index: 0;
+                background: #fff;
+                width: $handleSize;
+                height: $handleSize;
+                border-radius: $baseRadius;
+                border: 1px solid $borderColor;
+                transition: background $baseAnimationSpeed,
+                            transform $baseAnimationSpeed,
+                            box-shadow $baseAnimationSpeed;
+            }
+            &:after {
+                content: "\e9e9";
+                display: inline-block;
+                vertical-align: top;
+                font-family: $iconFont;
+                position: absolute;
+                z-index: 1;
+                left: 0;
+                top: 1px;
+                text-align: center;
+                cursor: pointer;
+                width: $handleSize;
+                height: $handleSize;
+                line-height: $handleSize;
+                text-align: center;
+                font-size: 16px;
+                color: $successColor;
+                transform: scale(0.8);
+                @include hide;
+                transition: color $baseAnimationSpeed,
+                            opacity $baseAnimationSpeed,
+                            visibility $baseAnimationSpeed,
+                            transform $baseAnimationSpeed;
+            }
+            &:focus,
+            &:hover {
+                &:before {
+                    box-shadow: 0px 0px 0px 1px $borderColor;
+                }
+            }
+            &:active {
+                &:before {
+                    transition-duration: 0.1s;
+                    transform: scale(0.9);
+                }
+            }
+        }
+        &:checked ~ label {
+            &:before {
+                border-color: $successColor;
+            }
+            &:after {
+                @include show;
+                transform: scale(1);
+                color: $successColor;
+            }
+            &:focus,
+            &:hover {
+                &:before {
+                    box-shadow: 0px 0px 0px 1px $successColor;
+                }
+            }
+        }
+    }
+    input[type="radio"] {
+        & ~ label {
+            $circleSize: 18px;
+            $dotSize: $circleSize - 8px;
+            &:before {
+                top: 2px;
+                left: 1px;
+                width: $circleSize;
+                height: $circleSize;
+                border-radius: $circleSize;
+            }
+            &:after {
+                content: "";
+                font-size: 0;
+                top: ($circleSize - $dotSize) / 2 + 2;
+                left: ($circleSize - $dotSize) / 2 + 1;
+                width: $dotSize;
+                height: $dotSize;
+                border-radius: $dotSize;
+                filter: none;
+                background: $successColor;
+            }
+        }
+    }
+
+    // input addon group
+    .input-group {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        width: 100%;
+        background: #fff;
+        border-radius: $baseRadius;
+        transition: box-shadow $baseAnimationSpeed;
+        @include shadowize();
+        .input-addon {
+            display: inline-block;
+            vertical-align: top;
+            white-space: nowrap;
+            background: inherit;
+            line-height: $baseFieldHeight - 2;
+            color: $lightTxtColor;
+            padding: 0 10px;
+            margin: 0;
+            width: auto;
+            text-decoration: none;
+            text-align: center;
+            i {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 16px;
+                line-height: 1;
+                margin-top: -2px;
+            }
+            &.handle {
+                cursor: pointer;
+                @include user-select(none);
+            }
+        }
+        & > %field {
+            box-shadow: none;
+            background-color: inherit;
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active  {
+            -webkit-box-shadow: 0 0 0 $largeFieldHeight white inset;
+        }
+        & > *,
+        & > input,
+        & > select,
+        & > textarea {
+            border-radius: 0;
+            border: 0;
+            border-style: solid;
+            border-color: $borderColor;
+            border-top-width: 1px;
+            border-bottom-width: 1px;
+        }
+        & > :first-child {
+            border-left-width: 1px;
+            border-top-left-radius: $baseRadius;
+            border-bottom-left-radius: $baseRadius;
+        }
+        & > :last-child {
+            border-right-width: 1px;
+            border-top-right-radius: $baseRadius;
+            border-bottom-right-radius: $baseRadius;
+        }
+    }
+
+    // checkbox/radio groups (eg. | Left | Center | Right |)
+    .switch-group {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        line-height: $baseFieldHeight - 2;
+        border-radius: $baseRadius;
+        border: 1px solid $borderColor;
+        @include shadowize;
+        input ~ label {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            text-align: center;
+            font-size: inherit;
+            line-height: inherit;
+            border-left: 1px solid $borderColor;
+            transition: background $baseAnimationSpeed,
+                        color $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed;
+            &:before,
+            &:after {
+                content: none;
+                display: none;
+            }
+            &:hover {
+                background: $lightBorderColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $borderColor;
+            }
+        }
+        input:checked ~ label {
+            color: $primaryColor;
+            background: $lightBorderColor;
+        }
+        .switch {
+            position: relative;
+            flex: 1;
+            &:first-child {
+                input ~ label {
+                    border-top-left-radius: $baseRadius;
+                    border-bottom-left-radius: $baseRadius;
+                    border-left: 0;
+                }
+            }
+            &:last-child {
+                input ~ label {
+                    border-top-right-radius: $baseRadius;
+                    border-bottom-right-radius: $baseRadius;
+                }
+            }
+        }
+    }
+
+    // sizes
+    &.form-group-sm {
+        label {
+            margin-bottom: 5px;
+        }
+        %field {
+            font-size: $smallFontSize;
+            height: $smallFieldHeight;
+            line-height: $smallLineHeight;
+            padding: (($smallFieldHeight - $smallLineHeight) / 2) 10px;
+        }
+        textarea {
+            min-height: 92px;
+        }
+        select {
+            line-height: $smallLineHeight - 2;
+            padding-left: 6px;
+            padding-right: 30px;
+        }
+        .input-group .input-addon {
+            font-size: $smallFontSize;
+            line-height: $smallFieldHeight - 2;
+        }
+        .switch-group {
+            font-size: $smallFontSize;
+            line-height: $smallFieldHeight - 2;
+        }
+    }
+    &.form-group-lg {
+        %field {
+            font-size: $largeFontSize;
+            height: $largeFieldHeight;
+            line-height: $largeLineHeight;
+            padding: (($largeFieldHeight - $largeLineHeight) / 2) 13px;
+        }
+        textarea {
+            min-height: 136px;
+        }
+        select {
+            padding-left: 11px;
+            padding-right: 30px;
+            background-size: 16px;
+        }
+        .input-group .input-addon {
+            font-size: $largeFontSize;
+            line-height: $largeFieldHeight - 2;
+            i {
+                font-size: 18px;
+            }
+        }
+        .switch-group {
+            font-size: $baseFontSize;
+            line-height: $largeFieldHeight - 2;
+        }
+    }
+
+    // states
+    &.disabled {
+        opacity: 0.5;
+        @include pointer-events(none);
+    }
+    &.required {
+        label {
+            &:after {
+                content: "*";
+                color: $dangerColor;
+                margin-left: 2px;
+                vertical-align: top;
+                font-size: $smallFontSize;
+                line-height: $smallFontSize + 3;
+            }
+        }
+    }
+    &.focused .input-group {
+        @include shadowize(0px 0px 0px 1px $borderColor);
+    }
+    &:focus-within .input-group,
+    &:focus-within .dropdown,
+    &:focus-within > input {
+        @include shadowize(0px 0px 0px 1px $borderColor);
+    }
+    &.has-error {
+        %field {
+            color: $dangerColor;
+            border-color: $dangerColor;
+            background-color: inherit;
+            @include placeholder(lighten($dangerColor, 25%));
+            &:focus {
+                @include shadowize(0px 0px 0px 1px $dangerColor);
+            }
+        }
+        .input-group {
+            background: lighten($dangerColor, 45%);
+            & > .input-addon,
+            & > div,
+            & > input,
+            & > select,
+            & > textarea {
+                border-color: $dangerColor;
+            }
+            .input-addon {
+                color: $dangerColor;
+            }
+            %field {
+                box-shadow: none;
+                &:-webkit-autofill,
+                &:-webkit-autofill:hover,
+                &:-webkit-autofill:focus,
+                &:-webkit-autofill:active  {
+                    -webkit-box-shadow: 0 0 0 $largeFieldHeight lighten($dangerColor, 45%) inset;
+                }
+            }
+        }
+        &.focused .input-group {
+            @include shadowize(0px 0px 0px 1px $dangerColor);
+        }
+        &:focus-within .input-group {
+            @include shadowize(0px 0px 0px 1px $dangerColor);
+        }
+        input[type="checkbox"] ~ label,
+        input[type="radio"] ~ label {
+            &:before {
+                border-color: $dangerColor;
+            }
+        }
+        input[type="radio"]:checked ~ label:after {
+            background: $dangerColor;
+        }
+    }
+}
+
+// radio/checkbox toggles
+.form-group-switch {
+    $switchSpacing: 3px;
+    $switchWidth: 46px;
+    $switchHeight: 25px;
+    line-height: $switchHeight;
+    input[type="checkbox"] ~ label,
+    input[type="radio"] ~ label {
+        line-height: inherit;
+        display: inline-block;
+        vertical-align: top;
+        width: auto;
+        padding-left: $switchWidth + 10;
+        &:before {
+            content: "";
+            top: 0;
+            left: 0;
+            width: $switchWidth;
+            height: $switchHeight;
+            border-radius: 30px;
+            transition: background $baseAnimationSpeed,
+                        border-color $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed;
+            @include shadowize;
+        }
+        &:after {
+            $size: $switchHeight - (2 * $switchSpacing);
+            content: "";
+            width: $size;
+            height: $size;
+            border-radius: $size;
+            top: $switchSpacing;
+            left: $switchSpacing;
+            background: $borderColor;
+            transform: scale(1);
+            transition: left $baseAnimationSpeed,
+                        background $baseAnimationSpeed;
+            @include show;
+        }
+        &:hover {
+            &:before {
+                @include shadowize(0px 0px 0px 1px $borderColor);
+            }
+        }
+        &:active {
+            &:before {
+                transform: scale(1);
+            }
+        }
+    }
+
+    input[type="checkbox"]:checked ~ label,
+    input[type="radio"]:checked ~ label {
+        &:before {
+            background: $successColor;
+            border-color: darken($successColor, 10%);
+        }
+        &:after {
+            background: #fff;
+            left: $switchWidth - $switchHeight + $switchSpacing;
+            @include shadowize;
+        }
+        &:hover {
+            &:before {
+                @include shadowize(0px 0px 0px 1px darken($successColor, 10%));
+            }
+        }
+    }
+}
+.options-toggle {
+    .toggle-item {
+        @extend %block;
+        height: 100%;
+        position: relative;
+        border-radius: $baseRadius;
+        .icon,
+        .txt {
+            @extend %block;
+            line-height: 1;
+            margin: 10px 0;
+        }
+        .icon {
+            font-size: 20px;
+        }
+        input[type="checkbox"] ~ label,
+        input[type="radio"] ~ label {
+            width: 100%;
+            margin: 0;
+            height: 100%;
+            padding: 10px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: inherit;
+            text-align: center;
+            color: $txtColor;
+            transition: color $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed,
+                        background $baseAnimationSpeed;
+            @include shadowize(inset 0px 0px 0px 1px $borderColor);
+            &:before {
+                content: none;
+                display: none;
+            }
+            &:after {
+                $size: 22px;
+                content: "\e9eb";
+                color: inherit;
+                left: auto;
+                right: 5px;
+                top: 5px;
+                width: $size;
+                height: $size;
+                line-height: $size;
+                background: none;
+                font-size: 16px;
+                border-radius: 0;
+            }
+            &:hover {
+                @include shadowize(inset 0px 0px 0px 1px $primaryColor);
+            }
+            &:hover,
+            &:active {
+                color: $primaryColor;
+            }
+            &:active {
+                background: $lightBorderColor;
+            }
+        }
+        input[type="checkbox"]:checked ~ label,
+        input[type="radio"]:checked ~ label {
+            @include shadowize(inset 0px 0px 0px 2px $primaryColor);
+            color: $primaryColor;
+        }
+    }
+}
+
+// form group section
+.form-group-section {
+    @extend %block;
+    margin: 0;
+    padding: $smallSpacing;
+    border-radius: $baseRadius;
+    background: $lightBorderColor;
+    & > :first-child {
+        margin-top: 0 !important;
+    }
+    & > :last-child {
+        margin-bottom: 0 !important;
+    }
+}
