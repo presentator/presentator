@@ -1,6 +1,6 @@
 {
   "name": "presentator-client",
-  "version": "0.0.1",
+  "version": "2.0.0-RC1",
   "description": "Presentator v2 API JavaScript Client",
   "main": "dist/client.min.js",
   "keywords": [
