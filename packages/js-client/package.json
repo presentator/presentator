@@ -16,7 +16,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git://github.com/presentator/presentator-js-client.git"
+    "url": "git://github.com/ganigeorgiev/presentator-js-client.git"
   },
   "scripts": {
     "build": "webpack --mode=production",
