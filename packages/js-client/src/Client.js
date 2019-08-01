@@ -1,17 +1,23 @@
-const axios        = require('axios');
-const BaseResource = require('@/BaseResource');
+import path              from 'path';
+import axios             from 'axios';
+import GuidelineAssets   from '@/resources/GuidelineAssets';
+import GuidelineSections from '@/resources/GuidelineSections';
+import Hotspots          from '@/resources/Hotspots';
+import HotspotTemplates  from '@/resources/HotspotTemplates';
+import Previews          from '@/resources/Previews';
+import ProjectLinks      from '@/resources/ProjectLinks';
+import Projects          from '@/resources/Projects';
+import Prototypes        from '@/resources/Prototypes';
+import ScreenComments    from '@/resources/ScreenComments';
+import Screens           from '@/resources/Screens';
+import Users             from '@/resources/Users';
 
 /**
- * API HTTP Client
- *
- * @property {String}       $baseUrl
- * @property {Axios}        $http
- * @property {String}       $token
- * @property {BaseResource} {...ServiceName}
+ * Presentator API HTTP Client.
  *
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class Client {
+export default class Client {
     /**
      * @param {String} [baseUrl]    API base url
      * @param {String} [token]      Authorization token key
@@ -64,14 +70,17 @@ module.exports = class Client {
         this.setLanguage(lang);
 
         // load all resources
-        var resourcesContext = require.context('./resources/', true, /\.(js)$/);
-        resourcesContext.keys().forEach((file) => {
-            let resourceClass = resourcesContext(file);
-
-            if (resourceClass && resourceClass.prototype instanceof BaseResource) {
-                this[resourceClass.prototype.constructor.name] = new resourceClass(this.$http);
-            }
-        });
+        this.GuidelineAssets   = new GuidelineAssets(this.$http);
+        this.GuidelineSections = new GuidelineSections(this.$http);
+        this.Hotspots          = new Hotspots(this.$http);
+        this.HotspotTemplates  = new HotspotTemplates(this.$http);
+        this.Previews          = new Previews(this.$http);
+        this.ProjectLinks      = new ProjectLinks(this.$http);
+        this.Projects          = new Projects(this.$http);
+        this.Prototypes        = new Prototypes(this.$http);
+        this.ScreenComments    = new ScreenComments(this.$http);
+        this.Screens           = new Screens(this.$http);
+        this.Users             = new Users(this.$http);
     }
 
     /**

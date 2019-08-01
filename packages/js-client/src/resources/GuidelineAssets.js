@@ -1,9 +1,9 @@
-const BaseResource = require('@/BaseResource');
+import BaseResource from '@/BaseResource';
 
 /**
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class GuidelineAssets extends BaseResource {
+export default class GuidelineAssets extends BaseResource {
     /**
      * @param  {Number} [page]
      * @param  {Number} [perPage]

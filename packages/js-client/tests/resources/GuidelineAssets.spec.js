@@ -1,7 +1,7 @@
-const assert          = require('chai').assert;
-const axios           = require('axios');
-const mockAdapter     = require('axios-mock-adapter');
-const GuidelineAssets = require('@/resources/GuidelineAssets');
+import {assert}        from 'chai';
+import axios           from 'axios';
+import mockAdapter     from 'axios-mock-adapter';
+import GuidelineAssets from '@/resources/GuidelineAssets';
 
 /**
  * GuidelineAssets API resource tests.

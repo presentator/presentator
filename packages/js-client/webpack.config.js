@@ -3,10 +3,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
-    entry: './src/index.js',
+    entry: './src/Client.js',
     output: {
         libraryTarget: 'umd',
-        library:       'Client',
+        library:       'PresentatorClient',
         filename:      'client.min.js',
         path:          (__dirname + '/dist'),
     },
@@ -15,9 +15,11 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [__dirname + '/src'],
+                exclude: /node_modules/,
                 loader: 'babel-loader',
                 options: {
-                    presets: [['@babel/env', { 'modules': false }]],
+                    presets: [['@babel/preset-env', { 'modules': 'commonjs' }]],
+                    plugins: ['add-module-exports'],
                 },
             },
         ],

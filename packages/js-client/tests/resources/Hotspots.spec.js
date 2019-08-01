@@ -1,7 +1,7 @@
-const assert      = require('chai').assert;
-const axios       = require('axios');
-const mockAdapter = require('axios-mock-adapter');
-const Hotspots    = require('@/resources/Hotspots');
+import {assert}    from 'chai';
+import axios       from 'axios';
+import mockAdapter from 'axios-mock-adapter';
+import Hotspots    from '@/resources/Hotspots';
 
 /**
  * Hotspots API resource tests.

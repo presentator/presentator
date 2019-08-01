@@ -20,7 +20,7 @@ npm install presentator-client --save
 
 *ES6-style import:*
 ```js
-import Client from 'presentator-client'
+import PresentatorClient from 'presentator-client'
 ```
 
 #### Manual
@@ -30,7 +30,7 @@ import Client from 'presentator-client'
 
 #### Example
 ```js
-var client = new Client('my_api_url');
+var client = new PresentatorClient('my_api_url');
 
 client.Users.login('test@example.com', 'my-password').then(function (data) {
     // success...
@@ -46,12 +46,12 @@ client.Users.login('test@example.com', 'my-password').then(function (data) {
 #### Creating new client instance
 
 ```js
-var client = new Client(baseUrl = '', token = '', axiosConfig = {});
+var client = new PresentatorClient(baseUrl = '', token = '', axiosConfig = {});
 ```
 
 #### Instance methods
 
-> Each instance method returns the `Client` instance to allow chaining.
+> Each instance method returns the `PresentatorClient` instance to allow chaining.
 
 | Method                                         | Description                                             |
 |:-----------------------------------------------|:--------------------------------------------------------|

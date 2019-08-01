@@ -1,9 +1,9 @@
-const BaseResource = require('@/BaseResource');
+import BaseResource from '@/BaseResource';
 
 /**
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class Users extends BaseResource {
+export default class Users extends BaseResource {
     /**
      * @param  {Object} [queryParams]
      * @return {Promise}

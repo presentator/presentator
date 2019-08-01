@@ -1,7 +1,7 @@
-const assert      = require('chai').assert;
-const axios       = require('axios');
-const mockAdapter = require('axios-mock-adapter');
-const Previews    = require('@/resources/Previews');
+import {assert}    from 'chai';
+import axios       from 'axios';
+import mockAdapter from 'axios-mock-adapter';
+import Previews    from '@/resources/Previews';
 
 /**
  * Previews API resource tests.

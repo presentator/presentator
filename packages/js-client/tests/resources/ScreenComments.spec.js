@@ -1,7 +1,7 @@
-const assert         = require('chai').assert;
-const axios          = require('axios');
-const mockAdapter    = require('axios-mock-adapter');
-const ScreenComments = require('@/resources/ScreenComments');
+import {assert}       from 'chai';
+import axios          from 'axios';
+import mockAdapter    from 'axios-mock-adapter';
+import ScreenComments from '@/resources/ScreenComments';
 
 /**
  * ScreenComments API resource tests.

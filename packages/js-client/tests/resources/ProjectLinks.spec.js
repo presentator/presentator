@@ -1,7 +1,7 @@
-const assert       = require('chai').assert;
-const axios        = require('axios');
-const mockAdapter  = require('axios-mock-adapter');
-const ProjectLinks = require('@/resources/ProjectLinks');
+import {assert}     from 'chai';
+import axios        from 'axios';
+import mockAdapter  from 'axios-mock-adapter';
+import ProjectLinks from '@/resources/ProjectLinks';
 
 /**
  * ProjectLinks API resource tests.

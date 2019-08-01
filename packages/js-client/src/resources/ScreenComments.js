@@ -1,9 +1,9 @@
-const BaseResource = require('@/BaseResource');
+import BaseResource from '@/BaseResource';
 
 /**
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class ScreenComments extends BaseResource {
+export default class ScreenComments extends BaseResource {
     /**
      * @param  {Number} [page]
      * @param  {Number} [perPage]

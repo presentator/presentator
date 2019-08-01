@@ -1,8 +1,8 @@
-const assert       = require('chai').assert;
-const axios        = require('axios');
-const mockAdapter  = require('axios-mock-adapter');
-const Client       = require('@/Client');
-const BaseResource = require('@/BaseResource');
+import {assert}     from 'chai';
+import axios        from 'axios';
+import mockAdapter  from 'axios-mock-adapter';
+import Client       from '@/Client';
+import BaseResource from '@/BaseResource';
 
 /**
  * Client API tests.

@@ -1,9 +1,9 @@
-const BaseResource = require('@/BaseResource');
+import BaseResource from '@/BaseResource';
 
 /**
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class Previews extends BaseResource {
+export default class Previews extends BaseResource {
     /**
      * @param  {String} slug
      * @param  {String} [password]

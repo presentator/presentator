@@ -3,7 +3,7 @@
  *
  * @author Gani Georgiev <gani.georgiev@gmail.com>
  */
-module.exports = class BaseResource {
+export default class BaseResource {
     /**
      * @param {Object} http Axios instance
      */
