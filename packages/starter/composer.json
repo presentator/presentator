@@ -36,9 +36,6 @@
         ],
         "post-update-cmd": [
             "presentator\\api\\base\\Starter::postRun"
-        ],
-        "post-create-project-cmd": [
-            "presentator\\api\\base\\Starter::postRun"
         ]
     },
     "extra": {
