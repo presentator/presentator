@@ -27,9 +27,6 @@ return [
                 ],
             ],
         ],
-        'assetManager' => [
-            'basePath' => '@app/web/assets',
-        ],
         'security' => [
             'class' => 'presentator\api\base\Security',
         ],
