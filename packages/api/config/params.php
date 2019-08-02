@@ -74,8 +74,8 @@ return [
     // (should be auto populated in `params-local.php` on application init)
     'activationTokenSecret' => '',
 
-    // user email change token duration time in seconds (default to 1 hour)
-    'emailChangeTokenDuration' => 3600,
+    // user email change token duration time in seconds (default to 30 minutes)
+    'emailChangeTokenDuration' => 1800,
 
     // user email change token secret key
     // (should be auto populated in `params-local.php` on application init)
