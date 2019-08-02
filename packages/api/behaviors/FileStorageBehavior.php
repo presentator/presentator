@@ -140,11 +140,12 @@ class FileStorageBehavior extends Behavior
     {
         $filePathPrefix = rtrim($this->resolveFilePathPrefix(), '/');
 
-        // determine the name of the screen file
-        $filename = Inflector::slug($file->basename, '_') . '.' . $file->extension;
+        // determine the name of the file
+        $basename = substr(Inflector::slug($file->basename, '_'), 0, 100); // max 100 chars length
+        $filename = $basename . '.' . $file->extension;
         $duplicateCounter = 2;
         while (Yii::$app->fs->has($filePathPrefix . '/' . $filename)) {
-            $filename = Inflector::slug($file->basename, '_') . '_' . ($duplicateCounter++) . '.' . $file->extension;
+            $filename = $basename . '_' . ($duplicateCounter++) . '.' . $file->extension;
         }
 
         try {
