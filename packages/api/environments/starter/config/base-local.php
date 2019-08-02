@@ -5,9 +5,14 @@ $params = array_merge(
 );
 
 return [
-    'basePath'   => dirname(__DIR__),
-    'params'     => $params,
-    'components' => [
+    'params'      => $params,
+    'runtimePath' => (__DIR__ . '/../runtime'),
+    'vendorPath'  => (__DIR__ . '/../vendor'),
+    'components'  => [
+        'fs' => [
+            'class' => 'creocoder\flysystem\LocalFilesystem',
+            'path'  => (__DIR__ . '/../storage'),
+        ],
         'db' => [
             'class'    => 'yii\db\Connection',
             'dsn'      => 'mysql:host=localhost;dbname=presentator',
