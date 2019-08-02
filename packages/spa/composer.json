@@ -4,8 +4,8 @@
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
     "support": {
-        "issues": "https://github.com/ganigeorgiev/presentator/issues?state=open",
-        "source": "https://github.com/ganigeorgiev/presentator-spa"
+        "issues": "https://github.com/presentator/presentator/issues?state=open",
+        "source": "https://github.com/presentator/presentator-spa"
     },
     "authors": [
         {

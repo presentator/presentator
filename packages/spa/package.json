@@ -12,7 +12,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ganigeorgiev/presentator-spa.git"
+    "url": "git://github.com/presentator/presentator-spa.git"
   },
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -1137,7 +1137,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ganigeorgiev/presentator-api.git",
+                "url": "https://github.com/presentator/presentator-api.git",
                 "reference": "2e99e065c8d39dcbc1c69dcfe048f2e34ba6bb1c"
             },
             "dist": {
@@ -1197,7 +1197,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ganigeorgiev/presentator-spa.git",
+                "url": "https://github.com/presentator/presentator-spa.git",
                 "reference": "dc7d03a6a966f72abf753c462ccae82b3820d625"
             },
             "dist": {
