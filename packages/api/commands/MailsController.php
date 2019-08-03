@@ -34,7 +34,7 @@ class MailsController extends Controller
         $processed = 0;
 
         $this->stdout('Processing unread screen comments...', Console::FG_YELLOW);
-        echo PHP_EOL;
+        $this->stdout(PHP_EOL);
 
         foreach ($relsQuery->each() as $rel) {
             try {
@@ -50,7 +50,7 @@ class MailsController extends Controller
         }
 
         $this->stdout('Processed: ' . $processed, Console::BG_GREEN, Console::FG_BLACK);
-        echo PHP_EOL;
+        $this->stdout(PHP_EOL);
 
         return self::EXIT_CODE_NORMAL;
     }
