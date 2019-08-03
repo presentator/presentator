@@ -196,8 +196,12 @@ export default {
             this.$setDocumentTitle(this.project.title);
 
             this.setPrototypes(data.prototypes);
+
+            // set active prototype
             if (this.getPrototype(routePrototypeId)) {
                 this.setActivePrototypeId(routePrototypeId);
+            } else if (this.prototypes.length) {
+                this.setActivePrototypeId(this.prototypes[this.prototypes.length - 1].id);
             }
 
             this.showSubroute();

@@ -144,7 +144,7 @@ export default {
             }).then((response) => {
                 this.setPrototypes(response.data);
 
-                // implicit set active prototype
+                // set active prototype
                 let activePrototype = this.getPrototype(activePrototypeId);
                 if (activePrototype) {
                     this.setActivePrototypeId(activePrototype.id);
