@@ -2,6 +2,7 @@
     "name": "presentator/starter",
     "description": "Skeleton Presentator v2 installation setup",
     "keywords": ["starter", "skeleton", "presentator", "presentator-starter", "design", "collaboration", "yii2"],
+    "license": "BSD-3-Clause",
     "minimum-stability": "dev",
     "type": "project",
     "authors": [
