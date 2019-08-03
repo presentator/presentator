@@ -168,7 +168,6 @@ class Project extends ActiveRecord
     {
         // fetch screen commentators
         $result = ScreenComment::find()
-            ->distinct()
             ->select([
                 'email' => ScreenComment::tableName() . '.from',
             ])

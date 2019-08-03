@@ -549,7 +549,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $connection = static::getDb();
 
-        $query = static::find()->distinct();
+        $query = static::find();
 
         if ($looseSearch) {
             $nameExpression = new Expression(sprintf(
@@ -567,8 +567,6 @@ class User extends ActiveRecord implements IdentityInterface
             // full string match
             $query->where(['email' => $search]);
         }
-
-        $query;
 
         return $query->andWhere(['status' => static::STATUS['ACTIVE']])
             ->andWhere(['not in', 'id', $excludeIds])
