@@ -9,7 +9,7 @@ use yii\helpers\Html;
 $name = $user->getFullName();
 
 // replace tokens in comment's view url
-$viewUrl = Yii::$app->params['adminCommentViewUrl'];
+$viewUrl = Yii::$app->params['commentViewUrl'];
 $tokens = [
     'commentId'   => $comment->replyTo ?: $comment->id,
     'screenId'    => $comment->screen->id,
