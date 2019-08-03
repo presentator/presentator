@@ -11,7 +11,7 @@ return [
     'components'  => [
         'fs' => [
             'class' => 'creocoder\flysystem\LocalFilesystem',
-            'path'  => (__DIR__ . '/../storage'),
+            'path'  => (__DIR__ . '/../web/storage'),
         ],
         'db' => [
             'class'    => 'yii\db\Connection',
