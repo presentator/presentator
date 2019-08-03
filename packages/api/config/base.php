@@ -9,9 +9,10 @@ return [
     'name' => 'Presentator',
     'basePath' => dirname(__DIR__),
     'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-        '@tests' => '@app/tests',
+        '@bower'           => '@vendor/bower-asset',
+        '@npm'             => '@vendor/npm-asset',
+        '@tests'           => '@app/tests',
+        '@presentator/api' => '@app', // fix PSR-4 console error because current yii2 autoloader is based on path aliases
     ],
     'bootstrap'  => ['log'],
     'components' => [
