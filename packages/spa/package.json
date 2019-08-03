@@ -1,13 +1,7 @@
 {
   "name": "presentator-spa",
-  "version": "2.0.0-RC1",
   "description": "Presentator v2 SPA",
-  "keywords": [
-    "presentator",
-    "spa",
-    "vue",
-    "interface"
-  ],
+  "private": true,
   "author": "Gani Georgiev <gani.georgiev@gmail.com>",
   "license": "BSD-3-Clause",
   "repository": {
@@ -18,8 +12,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/messages/**/*.json' --output './i18n-report.json'",
-    "prepublishOnly": "npm run build"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/messages/**/*.json' --output './i18n-report.json'"
   },
   "dependencies": {
     "core-js": "^2.6.5",

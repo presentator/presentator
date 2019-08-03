@@ -1,6 +1,0 @@
-src
-public
-.env
-.env.local
-vue.config.js
-babel.config.js
