@@ -134,29 +134,42 @@ class UserCreateForm extends ApiForm
     public function save(): ?User
     {
         if ($this->validate()) {
-            $user = new User;
+            $transaction = User::getDb()->beginTransaction();
 
-            $user->setPassword($this->password);
+            try {
+                $user = new User;
 
-            $result = $user->saveWithSettings([
-                'email'     => $this->email,
-                'firstName' => $this->firstName,
-                'lastName'  => $this->lastName,
-                'status'    => ($this->scenario === self::SCENARIO_SUPER ? $this->status : User::STATUS['INACTIVE']),
-                'type'      => ($this->scenario === self::SCENARIO_SUPER ? $this->type : User::TYPE['REGULAR']),
-            ], [
-                [UserSetting::NOTIFY_ON_EACH_COMMENT, $this->notifyOnEachComment, UserSetting::TYPE['BOOLEAN']],
-                [UserSetting::NOTIFY_ON_MENTION, (($this->notifyOnMention || $this->notifyOnEachComment) ? true : false), UserSetting::TYPE['BOOLEAN']],
-            ]);
+                $user->setPassword($this->password);
 
-            if ($result) {
-                if ($user->status == User::STATUS['INACTIVE']) {
-                    $user->sendActivationEmail();
+                $result = $user->saveWithSettings([
+                    'email'     => $this->email,
+                    'firstName' => $this->firstName,
+                    'lastName'  => $this->lastName,
+                    'status'    => ($this->scenario === self::SCENARIO_SUPER ? $this->status : User::STATUS['INACTIVE']),
+                    'type'      => ($this->scenario === self::SCENARIO_SUPER ? $this->type : User::TYPE['REGULAR']),
+                ], [
+                    [UserSetting::NOTIFY_ON_EACH_COMMENT, $this->notifyOnEachComment, UserSetting::TYPE['BOOLEAN']],
+                    [UserSetting::NOTIFY_ON_MENTION, (($this->notifyOnMention || $this->notifyOnEachComment) ? true : false), UserSetting::TYPE['BOOLEAN']],
+                ]);
+
+                if ($result) {
+                    if (
+                        $user->status == User::STATUS['INACTIVE'] &&
+                        !$user->sendActivationEmail()
+                    ) {
+                        throw new \Exception('Unable to send user activation email.');
+                    }
+
+                    $transaction->commit();
+
+                    $user->refresh();
+
+                    return $user;
                 }
+            } catch(\Exception | \Throwable $e) {
+                $transaction->rollBack();
 
-                $user->refresh();
-
-                return $user;
+                Yii::error($e->getMessage());
             }
         }
 
