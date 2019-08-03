@@ -64,7 +64,7 @@ class V1ImportController extends Controller
         ]);
 
         $oldDsn = $this->prompt('> Presentator v1 DB dsn string:', [
-            'default' => 'mysql:host=db;dbname=presentator_test',
+            'default' => 'mysql:host=localhost;dbname=presentator_old',
         ]);
 
         $oldUsername = $this->prompt('> Presentator v1 DB username:', [
