@@ -7,7 +7,7 @@ return [
     'appUrl' => 'https://example.com/#/',
 
     // indicates the URI to return the user after oauth authorization
-    'authClientRedirectUri' => 'https://example.com/#/auth-callback/',
+    'authClientRedirectUri' => 'https://example.com/#/auth-callback',
 
     // url to the user activation confirmation page (used mainly in mail templates)
     // the following variables are available: {token}
