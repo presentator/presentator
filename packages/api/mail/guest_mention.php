@@ -2,8 +2,8 @@
 use yii\helpers\Html;
 
 /**
- * @var $comment     \app\models\ScreenComment
- * @var $projectLink null|\app\models\ProjectLink
+ * @var $comment     \presentator\api\models\ScreenComment
+ * @var $projectLink null|\presentator\api\models\ProjectLink
  */
 
 // set defaults

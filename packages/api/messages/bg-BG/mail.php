@@ -44,7 +44,7 @@ return [
     'We\'ve received a request to reset your account password.' => 'Получихме заявка за смяна на паролата на твоя профил.',
     'You are invited to review the design for project "{projectTitle}".' => 'Поканен си да разгледаш дизайна на проект "{projectTitle}".',
     'You have been assigned as administrator to project "{projectTitle}".' => 'Назначен си като администратор към проект "{projectTitle}".',
-    'You have been discharged as administrator from project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
+    'You have been removed from project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
     'You have been mentioned in a comment' => 'Споменаване в коментар',
     'You have been mentioned in a comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Споменат си в коментар за екран "{screenTitle}" към проект "{projectTitle}":',
     'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Имаш непрочетен коментар за екран "{screenTitle}" към проект "{projectTitle}":',

@@ -2,8 +2,8 @@
 use yii\helpers\Html;
 
 /**
- * @var $user    \app\models\User
- * @var $project \app\models\Project
+ * @var $user    \presentator\api\models\User
+ * @var $project \presentator\api\models\Project
  */
 
 $name       = $user->getFullName();

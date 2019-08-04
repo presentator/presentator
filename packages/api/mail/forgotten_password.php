@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 
 /**
- * @var $user \app\models\User
+ * @var $user \presentator\api\models\User
  */
 
 $name     = $user->getFullName();
