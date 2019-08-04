@@ -14,6 +14,9 @@ It is built with [Vue.js](https://vuejs.org/) and [Webpack](https://webpack.js.o
 
 ## Installing
 
+> The prebuilt package located in `dist/` is meant to be used with [presentator/starter](https://github.com/presentator/presentator-starter).
+> If you want to customize the default configurations and build your own version of the application, please follow the steps below.
+
 1. Download or clone the project repo.
 
 2. Create a new `.env.local` file in the project root directory. Copy and edit the configuration settings from `.env` to suit your environment setup.
