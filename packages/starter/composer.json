@@ -3,8 +3,12 @@
     "description": "Skeleton Presentator v2 installation setup",
     "keywords": ["starter", "skeleton", "presentator", "presentator-starter", "design", "collaboration", "yii2"],
     "license": "BSD-3-Clause",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "type": "project",
+    "support": {
+        "issues": "https://github.com/presentator/presentator/issues?state=open",
+        "source": "https://github.com/presentator/presentator-starter"
+    },
     "authors": [
         {
             "name":  "Gani Georgiev",
@@ -12,8 +16,8 @@
         }
     ],
     "require": {
-        "presentator/api": "dev-master",
-        "presentator/spa": "dev-master"
+        "presentator/api": "^2.0.0",
+        "presentator/spa": "^2.0.0"
     },
     "config": {
         "platform": {

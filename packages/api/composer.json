@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "support": {
         "issues": "https://github.com/presentator/presentator/issues?state=open",
-        "source": "https://github.com/presentator/presentator"
+        "source": "https://github.com/presentator/presentator-api"
     },
     "authors": [
         {
