@@ -415,7 +415,7 @@ export default {
             });
 
             this.dropzone.on('error', (file, response, xhr) => {
-                var message = CommonHelper.getNestedVal(response, 'errors.file') || this.$t('An error occured while uploading the asset file.');
+                var message = CommonHelper.getNestedVal(response, 'errors.file') || this.$t('An error occurred while uploading the asset file.');
 
                 this.$toast(message, 'danger');
             });

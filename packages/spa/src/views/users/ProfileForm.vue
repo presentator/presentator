@@ -254,7 +254,7 @@ export default {
             });
 
             this.dropzone.on('error', (file, response, xhr) => {
-                var message = CommonHelper.getNestedVal(response, 'errors.avatar', this.$t('An error occured while updating the user avatar.'));
+                var message = CommonHelper.getNestedVal(response, 'errors.avatar', this.$t('An error occurred while updating the user avatar.'));
 
                 this.$toast(message, 'danger');
             });

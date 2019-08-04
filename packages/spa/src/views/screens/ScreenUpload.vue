@@ -102,7 +102,7 @@ export default {
             });
 
             this.dropzone.on('error', (file, response, xhr) => {
-                var message = file.name + ': ' + CommonHelper.getNestedVal(response, 'errors.file', this.$t('An error occured while uploading the screen.'));
+                var message = file.name + ': ' + CommonHelper.getNestedVal(response, 'errors.file', this.$t('An error occurred while uploading the screen.'));
 
                 this.$toast(message, 'danger');
             });
