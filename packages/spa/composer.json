@@ -1,8 +1,9 @@
 {
     "name": "presentator/spa",
     "description": "Presentator v2 SPA (for presentator/starter)",
+    "keywords": ["spa", "presentator", "presentator-spa", "vue"],
     "license": "BSD-3-Clause",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "support": {
         "issues": "https://github.com/presentator/presentator/issues?state=open",
         "source": "https://github.com/presentator/presentator-spa"
