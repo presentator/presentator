@@ -33,10 +33,10 @@
     ],
     "scripts": {
         "post-install-cmd": [
-            "presentator\\api\\base\\Starter::postRun"
+            "presentator\\api\\base\\Starter::postCmd"
         ],
         "post-update-cmd": [
-            "presentator\\api\\base\\Starter::postRun"
+            "presentator\\api\\base\\Starter::postCmd"
         ]
     },
     "extra": {

@@ -13,7 +13,7 @@ use Composer\Util\Filesystem;
  * to seamlessly handle project installation/update.
  *
  * List of all available static methods (check the dockblock section of each method for detailed information):
- * @method postRun()
+ * @method postCmd()
  * @method appInit()
  * @method appMigrate()
  * @method linkSpa()
@@ -27,7 +27,7 @@ use Composer\Util\Filesystem;
  * ```json
  * "scripts": {
  *     "post-install-cmd": [
- *         "presentator\\api\\base\\Starter::postRun"
+ *         "presentator\\api\\base\\Starter::postCmd"
  *     ],
  *     "post-update-cmd": [
  *         "presentator\\api\\base\\Starter::linkSpa",
@@ -66,7 +66,7 @@ class Starter
      *
      * @param Event $event
      */
-    public static function postRun(Event $event)
+    public static function postCmd(Event $event)
     {
         static::linkSpa($event);
 
