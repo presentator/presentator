@@ -405,7 +405,7 @@ label {
                 background: #fff;
                 width: $handleSize;
                 height: $handleSize;
-                border-radius: $baseRadius;
+                border-radius: $checkboxRadius;
                 border: 1px solid $borderColor;
                 transition: background $baseAnimationSpeed,
                             transform $baseAnimationSpeed,
