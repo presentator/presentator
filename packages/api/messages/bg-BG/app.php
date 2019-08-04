@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Alignment' => 'Подравняване',
     'Allow comments' => 'Разреши коментари',
     'Allow guideline' => 'Разреши guideline',
@@ -80,4 +80,4 @@ return [
     'Width' => 'Ширина',
     'You are not allowed to perform this request.' => 'Нямаш достатъчно права да извършиш текущата заявка.',
     'You cannot unlink the only user of the project.' => 'Не може да премахнеш единствения администратор на проекта.',
-];
+);

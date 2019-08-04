@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+return array(
     'Account activation' => 'Активиране на профил',
     'Activate account' => 'Активиране на профил',
     'Administrator assignment' => 'Назначаване като администратор',
@@ -50,4 +50,4 @@ return [
     'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Имаш непрочетен коментар за екран "{screenTitle}" към проект "{projectTitle}":',
     'Your Presentator account was successfully created.' => 'Твоят профил в Presentator беше успешно създаден.',
     '{projectTitle} preview' => '{projectTitle} преглед',
-];
+);

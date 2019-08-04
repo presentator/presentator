@@ -13,7 +13,7 @@ return [
     'color'        => true,
     'sourcePath'   => (__DIR__ . '/..'),
     'messagePath'  => (__DIR__ . '/../messages/'),
-    'languages'    => ['bg-BG'],
+    'languages'    => ['en-US', 'bg-BG'],
     'translator'   => 'Yii::t',
     'sort'         => false,
     'removeUnused' => false,
