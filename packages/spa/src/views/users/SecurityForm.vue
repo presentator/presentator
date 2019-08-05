@@ -84,7 +84,7 @@ export default {
                 newPassword:        this.newPassword,
                 newPasswordConfirm: this.newPasswordConfirm,
             }).then((response) => {
-                this.$toast('Successfully updated user password.');
+                this.$toast(this.$t('Successfully updated user password.'));
 
                 var userData = CommonHelper.getNestedVal(response, 'data', {});
 

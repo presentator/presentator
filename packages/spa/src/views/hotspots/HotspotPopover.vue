@@ -418,7 +418,7 @@ export default {
                     this.linkToHotspotTemplate(selectedTemplate.id, this.activeScreenId);
                 }
 
-                this.$toast('Successfully updated hotspot.');
+                this.$toast(this.$t('Successfully updated hotspot.'));
 
                 this.reloadForm();
 
