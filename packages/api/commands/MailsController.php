@@ -23,12 +23,14 @@ class MailsController extends Controller
      *
      * Example usage:
      * ```bash
-     * php yii mails/process-comments
+     * php yii mails/process-comments [sleepBatch] [sleepDuration]
      * ```
      *
+     * @param  integer [$sleepBatch]    The number of emails to process before sleep to occur (default to 5).
+     * @param  integer [$sleepDuration] Sleep interval duration in seconds (default to 2).
      * @return integer
      */
-    public function actionProcessComments()
+    public function actionProcessComments(int $sleepBatch = 5, int $sleepDuration = 2)
     {
         $relsQuery = UserScreenCommentRel::findProcessableQuery();
         $processed = 0;
@@ -36,13 +38,17 @@ class MailsController extends Controller
         $this->stdout('Processing unread screen comments...', Console::FG_YELLOW);
         $this->stdout(PHP_EOL);
 
-        foreach ($relsQuery->each() as $rel) {
+        foreach ($relsQuery->each() as $i => $rel) {
             try {
                 if (
                     $rel->user->sendUnreadCommentEmail($rel->screenComment) &&
                     $rel->markAsProcessed()
                 ) {
                     $processed++;
+                }
+
+                if (($i + 1) % $sleepBatch == 0) {
+                    sleep($sleepDuration);
                 }
             } catch (\Exception | \Throwable $e) {
                 Yii::error($e->getMessage());
