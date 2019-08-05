@@ -19,7 +19,7 @@ Presentator v2 REST API server implementation, written in PHP and based on [Yii2
 
 - SQL database (MySQL/MariadDB/PostgreSQL)
 
-    > For MySQL up to 5.6 and MariaDB up to 10.1 you may need to set `innodb_large_prefix = 1` to prevent migration errors (see [#104](https://github.com/presentator/presentator/issues/104)).
+    > For MySQL up to 5.6 and MariaDB up to 10.1 you may need to set `innodb_large_prefix=1` and `innodb_default_row_format=dynamic` to prevent migration errors (see [#104](https://github.com/presentator/presentator/issues/104)).
 
 - PHP 7.1+ with the following extensions:
 
