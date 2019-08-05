@@ -160,10 +160,7 @@ export default {
     },
     watch: {
         activeSize(newVal, oldVal) {
-            if (newVal !== 'other') {
-                this.width  = sizesList[this.activeSize]['width'];
-                this.height = sizesList[this.activeSize]['height'];
-            }
+            this.onActiveSizeUpdate();
         },
     },
     beforeMount() {
@@ -208,8 +205,18 @@ export default {
             // reset scaleFactor
             this.scaleFactor = 1;
 
-            if (this.type == 'mobile' && (!this.width || !this.height)) {
-                this.activeSize = defaultFormData.activeSize;
+            if (this.type == 'mobile') {
+                if (!this.width || !this.height) { // from desktop to mobile
+                    this.activeSize = defaultFormData.activeSize; // switch to the default device size
+                }
+
+                this.onActiveSizeUpdate();
+            }
+        },
+        onActiveSizeUpdate() {
+            if (this.activeSize !== 'other') {
+                this.width  = sizesList[this.activeSize]['width'];
+                this.height = sizesList[this.activeSize]['height'];
             }
         },
         submitForm() {
@@ -227,11 +234,11 @@ export default {
             this.isProcessing = true;
 
             ApiClient.Prototypes.update(this.model.id, {
-                type:        this.type,
                 title:       this.title,
-                scaleFactor: this.scaleFactor,
+                type:        this.type,
                 width:       this.width,
                 height:      this.height,
+                scaleFactor: this.scaleFactor,
             }).then((response) => {
                 this.$toast(this.$t('Successfully updated prototype.'));
 
@@ -251,11 +258,11 @@ export default {
 
             ApiClient.Prototypes.create({
                 projectId:   this.projectId,
-                type:        this.type,
                 title:       this.title,
-                scaleFactor: this.scaleFactor,
+                type:        this.type,
                 width:       this.width,
                 height:      this.height,
+                scaleFactor: this.scaleFactor,
             }).then((response) => {
                 this.$toast(this.$t('Successfully created prototype.'));
 

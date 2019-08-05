@@ -115,12 +115,12 @@ import Prototype    from '@/models/Prototype';
 const sizesList = Prototype.getSizesList();
 
 const defaultFormData = {
-    title:          '',
-    type:           'desktop',
-    width:          100,
-    height:         100,
-    scaleFactor:    1,
-    activeSize:     Object.keys(sizesList)[0],
+    title:       '',
+    type:        'desktop',
+    width:       100,
+    height:      100,
+    scaleFactor: 1,
+    activeSize:  Object.keys(sizesList)[0],
 };
 
 export default {
@@ -142,10 +142,7 @@ export default {
     },
     watch: {
         activeSize(newVal, oldVal) {
-            if (newVal !== 'other') {
-                this.width  = sizesList[this.activeSize]['width'];
-                this.height = sizesList[this.activeSize]['height'];
-            }
+            this.onActiveSizeUpdate();
         },
     },
     methods: {
@@ -165,8 +162,18 @@ export default {
             // reset scaleFactor
             this.scaleFactor = 1;
 
-            if (this.type == 'mobile' && (!this.width || !this.height)) {
-                this.activeSize = defaultFormData.activeSize;
+            if (this.type == 'mobile') {
+                if (!this.width || !this.height) { // from desktop to mobile
+                    this.activeSize = defaultFormData.activeSize; // switch to the default device size
+                }
+
+                this.onActiveSizeUpdate();
+            }
+        },
+        onActiveSizeUpdate() {
+            if (this.activeSize !== 'other') {
+                this.width  = sizesList[this.activeSize]['width'];
+                this.height = sizesList[this.activeSize]['height'];
             }
         },
         resetForm() {
@@ -199,7 +206,6 @@ export default {
                 this.isProcessing = false;
             });
         },
-
         createProject() {
             return ApiClient.Projects.create({
                 title:    this.title,
