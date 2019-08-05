@@ -176,8 +176,10 @@ export default {
             }
         },
         markAllActiveAsRead() {
-            for (let i in this.activeUnreadComments) {
-                this.markAsRead(this.activeUnreadComments[i].id);
+            var comments = this.activeUnreadComments.slice(); // clone to prevent computed property update side effects
+
+            for (let i = comments.length - 1; i >= 0; i--) {
+                this.markAsRead(comments[i].id);
             }
         },
     },
