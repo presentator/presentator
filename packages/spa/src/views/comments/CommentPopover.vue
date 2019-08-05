@@ -174,7 +174,7 @@ export default {
                 if (newVal.length && this.isActive) {
                     this.$nextTick(() => {
                         this.scrollToLastComment();
-                        this.readComments(this.commentsList, 500);
+                        this.readComments(this.commentsList.slice(), 500);
                     });
                 }
             }
@@ -329,7 +329,7 @@ export default {
             request.then((response) => {
                 this.replies = ScreenComment.createInstances(response.data);
 
-                this.readComments(this.commentsList);
+                this.readComments(this.commentsList.slice());
             }).catch((err) => {
                 this.$errResponseHandler(err);
             }).finally(() => {
