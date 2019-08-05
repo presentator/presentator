@@ -341,22 +341,25 @@ export default {
                 return;
             }
 
-            var comment   = CommonHelper.findByKey(this.replies, 'id', commentId);
-            var deleteMsg = '';
+            var comment = CommonHelper.findByKey(this.commentsList, 'id', commentId);
+            if (!comment) {
+                return;
+            }
 
-            if (comment && comment.isPrimary) {
+            var deleteMsg = '';
+            if (comment.isPrimary) {
                 deleteMsg = this.$t('Do you really want to deleted the selected comment and all its replies?');
             } else {
                 deleteMsg = this.$t('Do you really want to deleted the selected comment?');
             }
 
-            if (!comment || !window.confirm(deleteMsg)) {
+            if (!window.confirm(deleteMsg)) {
                 return;
             }
 
             // optimistic delete
             this.$toast(this.$t('Successfully deleted comment.'));
-            CommonHelper.removeByKey(this.replies, 'id', commentId);
+            CommonHelper.removeByKey(this.replies, 'id', commentId); // remove from the replies list (if reply)
             this.removeComment(commentId);
 
             // close popover on primary comment deletion
