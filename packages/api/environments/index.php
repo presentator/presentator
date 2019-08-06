@@ -35,7 +35,7 @@
 $base = [
     'setWritable' => [
         'runtime',
-        'web/assets',
+        'web/api/assets',
         'web/storage',
     ],
     'setRandomKey' => [
@@ -64,11 +64,6 @@ return [
     ]),
     'Starter' => array_merge($base, [
         'path' => 'starter',
-        // 'setWritable' => [
-        //     'runtime',
-        //     'web/assets',
-        //     'web/storage',
-        // ],
         'setExecutable' => [
             'yii',
         ],
