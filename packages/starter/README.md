@@ -20,7 +20,7 @@ The only requirements are those from the [Presentator API](https://github.com/pr
 
 ## Installation
 
-> If you prefer a dockerized version of the starter package, please check [presentator/docker](https://github.com/presentator/presentator-docker).
+> If you prefer a dockerized version of the starter package, please check [presentator-docker](https://github.com/presentator/presentator-docker).
 
 Before getting started make sure that you have checked the project requirements and installed [Composer](https://getcomposer.org/).
 
