@@ -81,7 +81,11 @@ class Starter
 
         static::appInit($event);
 
-        $hasDbConnection = static::hasDbConnection($event);
+        try {
+            $hasDbConnection = static::hasDbConnection($event);
+        } catch (\Exception | \Throwable $e) {
+            $hasDbConnection = false;
+        }
 
         // run migrations if the app db component is configured
         if ($hasDbConnection) {
