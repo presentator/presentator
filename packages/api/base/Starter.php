@@ -12,7 +12,7 @@ use Composer\Util\Filesystem;
  * This class is intended to be used together with `presentator/starter` package
  * to seamlessly handle project installation/update.
  *
- * List of all available static methods (check the dockblock section of each method for detailed information):
+ * Available public static methods (check the dockblock section of each method for detailed information):
  * @method postCmd()
  * @method appInit()
  * @method appMigrate()
@@ -75,14 +75,20 @@ class Starter
         $isInited = (
             file_exists($workingDir . '/yii') &&
             file_exists($workingDir . '/config/base-local.php') &&
+            file_exists($workingDir . '/config/params-local.php') &&
             file_exists($workingDir . '/web/api/index.php')
         );
 
-        if ($isInited) {
-            static::appMigrate($event);
-        } else {
-            static::appInit($event);
+        static::appInit($event);
 
+        $hasDbConnection = static::hasDbConnection($event);
+
+        // run migrations if the app db component is configured
+        if ($hasDbConnection) {
+            static::appMigrate($event);
+        }
+
+        if (!$isInited || !$hasDbConnection) {
             echo PHP_EOL;
             echo 'Please check the following steps in order to complete the installation:' . PHP_EOL;
             echo '---' . PHP_EOL;
@@ -96,10 +102,11 @@ class Starter
      * Runs app's `init` command in non-interactive mode.
      *
      * @param  Event $event
+     * @return Mixed
      */
     public static function appInit(Event $event)
     {
-        self::addAndRunScript(
+        return self::addAndRunScript(
             $event->getComposer(),
             '@php vendor/presentator/api/init --env=Starter --overwrite=n --targetRoot=' . getcwd()
         );
@@ -109,10 +116,11 @@ class Starter
      * Runs app's `yii/migrate` command in non-interactive mode.
      *
      * @param  Event $event
+     * @return Mixed
      */
     public static function appMigrate(Event $event)
     {
-        self::addAndRunScript(
+        return self::addAndRunScript(
             $event->getComposer(),
             '@php yii migrate/up --interactive=0'
         );
@@ -187,11 +195,25 @@ class Starter
     }
 
     /**
+     * Checks whether an app db connection can be established.
+     *
+     * @param  Event $event
+     * @return boolean
+     */
+    protected static function hasDbConnection(Event $event)
+    {
+        $composer = $event->getComposer();
+
+        return self::addAndRunScript($composer, '@php yii healthcheck/db') == 0;
+    }
+
+    /**
      * Adds package script with the provided command on the fly and executes it.
      *
      * @see https://getcomposer.org/doc/articles/scripts.md#defining-scripts
-     * @param Composer $composer
-     * @param string   $command
+     * @param  Composer $composer
+     * @param  string   $command
+     * @return Mixed The exit code of the command.
      */
     protected static function addAndRunScript(Composer $composer, string $command)
     {
@@ -200,6 +222,6 @@ class Starter
         $scripts[$script] = [$command];
         $composer->getPackage()->setScripts($scripts);
 
-        $composer->getEventDispatcher()->dispatchScript($script);
+        return $composer->getEventDispatcher()->dispatchScript($script);
     }
 }
