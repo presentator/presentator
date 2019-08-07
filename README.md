@@ -18,6 +18,7 @@ The project is organized in a monorepo and consists of several decoupled package
 - [api](packages/api)
 - [spa](packages/spa)
 - [js-client](packages/js-client)
+- [docker](packages/docker)
 
 
 ## Upgrade from v1
