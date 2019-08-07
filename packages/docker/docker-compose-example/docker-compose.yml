@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  mariadb:
+    image: mariadb:10
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=presentator
+      - MYSQL_USER=presentator
+      - MYSQL_PASSWORD=presentator
+
+  presentator:
+    image: ganigeorgiev/presentator:latest
+    depends_on:
+      - mariadb
+    restart: always
+    environment:
+      - VIRTUAL_HOST=example.com
+    volumes:
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./vhosts.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./base-local.php:/var/www/html/config/base-local.php
+      - ./params-local.php:/var/www/html/config/params-local.php
+      - ./spa.json:/var/www/html/config/spa.json
+      - ./storage:/var/www/html/web/storage

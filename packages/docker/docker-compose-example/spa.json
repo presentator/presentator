@@ -1,0 +1,4 @@
+{
+    "VUE_APP_API_URL": "/api",
+    "VUE_APP_FIRESTORE_PROJECT_ID": ""
+}
