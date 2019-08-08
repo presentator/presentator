@@ -56,6 +56,17 @@ Before getting started make sure that you have checked the project requirements 
 
 **That’s it!** Check the application in your browser to verify that everything is working fine.
 
+Additional console commands you may found useful:
+
+```bash
+# set Super User access rights to a single User model
+php /path/to/starter/yii users/super test@example.com
+
+# set Regular User access rights to a single User model
+php /path/to/starter/yii users/regular test@example.com
+```
+
+
 ## Updating
 
 To update your Presentator application to the latest available version, just run `composer update` while in the project root directory.
