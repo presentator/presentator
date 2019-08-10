@@ -5,10 +5,10 @@ use yii\authclient\OAuth2;
 use yii\base\InvalidConfigException;
 
 /**
- * Gitea allows authentication via Gitea OAuth2.
+ * Gitea authclient allows authentication via Gitea OAuth2.
  *
  * In order to use Gitea OAuth2 you must register your application at <https://your-gitea.com/user/settings/security>.
- * Also note that currently Gitea doesn't support scopes <https://github.com/go-gitea/gitea/issues/4300>
+ * Also note that currently Gitea doesn't support scopes <https://github.com/go-gitea/gitea/issues/4300>.
  *
  * Example application configuration:
  *
@@ -17,9 +17,9 @@ use yii\base\InvalidConfigException;
  *     'authClientCollection' => [
  *         'class' => \yii\authclient\Collection::class,
  *         'clients' => [
- *             'gitlab' => [
+ *             'gitea' => [
  *                 'class'        => \presentator\api\authclients\Gitea::class,
- *                 'domain'       => 'https://your-gitea.com'
+ *                 'serviceUrl'   => 'https://your-gitea.com'
  *                 'clientId'     => 'gitea_client_id',
  *                 'clientSecret' => 'gitea_client_secret',
  *             ],
@@ -36,35 +36,37 @@ use yii\base\InvalidConfigException;
 class Gitea extends OAuth2
 {
     /**
-     * Domain/base url to the Gitea instance.
+     * Base url to your Gitea instance.
      *
      * @var string
      */
-    public $domain = 'https://try.gitea.io';
+    public $serviceUrl = '';
 
     /**
      * {@inheritdoc}
      *
-     * Will be auto prefixed with `$domain` on init.
+     * Will be auto prefixed with `$serviceUrl` on init.
      */
     public $authUrl = '/login/oauth/authorize';
 
     /**
      * {@inheritdoc}
      *
-     * Will be auto prefixed with `$domain` on init.
+     * Will be auto prefixed with `$serviceUrl` on init.
      */
     public $tokenUrl = '/login/oauth/access_token';
 
     /**
      * {@inheritdoc}
      *
-     * Will be auto prefixed with `$domain` on init.
+     * Will be auto prefixed with `$serviceUrl` on init.
      */
     public $apiBaseUrl = '/api/v1';
 
     /**
      * {@inheritdoc}
+     *
+     * _Scopes are not supported yet - <https://github.com/go-gitea/gitea/issues/4300>_
      */
     public $scope = 'user:email';
 
@@ -75,15 +77,15 @@ class Gitea extends OAuth2
     {
         parent::init();
 
-        if (!$this->domain) {
-            throw new InvalidConfigException('Gitea Oauth2 domain must be set.');
+        if (!$this->serviceUrl) {
+            throw new InvalidConfigException('Gitea Oauth2 serviceUrl must be set.');
         }
 
         // normalize props
-        $this->domain     = rtrim($this->domain, '/');
-        $this->authUrl    = $this->domain . $this->authUrl;
-        $this->tokenUrl   = $this->domain . $this->tokenUrl;
-        $this->apiBaseUrl = $this->domain . $this->apiBaseUrl;
+        $this->serviceUrl     = rtrim($this->serviceUrl, '/');
+        $this->authUrl    = $this->serviceUrl . $this->authUrl;
+        $this->tokenUrl   = $this->serviceUrl . $this->tokenUrl;
+        $this->apiBaseUrl = $this->serviceUrl . $this->apiBaseUrl;
     }
 
     /**
