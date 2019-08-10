@@ -45,7 +45,7 @@ class Dribbble extends OAuth2
     /**
      * {@inheritdoc}
      */
-    public $apiBaseUrl = 'https://api.dribbble.com/v1/';
+    public $apiBaseUrl = 'https://api.dribbble.com/v1';
 
     /**
      * {@inheritdoc}
