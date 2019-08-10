@@ -151,6 +151,10 @@
                 content: "";
                 background-image: url('#{$imagesPath}/gitea-logo.svg');
             }
+            &.nextcloud:after {
+                content: "";
+                background-image: url('#{$imagesPath}/nextcloud-logo.svg');
+            }
             &.dummy {
                 border-color: $lightBorderColor;
                 background: $lightBorderColor;
