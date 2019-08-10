@@ -5,6 +5,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use presentator\api\models\User;
 use presentator\api\models\UserAuth;
+use yii\authclient\OAuth2;
 
 /**
  * Handles user authentication via Yii auth component.
@@ -52,7 +53,7 @@ class AuthClientAuthorizationForm extends ApiForm
     }
 
     /**
-     * Returns all auth collection clients with configured client ID and secret.
+     * Returns all OAuth2 collection clients with configured client ID and secret.
      *
      * @return array
      */
@@ -64,6 +65,7 @@ class AuthClientAuthorizationForm extends ApiForm
 
         foreach ($clients as $key => $client) {
             if (
+                $client instanceof OAuth2 &&
                 !empty($client->clientId) &&
                 !empty($client->clientSecret)
             ) {
