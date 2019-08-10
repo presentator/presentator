@@ -147,6 +147,10 @@
                 content: "";
                 background-image: url('#{$imagesPath}/gitlab-logo.svg');
             }
+            &.gitea:after {
+                content: "";
+                background-image: url('#{$imagesPath}/gitea-logo.svg');
+            }
             &.dummy {
                 border-color: $lightBorderColor;
                 background: $lightBorderColor;
