@@ -47,13 +47,13 @@ return [
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],
-        //         'twitter' => [
-        //             'class'        => 'yii\authclient\clients\TwitterOAuth2',
+        //         'facebook' => [
+        //             'class'        => 'yii\authclient\clients\Facebook',
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],
-        //         'facebook' => [
-        //             'class'        => 'yii\authclient\clients\Facebook',
+        //         'dribbble' => [
+        //             'class'        => 'presentator\api\authclients\Dribbble',
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],
@@ -64,6 +64,19 @@ return [
         //         ],
         //         'gitlab' => [
         //             'class'        => 'presentator\api\authclients\GitLab',
+        //             'serviceUrl'   => 'https://gitlab.com',
+        //             'clientId'     => '',
+        //             'clientSecret' => '',
+        //         ],
+        //         'gitea' => [
+        //             'class'        => 'presentator\api\authclients\Gitea',
+        //             'serviceUrl'   => 'https://my-gitea.com',
+        //             'clientId'     => '',
+        //             'clientSecret' => '',
+        //         ],
+        //         'nextcloud' => [
+        //             'class'        => 'presentator\api\authclients\Nextcloud',
+        //             'serviceUrl'   => 'https://my-nextcloud.com',
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],

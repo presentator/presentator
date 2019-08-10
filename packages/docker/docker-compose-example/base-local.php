@@ -66,6 +66,11 @@ return [
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],
+        //         'dribbble' => [
+        //             'class'        => 'presentator\api\authclients\Dribbble',
+        //             'clientId'     => '',
+        //             'clientSecret' => '',
+        //         ],
         //         'github' => [
         //             'class'        => 'yii\authclient\clients\GitHub',
         //             'clientId'     => '',
@@ -73,6 +78,19 @@ return [
         //         ],
         //         'gitlab' => [
         //             'class'        => 'presentator\api\authclients\GitLab',
+        //             'serviceUrl'   => 'https://gitlab.com',
+        //             'clientId'     => '',
+        //             'clientSecret' => '',
+        //         ],
+        //         'gitea' => [
+        //             'class'        => 'presentator\api\authclients\Gitea',
+        //             'serviceUrl'   => 'https://my-gitea.com',
+        //             'clientId'     => '',
+        //             'clientSecret' => '',
+        //         ],
+        //         'nextcloud' => [
+        //             'class'        => 'presentator\api\authclients\Nextcloud',
+        //             'serviceUrl'   => 'https://my-nextcloud.com',
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],

@@ -56,22 +56,45 @@ return [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
-                // valid clients:
-                'google' => [
-                    'class' => 'yii\authclient\clients\Google',
-                ],
-                'twitter' => [
-                    'class' => 'yii\authclient\clients\TwitterOAuth2',
-                ],
-                'facebook' => [
-                    'class' => 'yii\authclient\clients\Facebook',
-                ],
-                'github' => [
-                    'class' => 'yii\authclient\clients\GitHub',
-                ],
-                'gitlab' => [
-                    'class' => 'presentator\api\authclients\GitLab',
-                ],
+                // supported clients:
+                // 'google' => [
+                //     'class'        => 'yii\authclient\clients\Google',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'facebook' => [
+                //     'class'        => 'yii\authclient\clients\Facebook',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'dribbble' => [
+                //     'class'        => 'presentator\api\authclients\Dribbble',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'github' => [
+                //     'class'        => 'yii\authclient\clients\GitHub',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'gitlab' => [
+                //     'class'        => 'presentator\api\authclients\GitLab',
+                //     'serviceUrl'   => 'https://gitlab.com',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'gitea' => [
+                //     'class'        => 'presentator\api\authclients\Gitea',
+                //     'serviceUrl'   => 'https://my-gitea.com',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
+                // 'nextcloud' => [
+                //     'class'        => 'presentator\api\authclients\Nextcloud',
+                //     'serviceUrl'   => 'https://my-nextcloud.com',
+                //     'clientId'     => '',
+                //     'clientSecret' => '',
+                // ],
             ],
         ],
 
