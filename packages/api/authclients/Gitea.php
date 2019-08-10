@@ -78,7 +78,7 @@ class Gitea extends OAuth2
         parent::init();
 
         if (!$this->serviceUrl) {
-            throw new InvalidConfigException('Gitea Oauth2 serviceUrl must be set.');
+            throw new InvalidConfigException('Gitea authclient serviceUrl must be set.');
         }
 
         // normalize props

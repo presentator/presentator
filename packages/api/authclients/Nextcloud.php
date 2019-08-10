@@ -71,7 +71,7 @@ class Nextcloud extends OAuth2
         parent::init();
 
         if (!$this->serviceUrl) {
-            throw new InvalidConfigException('Nextcloud Oauth2 serviceUrl must be set.');
+            throw new InvalidConfigException('Nextcloud authclient serviceUrl must be set.');
         }
 
         // normalize props
