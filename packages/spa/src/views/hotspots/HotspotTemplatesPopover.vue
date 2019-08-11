@@ -217,7 +217,6 @@ export default {
             }
 
             // optimistic linking
-            this.$toast(this.$t('Successfully linked hotspot template.'));
             template.screenIds.push(screenId);
 
             // actual linking
@@ -235,7 +234,6 @@ export default {
             }
 
             // optimistic unlinking
-            this.$toast(this.$t('Successfully unlinked hotspot template.'));
             template.screenIds.splice(template.screenIds.indexOf(screenId << 0), 1);
 
             // actual unlinking

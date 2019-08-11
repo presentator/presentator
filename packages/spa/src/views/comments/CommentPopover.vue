@@ -82,7 +82,7 @@
                 </form-field>
 
                 <div class="submit-icon"
-                    v-tooltip.bottom="$t('Add comment (Ctrl+Enter)')"
+                    v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
                     @click.prevent="addComment()"
                 >
                     <span v-if="isProcessing" class="loader"></span>

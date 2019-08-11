@@ -3,9 +3,7 @@
         :class="{'active': totalSelectedScreens > 0}"
     >
         <div class="nav nav-left">
-            <strong class="txt m-r-5">{{ totalSelectedScreens }}</strong>
-            <span v-if="totalSelectedScreens == 1" class="txt">{{ $t('screen selected') }}</span>
-            <span v-else class="txt">{{ $t('screens selected') }}</span>
+            <span class="txt">{{ $tc('1 screen selected | {count} screens selected', totalSelectedScreens) }}</span>
 
             <button v-if="movablePrototypes.length"
                 type="button"
@@ -92,9 +90,7 @@ export default {
                 this.$t('Do you really want to delete the selected screen?') :
                 this.$t('Do you really want to delete the selected screens?');
 
-            var successMsg = this.totalSelectedScreens == 1 ?
-                this.$t('Successfully deleted 1 screen.') :
-                this.$t('Successfully deleted {count} screens.', {count: this.totalSelectedScreens});
+            var successMsg = this.$tc('Successfully deleted 1 screen. | Successfully deleted {count} screens.', this.totalSelectedScreens);
 
             if (
                 this.totalSelectedScreens <= 0 ||
@@ -139,11 +135,7 @@ export default {
             }
 
             Promise.all(movePromises).then((values) => {
-                if (this.totalSelectedScreens == 1) {
-                    this.$toast(this.$t('Successfully moved 1 screen.'));
-                } else {
-                    this.$toast(this.$t('Successfully moved {count} screens.', {count: this.totalSelectedScreens}));
-                }
+                this.$toast(this.$tc('Successfully moved 1 screen. | Successfully moved {count} screens.', this.totalSelectedScreens));
             }).catch((values) => {
                 if (this.totalSelectedScreens == 1) {
                     this.$toast(this.$t('Unable to move the selected screen.'), 'danger');

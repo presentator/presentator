@@ -93,11 +93,7 @@ export default {
                 }, 300); // animation delay to prevent "flickering"
 
                 if (this.successUploaded > 0) {
-                    let msg = this.successUploaded == 1 ?
-                        this.$t('Successfully uploaded 1 screen.') :
-                        this.$t('Successfully uploaded {count} screens.', {count: this.successUploaded});
-
-                    this.$toast(msg, 'success');
+                    this.$toast(this.$tc('Successfully uploaded 1 screen. | Successfully uploaded {count} screens.', this.successUploaded));
                 }
             });
 

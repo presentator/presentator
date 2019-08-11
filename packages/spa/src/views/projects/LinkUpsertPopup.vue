@@ -31,7 +31,7 @@
 
                 <form-field class="form-group-switch m-b-small" name="passwordProtected">
                     <input type="checkbox" v-model="passwordProtected" id="link_upsert_password_protected">
-                    <label for="link_upsert_password_protected">{{ $t('Password protected') }}</label>
+                    <label for="link_upsert_password_protected">{{ $t('Protect with password') }}</label>
                     <small v-if="isUpdate && link.passwordProtected && passwordProtected" class="link-hint" @click="changePassword = !changePassword">
                         ({{ $t('Change password') }} <i class="v-align-middle fe" :class="changePassword ? 'fe-chevron-up' : 'fe-chevron-down'"></i>)
                     </small>

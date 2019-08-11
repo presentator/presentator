@@ -96,7 +96,7 @@
             <div class="nav nav-center">
                 <div class="ctrl-item ctrl-item-circle ctrl-item-success"
                     :class="{'highlight': isInPreviewMode}"
-                    v-tooltip.top="$t('Preview mode (P)')"
+                    v-tooltip.top="$t('Preview mode ({shortcut})', {shortcut: 'P'})"
                     v-shortcut.80="setPreviewMode"
                     @click.prevent="setPreviewMode()"
                 >
@@ -104,7 +104,7 @@
                 </div>
                 <div class="ctrl-item ctrl-item-circle ctrl-item-primary"
                     :class="{'highlight': isInHotspotsMode}"
-                    v-tooltip.top="$t('Hotspots mode (H)')"
+                    v-tooltip.top="$t('Hotspots mode ({shortcut})', {shortcut: 'H'})"
                     v-shortcut.72="setHotspotsMode"
                     @click.prevent="setHotspotsMode()"
                 >
@@ -113,7 +113,7 @@
                 </div>
                 <div class="ctrl-item ctrl-item-circle ctrl-item-danger"
                     :class="{'highlight': isInCommentsMode}"
-                    v-tooltip.top="$t('Comments mode (C)')"
+                    v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
                     v-shortcut.67="setCommentsMode"
                     @click.prevent="setCommentsMode()"
                 >
@@ -136,9 +136,8 @@
                 </div>
 
                 <div v-if="isInHotspotsMode" class="ctrl-item ctrl-item-templates txt-default">
-                    <span class="txt counter m-r-5">{{ totalActiveHotspotTemplates }}</span>
                     <span class="txt title m-r-5">
-                        {{ $t(totalActiveHotspotTemplates == 1 ? $t('Active hotspot template') : $t('Active hotspot templates')) }}
+                        {{ $tc('0 Active hotspot templates | 1 Active hotspot template | {count} Active hotspot templates', totalActiveHotspotTemplates) }}
                     </span>
                     <i class="fe fe-chevron-up"></i>
 
@@ -238,7 +237,7 @@ export default {
             }
 
             if (this.isInHotspotsMode) {
-                return this.$t('Click and drag to create a hotspot\n(hold "Ctrl" to snap)');
+                return this.$t('Click and drag to create a hotspot\n(hold "{shortcut}" to snap)', {shortcut: 'Ctrl'});
             }
 
             return '';

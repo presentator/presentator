@@ -14,7 +14,7 @@
                 :to="{name: 'preview-guideline', params: {slug: projectLink.slug}, query: {}}"
                 class="ctrl-item ctrl-item-circle ctrl-item-warning"
                 active-class="highlight"
-                v-tooltip.top="$t('Guideline (G)')"
+                v-tooltip.top="$t('Guideline ({shortcut})', {shortcut: 'G'})"
                 v-shortcut.71="selfClick"
             >
                 <i class="fe fe-book-open"></i>
@@ -27,7 +27,7 @@
                 }"
                 class="ctrl-item ctrl-item-circle ctrl-item-success"
                 exact-active-class="highlight"
-                v-tooltip.top="$t('Preview mode (P)')"
+                v-tooltip.top="$t('Preview mode ({shortcut})', {shortcut: 'P'})"
                 v-shortcut.80="selfClick"
             >
                 <i class="fe fe-eye"></i>
@@ -41,7 +41,7 @@
                 }"
                 class="ctrl-item ctrl-item-circle ctrl-item-danger"
                 exact-active-class="highlight"
-                v-tooltip.top="$t('Comments mode (C)')"
+                v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
                 v-shortcut.67="selfClick"
             >
                 <span v-if="activeUnreadComments.length" class="beacon beacon-danger"></span>
