@@ -81,7 +81,7 @@ class GitLab extends OAuth2
         }
 
         // normalize props
-        $this->serviceUrl     = rtrim($this->serviceUrl, '/');
+        $this->serviceUrl = rtrim($this->serviceUrl, '/');
         $this->authUrl    = $this->serviceUrl . $this->authUrl;
         $this->tokenUrl   = $this->serviceUrl . $this->tokenUrl;
         $this->apiBaseUrl = $this->serviceUrl . $this->apiBaseUrl;
