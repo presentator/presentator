@@ -78,14 +78,7 @@
         overflow: overlay;
         scroll-behavior: auto;
         border-radius: inherit;
-        // clear inline-block spaces
-        font-size: 0;
-        line-height: 0;
         background: url('#{$imagesPath}/transp-pattern.png');
-        & > * {
-            font-size: $baseFontSize;
-            line-height: $baseLineHeight;
-        }
         &.resizing {
             cursor: se-resize;
             .screen {
