@@ -101,7 +101,7 @@ class GuidelineAssetForm extends ApiForm
         $rules[] = ['type', 'in', 'range' => array_values(GuidelineAsset::TYPE)];
         $rules[] = ['order', 'integer', 'min' => 0];
         $rules[] = ['title', 'string', 'max' => 255];
-        $rules[] = ['title', 'required', 'on' => [self::SCENARIO_FILE_UPDATE, self::SCENARIO_COLOR_CREATE, self::SCENARIO_COLOR_UPDATE]]; // not required on creates since it fallbacks to file basename
+        $rules[] = ['title', 'required', 'on' => [self::SCENARIO_FILE_UPDATE, self::SCENARIO_COLOR_CREATE, self::SCENARIO_COLOR_UPDATE]];
         $rules[] = ['hex', HexValidator::class];
         $rules[] = ['hex', 'required', 'when' => function ($model) {
             return $model->type == GuidelineAsset::TYPE['COLOR'];
