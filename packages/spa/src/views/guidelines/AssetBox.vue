@@ -12,6 +12,19 @@
             </template>
 
             <div class="thumb-overlay">
+                <div v-if="asset.isColor"
+                    class="overlay-ctrl"
+                    @click.prevent="openColorPicker()"
+                ></div>
+
+                <div v-if="asset.isColor"
+                    class="box-ctrl handle center"
+                    :title="$t('Change color')"
+                    @click.prevent="openColorPicker()"
+                >
+                    <i class="fe fe-droplet" :style="{'color': asset.contrastHex}"></i>
+                </div>
+
                 <div class="box-ctrl handle top-right">
                     <i class="fe fe-more-horizontal" :style="{'color': asset.contrastHex}"></i>
 
@@ -32,17 +45,15 @@
                             @click.prevent="copyToClipboard(asset.hex.toUpperCase())"
                         >
                             <i class="fe fe-copy"></i>
-                            <span class="txt">{{ $t('Copy HEX') }}</span>
+                            <span class="txt">{{ $t('Copy') }} HEX</span>
                         </div>
-
                         <div v-if="asset.isColor"
                             class="dropdown-item"
-                            @click.prevent="openColorPicker()"
+                            @click.prevent="copyToClipboard(asset.rgb.toUpperCase())"
                         >
-                            <i class="fe fe-droplet"></i>
-                            <span class="txt">{{ $t('Change color') }}</span>
+                            <i class="fe fe-copy"></i>
+                            <span class="txt">{{ $t('Copy') }} RGB</span>
                         </div>
-
                         <hr>
                         <div class="dropdown-item link-danger" @click.prevent="deleteAsset()">
                             <i class="fe fe-trash"></i>
@@ -54,19 +65,19 @@
         </figure>
 
         <div class="box-content">
-            <template v-if="asset.isFile">
-                <div ref="titleLabel"
-                    key="title"
-                    class="title"
-                    contenteditable="true"
-                    spellcheck="false"
-                    autocomplete="off"
-                    :title="$t('Click to edit')"
-                    :data-placeholder="asset.title"
-                    @blur="saveTitle()"
-                    @keydown.enter.prevent="saveTitle()"
-                >{{ asset.title }}</div>
+            <div ref="titleLabel"
+                key="title"
+                class="title"
+                contenteditable="true"
+                spellcheck="false"
+                autocomplete="off"
+                :title="$t('Click to edit')"
+                :data-placeholder="asset.title || $t('Title')"
+                @blur="saveTitle()"
+                @keydown.enter.prevent="saveTitle()"
+            >{{ asset.title }}</div>
 
+            <template v-if="asset.isFile">
                 <div class="meta">
                     <div class="meta-item txt-uppercase">{{ asset.fileExtension }}</div>
 
@@ -79,22 +90,24 @@
             </template>
 
             <template v-else>
-                <input type="color"
-                    class="asset-color-input"
-                    :id="'asset_color_' + asset.id"
-                    v-model="asset.hex"
-                    @change="saveHex()"
-                >
-
-                <label ref="hexLabel"
-                    key="hex"
-                    class="title txt-uppercase"
-                    :title="$t('Click to edit')"
-                    :for="'asset_color_' + asset.id"
-                >{{ asset.hex }}</label>
+                <label ref="hexLabel">
+                    <input type="color"
+                        class="asset-color-input"
+                        :id="'asset_color_' + asset.id"
+                        v-model="asset.hex"
+                        @change="saveHex()"
+                    >
+                </label>
 
                 <div class="meta">
-                    <div class="meta-item">rgb({{ asset.rgb.r }}, {{ asset.rgb.g }}, {{ asset.rgb.b }})</div>
+                    <div class="meta-item"
+                        v-tooltip.bottom="$t('Copy')"
+                        @click.prevent="copyToClipboard(asset.hex.toUpperCase())"
+                    >{{ asset.hex.toUpperCase() }}</div>
+                    <div class="meta-item"
+                        v-tooltip.bottom="$t('Copy')"
+                        @click.prevent="copyToClipboard(asset.rgb.toUpperCase())"
+                    >{{ asset.rgb.toUpperCase() }}</div>
                 </div>
             </template>
         </div>

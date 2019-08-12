@@ -62,12 +62,12 @@
 
             <template v-else>
                 <div class="title txt-uppercase"
-                    :title="$t('Copy to clipboard')"
+                    :title="$t('Copy')"
                     @click.stop.prevent="copyToClipboard(asset.hex.toUpperCase())"
                 >{{ asset.hex }}</div>
 
                 <div class="meta">
-                    <div class="meta-item">rgb({{ asset.rgb.r }}, {{ asset.rgb.g }}, {{ asset.rgb.b }})</div>
+                    <div class="meta-item">{{ asset.rgb.toUpperCase() }}</div>
                 </div>
             </template>
         </div>

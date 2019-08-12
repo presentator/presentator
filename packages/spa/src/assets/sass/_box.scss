@@ -18,10 +18,9 @@
         vertical-align: top;
         position: absolute;
         z-index: 1;
-        left: $ctrlSpacing;
-        top: $ctrlSpacing;
-        outline: 0;
-        padding: 0;
+        left: 0;
+        top: 0;
+        padding: $ctrlSpacing;
         margin: 0;
         color: #fff;
         line-height: 1;
@@ -67,19 +66,19 @@
         }
         &.top-right {
             left: auto;
-            right: $ctrlSpacing;
+            right: 0;
             transform: translateY(-5px);
         }
         &.bottom-left {
             top: auto;
-            bottom: $ctrlSpacing;
+            bottom: 0;
             transform: translateY(5px);
         }
         &.bottom-right {
             top: auto;
             left: auto;
-            bottom: $ctrlSpacing;
-            right: $ctrlSpacing;
+            bottom: 0;
+            right: 0;
             transform: translateY(5px);
         }
         &.center {
@@ -155,11 +154,21 @@
             height: 100%;
             background: $overlayColor;
             border-radius: inherit;
-            @include shadowize;
-            @include hide;
             transition: background ($baseAnimationSpeed / 2),
                         opacity $baseAnimationSpeed,
                         visibility $baseAnimationSpeed;
+            @include shadowize;
+            @include hide;
+            .overlay-ctrl {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                background: transparent;
+                outline: 0;
+                border-radius: inherit;
+                cursor: pointer;
+            }
         }
     }
 
@@ -214,7 +223,10 @@
     // compact layout
     &.box-compact {
         .box-ctrl > i {
-            font-size: 18px;
+            font-size: 19px;
+        }
+        .box-ctrl.center > i {
+            font-size: 24px;
         }
         .box-thumb {
             i.img {

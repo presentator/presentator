@@ -359,20 +359,33 @@ export default {
         },
 
         // hex
-        createColor(hex) {
+        createColor(hex, title) {
             if (this.isAddingColor) {
                 return;
             }
 
+            this.isAddingColor = true;
+
             hex = hex || '#000000';
 
-            this.isAddingColor = true;
+            // set default title
+            if (!title) {
+                let totalSectionColors = 1;
+                for (var i = this.section.assets.length - 1; i >= 0; i--) {
+                    if (this.section.assets[i].isColor) {
+                        totalSectionColors++;
+                    }
+                }
+
+                title = (this.$t('Color') + ' ' + totalSectionColors);
+            }
 
             ApiClient.GuidelineAssets.create({
                 guidelineSectionId: this.section.id,
-                type:  'color',
-                order: 0,
-                hex:   hex,
+                type:               'color',
+                order:              0,
+                hex:                hex,
+                title:              title,
             }).then((response) => {
                 this.section.assets.push(new GuidelineAsset(response.data));
 

@@ -36,12 +36,12 @@ class GuidelineAssetForm extends ApiForm
     /**
      * @var string
      */
-    public $hex = '';
+    public $hex;
 
     /**
      * @var string
      */
-    public $title = '';
+    public $title;
 
     /**
      * @var \yii\web\UploadedFile
@@ -101,7 +101,7 @@ class GuidelineAssetForm extends ApiForm
         $rules[] = ['type', 'in', 'range' => array_values(GuidelineAsset::TYPE)];
         $rules[] = ['order', 'integer', 'min' => 0];
         $rules[] = ['title', 'string', 'max' => 255];
-        $rules[] = ['title', 'required', 'on' => self::SCENARIO_FILE_UPDATE]; // not required on creates since it fallbacks to file basename
+        $rules[] = ['title', 'required', 'on' => [self::SCENARIO_FILE_UPDATE, self::SCENARIO_COLOR_CREATE, self::SCENARIO_COLOR_UPDATE]]; // not required on creates since it fallbacks to file basename
         $rules[] = ['hex', HexValidator::class];
         $rules[] = ['hex', 'required', 'when' => function ($model) {
             return $model->type == GuidelineAsset::TYPE['COLOR'];
@@ -139,10 +139,10 @@ class GuidelineAssetForm extends ApiForm
 
         // color scenarios
         $scenarios[self::SCENARIO_COLOR_CREATE] = [
-            'guidelineSectionId', 'order', 'type', 'hex',
+            'guidelineSectionId', 'order', 'type', 'title', 'hex',
         ];
         $scenarios[self::SCENARIO_COLOR_UPDATE] = [
-            'guidelineSectionId', 'order', 'hex',
+            'guidelineSectionId', 'order', 'title', 'hex',
         ];
 
         return $scenarios;
@@ -217,7 +217,8 @@ class GuidelineAssetForm extends ApiForm
             $asset = $this->getGuidelineAsset() ?: (new GuidelineAsset);
 
             $asset->guidelineSectionId = $this->guidelineSectionId;
-            $asset->order               = $this->order;
+            $asset->order              = $this->order;
+            $asset->title              = $this->title;
 
             if ($this->isCreateScenario()) {
                 $asset->type = $this->type;
@@ -225,14 +226,13 @@ class GuidelineAssetForm extends ApiForm
 
             if ($this->type == GuidelineAsset::TYPE['FILE']) {
                 $asset->hex   = '';
-                $asset->title = $this->title;
 
+                // set the file name as a title
                 if (!$asset->title && $this->file) {
-                    $asset->title = $this->file->basename;
+                    $asset->title = mb_substr($this->file->basename, 0, 100);
                 }
             } else {
                 $asset->hex      = (string) $this->hex;
-                $asset->title    = '';
                 $asset->filePath = '';
             }
 

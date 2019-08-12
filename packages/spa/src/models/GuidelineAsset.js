@@ -57,10 +57,12 @@ export default class GuidelineAsset extends BaseModel {
     /**
      * Returns the rgb equivalent of the current asset hex color.
      *
-     * @return {Object}
+     * @return {String}
      */
     get rgb() {
-        return CommonHelper.hexToRgb(this.hex);
+        var rgbColors = CommonHelper.hexToRgb(this.hex);
+
+        return 'rgb(' + rgbColors.r + ', ' + rgbColors.g + ', ' + rgbColors.b + ')';
     }
 
     /**
