@@ -16,17 +16,21 @@
             </div>
 
             <div class="thumb-overlay">
+                <router-link :to="{name: 'screen', params: {prototypeId: screen.prototypeId, screenId: screen.id}}" class="overlay-ctrl"></router-link>
+
                 <router-link :to="{name: 'screen', params: {prototypeId: screen.prototypeId, screenId: screen.id}}"
                     class="box-ctrl handle center"
                 >
                     <i class="fe fe-eye"></i>
                 </router-link>
+
                 <div class="box-ctrl check top-left">
                     <div class="form-group">
                         <input type="checkbox" :id="'bulk_check_screen_' + screen.id" v-model="isScreenSelected">
                         <label :for="'bulk_check_screen_' + screen.id"></label>
                     </div>
                 </div>
+
                 <div class="box-ctrl handle top-right">
                     <i class="fe fe-more-horizontal"></i>
 

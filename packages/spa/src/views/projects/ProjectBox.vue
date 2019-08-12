@@ -13,13 +13,14 @@
             </div>
 
             <div class="thumb-overlay">
+                <router-link :to="{name: 'prototype', params: {projectId: project.id}}" class="overlay-ctrl"></router-link>
+
                 <router-link :to="{name: 'prototype', params: {projectId: project.id}}" class="box-ctrl handle center">
                     <i class="fe fe-eye"></i>
                 </router-link>
 
                 <div class="box-ctrl handle top-right">
                     <i class="fe fe-more-horizontal"></i>
-
                     <toggler ref="projectDropdown" class="dropdown dropdown-sm">
                         <div class="dropdown-item" @click.prevent="updateArchivedState(!project.isArchived)">
                             <i class="fe fe-archive"></i>

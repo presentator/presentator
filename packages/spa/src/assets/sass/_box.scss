@@ -38,11 +38,13 @@
         }
         .dropdown {
             border: 0;
+            margin: -3px 10px 0 10px;
         }
         .form-group {
             margin: 0;
             input[type="checkbox"] ~ label {
                 $checkboxSize: 22px;
+                min-height: $checkboxSize;
                 border: 0;
                 &:before {
                     @include shadowize;
