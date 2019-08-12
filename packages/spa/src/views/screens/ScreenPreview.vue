@@ -446,7 +446,7 @@ export default {
                     hotspot.settings.offsetLeft,
                     hotspot.settings.offsetRight,
                     hotspot.settings.fixOverlay
-                )
+                );
             } else if (hotspot.type === 'scroll') {
                 if (this.$refs.activeScreenWrapper) {
                     this.$refs.activeScreenWrapper.scrollTo({
