@@ -60,7 +60,7 @@ class GuidelineAsset extends ActiveRecord
             },
             'thumbs' => [
                 'small'  => ['width' => 100, 'height' => 100],
-                'medium' => ['width' => 210, 'smartResize' => false],
+                'medium' => ['width' => 250, 'smartResize' => false],
             ],
         ];
 
