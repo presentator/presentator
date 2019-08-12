@@ -143,8 +143,9 @@ class GuidelineAssetsCest
                     'type'               => 'invalid', // should fallback to color asset scenario
                     'order'              => -10,
                     'hex'                => '#111',
+                    'title'              => '',
                 ],
-                'errors' => ['guidelineSectionId', 'type', 'order', 'hex'],
+                'errors' => ['guidelineSectionId', 'type', 'order', 'hex', 'title'],
             ],
             [
                 'comment' => 'authorize and submit invalid file asset form data',
@@ -208,7 +209,7 @@ class GuidelineAssetsCest
                 'data'    => [
                     'guidelineSectionId' => 1001,
                     'type'               => 'file',
-                    'title'              => 'create_test',
+                    'title'              => 'Lorem ipsum',
                     'file'               => Yii::getAlias('@app/tests/_data/test_image.png'),
                 ],
             ],
@@ -220,6 +221,7 @@ class GuidelineAssetsCest
                     'type'               => 'color',
                     'order'              => 1,
                     'hex'                => '#111111',
+                    'title'              => 'Primary color',
                 ],
             ],
             [
@@ -238,6 +240,7 @@ class GuidelineAssetsCest
                     'guidelineSectionId' => 1005,
                     'type'               => 'color',
                     'hex'                => '#111111',
+                    'title'              => 'Secondary color',
                 ],
             ],
         ];
@@ -260,6 +263,7 @@ class GuidelineAssetsCest
                 'guidelineSectionId' => 'integer',
                 'type'               => 'string',
                 'hex'                => 'string',
+                'title'              => 'string',
                 'file'               => empty($fileData) ? 'null' : 'array',
             ]);
             $I->seeResponseContainsJson($postData);
@@ -307,8 +311,9 @@ class GuidelineAssetsCest
                     'guidelineSectionId' => 1005,
                     'order'              => -10,
                     'hex'                => '#111',
+                    'title'              => str_repeat('.', 256),
                 ],
-                'errors' => ['guidelineSectionId', 'order', 'hex'],
+                'errors' => ['guidelineSectionId', 'order', 'hex', 'title'],
             ],
             [
                 'comment' => 'authorize and submit invalid file asset form data',
@@ -371,7 +376,7 @@ class GuidelineAssetsCest
                 'data'    => [
                     'guidelineSectionId' => 1002,
                     'order'              => 2,
-                    'title'              => 'update_test',
+                    'title'              => 'Lorem ipsum update',
                 ],
             ],
             [
@@ -389,7 +394,7 @@ class GuidelineAssetsCest
                 'assetId' => 1005,
                 'token'   => $superUser->generateAccessToken(),
                 'data'    => [
-                    'title' => 'update_test2',
+                    'title' => 'Lorem ipsum update 2',
                 ],
             ],
             [
@@ -397,7 +402,8 @@ class GuidelineAssetsCest
                 'assetId' => 1004,
                 'token'   => $superUser->generateAccessToken(),
                 'data'    => [
-                    'hex' => '#AAAAAA',
+                    'hex'   => '#AAAAAA',
+                    'title' => 'Lorem ipsum update 2',
                 ],
             ],
         ];
@@ -420,6 +426,7 @@ class GuidelineAssetsCest
                 'guidelineSectionId' => 'integer',
                 'type'               => 'string',
                 'hex'                => 'string',
+                'title'              => 'string',
                 'file'               => 'null|array',
             ]);
             $I->seeResponseContainsJson($putData);
