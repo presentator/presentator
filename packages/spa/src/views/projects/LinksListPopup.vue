@@ -50,7 +50,7 @@
                         <span class="list-ctrl-item" v-tooltip.top="$t('Share')" @click.prevent="shareLink(link)">
                             <i class="fe fe-share-2"></i>
                         </span>
-                        <span class="list-ctrl-item" v-tooltip.top="$t('Copy URL')" @click.prevent="copyLink(link)">
+                        <span class="list-ctrl-item" v-tooltip.top="$t('Copy') + ' URL'" @click.prevent="copyLink(link)">
                             <i class="fe fe-copy"></i>
                         </span>
                         <span class="list-ctrl-item" v-tooltip.top="$t('Edit')" @click.prevent="editLink(link)">
