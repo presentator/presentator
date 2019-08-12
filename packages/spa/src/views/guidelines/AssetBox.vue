@@ -103,11 +103,15 @@
                     <div class="meta-item"
                         v-tooltip.bottom="$t('Copy')"
                         @click.prevent="copyToClipboard(asset.hex.toUpperCase())"
-                    >{{ asset.hex.toUpperCase() }}</div>
+                    >
+                        {{ asset.hex.toUpperCase() }}
+                    </div>
                     <div class="meta-item"
                         v-tooltip.bottom="$t('Copy')"
                         @click.prevent="copyToClipboard(asset.rgb.toUpperCase())"
-                    >{{ asset.rgb.toUpperCase() }}</div>
+                    >
+                        {{ asset.rgb.toUpperCase() }}
+                    </div>
                 </div>
             </template>
         </div>

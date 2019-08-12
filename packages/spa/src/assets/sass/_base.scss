@@ -398,7 +398,10 @@ table, .table {
     max-width: 100%;
 }
 .cursor-pointer {
-    cursor: pointer;
+    cursor: pointer !important;
+}
+.cursor-default {
+    cursor: default !important;
 }
 .shadowize {
     @include shadowize;

@@ -27,13 +27,19 @@
                             <i class="fe fe-download"></i>
                             <span class="txt">{{ $t('Download') }}</span>
                         </a>
-
                         <div v-if="asset.isColor"
                             class="dropdown-item"
                             @click.prevent="copyToClipboard(asset.hex.toUpperCase())"
                         >
                             <i class="fe fe-copy"></i>
-                            <span class="txt">{{ $t('Copy HEX') }}</span>
+                            <span class="txt">{{ $t('Copy') }} HEX</span>
+                        </div>
+                        <div v-if="asset.isColor"
+                            class="dropdown-item"
+                            @click.prevent="copyToClipboard(asset.rgb.toUpperCase())"
+                        >
+                            <i class="fe fe-copy"></i>
+                            <span class="txt">{{ $t('Copy') }} RGB</span>
                         </div>
                     </toggler>
                 </div>
@@ -45,8 +51,9 @@
                 <a class="title"
                     target="_blank"
                     rel="noopener"
+                    download
                     :href="asset.getFileUrl()"
-                    :title="$t('Open in new tab')"
+                    :title="asset.title"
                 >{{ asset.title }}</a>
 
                 <div class="meta">
@@ -61,13 +68,21 @@
             </template>
 
             <template v-else>
-                <div class="title txt-uppercase"
-                    :title="$t('Copy')"
-                    @click.stop.prevent="copyToClipboard(asset.hex.toUpperCase())"
-                >{{ asset.hex }}</div>
+                <div class="title cursor-default" :title="asset.title">{{ asset.title }}</div>
 
                 <div class="meta">
-                    <div class="meta-item">{{ asset.rgb.toUpperCase() }}</div>
+                    <div class="meta-item"
+                        v-tooltip.bottom="$t('Copy')"
+                        @click.prevent="copyToClipboard(asset.hex.toUpperCase())"
+                    >
+                        {{ asset.hex.toUpperCase() }}
+                    </div>
+                    <div class="meta-item"
+                        v-tooltip.bottom="$t('Copy')"
+                        @click.prevent="copyToClipboard(asset.rgb.toUpperCase())"
+                    >
+                        {{ asset.rgb.toUpperCase() }}
+                    </div>
                 </div>
             </template>
         </div>
