@@ -131,7 +131,7 @@
                     <label :for="'hotspot_include_in_template_toggle_' + hotspot.id">{{ $t('Include in template') }}</label>
                 </div>
                 <div class="form-group-section m-b-0" v-show="includeInTemplate">
-                    <div class="form-group form-group-sm">
+                    <div class="form-group form-group-sm" :class="{'m-b-5' : template === 'new'}">
                         <select v-model="template">
                             <option v-for="hotspotTemplate in hotspotTemplates" :value="hotspotTemplate.id">
                                 {{ hotspotTemplate.title }}
@@ -140,13 +140,7 @@
                         </select>
                     </div>
                     <div v-if="template === 'new'" class="form-group form-group-sm">
-                        <div class="input-group">
-                            <input type="text" :placeholder="$t('Template name') + ' *'" v-model="newTemplateTitle" @keydown.enter.prevent="createHotspotTemplate()">
-                            <div class="input-addon link-primary bg-border" @click.prevent="createHotspotTemplate()">
-                                <span v-if="isCreatingHotspotTemplate" class="loader"></span>
-                                <span v-else class="txt">{{ $t('Save template') }}</span>
-                            </div>
-                        </div>
+                        <input type="text" :placeholder="$t('Template name') + ' *'" v-model.trim="newTemplateTitle" required minlength="0" maxlength="255">
                     </div>
                 </div>
 
@@ -379,56 +373,58 @@ export default {
 
             this.isProcessing = true;
 
-            var isUpdate = this.hotspot.id > 0;
+            this.createHotspotTemplate().finally(() => {
+                var isUpdate = this.hotspot.id > 0;
 
-            var selectedTemplate = this.includeInTemplate ? this.getHotspotTemplate(this.template) : null;
+                var selectedTemplate = this.includeInTemplate ? this.getHotspotTemplate(this.template) : null;
 
-            var requestData = {
-                'screenId':               selectedTemplate ? null : this.activeScreenId,
-                'hotspotTemplateId':      selectedTemplate ? selectedTemplate.id : null,
-                'left':                   this.hotspot.left,
-                'top':                    this.hotspot.top,
-                'width':                  this.hotspot.width,
-                'height':                 this.hotspot.height,
-                'type':                   this.type,
-                'settingScreenId':        this.screenId,
-                'settingUrl':             this.url,
-                'settingOverlayPosition': this.overlayPosition,
-                'settingTransition':      this.transition,
-                'settingOffsetTop':       this.offsetTop << 0,
-                'settingOffsetBottom':    this.offsetBottom << 0,
-                'settingOffsetLeft':      this.offsetLeft << 0,
-                'settingOffsetRight':     this.offsetRight << 0,
-                'settingScrollTop':       this.scrollTop << 0,
-                'settingScrollLeft':      this.scrollLeft << 0,
-                'settingOutsideClose':    this.outsideClose,
-            };
+                var requestData = {
+                    'screenId':               selectedTemplate ? null : this.activeScreenId,
+                    'hotspotTemplateId':      selectedTemplate ? selectedTemplate.id : null,
+                    'left':                   this.hotspot.left,
+                    'top':                    this.hotspot.top,
+                    'width':                  this.hotspot.width,
+                    'height':                 this.hotspot.height,
+                    'type':                   this.type,
+                    'settingScreenId':        this.screenId,
+                    'settingUrl':             this.url,
+                    'settingOverlayPosition': this.overlayPosition,
+                    'settingTransition':      this.transition,
+                    'settingOffsetTop':       this.offsetTop << 0,
+                    'settingOffsetBottom':    this.offsetBottom << 0,
+                    'settingOffsetLeft':      this.offsetLeft << 0,
+                    'settingOffsetRight':     this.offsetRight << 0,
+                    'settingScrollTop':       this.scrollTop << 0,
+                    'settingScrollLeft':      this.scrollLeft << 0,
+                    'settingOutsideClose':    this.outsideClose,
+                };
 
-            var requestPromise = null;
-            if (isUpdate) {
-                requestPromise = ApiClient.Hotspots.update(this.hotspot.id, requestData);
-            } else {
-                requestPromise = ApiClient.Hotspots.create(requestData);
-            }
-
-            requestPromise.then((response) => {
-                this.hotspot.load(response.data);
-
-                if (selectedTemplate) {
-                    this.linkToHotspotTemplate(selectedTemplate.id, this.activeScreenId);
+                var requestPromise = null;
+                if (isUpdate) {
+                    requestPromise = ApiClient.Hotspots.update(this.hotspot.id, requestData);
+                } else {
+                    requestPromise = ApiClient.Hotspots.create(requestData);
                 }
 
-                this.$toast(this.$t('Successfully updated hotspot.'));
+                requestPromise.then((response) => {
+                    this.hotspot.load(response.data);
 
-                this.reloadForm();
+                    if (selectedTemplate) {
+                        this.linkToHotspotTemplate(selectedTemplate.id, this.activeScreenId);
+                    }
 
-                this.close();
+                    this.$toast(this.$t('Successfully updated hotspot.'));
 
-                this.$emit('hotspotUpdated', this.hotspot);
-            }).catch((err) => {
-                this.$errResponseHandler(err);
-            }).finally(() => {
-                this.isProcessing = false;
+                    this.reloadForm();
+
+                    this.close();
+
+                    this.$emit('hotspotUpdated', this.hotspot);
+                }).catch((err) => {
+                    this.$errResponseHandler(err);
+                }).finally(() => {
+                    this.isProcessing = false;
+                });
             });
         },
         onScreensDropdownShow() {
@@ -459,13 +455,18 @@ export default {
         // template
         // ---
         createHotspotTemplate() {
-            if (this.isCreatingHotspotTemplate || !this.newTemplateTitle) {
-                return;
+            if (
+                this.isCreatingHotspotTemplate ||
+                !this.newTemplateTitle ||
+                !this.includeInTemplate ||
+                this.template !== 'new'
+            ) {
+                return Promise.resolve();
             }
 
             this.isCreatingHotspotTemplate = true;
 
-            ApiClient.HotspotTemplates.create({
+            return ApiClient.HotspotTemplates.create({
                 title:       this.newTemplateTitle,
                 prototypeId: this.activePrototypeId,
             }, {
@@ -473,15 +474,15 @@ export default {
             }).then((response) => {
                 this.addHotspotTemplate(response.data);
 
-                this.newTemplateTitle = '';
+                this.newTemplateTitle = ''; // reset
 
                 this.template = this.hotspotTemplates[this.hotspotTemplates.length - 1].id;
-
-                this.$toast(this.$t('Successfully created new hotspot template.'));
             }).catch((err) => {
                 this.$errResponseHandler(err);
             }).finally(() => {
                 this.isCreatingHotspotTemplate = false;
+
+                return Promise.resolve();
             });
         },
         linkToHotspotTemplate(templateId, screenId) {
