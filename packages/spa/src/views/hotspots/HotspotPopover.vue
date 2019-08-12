@@ -128,7 +128,10 @@
 
                 <div class="form-group m-b-10">
                     <input type="checkbox" :id="'hotspot_include_in_template_toggle_' + hotspot.id" v-model="includeInTemplate">
-                    <label :for="'hotspot_include_in_template_toggle_' + hotspot.id">{{ $t('Include in template') }}</label>
+                    <label :for="'hotspot_include_in_template_toggle_' + hotspot.id">
+                        <span class="txt">{{ $t('Include in template') }}</span>
+                        <i class="fe fe-info link-hint m-l-5" v-tooltip.right="$t('Allows reusing the hotspot in other screens')"></i>
+                    </label>
                 </div>
                 <div class="form-group-section m-b-0" v-show="includeInTemplate">
                     <div class="form-group form-group-sm" :class="{'m-b-5' : template === 'new'}">
