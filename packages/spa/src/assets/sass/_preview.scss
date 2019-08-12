@@ -230,6 +230,25 @@
             }
         }
     }
+    .overlay-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: none;
+        @include pointer-events(none);
+        &.fixed {
+            overflow: hidden;
+        }
+        &.relative {
+            margin-top: 0 !important;
+            margin-left: 0 !important;
+        }
+        .overlay-screen-wrapper {
+            @include pointer-events(auto);
+        }
+    }
 
     &.align-center {
         text-align: center;

@@ -121,6 +121,11 @@
                     <label :for="'hotspot_screen_overlay_outside_click_' + hotspot.id">{{ $t('Close on outside click') }}</label>
                 </form-field>
 
+                <form-field v-show="type === 'overlay'" name="settingFixOverlay">
+                    <input type="checkbox" :id="'hotspot_screen_overlay_fix_position' + hotspot.id" v-model="fixOverlay">
+                    <label :for="'hotspot_screen_overlay_fix_position' + hotspot.id">{{ $t('Fix position of overlay') }}</label>
+                </form-field>
+
                 <form-field v-show="type === 'url'" name="settingUrl">
                     <label :for="'hotspot_external_url_' + hotspot.id">URL</label>
                     <input type="url" :id="'hotspot_external_url_' + hotspot.id" v-model="url" :placeholder="$t('eg.') + ' https://google.com'">
@@ -133,7 +138,7 @@
                         <i class="fe fe-info link-hint m-l-5" v-tooltip.right="$t('Allows reusing the hotspot in other screens')"></i>
                     </label>
                 </div>
-                <div class="form-group-section m-b-0" v-show="includeInTemplate">
+                <div class="form-group-section m-b-0" v-if="includeInTemplate">
                     <div class="form-group form-group-sm" :class="{'m-b-5' : template === 'new'}">
                         <select v-model="template">
                             <option v-for="hotspotTemplate in hotspotTemplates" :value="hotspotTemplate.id">
@@ -143,7 +148,7 @@
                         </select>
                     </div>
                     <div v-if="template === 'new'" class="form-group form-group-sm">
-                        <input type="text" :placeholder="$t('Template name') + ' *'" v-model.trim="newTemplateTitle" required minlength="0" maxlength="255">
+                        <input type="text" :placeholder="$t('Template name') + ' *'" v-model.trim="newTemplateTitle" required minlength="1" maxlength="255">
                     </div>
                 </div>
 
@@ -191,6 +196,7 @@ export default {
             url:                       '',
             transition:                'none',
             overlayPosition:           'top-left',
+            fixOverlay:                false,
             offsetTop:                 0,
             offsetBottom:              0,
             offsetLeft:                0,
@@ -356,13 +362,14 @@ export default {
             this.url               = CommonHelper.getNestedVal(this.hotspot, 'settings.url', '');
             this.transition        = CommonHelper.getNestedVal(this.hotspot, 'settings.transition', 'none');
             this.overlayPosition   = CommonHelper.getNestedVal(this.hotspot, 'settings.overlayPosition', 'top-left');
+            this.fixOverlay        = CommonHelper.getNestedVal(this.hotspot, 'settings.fixOverlay') ? true : false;
             this.offsetTop         = CommonHelper.getNestedVal(this.hotspot, 'settings.offsetTop', 0) << 0;
             this.offsetBottom      = CommonHelper.getNestedVal(this.hotspot, 'settings.offsetBottom', 0) << 0;
             this.offsetLeft        = CommonHelper.getNestedVal(this.hotspot, 'settings.offsetLeft', 0) << 0;
             this.offsetRight       = CommonHelper.getNestedVal(this.hotspot, 'settings.offsetRight', 0) << 0;
             this.scrollTop         = CommonHelper.getNestedVal(this.hotspot, 'settings.scrollTop', 0) << 0;
             this.scrollLeft        = CommonHelper.getNestedVal(this.hotspot, 'settings.scrollLeft', 0) << 0;
-            this.outsideClose      = CommonHelper.getNestedVal(this.hotspot, 'settings.outsideClose', true);
+            this.outsideClose      = CommonHelper.getNestedVal(this.hotspot, 'settings.outsideClose', true) ? true : false;
             this.includeInTemplate = this.hotspot.hotspotTemplateId > 0;
             this.template          = this.hotspot.hotspotTemplateId || (this.hotspotTemplates[0] ? this.hotspotTemplates[0].id : 'new');
             this.newTemplateTitle  = '';
@@ -392,6 +399,7 @@ export default {
                     'settingScreenId':        this.screenId,
                     'settingUrl':             this.url,
                     'settingOverlayPosition': this.overlayPosition,
+                    'settingFixOverlay':      this.fixOverlay,
                     'settingTransition':      this.transition,
                     'settingOffsetTop':       this.offsetTop << 0,
                     'settingOffsetBottom':    this.offsetBottom << 0,

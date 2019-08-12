@@ -68,6 +68,11 @@ class HotspotForm extends ApiForm
     public $settingOverlayPosition;
 
     /**
+     * @var boolean
+     */
+    public $settingFixOverlay;
+
+    /**
      * @var float
      */
     public $settingOffsetTop;
@@ -144,6 +149,7 @@ class HotspotForm extends ApiForm
         $labels['settingTransition']      = Yii::t('app', 'Transition');
         $labels['settingUrl']             = Yii::t('app', 'Url');
         $labels['settingOverlayPosition'] = Yii::t('app', 'Overlay position');
+        $labels['settingFixOverlay']      = Yii::t('app', 'Fix overlay');
         $labels['settingScrollTop']       = Yii::t('app', 'Vertical position');
         $labels['settingScrollLeft']      = Yii::t('app', 'Horizontal position');
 
@@ -197,7 +203,7 @@ class HotspotForm extends ApiForm
         $rules[] = ['settingOverlayPosition', 'in', 'range' => array_values(Hotspot::OVERLAY_POSITION)];
         $rules[] = ['settingTransition', 'in', 'range' => array_values(Hotspot::TRANSITION)];
         $rules[] = ['settingTransition', 'default', 'value' => Hotspot::TRANSITION['NONE']];
-        $rules[] = ['settingOutsideClose', 'boolean'];
+        $rules[] = [['settingOutsideClose', 'settingFixOverlay'], 'boolean'];
         $rules[] = [[
             'settingOffsetTop',
             'settingOffsetBottom',
@@ -277,6 +283,7 @@ class HotspotForm extends ApiForm
         $settings                     = $hotspot->getDecodedSettings();
         $this->settingScreenId        = $settings[Hotspot::SETTING['SCREEN']]           ?? null;
         $this->settingOverlayPosition = $settings[Hotspot::SETTING['OVERLAY_POSITION']] ?? '';
+        $this->settingFixOverlay      = $settings[Hotspot::SETTING['FIX_OVERLAY']]      ?? false;
         $this->settingTransition      = $settings[Hotspot::SETTING['TRANSITION']]       ?? '';
         $this->settingUrl             = $settings[Hotspot::SETTING['URL']]              ?? '';
         $this->settingOffsetTop       = $settings[Hotspot::SETTING['OFFSET_TOP']]       ?? 0;
@@ -351,6 +358,7 @@ class HotspotForm extends ApiForm
                 Hotspot::SETTING['SCREEN']           => $this->settingScreenId,
                 Hotspot::SETTING['TRANSITION']       => $this->settingTransition,
                 Hotspot::SETTING['OVERLAY_POSITION'] => $this->settingOverlayPosition,
+                Hotspot::SETTING['FIX_OVERLAY']      => $this->settingFixOverlay,
                 Hotspot::SETTING['OFFSET_TOP']       => $this->settingOffsetTop,
                 Hotspot::SETTING['OFFSET_BOTTOM']    => $this->settingOffsetBottom,
                 Hotspot::SETTING['OFFSET_LEFT']      => $this->settingOffsetLeft,

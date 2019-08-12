@@ -36,6 +36,7 @@
                 'height': (activePrototype.height ? activePrototype.height+'px' : null),
                 'background': (activeScreen.background || null),
             }"
+            @scroll.capture.passive="fixedOverlayReposition"
         >
             <!-- fixed screen footer -->
             <div v-if="interactions && activeScreen.fixedHeader > 0 && !inTransition"
@@ -72,7 +73,9 @@
             </div>
 
             <!-- screen container -->
-            <div class="screen-inner-wrapper">
+            <div class="screen-inner-wrapper"
+                :class="{'position-static': overlayScreen && isOverlayScreenFixed}"
+            >
                 <img class="screen old-active-screen"
                     :src="oldActiveScreen ? oldActiveScreen.getImage() : ''"
                     :alt="oldActiveScreen ? oldActiveScreen.title : ''"
@@ -101,43 +104,50 @@
 
                 <!-- overlay screen container -->
                 <div v-if="interactions && overlayScreen"
-                    class="overlay-screen-wrapper"
-                    :class="[
-                        ('transition-' + overlayScreenTransition),
-                        ('position-' + overlayScreenPosition),
-                        (isOverlayScreenClosing ? 'closing' : '')
-                    ]"
-                    :style="{
-                        'margin-top': overlayScreenOffsetTop + 'px',
-                        'margin-bottom': overlayScreenOffsetBottom + 'px',
-                        'margin-left': overlayScreenOffsetLeft + 'px',
-                        'margin-right': overlayScreenOffsetRight + 'px',
-                    }"
+                    ref="overlayContainer"
+                    key="overlayContainer"
+                    class="overlay-container"
+                    :class="isOverlayScreenFixed ? 'fixed' : 'relative'"
                 >
-                    <img class="screen overlay-screen"
-                        :src="overlayScreen.getImage()"
-                        :alt="overlayScreen.title"
-                        v-scale="activePrototype.scaleFactor"
+                    <div
+                        class="overlay-screen-wrapper"
+                        :class="[
+                            ('transition-' + overlayScreenTransition),
+                            ('position-' + overlayScreenPosition),
+                            (isOverlayScreenClosing ? 'closing' : ''),
+                        ]"
+                        :style="{
+                            'margin-top': (overlayScreenOffsetTop * scaleFactor) + 'px',
+                            'margin-bottom': (overlayScreenOffsetBottom * scaleFactor) + 'px',
+                            'margin-left': (overlayScreenOffsetLeft * scaleFactor) + 'px',
+                            'margin-right': (overlayScreenOffsetRight * scaleFactor) + 'px',
+                        }"
                     >
-
-                    <div class="block preview-hotspots-block">
-                        <div v-for="hotspot in overlayScreenHotspots"
-                            :key="'overlay_screen_hotspot_' + hotspot.id"
-                            class="hotspot"
-                            :style="{
-                                'left':   (hotspot.left * scaleFactor) + 'px',
-                                'top':    (hotspot.top * scaleFactor) + 'px',
-                                'width':  (hotspot.width * scaleFactor) + 'px',
-                                'height': (hotspot.height * scaleFactor) + 'px',
-                            }"
-                            @click.prevent="hotspotNavigate(hotspot.id)"
+                        <img class="screen overlay-screen"
+                            :src="overlayScreen.getImage()"
+                            :alt="overlayScreen.title"
+                            v-scale="activePrototype.scaleFactor"
                         >
+
+                        <div class="block preview-hotspots-block" key="overlay-screen-hotspots-block">
+                            <div v-for="hotspot in overlayScreenHotspots"
+                                :key="'overlay_screen_hotspot_' + hotspot.id"
+                                class="hotspot"
+                                :style="{
+                                    'left':   (hotspot.left * scaleFactor) + 'px',
+                                    'top':    (hotspot.top * scaleFactor) + 'px',
+                                    'width':  (hotspot.width * scaleFactor) + 'px',
+                                    'height': (hotspot.height * scaleFactor) + 'px',
+                                }"
+                                @click.prevent="hotspotNavigate(hotspot.id)"
+                            >
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- hotspots -->
-                <div v-if="interactions" class="block preview-hotspots-block">
+                <div v-if="interactions" class="block preview-hotspots-block" key="active-screen-hotspots-block">
                     <div v-for="hotspot in activeScreenHotspots"
                         :key="'active_screen_hotspot_' + hotspot.id"
                         class="hotspot"
@@ -226,6 +236,7 @@ export default {
             overlayScreenOffsetLeft:   0,
             overlayScreenOffsetRight:  0,
             overlayScreenOutsideClose: true,
+            isOverlayScreenFixed:      false,
             isOverlayScreenClosing:    false,
         }
     },
@@ -434,6 +445,7 @@ export default {
                     hotspot.settings.offsetBottom,
                     hotspot.settings.offsetLeft,
                     hotspot.settings.offsetRight,
+                    hotspot.settings.fixOverlay
                 )
             } else if (hotspot.type === 'scroll') {
                 if (this.$refs.activeScreenWrapper) {
@@ -445,6 +457,17 @@ export default {
                 }
             }
         },
+        fixedOverlayReposition() {
+            if (
+                this.isOverlayScreenFixed &&
+                this.overlayScreenId &&
+                this.$refs.activeScreenWrapper &&
+                this.$refs.overlayContainer
+            ) {
+                this.$refs.overlayContainer.style.marginTop  = this.$refs.activeScreenWrapper.scrollTop + 'px';
+                this.$refs.overlayContainer.style.marginLeft = this.$refs.activeScreenWrapper.scrollLeft + 'px';
+            }
+        },
         openOverlayScreen(
             screenId,
             transition,
@@ -453,7 +476,8 @@ export default {
             offsetTop,
             offsetBottom,
             offsetLeft,
-            offsetRight
+            offsetRight,
+            fixed
         ) {
             if (screenId == this.overlayScreenId) {
                 return;
@@ -469,6 +493,11 @@ export default {
                 this.overlayScreenOffsetLeft   = offsetLeft << 0;
                 this.overlayScreenOffsetRight  = offsetRight << 0;
                 this.overlayScreenOutsideClose = !CommonHelper.isEmpty(outsideClose) ? outsideClose : true;
+                this.isOverlayScreenFixed      = !CommonHelper.isEmpty(fixed) ? fixed : false;
+
+                this.$nextTick(() => {
+                    this.fixedOverlayReposition();
+                });
             });
         },
         closeOverlayScreen(callback) {

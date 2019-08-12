@@ -356,8 +356,11 @@ table, .table {
         display: none;
     }
 }
-.relative {
-    position: relative;
+.position-relative {
+    position: relative !important;
+}
+.position-static {
+    position: static !important;
 }
 .hidden {
     display: none !important;

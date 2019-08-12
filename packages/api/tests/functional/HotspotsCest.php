@@ -191,6 +191,7 @@ class HotspotsCest
                     'settingOffsetLeft'      => 'invalid',
                     'settingOffsetRight'     => 'invalid',
                     'settingOutsideClose'    => -10,
+                    'settingFixOverlay'      => -10,
                 ]),
             ],
             [
@@ -302,6 +303,7 @@ class HotspotsCest
                     'settingOffsetLeft'      => 100,
                     'settingOffsetRight'     => -100,
                     'settingOutsideClose'    => true,
+                    'settingFixOverlay'      => true,
                 ]),
             ],
             [
@@ -446,6 +448,7 @@ class HotspotsCest
                     'settingOffsetLeft'      => 'invalid',
                     'settingOffsetRight'     => 'invalid',
                     'settingOutsideClose'    => -10,
+                    'settingFixOverlay'      => -10,
                 ]),
             ],
             [
@@ -564,6 +567,7 @@ class HotspotsCest
                     'settingOffsetLeft'      => 100,
                     'settingOffsetRight'     => -100,
                     'settingOutsideClose'    => true,
+                    'settingFixOverlay'      => false,
                 ]),
             ],
             [

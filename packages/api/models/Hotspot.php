@@ -53,6 +53,7 @@ class Hotspot extends ActiveRecord
         'SCREEN'           => 'screenId',
         'TRANSITION'       => 'transition',
         'OVERLAY_POSITION' => 'overlayPosition',
+        'FIX_OVERLAY'      => 'fixOverlay',
         'URL'              => 'url',
         'OUTSIDE_CLOSE'    => 'outsideClose',
         'OFFSET_TOP'       => 'offsetTop',
