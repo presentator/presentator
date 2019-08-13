@@ -12,18 +12,24 @@
             </template>
 
             <div class="thumb-overlay">
-                <div v-if="asset.isColor"
-                    class="overlay-ctrl"
-                    @click.prevent="openColorPicker()"
-                ></div>
+                <template v-if="asset.isImage">
+                    <div class="overlay-ctrl" @click.prevent="openPreviewPopup()"></div>
 
-                <div v-if="asset.isColor"
-                    class="box-ctrl handle center"
-                    :title="$t('Change color')"
-                    @click.prevent="openColorPicker()"
-                >
-                    <i class="fe fe-droplet" :style="{'color': asset.contrastHex}"></i>
-                </div>
+                    <div class="box-ctrl handle center" @click.prevent="openPreviewPopup()">
+                        <i class="fe fe-eye"></i>
+                    </div>
+                </template>
+
+                <template v-if="asset.isColor">
+                    <div class="overlay-ctrl" @click.prevent="openColorPicker()"></div>
+
+                    <div class="box-ctrl handle center"
+                        :title="$t('Change color')"
+                        @click.prevent="openColorPicker()"
+                    >
+                        <i class="fe fe-droplet" :style="{'color': asset.contrastHex}"></i>
+                    </div>
+                </template>
 
                 <div class="box-ctrl handle top-right">
                     <i class="fe fe-more-horizontal" :style="{'color': asset.contrastHex}"></i>
@@ -115,6 +121,17 @@
                 </div>
             </template>
         </div>
+
+        <relocator v-if="asset.isImage">
+            <popup class="popup-image" ref="previewPopup" :key="'asset_popup_' + asset.id">
+                <template v-slot:content>
+                    <img v-if="$refs.previewPopup && $refs.previewPopup.isActive"
+                        :src="asset.getFileUrl('original')"
+                        :alt="asset.title"
+                    >
+                </template>
+            </popup>
+        </relocator>
     </div>
 </template>
 
@@ -122,9 +139,15 @@
 import ApiClient      from '@/utils/ApiClient';
 import CommonHelper   from '@/utils/CommonHelper';
 import GuidelineAsset from '@/models/GuidelineAsset';
+import Relocator      from '@/components/Relocator';
+import Popup          from '@/components/Popup';
 
 export default {
     name: 'guideline-asset-box',
+    components: {
+        'relocator': Relocator,
+        'popup':     Popup,
+    },
     props: {
         asset: {
             type:     GuidelineAsset,
@@ -238,6 +261,16 @@ export default {
             }).catch((err) => {
                 this.$errResponseHandler(err);
             });
+        },
+        openPreviewPopup() {
+            if (this.$refs.previewPopup) {
+                this.$refs.previewPopup.open();
+            }
+        },
+        closePreviewPopup() {
+            if (this.$refs.previewPopup) {
+                this.$refs.previewPopup.close();
+            }
         },
     },
 }

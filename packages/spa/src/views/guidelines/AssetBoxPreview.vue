@@ -12,6 +12,14 @@
             </template>
 
             <div class="thumb-overlay">
+                <template v-if="asset.isImage">
+                    <div class="overlay-ctrl" @click.prevent="openPreviewPopup()"></div>
+
+                    <div class="box-ctrl handle center" @click.prevent="openPreviewPopup()">
+                        <i class="fe fe-eye"></i>
+                    </div>
+                </template>
+
                 <div class="box-ctrl handle top-right">
                     <i class="fe fe-more-horizontal" :style="{'color': asset.isColor ? asset.contrastHex : null}"></i>
 
@@ -48,13 +56,23 @@
 
         <div class="box-content">
             <template v-if="asset.isFile">
-                <a class="title"
+                <div v-if="asset.isImage"
+                    class="title"
+                    :title="asset.title"
+                    @click.prevent="openPreviewPopup()"
+                >
+                    {{ asset.title }}
+                </div>
+                <a v-else
+                    class="title"
                     target="_blank"
                     rel="noopener"
                     download
                     :href="asset.getFileUrl()"
                     :title="asset.title"
-                >{{ asset.title }}</a>
+                >
+                    {{ asset.title }}
+                </a>
 
                 <div class="meta">
                     <div class="meta-item txt-uppercase">{{ asset.fileExtension }}</div>
@@ -86,15 +104,32 @@
                 </div>
             </template>
         </div>
+
+        <relocator v-if="asset.isImage">
+            <popup class="popup-image" ref="previewPopup" :key="'asset_popup_' + asset.id">
+                <template v-slot:content>
+                    <img v-if="$refs.previewPopup && $refs.previewPopup.isActive"
+                        :src="asset.getFileUrl('original')"
+                        :alt="asset.title"
+                    >
+                </template>
+            </popup>
+        </relocator>
     </div>
 </template>
 
 <script>
 import CommonHelper   from '@/utils/CommonHelper';
 import GuidelineAsset from '@/models/GuidelineAsset';
+import Relocator      from '@/components/Relocator';
+import Popup          from '@/components/Popup';
 
 export default {
     name: 'asset-box-preview',
+    components: {
+        'relocator': Relocator,
+        'popup':     Popup,
+    },
     props: {
         asset: {
             type:     GuidelineAsset,
@@ -121,6 +156,16 @@ export default {
                 this.$toast(this.$t('Successfully copied {text} to clipboard.', {text: text}));
             } else {
                 this.$toast(this.$t('Failed copying {text} to clipboard.', {text: text}), 'danger');
+            }
+        },
+        openPreviewPopup() {
+            if (this.$refs.previewPopup) {
+                this.$refs.previewPopup.open();
+            }
+        },
+        closePreviewPopup() {
+            if (this.$refs.previewPopup) {
+                this.$refs.previewPopup.close();
             }
         },
     },
