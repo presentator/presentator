@@ -21,7 +21,7 @@
             :to="{name: 'user', params: {userId: loggedUser.id}}"
             class="menu-item"
             active-class="active"
-            v-tooltip.right="$t('Profile settings')"
+            v-tooltip.right="$t('Account settings')"
         >
             <i class="fe fe-user"></i>
         </router-link>

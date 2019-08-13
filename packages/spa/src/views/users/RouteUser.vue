@@ -14,14 +14,14 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="breadcrumb-item active">{{ $t('Profile settings') }}</div>
+                        <div class="breadcrumb-item active">{{ $t('Account settings') }}</div>
                     </template>
                 </nav>
 
                 <div class="flex-fill-block"></div>
 
                 <small class="link-fade txt-dark-border" @click.prevent="deleteUser()">
-                    {{ $t('Delete profile') }}
+                    {{ $t('Delete account') }}
                 </small>
             </header>
 
@@ -112,7 +112,7 @@ export default {
         if (this.loggedUser.isSuperUser) {
             this.$setDocumentTitle(() => this.$t('Edit users'));
         } else {
-            this.$setDocumentTitle(() => this.$t('Profile settings'));
+            this.$setDocumentTitle(() => this.$t('Account settings'));
         }
 
         this.loadUser(this.$route.params.userId);
