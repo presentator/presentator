@@ -51,7 +51,7 @@
                         <img class="fixed-screen"
                             :src="activeScreen.getImage()"
                             :alt="activeScreen.title"
-                            v-scale="activePrototype.scaleFactor"
+                            v-scale="scaleFactor"
                         >
                         <div class="block preview-hotspots-block">
                             <div v-for="hotspot in activeScreenHotspots"
@@ -83,7 +83,7 @@
                         'background': (oldActiveScreen ? oldActiveScreen.background : null),
                     }"
                     v-show="oldActiveScreen && inTransition"
-                    v-scale="activePrototype.scaleFactor"
+                    v-scale="screenScaleFactor"
                 >
 
                 <img ref="activeScreen"
@@ -95,7 +95,7 @@
                     :src="activeScreen.getImage()"
                     :alt="activeScreen.title"
                     v-tooltip.follow="activeScreenTooltip"
-                    v-scale="activePrototype.scaleFactor"
+                    v-scale="screenScaleFactor"
                     @load="refreshActiveScreenWrapperAlignment()"
                     @mousedown.left.stop.prevent="$emit('activeScreenMousedown', $event)"
                     @click.left.stop.prevent="$emit('activeScreenClick', $event)"
@@ -126,7 +126,7 @@
                         <img class="screen overlay-screen"
                             :src="overlayScreen.getImage()"
                             :alt="overlayScreen.title"
-                            v-scale="activePrototype.scaleFactor"
+                            v-scale="scaleFactor"
                         >
 
                         <div class="block preview-hotspots-block" key="overlay-screen-hotspots-block">
@@ -179,7 +179,7 @@
                         <img class="fixed-screen"
                             :src="activeScreen.getImage()"
                             :alt="activeScreen.title"
-                            v-scale="activePrototype.scaleFactor"
+                            v-scale="scaleFactor"
                         >
                         <div class="block preview-hotspots-block">
                             <div v-for="hotspot in activeScreenHotspots"
@@ -220,6 +220,10 @@ export default {
             type:    String,
             default: '',
         },
+        fitToScreen: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -259,6 +263,13 @@ export default {
             getHotspotsForScreen:     'hotspots/getHotspotsForScreen',
         }),
 
+        // same as the prototype's scaleFactor,
+        // but takes `fitToScreen` property into consideration
+        screenScaleFactor(newVal, oldVal) {
+            return this.fitToScreen ? 0 : this.activePrototype.scaleFactor;
+        },
+
+        // secondary screens
         oldActiveScreen() {
             return this.getScreen(this.oldActiveScreenId);
         },
@@ -288,6 +299,9 @@ export default {
             if (newVal !== oldVal) {
                 this.refreshActiveScreenWrapperAlignment();
             }
+        },
+        fitToScreen(newVal, oldVal) {
+            this.onActiveScreenChange();
         },
     },
     mounted() {
@@ -346,13 +360,14 @@ export default {
             }
 
             // set scale factor
-            if (this.activePrototype.scaleFactor != 0) { // fixed scale
+            if (!this.fitToScreen && this.activePrototype.scaleFactor != 0) { // fixed scale
                 this.setScaleFactor(this.activePrototype.scaleFactor);
             } else { // auto scale
                 CommonHelper.loadImage(this.activeScreen.getImage()).then((data) => {
                     if (data.success && data.width > 0) {
                         setTimeout(() => {
                             if (this.$refs.activeScreen) {
+                                // set the exact ratio to recalculate other screen elements position
                                 this.setScaleFactor(this.$refs.activeScreen.clientWidth / data.width);
                             }
                         }, 0);

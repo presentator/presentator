@@ -314,6 +314,11 @@
             font-size: 36px;
         }
     }
+    .progress-bar {
+        display: inline-block;
+        vertical-align: top;
+        max-width: 200px;
+    }
 
     // states
     &:hover,

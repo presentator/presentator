@@ -161,7 +161,8 @@
                     &:hover,
                     &:active,
                     &.active,
-                    &.highlight {
+                    &.highlight,
+                    &.highlight-secondary {
                         color: nth($color, 2);
                     }
                 }

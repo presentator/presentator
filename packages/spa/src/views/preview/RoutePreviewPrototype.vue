@@ -38,6 +38,7 @@
             ref="screenPreview"
             :interactions="isInPreviewMode"
             :activeScreenTooltip="modeHelpTooltip"
+            :fitToScreen="fitToScreen"
             @activeScreenClick="onActiveScreenClick"
         >
             <div v-if="isInCommentsMode" class="block comments-block">
@@ -85,6 +86,16 @@
                             total:   totalActiveScreenComments,
                         }) }})
                     </label>
+                </div>
+
+                <div v-if="prototypes.length > 1 && activePrototype.scaleFactor != 0"
+                    class="ctrl-item ctrl-item-circle"
+                    :class="fitToScreen ? 'ctrl-item-success highlight-secondary' : ''"
+                    @click.prevent="toggleFitToScreen"
+                >
+                    <div v-tooltip.top="$t('Fit to screen')">
+                        <i class="fe fe-minimize"></i>
+                    </div>
                 </div>
 
                 <div v-if="prototypes.length > 1"

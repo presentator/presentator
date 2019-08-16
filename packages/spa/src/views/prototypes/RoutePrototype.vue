@@ -154,7 +154,7 @@ export default {
 
                 // normalize optional prototypeId param
                 this.$router.replace({
-                    to: 'prototype',
+                    name: 'prototype',
                     params: Object.assign({}, this.$route.params, {
                         prototypeId: (this.activePrototype ? this.activePrototype.id : null),
                     }),

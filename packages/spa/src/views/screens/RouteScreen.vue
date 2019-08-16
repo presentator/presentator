@@ -40,6 +40,7 @@
             ref="screenPreview"
             :interactions="isInPreviewMode"
             :activeScreenTooltip="modeHelpTooltip"
+            :fitToScreen="fitToScreen"
             @activeScreenMousedown="onActiveScreenMousedown"
             @activeScreenClick="onActiveScreenClick"
         >
@@ -145,6 +146,16 @@
                         class="transform-bottom-right"
                         :screen="activeScreen"
                     ></hotspot-templates-popover>
+                </div>
+
+                <div v-if="activePrototype.scaleFactor != 0"
+                    class="ctrl-item ctrl-item-circle"
+                    :class="fitToScreen ? 'ctrl-item-success highlight-secondary' : ''"
+                    @click.prevent="toggleFitToScreen"
+                >
+                    <div v-tooltip.top="$t('Fit to screen')">
+                        <i class="fe fe-minimize"></i>
+                    </div>
                 </div>
 
                 <div class="ctrl-item ctrl-item-circle">
@@ -347,8 +358,8 @@ export default {
         },
         updateRouteProjectId() {
             if (this.activePrototype && this.$route.params.projectId != this.activePrototype.projectId) {
-                this.$router['replace']({
-                    to: this.$route.name,
+                this.$router.replace({
+                    name: this.$route.name,
                     params: Object.assign({}, this.$route.params, {
                         projectId: this.activePrototype.projectId,
                     }),
@@ -361,7 +372,7 @@ export default {
 
             if (routeScreenId != this.activeScreenId) {
                 this.$router[!routeScreenId ? 'replace' : 'push']({
-                    to: this.$route.name,
+                    name: this.$route.name,
                     params: Object.assign({}, this.$route.params, {
                         screenId: this.activeScreenId
                     }),

@@ -9,6 +9,7 @@ export default {
             isPreviewModeHintsActive:  false,
             isLoadingHotspots:         false,
             isLoadingHotspotTemplates: false,
+            fitToScreen:          false,
         }
     },
     computed: {
@@ -93,6 +94,9 @@ export default {
             this.previewModeHintsTimeoutId = setTimeout(() => {
                 this.isPreviewModeHintsActive = false;
             }, 500);
+        },
+        toggleFitToScreen() {
+            this.fitToScreen = !this.fitToScreen;
         },
     },
 }

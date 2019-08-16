@@ -202,6 +202,12 @@ export default {
                 this.setActivePrototypeId(routePrototypeId);
             } else if (this.prototypes.length) {
                 this.setActivePrototypeId(this.prototypes[this.prototypes.length - 1].id);
+            } else if (this.projectLink.allowGuideline) {
+                // switch to guideline mode if is allowed and no prototypes are available
+                this.$router.replace({
+                    name:   'preview-guideline',
+                    params: {slug: this.projectLink.slug},
+                });
             }
 
             this.showSubroute();
