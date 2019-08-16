@@ -7,8 +7,8 @@ module.exports = {
     configureWebpack: {
         devServer: {
             watchOptions: {
-                poll: true
-            }
+                poll: true,
+            },
         },
     },
     pluginOptions: {
