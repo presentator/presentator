@@ -54,6 +54,7 @@
                 :class="{'expanded': !orderedScreens.length}"
                 :prototypeId="activePrototype.id"
                 @screenUploaded="onScreenUpload"
+                @screensQueueComplete="onScreensQueueComplete"
             ></screen-upload>
 
             <screen-box v-for="screen in orderedScreens"
@@ -230,17 +231,20 @@ export default {
 
                 this.totalScreens++;
             }
-
+        },
+        onScreensQueueComplete(totalUploaded) {
             // reset bulk selection
             this.deselectAllScreens();
 
             // scroll to the last added screen
-            this.$nextTick(() => {
-                var lastScreen = document.querySelector('.box-screen:last-child');
-                if (lastScreen) {
-                    lastScreen.scrollIntoView({block: 'nearest'});
-                }
-            });
+            if (totalUploaded > 0) {
+                this.$nextTick(() => {
+                    var lastScreen = document.querySelector('.box-screen:last-child');
+                    if (lastScreen) {
+                        lastScreen.scrollIntoView({block: 'nearest'});
+                    }
+                });
+            }
         },
 
         // sorting

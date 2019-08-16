@@ -12,8 +12,7 @@
 
             <template v-else>
                 <div class="progress-bar"></div>
-                <p v-if="uploadProgress < 100" class="txt-hint">{{ $t('Uploading...') }}</p>
-                <p v-else class="txt-hint">{{ $t('Upload completed.') }}</p>
+                <p class="txt-hint">{{ (uploadProgress < 100) ? $t('Uploading...') : $t('Upload completed.') }}</p>
             </template>
         </div>
     </div>
@@ -90,7 +89,9 @@ export default {
 
                 setTimeout(() => {
                     this.isUploading = false;
-                }, 300); // animation delay to prevent "flickering"
+
+                    this.$emit('screensQueueComplete', this.successUploaded);
+                }, 200); // animation delay to prevent "flickering"
 
                 if (this.successUploaded > 0) {
                     this.$toast(this.$tc('Successfully uploaded 1 screen. | Successfully uploaded {count} screens.', this.successUploaded));
