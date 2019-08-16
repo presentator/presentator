@@ -16,8 +16,8 @@
         }
     ],
     "require": {
-        "presentator/api": "^2.0.5",
-        "presentator/spa": "^2.0.5"
+        "presentator/api": "^2.0.6",
+        "presentator/spa": "^2.0.6"
     },
     "config": {
         "platform": {
