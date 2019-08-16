@@ -317,8 +317,6 @@ class FileStorageBehavior extends Behavior
             return $sucessCounter;
         }
 
-        ini_set('memory_limit', '128M');
-
         // create an image manager instance with available driver
         $imageManager = new ImageManager([
             'driver' => (extension_loaded('imagick') ? 'imagick' : 'gd'),
