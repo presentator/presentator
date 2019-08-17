@@ -25,7 +25,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 ### German
 
-- *(v1)* Dave ([https://mdxdave.de](https://mdxdave.de))
+- *(v1, v2)* Dave ([https://mdxdave.de](https://mdxdave.de))
 
 
 ### Polish
