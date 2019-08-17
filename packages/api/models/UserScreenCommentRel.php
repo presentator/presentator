@@ -101,15 +101,21 @@ class UserScreenCommentRel extends ActiveRecord
     /**
      * Generates a query to fetch records that could be processed by `\console\controller\MailsController::actionProcess()`.
      *
+     * @param  string [$beforeCreatedAt] Optional datetime sting (eg. '2019-08-17 11:00:00') that requires each rel model to be created before a specific time.
      * @return \yii\db\ActiveQuery
      */
-    public function findProcessableQuery(): ActiveQuery
+    public function findProcessableQuery(string $beforeCreatedAt = ''): ActiveQuery
     {
         return static::find()
             ->with(['user', 'screenComment'])
             ->andWhere([
-                'isRead'      => false,
-                'isProcessed' => false,
+                static::tableName() . '.isRead'      => false,
+                static::tableName() . '.isProcessed' => false,
+            ])
+            ->andFilterWhere([
+                '<=',
+                (static::tableName() . '.createdAt'),
+                $beforeCreatedAt
             ]);
     }
 

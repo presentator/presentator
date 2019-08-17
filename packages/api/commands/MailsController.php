@@ -23,16 +23,17 @@ class MailsController extends Controller
      *
      * Example usage:
      * ```bash
-     * php yii mails/process-comments [sleepBatch] [sleepDuration]
+     * php yii mails/process-comments [sleepBatch] [sleepDuration] [createdThreshold]
      * ```
      *
-     * @param  integer [$sleepBatch]    The number of emails to process before sleep to occur (default to 5).
-     * @param  integer [$sleepDuration] Sleep interval duration in seconds (default to 2).
+     * @param  integer [$sleepBatch]       The number of emails to process before sleep to occur (default to 5).
+     * @param  integer [$sleepDuration]    Sleep interval duration in seconds (default to 2).
+     * @param  integer [$createdThreshold] Process only comments that are created before the provided interval in seconds (default to 900 /15 minutes/).
      * @return integer
      */
-    public function actionProcessComments(int $sleepBatch = 5, int $sleepDuration = 2)
+    public function actionProcessComments(int $sleepBatch = 5, int $sleepDuration = 2, int $createdThreshold = 900)
     {
-        $relsQuery = UserScreenCommentRel::findProcessableQuery();
+        $relsQuery = UserScreenCommentRel::findProcessableQuery(date('Y-m-d H:i:s', strtotime('- ' . $createdThreshold . ' seconds')));
         $processed = 0;
 
         $this->stdout('Processing unread screen comments...', Console::FG_YELLOW);
