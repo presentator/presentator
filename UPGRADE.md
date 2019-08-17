@@ -21,3 +21,13 @@ Presentator v2 comes with a lot of changes, including database and files structu
     - Presentator v1 database config (dsn, user, password)
 
 Once the import process is complete, verify that your Presentator v2 setup still works and you can safely remove your Presentator v1 database and files.
+
+### Additional notes
+
+If you have large number of projects and/or projects with large screens resolution, you may stumble upon a [memory limit error](https://github.com/presentator/presentator/issues/115) due to thumbs generation.
+To fix it, you have to increase the `memory_limit` configuration in your `php.ini` (eg. `memory_limit = 512M`).
+
+You can also pregenerate all screen thumbs in advance via the following console command:
+```bash
+php /path/to/project/yii screens/generate-thumbs
+```

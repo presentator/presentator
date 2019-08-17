@@ -36,7 +36,15 @@ Presentator v2 REST API server implementation, written in PHP and based on [Yii2
     GD or Imagick
     ```
 
-For more detailed check, run `php requirements.php` from the application root directory.
+    For more detailed check, run `php requirements.php` from the application root directory.
+
+    In addition, here are some recommended `php.ini` configuration settings:
+    ```
+    post_max_size       = 64M
+    upload_max_filesize = 64M
+    max_execution_time  = 60
+    memory_limit        = 256M
+    ```
 
 
 ## Installation
@@ -96,6 +104,9 @@ php /path/to/project/yii users/super test@example.com
 
 # set Regular User access rights to a single User model
 php /path/to/project/yii users/regular test@example.com
+
+# regenerates all screen thumbs
+php /path/to/project/yii screens/generate-thumbs
 ```
 
 
