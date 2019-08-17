@@ -88,7 +88,7 @@
                     </label>
                 </div>
 
-                <div v-if="prototypes.length > 1 && activePrototype.scaleFactor != 0"
+                <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"
                     class="ctrl-item ctrl-item-circle"
                     :class="fitToScreen ? 'ctrl-item-success highlight-secondary' : ''"
                     @click.prevent="toggleFitToScreen"
