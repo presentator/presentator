@@ -249,6 +249,7 @@
     "Successfully moved 1 screen. | Successfully moved {count} screens.": "1 екран бе преместен успешно. | {count} екрана бяха преместени успешно.",
     "{current} of {total}": "{current} от {total}",
     "Hotspots mode ({shortcut})": "Хотспотове ({shortcut})",
+    "Toggle fit to screen": "Автоматично преоразмеряване",
     "Screen settings": "Настройки на екрана",
     "Click to leave a comment": "Кликни да оставиш коментар",
     "Click and drag to create a hotspot\n(hold \"{shortcut}\" to snap)": "Кликни и провлачи\n(задръж \"{shortcut}\" за авт. закачане)",

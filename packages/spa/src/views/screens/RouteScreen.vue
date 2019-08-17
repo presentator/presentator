@@ -150,12 +150,11 @@
 
                 <div v-if="activePrototype.scaleFactor != 0"
                     class="ctrl-item ctrl-item-circle"
-                    :class="fitToScreen ? 'ctrl-item-success highlight-secondary' : ''"
+                    :class="fitToScreen ? 'ctrl-item-success active bg-light-border' : ''"
+                    v-tooltip.top="$t('Toggle fit to screen')"
                     @click.prevent="toggleFitToScreen"
                 >
-                    <div v-tooltip.top="$t('Fit to screen')">
-                        <i class="fe fe-minimize"></i>
-                    </div>
+                    <i class="fe fe-maximize"></i>
                 </div>
 
                 <div class="ctrl-item ctrl-item-circle">
