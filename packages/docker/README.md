@@ -14,6 +14,7 @@ This repo provides a `Dockerfile` to quickly build and set-up a production ready
 ## Versions
 
 - `ganigeorgiev/presentator:latest`
+- `ganigeorgiev/presentator:2.1.0`, `ganigeorgiev/presentator:2.1`
 - `ganigeorgiev/presentator:2.0.6`, `ganigeorgiev/presentator:2.0.5`, `ganigeorgiev/presentator:2.0.4`, `ganigeorgiev/presentator:2.0`
 - `ganigeorgiev/presentator:1.13.2`, `ganigeorgiev/presentator:1.13.1`, `ganigeorgiev/presentator:1.13.0`, `ganigeorgiev/presentator:1.13`
 - `ganigeorgiev/presentator:1.12.0`, `ganigeorgiev/presentator:1.12`
