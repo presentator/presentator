@@ -64,6 +64,9 @@ php /path/to/starter/yii users/super test@example.com
 
 # set Regular User access rights to a single User model
 php /path/to/starter/yii users/regular test@example.com
+
+# regenerates all screen thumbs
+php /path/to/starter/yii screens/generate-thumbs
 ```
 
 
