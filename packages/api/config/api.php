@@ -12,6 +12,7 @@ return [
             'languages' => [
                 'en-US',
                 'bg-BG',
+                'de-DE',
             ],
         ],
     ],

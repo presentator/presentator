@@ -576,6 +576,7 @@ label {
             text-align: center;
             font-size: inherit;
             line-height: inherit;
+            white-space: nowrap;
             border-left: 1px solid $borderColor;
             transition: background $baseAnimationSpeed,
                         color $baseAnimationSpeed,
