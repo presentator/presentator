@@ -118,5 +118,4 @@ class UserScreenCommentRel extends ActiveRecord
                 $beforeCreatedAt
             ]);
     }
-
 }
