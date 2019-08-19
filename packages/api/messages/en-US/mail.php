@@ -47,7 +47,7 @@ return array(
     'You have been mentioned in a comment' => 'You have been mentioned in a comment',
     'You have been mentioned in a comment for screen "{screenTitle}" in project "{projectTitle}":' => 'You have been mentioned in a comment for screen "{screenTitle}" in project "{projectTitle}":',
     'You have been removed from project "{projectTitle}".' => 'You have been removed from project "{projectTitle}".',
-    'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":',
+    'You have an unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'You have an unread comment for screen "{screenTitle}" in project "{projectTitle}":',
     'Your Presentator account was successfully created.' => 'Your Presentator account was successfully created.',
     '{projectTitle} preview' => '{projectTitle} preview',
 );

@@ -23,7 +23,7 @@ foreach ($tokens as $key => $value) {
 <p><?= Yii::t('mail', 'Hello') ?><?= $name ? (' ' . Html::encode($name)) : '' ?>,</p>
 
 <p>
-    <?= Yii::t('mail', 'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":', [
+    <?= Yii::t('mail', 'You have an unread comment for screen "{screenTitle}" in project "{projectTitle}":', [
         'screenTitle'  => ('<strong>' . Html::encode($comment->screen->title) . '</strong>'),
         'projectTitle' => ('<strong>' . Html::encode($comment->screen->prototype->project->title) . '</strong>'),
     ]) ?>

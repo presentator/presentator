@@ -47,7 +47,7 @@ return array(
     'You have been removed from project "{projectTitle}".' => 'Премахнати са администраторските ти права към проект "{projectTitle}".',
     'You have been mentioned in a comment' => 'Споменаване в коментар',
     'You have been mentioned in a comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Споменат си в коментар за екран "{screenTitle}" към проект "{projectTitle}":',
-    'You have unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Имаш непрочетен коментар за екран "{screenTitle}" към проект "{projectTitle}":',
+    'You have an unread comment for screen "{screenTitle}" in project "{projectTitle}":' => 'Имаш непрочетен коментар за екран "{screenTitle}" към проект "{projectTitle}":',
     'Your Presentator account was successfully created.' => 'Твоят профил в Presentator беше успешно създаден.',
     '{projectTitle} preview' => '{projectTitle} преглед',
 );
