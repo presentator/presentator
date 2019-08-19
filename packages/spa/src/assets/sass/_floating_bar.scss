@@ -231,6 +231,10 @@
         }
     }
 
+    .popover {
+        max-height: 80vh;
+    }
+
     // states
     &.with-sidebar {
         right: 0;

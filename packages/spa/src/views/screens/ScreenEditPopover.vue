@@ -1,6 +1,6 @@
 <template>
     <toggler ref="popover"
-        class="popover"
+        class="popover screen-edit-popover"
         tag="form"
         :hideOnChildClick="false"
         @submit.native.prevent="submitForm()"

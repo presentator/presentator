@@ -284,7 +284,6 @@
     .comments-list {
         padding-left: $smallSpacing;
         padding-right: $smallSpacing;
-        max-height: 410px;
         & ~ .comment-message-form {
             border-top: 1px solid $lightBorderColor;
         }
