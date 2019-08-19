@@ -116,14 +116,14 @@
                     </div>
                 </div>
 
-                <form-field v-show="type === 'overlay'" name="settingOutsideClose">
-                    <input type="checkbox" :id="'hotspot_screen_overlay_outside_click_' + hotspot.id" v-model="outsideClose">
-                    <label :for="'hotspot_screen_overlay_outside_click_' + hotspot.id">{{ $t('Close on outside click') }}</label>
-                </form-field>
-
                 <form-field v-show="type === 'overlay'" name="settingFixOverlay">
                     <input type="checkbox" :id="'hotspot_screen_overlay_fix_position' + hotspot.id" v-model="fixOverlay">
                     <label :for="'hotspot_screen_overlay_fix_position' + hotspot.id">{{ $t('Fix position of overlay') }}</label>
+                </form-field>
+
+                <form-field v-show="type === 'overlay'" name="settingOutsideClose">
+                    <input type="checkbox" :id="'hotspot_screen_overlay_outside_click_' + hotspot.id" v-model="outsideClose">
+                    <label :for="'hotspot_screen_overlay_outside_click_' + hotspot.id">{{ $t('Close on outside click') }}</label>
                 </form-field>
 
                 <form-field v-show="type === 'url'" name="settingUrl">
