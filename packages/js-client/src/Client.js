@@ -84,14 +84,14 @@ export default class Client {
     }
 
     /**
-     * Cancels single request by its cancellation token..
+     * Cancels single request by its cancellation token.
      *
      * @param  {String} cancelKey
      * @return {Client}
      */
     cancelRequest(cancelKey) {
         if (this.$cancelSource[cancelKey]) {
-            if (typeof this.$cancelSource[cancelKey] === 'function') { // axios `source`
+            if (typeof this.$cancelSource[cancelKey].cancel === 'function') { // axios source
                 this.$cancelSource[cancelKey].cancel();
             }
 
