@@ -78,16 +78,16 @@
                         @keydown.ctrl.enter.exact.prevent="addComment()"
                     ></textarea>
 
+                    <div class="submit-icon"
+                        v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
+                        @click.prevent="addComment()"
+                    >
+                        <span v-if="isProcessing" class="loader"></span>
+                        <i v-else class="fe fe-send"></i>
+                    </div>
+
                     <mentions-list ref="mentionsList" :list="mentionsList" class="dropdown-compact input-dropdown"></mentions-list>
                 </form-field>
-
-                <div class="submit-icon"
-                    v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
-                    @click.prevent="addComment()"
-                >
-                    <span v-if="isProcessing" class="loader"></span>
-                    <i v-else class="fe fe-send"></i>
-                </div>
             </form>
         </div>
     </div>

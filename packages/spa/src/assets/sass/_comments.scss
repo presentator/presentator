@@ -190,28 +190,12 @@
     .email-field {
         border-bottom: 1px solid $lightBorderColor;
     }
-    .message-field {
-        textarea {
-            min-height: 0;
-            height: 88px;
-            padding-top: ($smallSpacing - 3);
-            padding-bottom: ($smallSpacing - 3);
-            line-height: $baseLineHeight - 2;
-            resize: none;
-            border-radius: inherit;
-        }
-        .input-dropdown {
-            border: 0;
-            max-height: 120px;
-            box-shadow: 0px 0px 0px 1px #ffffff;
-        }
-    }
     .submit-icon {
         $size: 25px;
-        position: absolute;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
         z-index: 2;
-        bottom: 8px;
-        right: 8px;
         width: $size;
         height: $size;
         line-height: $size;
@@ -238,6 +222,30 @@
             transition-duration: 0.1s;
             background: darken($primaryColor, 5%);
             box-shadow: 0px 0px 0px 2px lighten($primaryColor, 20%);
+        }
+    }
+    .message-field {
+        $messageHeight: 88px;
+        textarea {
+            min-height: 0;
+            height: $messageHeight;
+            padding-top: ($smallSpacing - 3);
+            padding-bottom: ($smallSpacing - 3);
+            line-height: $baseLineHeight - 2;
+            resize: none;
+            border-radius: inherit;
+        }
+        .submit-icon {
+            position: absolute;
+            top: $messageHeight - 30px;
+            right: 8px;
+        }
+        .input-dropdown {
+            position: relative;
+            border: 0;
+            margin: 0;
+            max-height: 120px;
+            box-shadow: 0px 0px 0px 1px #ffffff;
         }
     }
 }
