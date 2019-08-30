@@ -412,6 +412,9 @@ table, .table {
 .no-shadow {
     box-shadow: none !important;
 }
+.no-clip {
+    overflow: visible !important;
+}
 .no-bg {
     background: none !important;
 }

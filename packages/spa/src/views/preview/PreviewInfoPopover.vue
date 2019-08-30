@@ -1,5 +1,5 @@
 <template>
-    <toggler class="popover popover-sm preview-info-popover" :hideOnChildClick="false">
+    <toggler class="popover popover-sm preview-info-popover no-clip" :hideOnChildClick="false">
         <div class="content m-b-small txt-center">
             <p><strong>{{ project.title }}</strong></p>
 
