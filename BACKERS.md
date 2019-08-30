@@ -12,12 +12,12 @@ You can join them in supporting Presentator development by visiting our [Support
 `none`
 
 #### Sponsor ($25+)
-
-<a href="https://ura.design/" title="Ura Design" target="_blank" rel="noopener"><img src="http://u.cubeupload.com/presentator/uralogo.png" alt="Ura Design logo"/></a>
+`none`
 
 #### Generous Backer ($5+)
 - [Ryan Gorley (Freehive)](https://freehive.com/)
 - [Xaviju](https://xaviju.github.io/)
+- [Ura Design](https://ura.design/)
 
 #### Backer ($1+)
 - [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/)
@@ -30,3 +30,4 @@ You can join them in supporting Presentator development by visiting our [Support
 - A. Kelemen - €5.00 EUR
 - Erika Mayiras - €5.00 EUR
 - Aleksandar Perisic - €4.00 EUR
+- Judy Teigen - €2.00 EUR
