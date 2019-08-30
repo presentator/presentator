@@ -203,7 +203,7 @@ $cidLogo = $message->embed(Yii::getAlias('@app/mail/layouts/logo.png'));
 
             <div class="footer">
                 <p>
-                    Presentator - Design feedback simplified<br />
+                    Presentator - Design feedback. Simplified.<br />
                     <a href="mailto:<?= Yii::$app->params['supportEmail'] ?>"><?= Yii::$app->params['supportEmail'] ?></a>
                 </p>
             </div>
