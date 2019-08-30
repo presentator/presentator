@@ -52,11 +52,6 @@ return [
         //             'clientId'     => '',
         //             'clientSecret' => '',
         //         ],
-        //         'dribbble' => [
-        //             'class'        => 'presentator\api\authclients\Dribbble',
-        //             'clientId'     => '',
-        //             'clientSecret' => '',
-        //         ],
         //         'github' => [
         //             'class'        => 'yii\authclient\clients\GitHub',
         //             'clientId'     => '',
