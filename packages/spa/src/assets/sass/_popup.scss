@@ -191,6 +191,7 @@
             width: auto;
             max-width: 90%;
             margin: $baseSpacing 0;
+            background: url('#{$imagesPath}/transp-pattern.png');
             .popup-header,
             .popup-footer,
             .popup-content {
