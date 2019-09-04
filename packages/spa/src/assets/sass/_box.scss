@@ -467,6 +467,20 @@
 
 .assets-list {
     @include items-per-row(10);
+    .box {
+        animation: none !important;
+    }
+    .box-content .meta {
+        @include ellipsis;
+        .meta-item {
+            display: inline-block;
+            vertical-align: top;
+            float: none;
+        }
+    }
+    .box-thumb {
+        height: 190px;
+    }
     @media screen and (max-width: 3000px) {
         @include items-per-row(9);
     }
@@ -491,14 +505,14 @@
     @media screen and (max-width: 650px) {
         @include items-per-row(2);
     }
-    @media screen and (max-width: 400px) {
-        @include items-per-row(1);
+    @media screen and (max-width: 550px) {
+        .box-thumb {
+            height: 160px;
+        }
     }
-
-    .box {
-        animation: none !important;
-    }
-    .box-thumb {
-        height: 190px;
+    @media screen and (max-width: 380px) {
+        .box-thumb {
+            height: 120px;
+        }
     }
 }
