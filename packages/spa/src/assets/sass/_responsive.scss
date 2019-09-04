@@ -32,6 +32,12 @@
             left: $smallSpacing;
             right: $smallSpacing;
             display: none;
+            .popover {
+                right: 0;
+                left: 0;
+                width: auto;
+                position: fixed;
+            }
         }
         .form-group {
             width: auto;

@@ -74,7 +74,9 @@
 
         <div class="flex-fill-block"></div>
 
-        <nav class="floating-bar preview-bar active">
+        <nav class="floating-bar preview-bar active"
+            :class="{'responsive-show-more': isResponsiveShowMoreActive}"
+        >
             <div class="nav nav-left">
                 <router-link :to="{name: 'prototype', params: {projectId: activePrototype.projectId, prototypeId: activePrototype.id}}"
                     class="ctrl-item ctrl-item-circle ctrl-item-close"
@@ -103,6 +105,7 @@
                 >
                     <i class="fe fe-eye"></i>
                 </div>
+
                 <div class="ctrl-item ctrl-item-circle ctrl-item-primary"
                     :class="{'highlight': isInHotspotsMode}"
                     v-tooltip.top="$t('Hotspots mode ({shortcut})', {shortcut: 'H'})"
@@ -112,6 +115,7 @@
                     <span v-if="isLoadingHotspots || isLoadingHotspotTemplates" class="loader"></span>
                     <i v-else class="fe fe-target"></i>
                 </div>
+
                 <div class="ctrl-item ctrl-item-circle ctrl-item-danger"
                     :class="{'highlight': isInCommentsMode}"
                     v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
@@ -122,6 +126,13 @@
 
                     <span v-if="isLoadingComments" class="loader"></span>
                     <i v-else class="fe fe-message-circle"></i>
+                </div>
+
+                <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-show-more responsive-only"
+                    v-tooltip.top="$t('More tools')"
+                    @click.prevent="responsiveShowMore"
+                >
+                    <i class="fe fe-more-horizontal"></i>
                 </div>
             </div>
             <div class="nav nav-right">
@@ -167,6 +178,14 @@
                         class="transform-bottom-right"
                         :screen="activeScreen"
                     ></screen-edit-popover>
+                </div>
+
+                <div class="flex-fill-block responsive-only"></div>
+
+                <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more responsive-only"
+                    @click.prevent="responsiveHideMore"
+                >
+                    <i class="fe fe-x"></i>
                 </div>
             </div>
         </nav>
@@ -214,8 +233,9 @@ export default {
     },
     data() {
         return {
-            isLoadingScreens: false,
-            mode:             MODE_PREVIEW,
+            mode:                       MODE_PREVIEW,
+            isLoadingScreens:           false,
+            isResponsiveShowMoreActive: false,
         }
     },
     computed: {
@@ -306,6 +326,12 @@ export default {
             setActivePrototypeId: 'prototypes/setActivePrototypeId',
         }),
 
+        responsiveShowMore() {
+            this.isResponsiveShowMoreActive = true;
+        },
+        responsiveHideMore() {
+            this.isResponsiveShowMoreActive = false;
+        },
         init() {
             this.$setDocumentTitle(() => this.$t('Screen'));
 

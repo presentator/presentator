@@ -63,15 +63,6 @@
         </div>
 
         <div class="nav nav-right">
-            <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more m-r-10 responsive-only"
-                v-tooltip.top="$t('Back')"
-                @click.prevent="responsiveHideMore"
-            >
-                <i class="fe fe-arrow-left"></i>
-            </div>
-
-            <div class="flex-fill-block responsive-only"></div>
-
             <slot name="right"></slot>
 
             <div class="ctrl-item ctrl-item-circle ctrl-item-settings">
@@ -84,6 +75,14 @@
                     class="transform-bottom-right"
                     :project="project"
                 ></preview-info-popover>
+            </div>
+
+            <div class="flex-fill-block responsive-only"></div>
+
+            <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more responsive-only"
+                @click.prevent="responsiveHideMore"
+            >
+                <i class="fe fe-x"></i>
             </div>
         </div>
     </nav>
