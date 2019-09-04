@@ -431,6 +431,9 @@
             margin: 0 0 $smallSpacing;
         }
     }
+    .popover-holder & {
+        max-width: 100%;
+    }
 
     // states
     &.active,

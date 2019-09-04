@@ -79,7 +79,7 @@
             <template v-slot:right>
                 <div v-if="isInCommentsMode && totalActiveScreenComments > 0" class="form-group">
                     <input type="checkbox" id="toggle_resolved_comments" v-model="showResolvedComments">
-                    <label for="toggle_resolved_comments" class="resolved-comments-label desktop-label">
+                    <label for="toggle_resolved_comments" class="resolved-comments-label desktop-only">
                         {{ $t('Show resolved comments') }}
                         ({{ $t('{current} of {total}', {
                             current: totalActiveScreenResolvedComments,

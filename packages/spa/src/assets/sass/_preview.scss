@@ -282,6 +282,7 @@
     }
     &.desktop {
         .screen-wrapper {
+            min-height: 100%;
             width: 100%;
         }
     }
@@ -421,7 +422,7 @@
     }
     .preview-bar {
         position: relative;
-        z-index: 10;
+        z-index: 11;
         left: auto;
         right: auto;
         bottom: auto;

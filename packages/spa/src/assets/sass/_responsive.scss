@@ -7,6 +7,9 @@
 }
 @media screen and (max-width: 1100px) {
     .preview-bar {
+        .desktop-only {
+            display: none !important;
+        }
         .nav-left,
         .nav-right,
         .nav-center {
@@ -39,8 +42,7 @@
         .ctrl-item-info .title {
             max-width: 100%;
         }
-        .ctrl-item-screens .screen-title,
-        .resolved-comments-label.desktop-label {
+        .ctrl-item-screens .screen-title {
             display: none;
         }
         &.responsive-show-more {

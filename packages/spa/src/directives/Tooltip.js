@@ -16,7 +16,8 @@ let isScrollListenerBinded = false;
 
 export default {
     install(Vue, options = {}) {
-        var cachedTooltipElem;
+        var cachedTooltipElem, delayedHideTooltipTimeoutId;
+
         const getTooltipElem = function () {
             if (cachedTooltipElem) {
                 return cachedTooltipElem;
@@ -103,6 +104,18 @@ export default {
             getTooltipElem().classList.remove('active');
         };
 
+        // `hideTooltip` with slight delay
+        // (used for touch events order firing workaround)
+        const delayedHideTooltip = function (e) {
+            if (delayedHideTooltipTimeoutId) {
+                clearTimeout(delayedHideTooltipTimeoutId);
+            }
+
+            delayedHideTooltipTimeoutId = setTimeout(() => {
+                hideTooltip();
+            }, 300)
+        };
+
         // bind only once
         if (!isScrollListenerBinded) {
             document.addEventListener('scroll', hideTooltip, {
@@ -132,8 +145,10 @@ export default {
 
                 el.addEventListener('mousemove', showTooltip);
                 el.addEventListener('focusin', showTooltip);
+                el.addEventListener('touchmove', showTooltip);
                 el.addEventListener('mouseleave', hideTooltip);
                 el.addEventListener('focusout', hideTooltip);
+                el.addEventListener('mouseup', delayedHideTooltip);
             },
             update(el, binding, vnode, oldVnode) {
                 if (binding.value != binding.oldValue) {
@@ -145,6 +160,7 @@ export default {
                 el.removeEventListener('focusin', showTooltip);
                 el.removeEventListener('mouseleave', hideTooltip);
                 el.removeEventListener('focusout', hideTooltip);
+                el.removeEventListener('mouseup', delayedHideTooltip);
 
                 var tooltip = getTooltipElem();
 
@@ -159,5 +175,5 @@ export default {
                 }
             },
         });
-    }
+    },
 }
