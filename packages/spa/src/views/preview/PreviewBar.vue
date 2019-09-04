@@ -1,5 +1,10 @@
 <template>
-    <nav class="floating-bar preview-bar" :class="{'active': isActive}">
+    <nav class="floating-bar preview-bar"
+        :class="{
+            'active': isActive,
+            'responsive-show-more': isResponsiveShowMoreActive
+        }"
+    >
         <div class="visibility-toggle" @click.prevent="toggle()">
             <span class="txt">{{ isActive ? $t('Hide') : $t('Show') }}</span>
         </div>
@@ -48,9 +53,25 @@
 
                 <i class="fe fe-message-circle"></i>
             </router-link>
+
+            <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-show-more responsive-only"
+                v-tooltip.top="$t('More tools')"
+                @click.prevent="responsiveShowMore"
+            >
+                <i class="fe fe-more-horizontal"></i>
+            </div>
         </div>
 
         <div class="nav nav-right">
+            <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more m-r-10 responsive-only"
+                v-tooltip.top="$t('Back')"
+                @click.prevent="responsiveHideMore"
+            >
+                <i class="fe fe-arrow-left"></i>
+            </div>
+
+            <div class="flex-fill-block responsive-only"></div>
+
             <slot name="right"></slot>
 
             <div class="ctrl-item ctrl-item-circle ctrl-item-settings">
@@ -94,6 +115,7 @@ export default {
     data() {
         return {
             isActive: true,
+            isResponsiveShowMoreActive: false,
         }
     },
     computed: {
@@ -124,12 +146,16 @@ export default {
 
             ClientStorage.setItem(AppConfig.get('VUE_APP_PREVIEW_BAR_VISIBLITY_STORAGE_KEY'), true);
 
+            this.responsiveHideMore();
+
             this.$emit('show');
         },
         hide() {
             this.isActive = false;
 
             ClientStorage.setItem(AppConfig.get('VUE_APP_PREVIEW_BAR_VISIBLITY_STORAGE_KEY'), false);
+
+            this.responsiveHideMore();
 
             this.$emit('hide');
         },
@@ -139,6 +165,12 @@ export default {
             } else {
                 this.show();
             }
+        },
+        responsiveShowMore() {
+            this.isResponsiveShowMoreActive = true;
+        },
+        responsiveHideMore() {
+            this.isResponsiveShowMoreActive = false;
         },
         goToGuideline() {
             this.$router.push({

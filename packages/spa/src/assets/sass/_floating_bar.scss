@@ -59,6 +59,7 @@
         vertical-align: top;
         margin-left: 10px;
         padding: 3px 5px;
+        max-width: 100%;
         border-radius: $baseRadius;
         text-align: center;
         cursor: pointer;
@@ -174,6 +175,12 @@
             max-width: 220px;
         }
     }
+    .ctrl-item-screens {
+        .screen-title {
+            @include ellipsis;
+            max-width: 250px;
+        }
+    }
 
     // controls container
     .nav {
@@ -249,15 +256,6 @@
         .nav {
             @include show;
             transform: scale(1);
-        }
-    }
-
-    &.preview-bar {
-        @media screen and (max-width: 1100px) {
-            .nav-left,
-            .nav-right {
-                max-width: calc(50% - 100px);
-            }
         }
     }
 }

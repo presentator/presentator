@@ -79,13 +79,20 @@
             <template v-slot:right>
                 <div v-if="isInCommentsMode && totalActiveScreenComments > 0" class="form-group">
                     <input type="checkbox" id="toggle_resolved_comments" v-model="showResolvedComments">
-                    <label for="toggle_resolved_comments">
+                    <label for="toggle_resolved_comments" class="resolved-comments-label desktop-label">
                         {{ $t('Show resolved comments') }}
                         ({{ $t('{current} of {total}', {
                             current: totalActiveScreenResolvedComments,
                             total:   totalActiveScreenComments,
                         }) }})
                     </label>
+                    <label for="toggle_resolved_comments"
+                        class="resolved-comments-label responsive-only"
+                        v-tooltip.top="$t('Show resolved comments') + ' (' + $t('{current} of {total}', {
+                            current: totalActiveScreenResolvedComments,
+                            total:   totalActiveScreenComments,
+                        }) + ')'"
+                    ></label>
                 </div>
 
                 <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"

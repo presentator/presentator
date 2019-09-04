@@ -426,10 +426,6 @@
         right: auto;
         bottom: auto;
         top: auto;
-        .screen-title {
-            @include ellipsis;
-            max-width: 250px;
-        }
     }
     .preview-bar,
     .preview-screens-panel {
