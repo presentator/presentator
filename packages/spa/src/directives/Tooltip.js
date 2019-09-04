@@ -16,7 +16,7 @@ let isScrollListenerBinded = false;
 
 export default {
     install(Vue, options = {}) {
-        var cachedTooltipElem, delayedHideTooltipTimeoutId;
+        let cachedTooltipElem, delayedHideTooltipTimeoutId;
 
         const getTooltipElem = function () {
             if (cachedTooltipElem) {
@@ -113,7 +113,7 @@ export default {
 
             delayedHideTooltipTimeoutId = setTimeout(() => {
                 hideTooltip();
-            }, 300)
+            }, 250);
         };
 
         // bind only once
