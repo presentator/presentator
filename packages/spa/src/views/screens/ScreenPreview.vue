@@ -209,6 +209,8 @@ import CommonHelper from '@/utils/CommonHelper';
 // @todo consider getting it from css
 const SCREENS_ANIMATION_SPEED = 400; // in ms
 
+let alignmentTimeoutId = null;
+
 export default {
     name: 'screen-preview',
     props: {
@@ -395,19 +397,25 @@ export default {
                 this.setActiveScreenId(this.orderedScreens[this.activeScreenOrderedIndex + 1].id);
             }
         },
-        refreshActiveScreenWrapperAlignment() {
+        refreshActiveScreenWrapperAlignment(delay = 0) {
             this.$nextTick(() => {
-                if (!this.$refs.activeScreenWrapper) {
-                    return;
+                if (alignmentTimeoutId) {
+                    clearTimeout(alignmentTimeoutId);
                 }
 
-                if (this.activeScreen.isLeftAligned) {
-                    this.$refs.activeScreenWrapper.scrollLeft = 0;
-                } else if (this.activeScreen.isRightAligned) {
-                    this.$refs.activeScreenWrapper.scrollLeft = this.$refs.activeScreenWrapper.scrollWidth;
-                } else {
-                    this.$refs.activeScreenWrapper.scrollLeft = (this.$refs.activeScreenWrapper.scrollWidth - this.$refs.activeScreenWrapper.offsetWidth) / 2;
-                }
+                alignmentTimeoutId = setTimeout(() => {
+                    if (!this.$refs.activeScreenWrapper) {
+                        return;
+                    }
+
+                    if (this.activeScreen.isLeftAligned) {
+                        this.$refs.activeScreenWrapper.scrollLeft = 0;
+                    } else if (this.activeScreen.isRightAligned) {
+                        this.$refs.activeScreenWrapper.scrollLeft = this.$refs.activeScreenWrapper.scrollWidth;
+                    } else {
+                        this.$refs.activeScreenWrapper.scrollLeft = (this.$refs.activeScreenWrapper.scrollWidth - this.$refs.activeScreenWrapper.offsetWidth) / 2;
+                    }
+                }, delay);
             });
         },
 

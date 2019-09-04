@@ -63,10 +63,12 @@
     }
     .app-header {
         flex-wrap: wrap;
+        .breadcrumbs {
+            margin: 10px 10px 10px 0;
+        }
         .prototypes-switch {
             flex-grow: 1;
             text-align: right;
-            margin-top: 10px;
         }
     }
 }

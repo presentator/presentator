@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+const cachedLoadedImages = {};
+
 /**
  * Commonly used generic static helper methods.
  *
@@ -371,15 +373,32 @@ export default class CommonHelper {
      */
     static loadImage(imageUrl) {
         return new Promise((resolve, reject) => {
+            // load from cache
+            if (cachedLoadedImages[imageUrl]) {
+                return resolve({
+                    success: true,
+                    url:     imageUrl,
+                    width:   cachedLoadedImages[imageUrl].width,
+                    height:  cachedLoadedImages[imageUrl].height,
+                });
+            }
+
             let img = new Image();
 
             // successfully loaded
-            img.onload = () => resolve({
-                success: true,
-                url:     imageUrl,
-                width:   img.naturalWidth,
-                height:  img.naturalHeight,
-            });
+            img.onload = () => {
+                cachedLoadedImages[imageUrl] = {
+                    width:  img.naturalWidth,
+                    height: img.naturalHeight,
+                }
+
+                return resolve({
+                    success: true,
+                    url:     imageUrl,
+                    width:   img.naturalWidth,
+                    height:  img.naturalHeight,
+                });
+            };
 
             // fail gracefully
             img.onerror = () => resolve({
