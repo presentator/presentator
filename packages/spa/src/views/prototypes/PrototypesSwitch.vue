@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="prototypes-switch">
         <button v-if="!prototypes.length || !activePrototype"
             type="button"
             class="btn btn-cons-lg btn-success"

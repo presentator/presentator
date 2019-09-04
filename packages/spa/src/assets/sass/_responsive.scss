@@ -1,11 +1,11 @@
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1050px) {
     .preview-bar {
         .responsive-only {
             display: none !important;
         }
     }
 }
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1050px) {
     .preview-bar {
         .desktop-only {
             display: none !important;
@@ -54,5 +54,19 @@
     .preview-screen-holder.mobile {
         padding: 0;
         border-radius: 0
+    }
+    .app-header {
+        flex-wrap: wrap;
+        .prototypes-switch {
+            flex-grow: 1;
+            text-align: right;
+            margin-top: 10px;
+        }
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .languages-select .selected-language .language-title {
+        display: none !important;
     }
 }
