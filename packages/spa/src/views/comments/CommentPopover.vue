@@ -334,6 +334,10 @@ export default {
                 this.$errResponseHandler(err);
             }).finally(() => {
                 this.isLoadingReplies = false;
+
+                this.$nextTick(() => {
+                    this.scrollToLastComment();
+                });
             });
         },
         deleteComment(commentId) {
@@ -471,18 +475,14 @@ export default {
             });
         },
         scrollToLastComment() {
-            if (!this.$refs.commentsListContainer) {
+            if (!this.$refs.popover) {
                 return;
             }
 
-            var lastComment = this.$refs.commentsListContainer.querySelector('.comment-list-item:last-child');
-
-            if (lastComment) {
-                this.$refs.commentsListContainer.scrollTo({
-                    'behavior': 'smooth',
-                    'top':      lastComment.offsetTop,
-                });
-            }
+            this.$refs.popover.scrollTo({
+                'behavior': 'smooth',
+                'top':      this.$refs.popover.scrollHeight,
+            });
         },
         readComments(comments, delay = 0) {
             setTimeout(() => {
