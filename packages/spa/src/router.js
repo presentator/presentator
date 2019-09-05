@@ -5,6 +5,14 @@ import ApiClient     from '@/utils/ApiClient';
 import CommonHelper  from '@/utils/CommonHelper';
 import ClientStorage from '@/utils/ClientStorage';
 
+// silent noisy uncaught nav promise errors
+// https://github.com/vuejs/vue-router/issues/2881
+const originalReplace = Router.prototype.replace;
+Router.prototype.replace = function replace(location, onResolve, onReject) {
+    if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject);
+    return originalReplace.call(this, location).catch(err => err);
+}
+
 Vue.use(Router);
 
 const router = new Router({
