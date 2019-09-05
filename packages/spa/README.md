@@ -1,7 +1,7 @@
 Presentator v2 SPA
 ======================================================================
 
-![Interface screenshot](https://u.cubeupload.com/presentator/readme.png)
+![Interface screenshot](https://i.imgur.com/ijvXlMI.png)
 
 Presentator SPA is a frontend interface for the Presentator v2 REST API.
 It is built with [Vue.js](https://vuejs.org/) and [Webpack](https://webpack.js.org/).

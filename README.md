@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://presentator.io" target="_blank" rel="noopener"><img src="https://u.cubeupload.com/presentator/readmeheader.png" alt="Presentator hero image"></a>
+    <a href="https://presentator.io" target="_blank" rel="noopener"><img src="https://i.imgur.com/YU8p55S.png" alt="Presentator hero image"></a>
 </p>
 
 <p align="center">
