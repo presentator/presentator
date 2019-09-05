@@ -93,8 +93,15 @@
         }
         &.handle {
             cursor: pointer;
+            & > i {
+                transition: opacity $baseAnimationSpeed;
+            }
+            &:hover > i {
+                opacity: 0.8;
+            }
             &:active {
                 > i {
+                    opacity: 1;
                     transform: scale(0.9);
                 }
             }
