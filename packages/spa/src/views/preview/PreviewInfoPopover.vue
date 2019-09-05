@@ -5,7 +5,7 @@
 
             <p v-if="$getAppConfig('VUE_APP_PROJECT_URL')" class="txt-hint txt-small">
                 <i18n path='Presented with {projectLink}.'>
-                    <a place="projectLink" :href="$getAppConfig('VUE_APP_PROJECT_URL')" target="_blank" rel="noopener">Presentator</a>
+                    <a slot="projectLink" :href="$getAppConfig('VUE_APP_PROJECT_URL')" target="_blank" rel="noopener">Presentator</a>
                 </i18n>
             </p>
 

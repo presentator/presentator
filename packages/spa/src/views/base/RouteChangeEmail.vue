@@ -21,7 +21,7 @@
                                 {{ $t('The provided email change token is invalid or expired.') }} <br>
 
                                 <i18n path="Please contact us at {supportEmail} if you need further assistance.">
-                                    <a place="supportEmail" :href="'mailto:' + $getAppConfig('VUE_APP_SUPPORT_EMAIL')">{{ $getAppConfig('VUE_APP_SUPPORT_EMAIL') }}</a>
+                                    <a slot="supportEmail" :href="'mailto:' + $getAppConfig('VUE_APP_SUPPORT_EMAIL')">{{ $getAppConfig('VUE_APP_SUPPORT_EMAIL') }}</a>
                                 </i18n>
                             </p>
                         </div>

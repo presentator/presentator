@@ -10,7 +10,7 @@
                         {{ $t('Found a bug or have a feature request?') }} <br>
 
                         <i18n path="Fill the form below OR {issuesLink}.">
-                            <a place="issuesLink" :href="$getAppConfig('VUE_APP_ISSUES_URL')" target="_blank" rel="noopener">{{ $t('create a GitHub issue') }}</a>
+                            <a slot="issuesLink" :href="$getAppConfig('VUE_APP_ISSUES_URL')" target="_blank" rel="noopener">{{ $t('create a GitHub issue') }}</a>
                         </i18n>
                     </p>
                 </div>

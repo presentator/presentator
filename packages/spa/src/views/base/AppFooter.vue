@@ -23,7 +23,7 @@
 
         <div v-if="$getAppConfig('VUE_APP_SHOW_CREDITS') << 0 ? true : false" class="credits">
             <i18n path="Crafted by {author}">
-                <a place="author" href="https://gani.bg" target="_blank" rel="noopener">Gani</a>
+                <a slot="author" href="https://gani.bg" target="_blank" rel="noopener">Gani</a>
             </i18n>
         </div>
 

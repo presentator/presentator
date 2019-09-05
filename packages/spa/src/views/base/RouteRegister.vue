@@ -56,7 +56,7 @@
 
                         <div v-if="$getAppConfig('VUE_APP_TERMS_URL')" class="block txt-center m-t-small txt-hint">
                             <i18n path='By clicking "Sign up" you agree to our {termsLink}.'>
-                                <a place="termsLink" :href="$getAppConfig('VUE_APP_TERMS_URL')" target="_blank" rel="noopener">{{ $t('Terms and Privacy policy') }}</a>
+                                <a slot="termsLink" :href="$getAppConfig('VUE_APP_TERMS_URL')" target="_blank" rel="noopener">{{ $t('Terms and Privacy policy') }}</a>
                             </i18n>
                         </div>
                     </form>
