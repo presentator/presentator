@@ -229,7 +229,9 @@ export default {
             this.loadReplies();
 
             if (repositionToElem) {
-                this.reposition(repositionToElem);
+                this.$nextTick(() => {
+                    this.reposition(repositionToElem);
+                });
             }
 
             if (!this.comment.id && this.$refs.messageField) {
