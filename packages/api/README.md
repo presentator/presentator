@@ -147,5 +147,5 @@ The project makes use of the following conventions:
 
 #### DB schema
 
-![erd](https://u.cubeupload.com/presentator/presentatorv2erd.png)
+![erd](https://i.imgur.com/0HSzaGw.png)
 
