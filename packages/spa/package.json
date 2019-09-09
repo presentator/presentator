@@ -17,7 +17,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "dropzone": "^5.5.1",
-    "firebase": "^6.5.0",
+    "firebase": "^6.6.0",
     "moment": "^2.24.0",
     "presentator-client": "^2.1.0",
     "vue": "^2.6.10",
