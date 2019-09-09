@@ -206,6 +206,8 @@ export default {
             this.scaleFactor = 1;
 
             if (this.type == 'mobile') {
+                this.scaleFactor = 0; // set auto by default
+
                 if (!this.width || !this.height) { // from desktop to mobile
                     this.activeSize = defaultFormData.activeSize; // switch to the default device size
                 }
