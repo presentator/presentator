@@ -11,7 +11,7 @@
                 <h4 class="title">{{ $t('Notifications') }}</h4>
                 <div class="list-ctrls">
                     <div class="list-ctrl-item"
-                        v-tooltip.right="$t('Hide panel')"
+                        v-tooltip.right="$t('Close panel')"
                         @click.prevent="hide"
                     >
                         <i class="fe fe-x"></i>
