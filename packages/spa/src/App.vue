@@ -12,7 +12,8 @@ import AppConfig    from '@/utils/AppConfig';
 import CommonHelper from '@/utils/CommonHelper';
 import Toast        from '@/components/Toast';
 
-let userNotificationsUnsibscribe = null;
+let firestoreUnsubscribe = null;
+let intervalListenerId   = null;
 
 export default {
     name: 'app',
@@ -29,14 +30,14 @@ export default {
             if (!newVal || !newVal.id) {
                 this.stopUserNotificationsListener();
             } else {
-                this.initUserNotificationsListener();
+                this.startUserNotificationsListener();
             }
         },
         '$route.name': function (newVal, oldVal) {
             if (!this.$route.meta.requiresAuth) {
                 this.stopUserNotificationsListener();
             } else {
-                this.initUserNotificationsListener();
+                this.startUserNotificationsListener();
             }
         }
     },
@@ -52,28 +53,31 @@ export default {
     },
     methods: {
         ...mapActions({
-            loadLocalUser:      'user/loadLocal',
-            loadUnreadComments: 'notifications/loadUnreadComments',
+            loadLocalUser:          'user/loadLocal',
+            loadUserUnreadComments: 'notifications/loadUserUnreadComments',
         }),
 
-        stopUserNotificationsListener() {
-            if (CommonHelper.isFunction(userNotificationsUnsibscribe)) {
-                userNotificationsUnsibscribe();
-            }
-        },
-        initUserNotificationsListener(reinit = false) {
-            if (
-                // already subscribed
-                (!reinit && userNotificationsUnsibscribe) ||
-                // firestore is not configured
-                (
-                    !AppConfig.get('VUE_APP_FIRESTORE_PROJECT_ID') ||
-                    !AppConfig.get('VUE_APP_FIRESTORE_COLLECTION')
-                )
-            ) {
-                return;
+        // Bind user notifications listener
+        // -----------------------------------------------------------
+        startUserNotificationsListener(forceReinit = false) {
+            if (!forceReinit && (firestoreUnsubscribe || intervalListenerId)) {
+                return; // already inited
             }
 
+            if (AppConfig.isFirestoreConfigured()) {
+                this.startFirestoreListener();
+            } else {
+                this.startIntervalListener();
+            }
+        },
+        stopUserNotificationsListener() {
+            this.stopIntervalListener();
+            this.stopFirestoreListener();
+        },
+
+        // Cloud Firestore notifications listener
+        // ---
+        startFirestoreListener() {
             import('firebase/app').then((firebase) => {
                 import('firebase/firestore').then(() => {
                     if (!this.loggedUser.id) {
@@ -87,18 +91,40 @@ export default {
 
                     var db = firebase.firestore();
 
-                    this.stopUserNotificationsListener();
+                    // stop previous listener (if any)
+                    this.stopFirestoreListener();
 
                     // start a new listener
-                    userNotificationsUnsibscribe = db.collection(AppConfig.get('VUE_APP_FIRESTORE_COLLECTION'))
+                    firestoreUnsubscribe = db.collection(AppConfig.get('VUE_APP_FIRESTORE_COLLECTION'))
                         .where('u' + this.loggedUser.id, '>', 0)
                         .onSnapshot((querySnapshot) => {
-                            if (this.loggedUser.id) {
-                                this.loadUnreadComments();
-                            }
+                            this.loadUserUnreadComments().catch((err) => {});
                         });
                 });
             });
+        },
+        stopFirestoreListener() {
+            if (CommonHelper.isFunction(firestoreUnsubscribe)) {
+                firestoreUnsubscribe();
+            }
+        },
+
+        // Interval notifications listener (fallback if Firestore is not configured)
+        // ---
+        startIntervalListener() {
+            this.stopIntervalListener();
+
+            this.loadUserUnreadComments().catch((err) => {});
+
+            intervalListenerId = setInterval(() => {
+                this.loadUserUnreadComments().catch((err) => {});
+            }, AppConfig.get('VUE_APP_NOTIFICATIONS_INTERVAL') || 60000);
+        },
+        stopIntervalListener() {
+            if (intervalListenerId) {
+                clearInterval(intervalListenerId);
+                intervalListenerId = null;
+            }
         },
     },
 }

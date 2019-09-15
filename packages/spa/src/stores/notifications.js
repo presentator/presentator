@@ -30,28 +30,36 @@ export default CommonHelper.createResettableStore({
         removeUnreadComment(context, commentId) {
             context.commit('removeUnreadComment', commentId);
         },
-        loadUnreadComments(context) {
+        loadUserUnreadComments(context) {
             return new Promise((resolve, reject) => {
-                ApiClient.ScreenComments.getUnread().then((response) => {
-                    context.dispatch('setUnreadComments', response.data);
+                if (!ApiClient.$token) {
+                    reject(new Error('The action requires authorization token to be set.'));
+                } else {
+                    ApiClient.ScreenComments.getUnread().then((response) => {
+                        context.dispatch('setUnreadComments', response.data);
 
-                    resolve(response);
-                }).catch((err) => {
-                    reject(err);
-                });
+                        resolve(response);
+                    }).catch((err) => {
+                        reject(err);
+                    });
+                }
             });
         },
         markAsRead(context, commentId) {
             return new Promise((resolve, reject) => {
-                // optimistic update
-                context.dispatch('removeUnreadComment', commentId);
+                if (!ApiClient.$token) {
+                    reject(new Error('The action requires authorization token to be set.'));
+                } else {
+                    // optimistic update
+                    context.dispatch('removeUnreadComment', commentId);
 
-                // actual update
-                ApiClient.ScreenComments.read(commentId).then((response) => {
-                    resolve(response);
-                }).catch((err) => {
-                    reject(err);
-                });
+                    // actual update
+                    ApiClient.ScreenComments.read(commentId).then((response) => {
+                        resolve(response);
+                    }).catch((err) => {
+                        reject(err);
+                    });
+                }
             });
         },
     },

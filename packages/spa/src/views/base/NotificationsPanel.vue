@@ -150,8 +150,8 @@ export default {
     },
     methods: {
         ...mapActions({
-            loadUnreadComments: 'notifications/loadUnreadComments',
-            markAsRead:         'notifications/markAsRead',
+            loadUserUnreadComments: 'notifications/loadUserUnreadComments',
+            markAsRead:             'notifications/markAsRead',
         }),
 
         hide() {
@@ -164,9 +164,9 @@ export default {
 
             this.isLoading = true;
 
-            this.loadUnreadComments().finally(() => {
+            this.loadUserUnreadComments().finally(() => {
                 this.isLoading = false;
-            });
+            }).catch((err) => {});
         },
         toggle() {
             if (this.isActive) {
