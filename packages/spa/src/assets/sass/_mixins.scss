@@ -63,45 +63,47 @@
 }
 
 @mixin scrollbar($trackColor: $lightBorderColor, $thumbColor: $darkBorderColor, $width: 7px) {
-    // chrome scrollbar styles
-    &::-webkit-scrollbar {
-        width: $width;
-        height: $width;
-        border-radius: 3px;
-    }
-    &::-webkit-scrollbar-track {
-        background: $trackColor;
-        border-radius: 3px;
-    }
-    &::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        background: $thumbColor;
-        &:hover {
-            background: darken($thumbColor, 5%);
+    @media screen and (min-width: 550px) {
+        // chrome scrollbar styles
+        &::-webkit-scrollbar {
+            width: $width;
+            height: $width;
+            border-radius: 3px;
         }
-        &:active {
-            background: darken($thumbColor, 10%);
+        &::-webkit-scrollbar-track {
+            background: $trackColor;
+            border-radius: 3px;
         }
-    }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background: $thumbColor;
+            &:hover {
+                background: darken($thumbColor, 5%);
+            }
+            &:active {
+                background: darken($thumbColor, 10%);
+            }
+        }
 
-    @if & {
-        // firefox scrollbar
-        scrollbar-color: $thumbColor $trackColor;
-        scrollbar-width: thin;
-
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
-        scroll-behavior: smooth;
-    } @else {
-        html {
+        @if & {
             // firefox scrollbar
             scrollbar-color: $thumbColor $trackColor;
             scrollbar-width: thin;
 
             // https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
             scroll-behavior: smooth;
+        } @else {
+            html {
+                // firefox scrollbar
+                scrollbar-color: $thumbColor $trackColor;
+                scrollbar-width: thin;
 
-            * {
-                scrollbar-width: inherit;
+                // https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+                scroll-behavior: smooth;
+
+                * {
+                    scrollbar-width: inherit;
+                }
             }
         }
     }
