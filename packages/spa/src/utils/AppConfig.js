@@ -28,4 +28,16 @@ export default class AppConfig {
             CommonHelper.getNestedVal(process.env, key, defaultValue)
         );
     }
+
+    /**
+     * Checks whether Firebase Cloud Firestore configuration settings are provided.
+     *
+     * @return {Boolean}
+     */
+    static isFirestoreConfigured() {
+        return (
+            AppConfig.get('VUE_APP_FIRESTORE_PROJECT_ID') &&
+            AppConfig.get('VUE_APP_FIRESTORE_COLLECTION')
+        );
+    }
 }

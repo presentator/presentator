@@ -292,7 +292,7 @@ export default {
 
             if (this.projectLink.allowComments) {
                 this.loadComments(this.activePrototypeId, 1, true);
-                this.newCommentsListener();
+                this.startNewCommentsListener();
             }
 
             this.mentionsList = this.convertCollaboratorsListToMentionsList(this.collaborators);
@@ -461,13 +461,12 @@ export default {
                 this.$errResponseHandler(err);
             });
         },
-        newCommentsListener() {
+        startNewCommentsListener() {
             if (
                 // the current project link doesn't allow leaving comments
                 !this.projectLink.allowComments ||
                 // firestore is not configured
-                !AppConfig.get('VUE_APP_FIRESTORE_PROJECT_ID') ||
-                !AppConfig.get('VUE_APP_FIRESTORE_COLLECTION')
+                !AppConfig.isFirestoreConfigured()
             ) {
                 return;
             }
@@ -480,9 +479,7 @@ export default {
                     }
 
                     // unsubscribe from previous firestore subscription
-                    if (typeof firestoreUnsubscribe === 'function') {
-                        firestoreUnsubscribe();
-                    }
+                    this.stopNewCommentsListener();
 
                     var db = firebase.firestore();
 
@@ -500,12 +497,15 @@ export default {
                         });
 
                     this.$once('hook:deactivated', () => {
-                        if (typeof firestoreUnsubscribe === 'function') {
-                            firestoreUnsubscribe();
-                        }
+                        this.stopNewCommentsListener();
                     });
                 });
             });
+        },
+        stopNewCommentsListener() {
+            if (CommonHelper.isFunction(firestoreUnsubscribe)) {
+                firestoreUnsubscribe();
+            }
         },
     },
 }
