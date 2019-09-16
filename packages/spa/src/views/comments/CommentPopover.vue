@@ -78,7 +78,8 @@
                         @keydown.ctrl.enter.exact.prevent="addComment()"
                     ></textarea>
 
-                    <button class="submit-icon"
+                    <button ref="messageBtn"
+                        class="submit-icon"
                         v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
                         @click.prevent="addComment()"
                     >
@@ -209,8 +210,8 @@ export default {
         resetForm() {
             this.message = '';
 
-            if (this.$refs.messageField) {
-                this.$refs.messageField.blur();
+            if (this.$refs.messageBtn) {
+                this.$refs.messageBtn.blur();
             }
         },
         open(comment, repositionToElem) {
