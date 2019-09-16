@@ -82,6 +82,7 @@
                         class="submit-icon"
                         v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
                         @click.prevent="addComment()"
+                        @keydown.ctrl.enter.exact.prevent="addComment()"
                     >
                         <span v-if="isProcessing" class="loader"></span>
                         <i v-else class="fe fe-send"></i>
