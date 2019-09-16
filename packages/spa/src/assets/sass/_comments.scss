@@ -196,16 +196,19 @@
         vertical-align: top;
         position: relative;
         z-index: 2;
-        width: $size;
+        border: 0;
+        padding: 0;
+        outline: 0;
+        min-width: $size;
         height: $size;
         line-height: $size;
         text-align: center;
         cursor: pointer;
-        text-decoration: none;
         font-size: 16px;
-        border: 0;
+        text-decoration: none;
         border-radius: $baseRadius;
         color: $primaryColor;
+        background: none;
         transition: color $baseAnimationSpeed,
                     background $baseAnimationSpeed,
                     box-shadow $baseAnimationSpeed;
@@ -213,15 +216,21 @@
         i {
             line-height: inherit;
         }
+        .loader:before {
+            font-size: 17px;
+        }
         &:hover,
         &:active {
             color: #fff;
             background: $primaryColor;
         }
+        &:focus,
+        &:active {
+            box-shadow: 0px 0px 0px 2px lighten($primaryColor, 20%);
+        }
         &:active {
             transition-duration: 0.1s;
             background: darken($primaryColor, 5%);
-            box-shadow: 0px 0px 0px 2px lighten($primaryColor, 20%);
         }
     }
     .message-field {

@@ -78,13 +78,13 @@
                         @keydown.ctrl.enter.exact.prevent="addComment()"
                     ></textarea>
 
-                    <div class="submit-icon"
+                    <button class="submit-icon"
                         v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
                         @click.prevent="addComment()"
                     >
                         <span v-if="isProcessing" class="loader"></span>
                         <i v-else class="fe fe-send"></i>
-                    </div>
+                    </button>
 
                     <mentions-list ref="mentionsList" :list="mentionsList" class="dropdown-compact input-dropdown"></mentions-list>
                 </form-field>
@@ -208,6 +208,10 @@ export default {
 
         resetForm() {
             this.message = '';
+
+            if (this.$refs.messageField) {
+                this.$refs.messageField.blur();
+            }
         },
         open(comment, repositionToElem) {
             if (this.isActive) {
