@@ -106,6 +106,7 @@ export default {
         stopFirestoreListener() {
             if (CommonHelper.isFunction(firestoreUnsubscribe)) {
                 firestoreUnsubscribe();
+                firestoreUnsubscribe = null;
             }
         },
 

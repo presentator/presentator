@@ -505,6 +505,7 @@ export default {
         stopNewCommentsListener() {
             if (CommonHelper.isFunction(firestoreUnsubscribe)) {
                 firestoreUnsubscribe();
+                firestoreUnsubscribe = null;
             }
         },
     },
