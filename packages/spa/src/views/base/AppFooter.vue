@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { mapState }   from 'vuex';
-import Relocator      from '@/components/Relocator';
-import FeedbackPopup  from '@/views/base/FeedbackPopup';
+import { mapState }    from 'vuex';
+import Relocator       from '@/components/Relocator';
+import FeedbackPopup   from '@/views/base/FeedbackPopup';
 import LanguagesSelect from '@/views/base/LanguagesSelect';
 
 export default {
