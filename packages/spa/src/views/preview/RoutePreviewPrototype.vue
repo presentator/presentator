@@ -441,6 +441,16 @@ export default {
                 return;
             }
 
+            // set `afterDateTime` by default to the last load call
+            if (typeof afterDateTime === 'undefined') {
+                let lastLoad = ClientStorage.getItem(
+                    (AppConfig.get('VUE_APP_PREVIEW_LAST_COMMENTS_LOAD_STORAGE_KEY') + this.projectLink.slug),
+                    moment().format('X')
+                ) << 0;
+
+                afterDateTime = moment.utc(lastLoad - 1, 'X').format('YYYY-MM-DD HH:mm:ss');
+            }
+
             ApiClient.enableAutoCancellation(false);
             ApiClient.Previews.getScreenCommentsList(this.previewToken, 1, 100, {
                 'search[prototypeId]':    prototypeId,
@@ -450,15 +460,18 @@ export default {
                 var lastGuestFromEmail = ClientStorage.getItem(AppConfig.get('VUE_APP_PREVIEW_COMMENT_FROM_STORAGE_KEY'));
 
                 for (let i in comments) {
-                    if (
-                        comments[i].from != lastGuestFromEmail && // is not from the preview guest
-                        !this.getComment(comments[i].id)           // does not exist in the primary comments list
-                    ) {
+                    // is not from the preview guest
+                    if (comments[i].from != lastGuestFromEmail) {
                         this.addUnreadComment(comments[i]);
                     }
                 }
             }).catch((err) => {
                 this.$errResponseHandler(err);
+            }).finally(() => {
+                ClientStorage.setItem(
+                    (AppConfig.get('VUE_APP_PREVIEW_LAST_COMMENTS_LOAD_STORAGE_KEY') + this.projectLink.slug),
+                    moment().format('X')
+                );
             });
         },
         startNewCommentsListener() {
@@ -486,13 +499,8 @@ export default {
                     firestoreUnsubscribe = db.collection(AppConfig.get('VUE_APP_FIRESTORE_COLLECTION'))
                         .doc('p' + this.project.id)
                         .onSnapshot((doc) => {
-                            var data = doc.data() || {};
-                            var changeTimestamp = data[Object.keys(data)[0]] << 0;
-
-                            if (changeTimestamp && this.projectLink.allowComments) {
-                                let afterDateTime = moment.utc(changeTimestamp - 5, 'X').format('YYYY-MM-DD HH:mm:ss');
-
-                                this.loadLatestPreviewComments(this.activePrototypeId, afterDateTime);
+                            if (this.projectLink.allowComments) {
+                                this.loadLatestPreviewComments(this.activePrototypeId);
                             }
                         });
 
