@@ -75,6 +75,8 @@ class ScreensController extends ApiController
 
         $model->load(Yii::$app->request->post());
 
+        $model->file = UploadedFile::getInstanceByName('file');
+
         if ($screen = $model->save()) {
             return $screen;
         }

@@ -119,10 +119,9 @@ class ScreenForm extends ApiForm
         $rules[] = [
             'file',
             'file',
-            'skipOnEmpty' => false,
-            'maxFiles'    => 1,
-            'maxSize'     => (1024 * 1024 * Yii::$app->params['maxScreenUploadSize']),
-            'mimeTypes'   => Yii::$app->params['allowedScreenMimeTypes'],
+            'maxFiles'  => 1,
+            'maxSize'   => (1024 * 1024 * Yii::$app->params['maxScreenUploadSize']),
+            'mimeTypes' => Yii::$app->params['allowedScreenMimeTypes'],
             'checkExtensionByMimeType' => false,
         ];
 
@@ -136,15 +135,14 @@ class ScreenForm extends ApiForm
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_CREATE] = [
+        $baseFields = [
             'prototypeId', 'order', 'title', 'alignment',
             'background', 'fixedHeader', 'fixedFooter', 'file',
         ];
 
-        $scenarios[self::SCENARIO_UPDATE] = [
-            'prototypeId', 'order', 'title', 'alignment',
-            'background', 'fixedHeader', 'fixedFooter',
-        ];
+        $scenarios[self::SCENARIO_CREATE] = $baseFields;
+
+        $scenarios[self::SCENARIO_UPDATE] = $baseFields;
 
         return $scenarios;
     }
@@ -219,6 +217,8 @@ class ScreenForm extends ApiForm
         if ($this->validate()) {
             $screen = $this->getScreen() ?: (new Screen);
 
+            $initialScreenClone = clone $screen;
+
             $screen->prototypeId = $this->prototypeId;
 
             $lastSibling = $screen->findLastSibling();
@@ -235,12 +235,22 @@ class ScreenForm extends ApiForm
             }
 
             if ($screen->save()) {
-                if ($this->getScenario() === self::SCENARIO_CREATE) {
-                    if (!$this->file || !$screen->saveFile($this->file)) {
-                        $screen->delete();
+                // on create - delete the created model if unable to save the screen file
+                if (
+                    $this->getScenario() === self::SCENARIO_CREATE &&
+                    (!$this->file || !$screen->saveFile($this->file))
+                ) {
+                    $screen->delete();
 
-                        return null;
-                    }
+                    return null;
+                }
+
+                // on update - save the new screen file and delete the old one
+                if (
+                    $this->getScenario() === self::SCENARIO_UPDATE &&
+                    ($this->file && $screen->saveFile($this->file))
+                ) {
+                    $initialScreenClone->deleteFile(false);
                 }
 
                 $screen->refresh();
