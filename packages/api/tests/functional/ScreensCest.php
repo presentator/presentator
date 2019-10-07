@@ -145,8 +145,6 @@ class ScreensCest
             'background'  => '#000',
             'fixedHeader' => -10,
             'fixedFooter' => -10,
-        ], [
-            'file' => Yii::getAlias('@app/tests/_data/test_file.pdf'),
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
@@ -206,11 +204,7 @@ class ScreensCest
         ];
 
         foreach ($testScenarios as $scenario) {
-            $files = [];
-            if (isset($scenario['data']['file'])) {
-                $files = ['file' => $scenario['data']['file']];
-            }
-
+            $files  = isset($scenario['data']['file']) ? ['file' => $scenario['data']['file']] : [];
             $params = $scenario['data'];
             unset($params['file']);
 
@@ -271,6 +265,8 @@ class ScreensCest
             'background'  => '#000',
             'fixedHeader' => -10,
             'fixedFooter' => -10,
+        ], [
+            'file' => Yii::getAlias('@app/tests/_data/test_file.pdf'),
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
@@ -284,6 +280,7 @@ class ScreensCest
                 'background'  => 'string',
                 'fixedHeader' => 'string',
                 'fixedFooter' => 'string',
+                'file'        => 'string',
             ],
         ]);
     }
@@ -313,6 +310,7 @@ class ScreensCest
                     'background'  => '#000fff',
                     'fixedHeader' => 50,
                     'fixedFooter' => 200,
+                    'file'        => Yii::getAlias('@app/tests/_data/test_image.png'),
                 ],
             ],
             [
@@ -328,9 +326,13 @@ class ScreensCest
         ];
 
         foreach ($testScenarios as $scenario) {
+            $files  = isset($scenario['data']['file']) ? ['file' => $scenario['data']['file']] : [];
+            $params = $scenario['data'];
+            unset($params['file']);
+
             $I->amGoingTo($scenario['comment']);
             $I->haveHttpHeader('Authorization', 'Bearer ' . $scenario['token']);
-            $I->sendPUT('/screens/' . $scenario['screenId'], $scenario['data']);
+            $I->sendPUT('/screens/' . $scenario['screenId'], $params, $files);
             $I->seeResponseCodeIs(200);
             $I->seeResponseMatchesJsonType([
                 'id'          => ('integer:=' . $scenario['screenId']),
@@ -340,7 +342,7 @@ class ScreensCest
                 'title'       => 'string',
                 'file'        => 'array',
             ]);
-            $I->seeResponseContainsJson($scenario['data']);
+            $I->seeResponseContainsJson($params);
         }
     }
 
