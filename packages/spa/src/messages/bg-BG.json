@@ -265,6 +265,9 @@
     "Background": "Фон",
     "Has fixed header": "Фиксиран хедър",
     "Has fixed footer": "Фиксиран футър",
+    "Replace screen": "Замести изображението",
+    "Replacing could result in hotspots and comments displacement if the new screen image has different dimensions from the original.": "Заместването на екрана с ново изображение може да доведе до разместване на позицията на хотспотове и коментари.",
+    "Do you still want to proceed?": "Наистина ли искаш да продължиш?",
     "Save changes": "Запази промените",
     "Successfully updated screen \"{title}\".": "Екранът \"{title}\" бе обновен успешно.",
     "Prev screen": "Предишен екран",
@@ -332,5 +335,6 @@
     "Auto scale/fit each screen to the device width": "Автоматично преоразмеряване на по-големите екрани до ширината на устройството",
     "Changing your email address": "Новият имейл адрес се обновява",
     "The provided email change token is invalid or expired.": "Невалиден или изтекъл ключ за смяна на имейл адрес.",
-    "Email change confirmation": "Потвърждение за смяна на имейл"
+    "Email change confirmation": "Потвърждение за смяна на имейл",
+    "More tools": "Други настройки"
 }

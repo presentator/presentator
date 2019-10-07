@@ -265,6 +265,7 @@
     "Background": "Hintergrund",
     "Has fixed header": "Header fixieren",
     "Has fixed footer": "Footer fixieren",
+    "Replace screen": "Screen ersetzen",
     "Save changes": "Änderungen speichern",
     "Successfully updated screen \"{title}\".": "Screen \"{title}\" erfolgreich aktualisiert.",
     "Prev screen": "Vorheriger Screen",
@@ -332,5 +333,6 @@
     "Auto scale/fit each screen to the device width": "Autoskalierung/Passe jeden Screen an die Geräte-Breite an",
     "Changing your email address": "Ändern deiner E-Mail Adresse",
     "The provided email change token is invalid or expired.": "Der Token zum Ändern der E-Mail Adresse ist ungültig oder abgelaufen.",
-    "Email change confirmation": "Bestätigung zur Änderung der E-Mail Adresse"
+    "Email change confirmation": "Bestätigung zur Änderung der E-Mail Adresse",
+    "More tools": "Mehr"
 }
