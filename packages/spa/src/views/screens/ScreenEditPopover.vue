@@ -76,13 +76,10 @@
         <hr class="m-t-20 m-b-20">
 
         <div class="flex-block">
-            <button type="button"
-                class="btn btn-light-border"
-                @click.stop.prevent="$refs.popover.hide()"
-            >
-                <span class="txt">{{ $t('Cancel') }}</span>
-            </button>
-            <div class="flex-fill-block"></div>
+            <div class="flex-fill-block txt-left">
+                <span v-if="isReplacing" class="loader txt-hint"></span>
+                <span v-else ref="replaceHandle" class="link-hint">{{ $t('Replace screen') }}</span>
+            </div>
             <button type="submit" class="btn btn-primary btn-cons btn-loader" :class="{'btn-loader-active': isProcessing}">
                 <span class="txt">{{ $t('Save changes') }}</span>
             </button>
@@ -92,8 +89,10 @@
 
 <script>
 import { mapActions } from 'vuex';
-import ApiClient from '@/utils/ApiClient';
-import Screen    from '@/models/Screen';
+import Dropzone       from 'dropzone';
+import ApiClient      from '@/utils/ApiClient';
+import CommonHelper   from '@/utils/CommonHelper';
+import Screen         from '@/models/Screen';
 
 const defaultFormData = {
     title:          '',
@@ -115,7 +114,9 @@ export default {
     },
     data() {
         return {
+            dropzone:       null,
             isProcessing:   false,
+            isReplacing:    false,
             title:          defaultFormData.title,
             background:     defaultFormData.background,
             alignment:      defaultFormData.alignment,
@@ -128,10 +129,19 @@ export default {
     watch: {
         screen(newVal, oldVal) {
             this.loadForm(newVal);
+
+            this.initReplaceHandle();
         },
     },
     mounted() {
         this.loadForm();
+
+        this.initReplaceHandle();
+    },
+    destroyed() {
+        if (this.dropzone) {
+            this.dropzone.destroy();
+        }
     },
     methods: {
         ...mapActions({
@@ -182,6 +192,70 @@ export default {
                 this.isProcessing = false;
             });
         },
+        initReplaceHandle() {
+            Dropzone.autoDiscover = false;
+
+            // reset
+            if (this.dropzone) {
+                this.dropzone.destroy();
+
+                this.isReplacing = false;
+            }
+
+            this.dropzone = new Dropzone(this.$refs.replaceHandle, {
+                url: (ApiClient.$baseUrl + '/screens/' + encodeURIComponent(this.screen.id)),
+                method: 'put',
+                paramName: 'file',
+                parallelUploads: 1,
+                uploadMultiple: false,
+                thumbnailWidth: null,
+                thumbnailHeight: null,
+                addRemoveLinks: false,
+                createImageThumbnails: false,
+                previewTemplate: '<div style="display: none"></div>',
+            });
+
+            this.dropzone.on('addedfile', (file) => {
+                if (!window.confirm(
+                    this.$t('Replacing could result in hotspots and comments displacement if the new screen image has different dimensions from the original.') +
+                    '\n' +
+                    this.$t('Do you still want to proceed?')
+                )) {
+                    this.dropzone.removeAllFiles(true);
+                    return;
+                }
+
+                this.dropzone.options.headers = Object.assign(this.dropzone.options.headers || {}, {
+                    'Authorization': ('Bearer ' + ApiClient.$token),
+                });
+            });
+
+            this.dropzone.on('sending', (file, xhr, formData) => {
+                this.isReplacing = true;
+            });
+
+            this.dropzone.on('queuecomplete', () => {
+                this.isReplacing = false;
+            });
+
+            this.dropzone.on('success', (file, response) => {
+                this.screen.load(response);
+
+                this.$emit('updated', this.screen.id);
+            });
+
+            this.dropzone.on('error', (file, response, xhr) => {
+                var message = CommonHelper.getNestedVal(response, 'errors.file', this.$t('An error occurred while uploading the screen.'));
+
+                this.$toast(message, 'danger');
+            });
+        },
     },
 }
 </script>
+
+<style lang="scss">
+.screen-edit-popover {
+    width: 450px;
+}
+</style>

@@ -32,9 +32,9 @@ export default {
     },
     data() {
         return {
-            dropzone: null,
-            isUploading: false,
-            uploadProgress: 0,
+            dropzone:        null,
+            isUploading:     false,
+            uploadProgress:  0,
             successUploaded: 0,
         }
     },
@@ -64,7 +64,7 @@ export default {
             });
 
             this.dropzone.on('addedfile', (file) => {
-                // update the authorization header each time when a new file is selected
+                // update the authorization header each time when a new file is added
                 this.dropzone.options.headers = Object.assign(this.dropzone.options.headers || {}, {
                     'Authorization': ('Bearer ' + ApiClient.$token),
                 });
