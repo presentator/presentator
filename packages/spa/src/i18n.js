@@ -10,7 +10,7 @@ Vue.use(VueI18n);
 export const supportedLanguages = {
     "en-US": "English",
     "bg-BG": "Български",
-    "de-DE": "Deutsche",
+    "de-DE": "Deutsch",
 };
 
 // Extend the internal `VueI18n._translate` method in order to
