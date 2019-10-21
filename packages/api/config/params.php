@@ -104,7 +104,7 @@ return [
         'image/png', 'image/jpeg', 'image/svg+xml', 'image/bmp',
     ],
 
-    // maximum allowed scren file upload size in MB
+    // maximum allowed guideline asset file upload size in MB
     'maxGuidelineAssetUploadSize' => 15,
 
     // list of allowed guideline asset file formats to upload
