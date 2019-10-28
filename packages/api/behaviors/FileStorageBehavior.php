@@ -332,7 +332,12 @@ class FileStorageBehavior extends Behavior
                 continue;
             }
 
-            $image = $imageManager->make($fileContent);
+            try {
+                $image = $imageManager->make($fileContent);
+            } catch (\Exception | \Throwable $e) {
+                Yii::error($e->getMessage() . '(most likely unable to create an image object due to memory limitations)');
+                continue;
+            }
 
             // size settings
             $width       = $this->thumbs[$thumbKey]['width'] ?? null;
@@ -340,7 +345,7 @@ class FileStorageBehavior extends Behavior
             $quality     = $this->thumbs[$thumbKey]['quality'] ?? 90;
             $smartResize = $this->thumbs[$thumbKey]['smartResize'] ?? true;
 
-            // create image object
+            // resize image
             if ($smartResize) {
                 if (!$width) {
                     throw new InvalidConfigException($thumbKey . ': the width thumb property is required when smartResize is enabled.');
@@ -358,8 +363,8 @@ class FileStorageBehavior extends Behavior
                 });
             }
 
-            // store thumb
             try {
+                // store thumb
                 Yii::$app->fs->put($thumbFilePath, $image->encode(null, $quality));
 
                 $sucessCounter++;
