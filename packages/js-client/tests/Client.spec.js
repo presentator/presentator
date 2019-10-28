@@ -80,6 +80,24 @@ describe('Client', function () {
         });
     });
 
+    describe('setBaseUrl()', function () {
+        it('Should successfully set a base url', function () {
+            var client = new Client('test_base_url');
+
+            // verify that the client is configured with the constructor base url
+            assert.equal(client.$baseUrl, 'test_base_url');
+            assert.equal(client.$http.defaults.baseURL, 'test_base_url');
+
+            // change base url
+            var result = client.setBaseUrl('new_test_base_url');
+
+            // verify that the change was successful
+            assert.instanceOf(result, Client);
+            assert.equal(client.$baseUrl, 'new_test_base_url');
+            assert.equal(client.$http.defaults.baseURL, 'new_test_base_url');
+        });
+    });
+
     describe('setToken()', function () {
         it('Should successfully set an authorization token and header', function () {
             var client = new Client('test_base_url');

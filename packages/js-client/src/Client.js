@@ -1,4 +1,3 @@
-import path              from 'path';
 import axios             from 'axios';
 import GuidelineAssets   from '@/resources/GuidelineAssets';
 import GuidelineSections from '@/resources/GuidelineSections';
@@ -27,14 +26,10 @@ export default class Client {
     constructor(baseUrl = '', token = '', lang = 'en-US', httpConfig) {
         httpConfig = (typeof httpConfig === 'object' && httpConfig !== null) ? httpConfig : {};
 
-        this.$baseUrl = baseUrl;
+        // init HTTP client
+        this.$http = axios.create(httpConfig);
 
         this.enableAutoCancellation(true);
-
-        // init HTTP client
-        this.$http = axios.create(Object.assign({
-            baseURL: this.$baseUrl
-        }, httpConfig));
 
         // handle auto cancelation for duplicated pending request
         this.$cancelSource = {};
@@ -64,6 +59,8 @@ export default class Client {
 
             return Promise.reject(error);
         });
+
+        this.setBaseUrl(baseUrl);
 
         this.setToken(token);
 
@@ -113,6 +110,22 @@ export default class Client {
 
         return this;
     }
+
+    /**
+     * Sets http client base url.
+     *
+     * @param  {String} url
+     * @return {Client}
+     */
+    setBaseUrl(url) {
+        this.$baseUrl = url;
+
+        if (this.$http) {
+            this.$http.defaults.baseURL = url;
+        }
+
+        return this;
+    };
 
     /**
      * Sets global authorization token header.
