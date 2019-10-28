@@ -55,6 +55,7 @@ var client = new PresentatorClient(baseUrl = '', token = '', axiosConfig = {});
 
 | Method                                         | Description                                             |
 |:-----------------------------------------------|:--------------------------------------------------------|
+| `client.setBaseUrl(url)`                       | Sets the http client base url address.                  |
 | `client.setToken(token = '')`                  | Sets or removes `Authorization` request header.         |
 | `client.setLanguage(lang = 'en-US')`           | Sets or removes `Accept-Language` request header.       |
 | `client.enableAutoCancellation(enable = true)` | Enables or disables cancellation of duplicated requests |
