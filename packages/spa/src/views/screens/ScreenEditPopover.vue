@@ -241,6 +241,10 @@ export default {
             this.dropzone.on('success', (file, response) => {
                 this.screen.load(response);
 
+                if (this.$refs.popover) {
+                    this.$refs.popover.hide();
+                }
+
                 this.$emit('updated', this.screen.id);
             });
 
