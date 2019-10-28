@@ -310,6 +310,7 @@ class FileStorageBehavior extends Behavior
         try {
             $fileContent = Yii::$app->fs->read($this->owner->{$this->filePathAttribute});
         } catch (\Exception | \Throwable $e) {
+            Yii::error($e->getMessage());
         }
 
         // original file is missing or is not readable
