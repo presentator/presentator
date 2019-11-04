@@ -1,0 +1,32 @@
+{
+    "name": "presentator-xd",
+    "description": "Adobe XD plugin to export artboard renditions to Presentator",
+    "private": true,
+    "author": "Gani Georgiev <gani.georgiev@gmail.com>",
+    "license": "BSD-3-Clause",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/presentator/presentator-xd.git"
+    },
+    "main": "main.js",
+    "scripts": {
+        "watch": "nodemon -w src -e js,vue,css -w webpack.config.js -x npm run dev",
+        "dev": "webpack --mode=development",
+        "build": "webpack --mode=production"
+    },
+    "dependencies": {
+        "atob": "^2.1.2",
+        "css-loader": "^1.0.0",
+        "presentator-client": "^2.2.0",
+        "style-loader": "^0.22.0",
+        "vue": "^2.5.17",
+        "vue-router": "^3.1.3",
+        "vue-template-compiler": "^2.5.17",
+        "xd-storage-helper": "^1.2.1"
+    },
+    "devDependencies": {
+        "vue-loader": "^15.7.2",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
+    }
+}

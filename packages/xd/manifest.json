@@ -1,0 +1,28 @@
+{
+    "id": "a9752be5",
+    "name": "Presentator Export",
+    "version": "1.0.0",
+    "host": {
+        "app": "XD",
+        "minVersion": "13.0"
+    },
+    "icons": [
+        {
+            "width": 24,
+            "height": 24,
+            "path": "images/logo_24.png"
+        },
+        {
+            "width": 48,
+            "height": 48,
+            "path": "images/logo_48.png"
+        }
+    ],
+    "uiEntryPoints": [
+        {
+            "type": "menu",
+            "label": "Presentator Export",
+            "commandId": "menuCommand"
+        }
+    ]
+}
