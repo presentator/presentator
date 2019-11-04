@@ -14,13 +14,13 @@ Adobe XD plugin to export artboard renditions to Presentator.
 
 ## Installing
 
-#### From the Adobe XD marketplace
+#### From the Adobe XD marketplace (waiting approval)
 
 Open Adobe XD and go to *Add-ons > Plugins*. Search for **Presentator Export** and then click *Install*.
 
 #### Manually
 
-Download the latest available `.xdx` file from the [releases page](). Once downloaded, double click to install.
+Download the latest available `.xdx` file from the [releases page](https://github.com/presentator/presentator-xd/releases). Once downloaded, double click to install.
 
 
 ## Development
