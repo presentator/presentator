@@ -5,7 +5,7 @@
 </template>
 
 <script>
-// Custom select wrapper component as a workaround for the XD select bug(s) and v-model reactivity
+// Custom select component as a workaround for the XD select bug(s) and v-model reactivity
 // (the default XD select doesn't update the model property on change)
 module.exports = {
     name: 'reactive-select',
@@ -13,7 +13,7 @@ module.exports = {
     watch: {
         value(newVal, oldVal) {
             this.setSelectValue(newVal);
-        }
+        },
     },
     mounted() {
         this.setSelectValue(this.value);
