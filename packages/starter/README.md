@@ -34,6 +34,8 @@ Before getting started make sure that you have checked the project requirements 
 
 2. Setup a vhost/server address (eg. https://my-presentator.com/) and point it to `/path/to/starter/web/`.
 
+    > By default a generic `.htaccess` file will be created for you after initialization. If you are using nginx, you could check the following [sample configuration](https://github.com/presentator/presentator/issues/120#issuecomment-539844456).
+
 3. Create a new database (with `utf8mb4_unicode_ci` or `utf8_unicode_ci` collation) and edit the necessary Presentator API environment config files located in the `/path/to/starter/config/`.
 
     > Usually only `base-local.php` and `params-local.php` config files need to change.

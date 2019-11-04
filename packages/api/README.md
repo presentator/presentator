@@ -57,6 +57,8 @@ Before getting started make sure that you have checked the project requirements 
 
 2. Setup a vhost/server address (eg. `http://api.presentator.local/`) and point it to `web/`.
 
+    > By default a generic `.htaccess` file will be created for you after initialization. If you are using nginx, you could check the following [sample configuration](https://github.com/presentator/presentator/issues/120#issuecomment-539844456).
+
 3. Run the following commands:
 
     ```bash
