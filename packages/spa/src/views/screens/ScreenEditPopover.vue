@@ -217,7 +217,7 @@ export default {
 
             this.dropzone.on('addedfile', (file) => {
                 if (!window.confirm(
-                    this.$t('Replacing could result in hotspots and comments displacement if the new screen image has different dimensions from the original.') +
+                    this.$t('Replacing could result in hotspots and comments misplacement if the new screen image has different dimensions from the original.') +
                     '\n' +
                     this.$t('Do you still want to proceed?')
                 )) {

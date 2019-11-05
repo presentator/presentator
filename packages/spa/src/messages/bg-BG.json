@@ -266,7 +266,7 @@
     "Has fixed header": "Фиксиран хедър",
     "Has fixed footer": "Фиксиран футър",
     "Replace screen": "Замести изображението",
-    "Replacing could result in hotspots and comments displacement if the new screen image has different dimensions from the original.": "Заместването на екрана с ново изображение може да доведе до разместване на позицията на хотспотове и коментари.",
+    "Replacing could result in hotspots and comments misplacement if the new screen image has different dimensions from the original.": "Заместването на екрана с ново изображение може да доведе до разместване на позицията на хотспотове и коментари.",
     "Do you still want to proceed?": "Наистина ли искаш да продължиш?",
     "Save changes": "Запази промените",
     "Successfully updated screen \"{title}\".": "Екранът \"{title}\" бе обновен успешно.",
