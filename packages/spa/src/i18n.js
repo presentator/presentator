@@ -11,6 +11,7 @@ export const supportedLanguages = {
     "en-US": "English",
     "bg-BG": "Български",
     "de-DE": "Deutsch",
+    "pt-BR": "Português",
 };
 
 // Extend the internal `VueI18n._translate` method in order to

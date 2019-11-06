@@ -26,7 +26,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 ### German
 
 - *(v1, v2)* Dave ([https://mdxdave.de](https://mdxdave.de))
-- *(v2)* Lennart Fries ([https://pringuin.de/](https://pringuin.de/))
+- *(v2)* Lennart Fries ([https://pringuin.de](https://pringuin.de/))
 
 
 ### Polish
@@ -38,6 +38,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 - *(v1)* Leandro Oliveira ([http://leandro.design](http://leandro.design))
 - *(v1)* Tiago Soares ([tfsoares](https://www.transifex.com/user/profile/tfsoares/))
+- *(v2)* Carlos C. Leite ([https://www.necto.com.br](https://www.necto.com.br))
 
 
 ### Russian
