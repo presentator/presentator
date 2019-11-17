@@ -24,6 +24,15 @@ select, option {
     align-items: center;
     justify-content: center;
 }
+.link-btn {
+    padding: 0;
+    margin: 8px;
+    cursor: default;
+    text-decoration: none;
+}
+.link-btn button {
+    margin: 0;
+}
 
 /* modal panel */
 .panel {

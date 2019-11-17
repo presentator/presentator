@@ -31,7 +31,10 @@
         </template>
 
         <footer>
-            <button uxp-variant="primary" @click.prevent="$closePluginDialog()">Close</button>
+            <a :href="registerUrl" class="link-btn">
+                <button type="button" uxp-quiet="true" uxp-variant="secondary">Create an account</button>
+            </a>
+            <button type="button" uxp-variant="primary" @click.prevent="$closePluginDialog()">Close</button>
             <button type="submit" uxp-variant="cta" :disabled="isAuthorizing">Authorize</button>
         </footer>
     </form>
@@ -56,6 +59,13 @@ module.exports = {
             email:             '',
             password:          '',
         }
+    },
+    computed: {
+        registerUrl() {
+            let appUrl = (this.appUrl.trim().replace(/\/+$/, '')) || 'https://app.presentator.io';
+
+            return appUrl + '/#/sign-up';
+        },
     },
     mounted() {
         this.loadDefaults();

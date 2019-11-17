@@ -31,15 +31,15 @@ module.exports = {
             required: true,
         },
     },
-    computed: {
-        previewLink() {
-            return `${this.appUrl}/#/projects/${this.projectId}/prototypes/${this.prototypeId}`;
-        },
-    },
     data() {
         return {
             appUrl: '',
         }
+    },
+    computed: {
+        previewLink() {
+            return `${this.appUrl}/#/projects/${this.projectId}/prototypes/${this.prototypeId}`;
+        },
     },
     beforeMount() {
         this.loadAppUrl();
