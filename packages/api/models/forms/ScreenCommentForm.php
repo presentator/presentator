@@ -211,7 +211,7 @@ class ScreenCommentForm extends ApiForm
             $comment     = $this->getScreenComment() ?: (new ScreenComment);
             $isNewRecord = $comment->isNewRecord;
 
-            $comment->from    = $user->email;
+            $comment->from    = $isNewRecord ? $user->email : $comment->from;
             $comment->message = $this->message;
 
             if (

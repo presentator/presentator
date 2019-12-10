@@ -18,6 +18,7 @@ use presentator\api\tests\fixtures\UserFixture;
 use presentator\api\tests\fixtures\UserProjectRelFixture;
 use presentator\api\tests\fixtures\UserScreenCommentRelFixture;
 use presentator\api\models\ProjectLink;
+use presentator\api\models\ScreenComment;
 use presentator\api\models\UserScreenCommentRel;
 
 /**
@@ -617,7 +618,7 @@ class PreviewsCest
 
         $projectLink = ProjectLink::findOne(1002);
 
-        $data = ['status' => 'resolved'];
+        $data = ['status' => ScreenComment::STATUS['RESOLVED']];
 
         $I->haveHttpHeader('X-Preview-Token', $projectLink->generatePreviewToken());
         $I->sendPUT('/previews/screen-comments/1001', $data);

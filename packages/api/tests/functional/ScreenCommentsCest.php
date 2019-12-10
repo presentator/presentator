@@ -268,9 +268,10 @@ class ScreenCommentsCest
         $I->amGoingTo('authorize as super user and submit invalid form data to a random screen comment');
         $I->haveHttpHeader('Authorization', 'Bearer ' . $superUser->generateAccessToken());
         $I->sendPUT('/screen-comments/1006', [
-            'screenId' => 123456, // should be ignored
-            'replyTo'  => 123456, // should be ignored
-            'message'  => '',     // should be ignored
+            'screenId' => 123456,    // should be ignored
+            'replyTo'  => 123456,    // should be ignored
+            'message'  => '',        // should be ignored
+            'from'     => 'invalid', // should be ignored
             'left'     => -10,
             'top'      => -10,
             'status'   => 'invalid',
@@ -288,6 +289,7 @@ class ScreenCommentsCest
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.screenId');
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.replyTo');
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.message');
+        $I->dontSeeResponseJsonMatchesJsonPath('$.errors.from');
     }
 
     /**
@@ -310,7 +312,7 @@ class ScreenCommentsCest
                 'data'      => [
                     'left'   => 10.10,
                     'top'    => 20.20,
-                    'status' => 'resolved',
+                    'status' => ScreenComment::STATUS['RESOLVED'],
                 ],
             ],
             [
@@ -318,12 +320,14 @@ class ScreenCommentsCest
                 'token'     => $superUser->generateAccessToken(),
                 'commentId' => 1006,
                 'data'      => [
-                    'status' => 'resolved',
+                    'status' => ScreenComment::STATUS['RESOLVED'],
                 ],
             ],
         ];
 
         foreach ($testScenarios as $scenario) {
+            $originalComment = ScreenComment::findOne($scenario['commentId']);
+
             $I->haveHttpHeader('Authorization', 'Bearer ' . $scenario['token']);
             $I->sendPUT('/screen-comments/' . $scenario['commentId'], $scenario['data']);
             $I->seeResponseCodeIs(200);
@@ -336,6 +340,7 @@ class ScreenCommentsCest
                 'fromUser' => 'array|null',
             ]);
             $I->seeResponseContainsJson($scenario['data']);
+            $I->seeResponseContainsJson(['from' => $originalComment->from]);
             $I->dontSeeResponseContainsUserHiddenFields('fromUser');
         }
     }
