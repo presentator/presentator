@@ -53,7 +53,7 @@ const router = new Router({
             path:      '/change-email/:emailChangeToken',
             name:      'change-email',
             component: () => import('./views/base/RouteChangeEmail.vue'),
-            meta:      { requiresAuth: false, isAuthRoute: true },
+            meta:      { requiresAuth: false, isAuthRoute: false },
         },
         {
             path:      '/forgotten-password',
