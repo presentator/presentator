@@ -448,7 +448,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Validates and applies user email change token
-     * (aka. replaces current user email with the token's `newEmail` claim value).
+     * (aka. replaces a user email with the token's `newEmail` claim value).
      * Returns the modified `User` model on success, otherwise - `null`.
      *
      * @param  string $token
