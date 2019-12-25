@@ -9,5 +9,4 @@ export default {
     MESSAGE_EXPORT_FRAME:          'export_frame',
     MESSAGE_EXPORT_FRAME_RESPONSE: 'export_frame_response',
     MESSAGE_SAVE_STORAGE:          'save_storage',
-    MESSAGE_SAVE_STORAGE:          'save_storage',
 }
