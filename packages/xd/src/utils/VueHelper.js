@@ -16,14 +16,20 @@ module.exports = {
          * @param {Error} err
          */
         Vue.prototype.$baseApiErrorHandler = function (err) {
-            const responseStatus = (err && err.response && err.response.status) ? err.response.status : 200;
-            const errMessage     = (err && err.response && err.response.data && err.response.data.message) ? err.response.data.message : err.message;
+            if (!err) {
+                return;
+            }
+
+            const responseStatus = (err.response && err.response.status) ? err.response.status : 200;
+            const errMessage     = (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err.message;
 
             if (responseStatus == 401 || responseStatus == 403) {
                 this.$logout();
             }
 
-            this.$notify(errMessage, 'error');
+            if (errMessage) {
+                this.$notify(errMessage, 'error');
+            }
         };
 
         /**

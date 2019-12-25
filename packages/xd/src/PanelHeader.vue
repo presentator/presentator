@@ -28,8 +28,8 @@ module.exports = {
     },
     data() {
         return {
-            isLogged:     false,
-            storageEmail: '',
+            isLogged: false,
+            email:    '',
         }
     },
     mounted() {

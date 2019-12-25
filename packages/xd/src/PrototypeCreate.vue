@@ -36,11 +36,7 @@ module.exports = {
     components: {
         'reactive-select': ReactiveSelect,
     },
-    props: {
-        projectId: {
-            type: Number,
-        },
-    },
+    props: ['projectId'],
     data() {
         return {
             isCreating: false,
@@ -67,7 +63,7 @@ module.exports = {
         reset() {
             this.title = '';
 
-            // set first artboard as de
+            // set first artboard as default
             const artboards = this.$getArtboards();
             if (artboards.length) {
                 this.width  = artboards[0].width << 0;
@@ -81,7 +77,7 @@ module.exports = {
                 }
             }
 
-            if (this.width > 0 && this.width < 900) {
+            if (this.width > 0 && this.width <= 1024) {
                 this.type = 'mobile';
             }
 

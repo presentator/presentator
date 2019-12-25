@@ -8,6 +8,16 @@ const RouteAuth          = require('@/RouteAuth.vue').default;
 const RouteExport        = require('@/RouteExport.vue').default;
 const RouteExportSuccess = require('@/RouteExportSuccess.vue').default;
 
+Vue.config.productionTip = false;
+
+// silent noisy uncaught router promise errors
+// https://github.com/vuejs/vue-router/issues/2881
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location, onResolve, onReject) {
+    if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject);
+    return originalReplace.call(this, location).catch(err => err);
+}
+
 Vue.use(VueRouter);
 
 Vue.use(VueHelper);
@@ -29,6 +39,10 @@ const router = new VueRouter({
             name:      'export-success',
             component: RouteExportSuccess,
             props:     true,
+        },
+        {
+            path:     '*',
+            redirect: '/',
         },
     ],
 });

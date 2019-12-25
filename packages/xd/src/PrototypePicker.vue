@@ -40,11 +40,7 @@ module.exports = {
         'reactive-select':  ReactiveSelect,
         'prototype-create': PrototypeCreate,
     },
-    props: {
-        projectId: {
-            type: Number,
-        },
-    },
+    props: ['projectId'],
     data() {
         return {
             isLoading:         false,
@@ -90,7 +86,7 @@ module.exports = {
 
             return false;
         },
-        async loadPrototypes() {
+        loadPrototypes() {
             if (!this.projectId) {
                 console.log('loadPrototypes: projectId is missing.')
                 return;

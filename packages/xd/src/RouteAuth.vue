@@ -89,6 +89,10 @@ module.exports = {
             });
         },
         authorize() {
+            if (this.isAuthorizing) {
+                return;
+            }
+
             this.isAuthorizing = true;
 
             ApiClient.setBaseUrl(this.apiUrl);

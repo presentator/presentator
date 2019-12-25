@@ -123,7 +123,7 @@ module.exports = {
                     // check if screen exist
                     let existingScreenId = null;
                     for (let j = screens.length - 1; j >= 0; j--) {
-                        if (screens[j].file.original.indexOf(results[i].outputFile.name) > 0) {
+                        if (screens[j].file.original.indexOf(results[i].outputFile.name) >= 0) {
                             existingScreenId = screens[j].id;
                             break;
                         }
