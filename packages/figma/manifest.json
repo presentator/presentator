@@ -1,0 +1,7 @@
+{
+  "name": "Presentator Export",
+  "id":   "781191221023199889",
+  "api":  "1.0.0",
+  "main": "build/main.js",
+  "ui":   "build/ui.html"
+}
