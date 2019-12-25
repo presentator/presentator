@@ -1,7 +1,7 @@
 {
     "id": "a9752be5",
     "name": "Presentator Export",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "host": {
         "app": "XD",
         "minVersion": "13.0"
