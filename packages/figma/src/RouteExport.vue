@@ -124,13 +124,13 @@ export default {
 
                     let formData = new FormData();
                     formData.append('prototypeId', this.selectedPrototype);
-                    formData.append('file', new Blob([ frameData ], {type: 'image/png'}), fileName);
+                    formData.append('file', new Blob([ frameData ], {type: 'image/png'}), fileName + '.png');
                     formData.append('title', frame.name);
 
                     // check if screen exist
                     let existingScreenId = null;
                     for (let j = screens.length - 1; j >= 0; j--) {
-                        if (screens[j].file.original.indexOf(fileName) >= 0) {
+                        if (screens[j].file.original.indexOf(fileName) > 0) {
                             existingScreenId = screens[j].id;
                             break;
                         }
