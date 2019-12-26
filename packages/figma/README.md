@@ -1,7 +1,7 @@
 Presentator Figma plugin
 ======================================================================
 
-<!-- <p align="center"><img src="https://i.imgur.com/Ogn23L4.png" alt="Plugin screenshots"></p> -->
+<p align="center"><img src="https://i.imgur.com/PbMuhCH.png" alt="Plugin screenshots"></p>
 
 Figma plugin to export design frames directly to Presentator.
 
@@ -16,7 +16,7 @@ Figma plugin to export design frames directly to Presentator.
 
 #### From Figma Plugins Page
 
-1. Go to *Plugins > Browse All Plugins* (or click this link: https://www.figma.com/c/plugins/all).
+1. Go to *Plugins > Browse All Plugins* (or go to https://www.figma.com/c/plugins/all).
 
 2. Search for **Presentator Export** and then click *Install*.
 
@@ -24,7 +24,7 @@ Figma plugin to export design frames directly to Presentator.
 
 #### Manually
 
-1. Download or clone the repo.
+1. Download or clone the plugin repo.
 
 2. Go to *Plugins > Development > Create plugin (+) > Link existing* and select the `manifest.json` file of the plugin.
 

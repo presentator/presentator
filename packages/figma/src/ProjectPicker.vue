@@ -29,7 +29,7 @@
             />
         </div>
 
-        <div class="spacer"></div>
+        <div v-if="isButtonBarVisible" class="spacer"></div>
 
         <div class="row centered">
             <button v-if="isLoading" class="button button--secondary" key="loadingBtn" disabled>Loading...</button>
@@ -70,8 +70,14 @@ export default {
         hasMoreProjects() {
             return this.totalProjects > this.projects.length;
         },
+        isButtonBarVisible() {
+            return this.isLoading || this.hasMoreProjects || this.isSearchApplied;
+        },
     },
     watch: {
+        projects(newVal, oldVal) {
+            this.$emit('loaded');
+        },
         selectedProject(newVal, oldVal) {
             this.$emit('changed', newVal);
         },

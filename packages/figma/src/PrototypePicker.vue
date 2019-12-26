@@ -46,6 +46,9 @@ export default {
         }
     },
     watch: {
+        prototypes(newVal, oldVal) {
+            this.$emit('loaded');
+        },
         projectId(newVal, oldVal) {
             this.reset();
 

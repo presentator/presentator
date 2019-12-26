@@ -1,10 +1,10 @@
 <template>
-    <div class="panel">
-        <project-picker @changed="onProjectChange" />
+    <div ref="panel" class="panel">
+        <project-picker @changed="onProjectChange" @loaded="onContentLoaded" />
 
         <div class="spacer"></div>
 
-        <prototype-picker @changed="onPrototypeChange" :projectId="selectedProject" />
+        <prototype-picker @changed="onPrototypeChange" @loaded="onContentLoaded" :projectId="selectedProject" />
 
         <div class="spacer"></div>
 
@@ -62,9 +62,23 @@ export default {
         },
     },
     mounted() {
-        this.$resizePluginDialog(null, 565);
+        this.updateHeight();
     },
     methods: {
+        updateHeight() {
+            if (!this.$refs.panel) {
+                return;
+            }
+
+            this.$refs.panel.classList.add('resizing'); // reset flex block behavior
+            this.$resizePluginDialog(null, this.$refs.panel.offsetHeight + 45);
+            this.$refs.panel.classList.remove('resizing'); // revert changes
+        },
+        onContentLoaded() {
+            setTimeout(() => {
+                this.updateHeight();
+            }, 0); // reorder execution queue
+        },
         onProjectChange(projectId) {
             this.selectedProject = projectId;
         },
