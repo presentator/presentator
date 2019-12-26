@@ -20,6 +20,7 @@ The project is organized in a monorepo and consists of several decoupled package
 - [js-client](https://github.com/presentator/presentator-js-client)
 - [docker](https://github.com/presentator/presentator-docker)
 - [xd](https://github.com/presentator/presentator-xd)
+- [figma](https://github.com/presentator/presentator-figma)
 
 
 ## Upgrade from v1
