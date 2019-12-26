@@ -8,8 +8,11 @@ Figma plugin to export design frames directly to Presentator.
 - [Installing](#installing)
 - [Development](#development)
 
+
 > **This repository is READ-ONLY.**
 > **Report issues and send pull requests in the [main Presentator repository](https://github.com/presentator/presentator/issues).**
+
+> **Note if you self host Presentator**: *Because Figma plugins run inside a browser environment, CORS policies apply. More info could be found in [Figma - Making Network Requests](https://www.figma.com/plugin-docs/making-network-requests/).*
 
 
 ## Installing
