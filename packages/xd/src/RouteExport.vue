@@ -70,15 +70,17 @@ module.exports = {
             }
 
             for (let i = 0; i < artboards.length; i++) {
-                let normalizedName = artboards[i].name.toLowerCase()
+                let fileName  = ('xdx_' + artboards[i].guid)
+                    .toLowerCase()
                     .replace(/[^\w ]+/g, '')
                     .replace(/ +/g, '_');
 
                 // create a file that will store the rendition
-                let file = await folder.createFile(normalizedName + i + '.png', { overwrite: true });
+                let file = await folder.createFile(fileName + '.png', { overwrite: true });
 
                 // set options for rendering a PNG
                 renditionOptions.push({
+                    fileId:     fileName,
                     node:       artboards[i],
                     outputFile: file,
                     type:       application.RenditionType.PNG,
@@ -123,7 +125,7 @@ module.exports = {
                     // check if screen exist
                     let existingScreenId = null;
                     for (let j = screens.length - 1; j >= 0; j--) {
-                        if (screens[j].file.original.indexOf(results[i].outputFile.name) >= 0) {
+                        if (screens[j].file.original.indexOf(renditionOptions[i].fileId) > 0) {
                             existingScreenId = screens[j].id;
                             break;
                         }
