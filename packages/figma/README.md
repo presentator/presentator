@@ -14,7 +14,7 @@ Figma plugin to export design frames directly to Presentator.
 
 ## Installing
 
-#### From Figma Plugins Page
+#### From Figma Plugins Page (_In Review_)
 
 1. Go to *Plugins > Browse All Plugins* (or go to https://www.figma.com/c/plugins/all).
 
