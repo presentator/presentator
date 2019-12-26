@@ -36,7 +36,7 @@
         <footer class="row panel-footer">
             <a :href="registerUrl" target="_blank">Create an account</a>
             <div class="fill-block"></div>
-            <button type="button" class="button button--secondary" @click.prevent="$closePluginDialog()" :disabled="isAuthorizing">Cancel</button>
+            <button type="button" class="button button--secondary" @click.prevent="$closePluginDialog()" :disabled="isAuthorizing">Close</button>
             <button type="submit" class="button button--primary" :disabled="isAuthorizing">Authorize</button>
         </footer>
     </form>
