@@ -111,9 +111,9 @@ export default {
                 })).data;
 
                 for (let i = 0; i < frames.length; i++) {
-                    let formData  = new FormData();
                     let frame     = frames[i];
                     let frameData = await this.$exportFrame(frame.id);
+
                     if (!frameData) {
                         continue;
                     }
@@ -122,6 +122,7 @@ export default {
                         .replace(/[^\w ]+/g, '')
                         .replace(/ +/g, '_');
 
+                    let formData  = new FormData();
                     formData.append('prototypeId', this.selectedPrototype);
                     formData.append('file', new Blob([ frameData ], {type: 'image/png'}), fileName);
                     formData.append('title', frame.name);
