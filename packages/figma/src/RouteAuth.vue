@@ -34,7 +34,7 @@
         <div class="spacer"></div>
 
         <footer class="row panel-footer">
-            <a :href="registerUrl" target="_blank">Create an account</a>
+            <a :href="registerUrl" target="_blank" rel="noopener">Create an account</a>
             <div class="fill-block"></div>
             <button type="button" class="button button--secondary" @click.prevent="$closePluginDialog()" :disabled="isAuthorizing">Close</button>
             <button type="submit" class="button button--primary" :disabled="isAuthorizing">Authorize</button>

@@ -8,7 +8,7 @@
 
         <div class="alert success centered">
             The selected screens were successfully exported. <br>
-            <a :href="previewLink"><strong>View project in Presentator</strong></a>.
+            <a :href="previewLink" target="_blank" rel="noopener"><strong>View project in Presentator</strong></a>.
         </div>
 
         <div class="spacer"></div>
