@@ -1,7 +1,9 @@
 <template>
     <footer class="app-footer">
         <div class="info">
-            <div class="info-item">Presentator v2.3.3</div>
+            <a :href="$getAppConfig('VUE_APP_REPO_URL') + '/releases/tag/v2.3.3'" class="info-item" target="_blank" rel="noopener">
+                <span class="txt">Presentator v2.3.3</span>
+            </a>
 
             <a :href="$getAppConfig('VUE_APP_REPO_URL')" class="info-item" target="_blank" rel="noopener">
                 <i class="fe fe-github"></i>
