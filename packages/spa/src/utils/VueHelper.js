@@ -130,6 +130,7 @@ export default {
 
         /**
          * Generic apiclient error response handler.
+         *
          * @param {Error}   err
          * @param {Boolean} [notify]
          * @param {String}  [defaultMsg]
@@ -191,6 +192,15 @@ export default {
             }
         };
 
+        /**
+         * Saves [conteneditableElem] changes for the provided model.
+         *
+         * @param  {Element}   contentEditableElem  [contenteditable] dom element.
+         * @param  {BaseModel} model                `BaseModel` instance that will be update.
+         * @param  {Function}  updateService        `ApiClient` function to use for the update.
+         * @param  {String}    [titleKey]           The model's title property name to update.
+         * @param  {String}    [idKey]              The model's id property name to make the update request with.
+         */
         Vue.prototype.$inlineTitleUpdate = function (
             contentEditableElem,
             model,
