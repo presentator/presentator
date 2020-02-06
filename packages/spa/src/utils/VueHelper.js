@@ -210,21 +210,14 @@ export default {
             idKey = 'id',
             maxLength = 255
         ) {
-            const setTitle = (title) => {
-                if (!contentEditableElem) {
-                    return;
-                }
-
-                // required to reset the caret position of the
-                // editable content due to text ellipsis overflow
-                this.$set(model, titleKey, '');
-                contentEditableElem.innerText = '';
-                setTimeout(() => {
-                    this.$set(model, titleKey, title);
-                    contentEditableElem.innerText = title;
+            const unfocusContentEditable = () => {
+                if (contentEditableElem) {
                     contentEditableElem.blur();
-                }, 0); // reorder execution queue
-            }
+                    contentEditableElem.scrollLeft = 0; // reset caret position
+                }
+            };
+
+            unfocusContentEditable();
 
             if (
                 // no update function is provided
@@ -236,17 +229,12 @@ export default {
                 // no title change
                 contentEditableElem.innerText == model[titleKey]
             ) {
-                if (contentEditableElem) {
-                    setTitle(model[titleKey]); // reset caret position
-                }
-
                 return;
             }
 
             // reset if no title is provided
             if (!contentEditableElem.innerText) {
-                setTitle(model[titleKey]);
-
+                contentEditableElem.innerText = model[titleKey];
                 return;
             }
 
@@ -255,16 +243,16 @@ export default {
             updateData[titleKey] = title;
 
             // optimistic update
-            setTitle(title);
+            this.$set(model, titleKey, title);
 
             // actual update
             updateService.apply(ApiClient, [model[idKey], updateData])
                 .then((response) => {
                     model.load(response.data);
 
-                    // reset if some sanitization is done on the backend
+                    // update element text if some sanitization is done on the backend
                     if (title != model[titleKey]) {
-                        setTitle(model[titleKey]);
+                        contentEditableElem.innerText = model[titleKey];
                     }
                 }).catch((err) => {
                     this.$errResponseHandler(err);
