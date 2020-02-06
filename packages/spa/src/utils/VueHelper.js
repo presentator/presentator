@@ -3,6 +3,7 @@ import ApiClient     from '@/utils/ApiClient';
 import AppConfig     from '@/utils/AppConfig';
 import CommonHelper  from '@/utils/CommonHelper';
 import ClientStorage from '@/utils/ClientStorage';
+import BaseModel     from '@/models/BaseModel';
 
 /**
  * Commonly used Vue instance helper methods.
@@ -189,5 +190,62 @@ export default {
                 return;
             }
         };
+
+        Vue.prototype.$inlineTitleUpdate = function (
+            contentEditableElem,
+            model,
+            updateService,
+            titleKey = 'title',
+            idKey = 'id'
+        ) {
+            if (
+                // no update function is provided
+                (typeof updateService != 'function') ||
+                // not a valid model instance
+                !(model instanceof BaseModel) ||
+                // event input element doesn't exist
+                !contentEditableElem ||
+                // no title change
+                contentEditableElem.innerText == model[titleKey]
+            ) {
+                if (contentEditableElem) {
+                    contentEditableElem.blur();
+                }
+
+                return;
+            }
+
+            // reset if no title is provided
+            if (!contentEditableElem.innerText) {
+                contentEditableElem.innerText = model[titleKey];
+                contentEditableElem.blur();
+
+                return;
+            }
+
+            const title = contentEditableElem.innerText;
+
+            // optimistic update
+            this.$set(model, titleKey, title);
+
+            // reset caret position of the editable content due to text ellipsis overflow
+            contentEditableElem.innerText = '';
+            setTimeout(() => {
+                contentEditableElem.innerText = title;
+                contentEditableElem.blur();
+            }, 100); // reorder execution queue
+
+            const data = {};
+            data[titleKey] = title;
+
+            // actual update
+            updateService.apply(ApiClient, [model[idKey], data])
+                .then((response) => {
+                    model.load(response.data);
+                    contentEditableElem.innerText = model[titleKey];
+                }).catch((err) => {
+                    this.$errResponseHandler(err);
+                });
+        }
     }
 }

@@ -45,11 +45,17 @@
         </figure>
 
         <div class="box-content">
-            <router-link :to="{name: 'screen', params: {prototypeId: screen.prototypeId, screenId: screen.id}}"
+            <div ref="titleLabel"
+                key="title"
                 class="title"
-            >
-                {{ screen.title }}
-            </router-link>
+                contenteditable="true"
+                spellcheck="false"
+                autocomplete="off"
+                :title="$t('Click to edit')"
+                :data-placeholder="screen.title || $t('Title')"
+                @blur="saveTitle()"
+                @keydown.enter.prevent="saveTitle()"
+            >{{ screen.title }}</div>
 
             <div class="meta">
                 <div class="meta-item">{{ $t('Uploaded {date}', {date: screen.createdAtFromNow}) }}</div>
@@ -122,6 +128,13 @@ export default {
             this.deselectScreen(this.screen.id);
             this.$emit('screenDelete', this.screen.id);
         },
+        saveTitle() {
+            this.$inlineTitleUpdate(
+                this.$refs.titleLabel,
+                this.screen,
+                ApiClient.Screens.update
+            );
+        }
     },
 }
 </script>

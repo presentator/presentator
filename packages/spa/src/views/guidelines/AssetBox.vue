@@ -219,48 +219,11 @@ export default {
 
         // file
         saveTitle() {
-            var elem = this.$refs.titleLabel;
-
-            if (
-                !elem ||                           // event input element doesn't exist
-                elem.innerText == this.asset.title // no title change
-            ) {
-                if (elem) {
-                    elem.blur();
-                }
-
-                return;
-            }
-
-            // reset if no title is provided
-            if (!elem.innerText) {
-                elem.innerText = this.asset.title;
-                elem.blur();
-
-                return;
-            }
-
-            var title = elem.innerText;
-
-            // optimistic update
-            this.$set(this.asset, 'title', title);
-
-            // reset caret position of the editable content due to text ellipsis overflow
-            elem.innerText = '';
-            setTimeout(() => {
-                elem.innerText = title;
-                elem.blur();
-            }, 100); // reorder execution queue
-
-            // actual update
-            ApiClient.GuidelineAssets.update(this.asset.id, {
-                title: title,
-            }).then((response) => {
-                this.asset.load(response.data);
-                elem.innerText = this.asset.title;
-            }).catch((err) => {
-                this.$errResponseHandler(err);
-            });
+            this.$inlineTitleUpdate(
+                this.$refs.titleLabel,
+                this.asset,
+                ApiClient.GuidelineAssets.update
+            );
         },
         openPreviewPopup() {
             if (this.$refs.previewPopup) {

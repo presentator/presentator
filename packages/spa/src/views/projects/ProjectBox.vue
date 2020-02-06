@@ -37,9 +37,17 @@
         </figure>
 
         <div class="box-content">
-            <router-link :to="{name: 'prototype', params: {projectId: project.id}}" class="title">
-                {{ project.title }}
-            </router-link>
+            <div ref="titleLabel"
+                key="title"
+                class="title"
+                contenteditable="true"
+                spellcheck="false"
+                autocomplete="off"
+                :title="$t('Click to edit')"
+                :data-placeholder="project.title || $t('Title')"
+                @blur="saveTitle()"
+                @keydown.enter.prevent="saveTitle()"
+            >{{ project.title }}</div>
 
             <div class="meta">
                 <div class="meta-item">{{ $t('Created {date}', {date: project.createdAtFromNow}) }}</div>
@@ -100,6 +108,13 @@ export default {
             this.$toast(this.$t('Successfully deleted project "{title}".', {title: this.project.title}));
             this.$emit('projectDelete', this.project.id);
         },
+        saveTitle() {
+            this.$inlineTitleUpdate(
+                this.$refs.titleLabel,
+                this.project,
+                ApiClient.Projects.update
+            );
+        }
     },
 }
 </script>
