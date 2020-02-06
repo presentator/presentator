@@ -224,6 +224,8 @@ export default {
                 (typeof updateService != 'function') ||
                 // not a valid model instance
                 !(model instanceof BaseModel) ||
+                // the model is not loaded yet
+                !model[idKey] ||
                 // event input element doesn't exist
                 !contentEditableElem ||
                 // no title change
