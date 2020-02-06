@@ -12,7 +12,7 @@
             <template v-slot:content>
                 <form-field class="form-group required" name="title">
                     <label for="prototype_title">{{ $t('Title') }}</label>
-                    <input type="text" v-model="title" id="prototype_title" class="required">
+                    <input type="text" v-model="title" id="prototype_title" maxlenght="255" required>
                 </form-field>
 
                 <form-field class="form-group required options-toggle" name="type">

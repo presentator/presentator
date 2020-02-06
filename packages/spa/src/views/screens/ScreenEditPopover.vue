@@ -7,7 +7,7 @@
     >
         <form-field name="title">
             <label for="screen_title">{{ $t('Title') }}</label>
-            <input type="text" id="screen_title" v-model.trim="title">
+            <input type="text" id="screen_title" v-model.trim="title" maxlength="255" required>
         </form-field>
 
         <div class="row">

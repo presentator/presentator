@@ -195,19 +195,37 @@ export default {
         /**
          * Saves [conteneditableElem] changes for the provided model.
          *
-         * @param  {Element}   contentEditableElem  [contenteditable] dom element.
+         * @param  {Element}   contentEditableElem  `contenteditable` dom element.
          * @param  {BaseModel} model                `BaseModel` instance that will be update.
          * @param  {Function}  updateService        `ApiClient` function to use for the update.
          * @param  {String}    [titleKey]           The model's title property name to update.
          * @param  {String}    [idKey]              The model's id property name to make the update request with.
+         * @param  {String}    [maxLength]          Trim `contentEditableElem` content if longer than `maxLength`.
          */
         Vue.prototype.$inlineTitleUpdate = function (
             contentEditableElem,
             model,
             updateService,
             titleKey = 'title',
-            idKey = 'id'
+            idKey = 'id',
+            maxLength = 255
         ) {
+            const setTitle = (title) => {
+                if (!contentEditableElem) {
+                    return;
+                }
+
+                // required to reset the caret position of the
+                // editable content due to text ellipsis overflow
+                this.$set(model, titleKey, '');
+                contentEditableElem.innerText = '';
+                setTimeout(() => {
+                    this.$set(model, titleKey, title);
+                    contentEditableElem.innerText = title;
+                    contentEditableElem.blur();
+                }, 0); // reorder execution queue
+            }
+
             if (
                 // no update function is provided
                 (typeof updateService != 'function') ||
@@ -219,7 +237,7 @@ export default {
                 contentEditableElem.innerText == model[titleKey]
             ) {
                 if (contentEditableElem) {
-                    contentEditableElem.blur();
+                    setTitle(model[titleKey]); // reset caret position
                 }
 
                 return;
@@ -227,32 +245,27 @@ export default {
 
             // reset if no title is provided
             if (!contentEditableElem.innerText) {
-                contentEditableElem.innerText = model[titleKey];
-                contentEditableElem.blur();
+                setTitle(model[titleKey]);
 
                 return;
             }
 
-            const title = contentEditableElem.innerText;
+            const title = (contentEditableElem.innerText || '').substring(0, maxLength-1);
+            const updateData = {};
+            updateData[titleKey] = title;
 
             // optimistic update
-            this.$set(model, titleKey, title);
-
-            // reset caret position of the editable content due to text ellipsis overflow
-            contentEditableElem.innerText = '';
-            setTimeout(() => {
-                contentEditableElem.innerText = title;
-                contentEditableElem.blur();
-            }, 100); // reorder execution queue
-
-            const data = {};
-            data[titleKey] = title;
+            setTitle(title);
 
             // actual update
-            updateService.apply(ApiClient, [model[idKey], data])
+            updateService.apply(ApiClient, [model[idKey], updateData])
                 .then((response) => {
                     model.load(response.data);
-                    contentEditableElem.innerText = model[titleKey];
+
+                    // reset if some sanitization is done on the backend
+                    if (title != model[titleKey]) {
+                        setTitle(model[titleKey]);
+                    }
                 }).catch((err) => {
                     this.$errResponseHandler(err);
                 });

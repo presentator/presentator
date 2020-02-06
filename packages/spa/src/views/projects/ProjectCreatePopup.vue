@@ -11,7 +11,7 @@
             <template v-slot:content>
                 <form-field class="required" name="title">
                     <label for="project_title">{{ $t('Project title') }}</label>
-                    <input type="text" v-model.trim="title" id="project_title" class="required">
+                    <input type="text" v-model.trim="title" id="project_title" maxlength="255" required>
                 </form-field>
 
                 <div class="outside-popup-content">
