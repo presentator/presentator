@@ -386,6 +386,8 @@ export default {
                 this.updateRouteProjectId();
                 this.updateRouteScreenId();
                 this.updateRouteMode();
+
+                this.initReplace(this.activeScreen, this.$refs.previewContainer);
             }).catch((err) => {
                 this.$errResponseHandler(err);
             }).finally(() => {
