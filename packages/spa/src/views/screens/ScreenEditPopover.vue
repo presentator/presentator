@@ -88,11 +88,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import Dropzone       from 'dropzone';
-import ApiClient      from '@/utils/ApiClient';
-import CommonHelper   from '@/utils/CommonHelper';
-import Screen         from '@/models/Screen';
+import { mapActions }     from 'vuex';
+import ApiClient          from '@/utils/ApiClient';
+import CommonHelper       from '@/utils/CommonHelper';
+import Screen             from '@/models/Screen';
+import ScreenReplaceMixin from '@/views/screens/ScreenReplaceMixin';
 
 const defaultFormData = {
     title:          '',
@@ -106,6 +106,7 @@ const defaultFormData = {
 
 export default {
     name: 'screen-edit-popover',
+    mixins: [ScreenReplaceMixin],
     props: {
         screen: {
             type:     Screen,
@@ -114,9 +115,7 @@ export default {
     },
     data() {
         return {
-            dropzone:       null,
             isProcessing:   false,
-            isReplacing:    false,
             title:          defaultFormData.title,
             background:     defaultFormData.background,
             alignment:      defaultFormData.alignment,
@@ -130,18 +129,13 @@ export default {
         screen(newVal, oldVal) {
             this.loadForm(newVal);
 
-            this.initReplaceHandle();
+            this.initReplace(this.screen);
         },
     },
     mounted() {
         this.loadForm();
 
-        this.initReplaceHandle();
-    },
-    destroyed() {
-        if (this.dropzone) {
-            this.dropzone.destroy();
-        }
+        this.initReplace(this.screen);
     },
     methods: {
         ...mapActions({
@@ -192,68 +186,13 @@ export default {
                 this.isProcessing = false;
             });
         },
-        initReplaceHandle() {
-            Dropzone.autoDiscover = false;
-
-            // reset
-            if (this.dropzone) {
-                this.dropzone.destroy();
-
-                this.isReplacing = false;
+        replaceSucceeded() {
+            if (this.$refs.popover) {
+                this.$refs.popover.hide();
             }
 
-            this.dropzone = new Dropzone(this.$refs.replaceHandle, {
-                url: (ApiClient.$baseUrl + '/screens/' + encodeURIComponent(this.screen.id)),
-                method: 'put',
-                paramName: 'file',
-                parallelUploads: 1,
-                uploadMultiple: false,
-                thumbnailWidth: null,
-                thumbnailHeight: null,
-                addRemoveLinks: false,
-                createImageThumbnails: false,
-                previewTemplate: '<div style="display: none"></div>',
-            });
-
-            this.dropzone.on('addedfile', (file) => {
-                if (!window.confirm(
-                    this.$t('Replacing could result in hotspots and comments misplacement if the new screen image has different dimensions from the original.') +
-                    '\n' +
-                    this.$t('Do you still want to proceed?')
-                )) {
-                    this.dropzone.removeAllFiles(true);
-                    return;
-                }
-
-                this.dropzone.options.headers = Object.assign(this.dropzone.options.headers || {}, {
-                    'Authorization': ('Bearer ' + ApiClient.$token),
-                });
-            });
-
-            this.dropzone.on('sending', (file, xhr, formData) => {
-                this.isReplacing = true;
-            });
-
-            this.dropzone.on('queuecomplete', () => {
-                this.isReplacing = false;
-            });
-
-            this.dropzone.on('success', (file, response) => {
-                this.screen.load(response);
-
-                if (this.$refs.popover) {
-                    this.$refs.popover.hide();
-                }
-
-                this.$emit('updated', this.screen.id);
-            });
-
-            this.dropzone.on('error', (file, response, xhr) => {
-                var message = CommonHelper.getNestedVal(response, 'errors.file', this.$t('An error occurred while uploading the screen.'));
-
-                this.$toast(message, 'danger');
-            });
-        },
+            this.$emit('updated', this.screen.id);
+        }
     },
 }
 </script>

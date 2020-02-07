@@ -7,6 +7,7 @@
         <div class="flex-fill-block"></div>
     </div>
     <div v-else-if="activeScreen"
+        ref="previewContainer"
         class="preview-container"
         :class="{
             'comments-mode':      isInCommentsMode,
@@ -209,6 +210,7 @@ import CommentPopover          from '@/views/comments/CommentPopover';
 import PreviewModeMixin        from '@/views/screens/PreviewModeMixin';
 import CommentsModeMixin       from '@/views/screens/CommentsModeMixin';
 import HotspotsModeMixin       from '@/views/screens/HotspotsModeMixin';
+import ScreenReplaceMixin      from '@/views/screens/ScreenReplaceMixin';
 
 const MODE_PREVIEW  = 'preview';
 const MODE_HOTSPOTS = 'hotspots';
@@ -220,6 +222,7 @@ export default {
         PreviewModeMixin,
         CommentsModeMixin,
         HotspotsModeMixin,
+        ScreenReplaceMixin,
     ],
     components: {
         'screen-preview':            ScreenPreview,
@@ -236,6 +239,7 @@ export default {
             mode:                       MODE_PREVIEW,
             isLoadingScreens:           false,
             isResponsiveShowMoreActive: false,
+            isReplaceHandleClickable:   false,
         }
     },
     computed: {
@@ -281,6 +285,10 @@ export default {
             this.deactivateHotspots();
             this.deactivateComments();
             this.updateRouteScreenId();
+
+            setTimeout(() => {
+                this.initReplace(this.activeScreen, this.$refs.previewContainer);
+            }, 0); // reorder execution queue
         },
         '$route.params.screenId': function (newVal, oldVal) {
             if (
@@ -317,6 +325,9 @@ export default {
         }
 
         this.init();
+    },
+    mounted() {
+        this.initReplace(this.activeScreen, this.$refs.previewContainer);
     },
     methods: {
         ...mapActions({

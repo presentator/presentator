@@ -1,5 +1,6 @@
 <template>
-    <div class="box box-card box-screen"
+    <div ref="replaceHandle"
+        class="box box-card box-screen"
         :class="{'active': isScreenSelected }"
         @mouseleave="$refs.screenDropdown ? $refs.screenDropdown.hide() : true"
     >
@@ -7,12 +8,16 @@
             @click.ctrl.exact.stop.prevent="toggleScreenSelection(screen.id)"
         >
             <div class="crop-wrapper">
-                <img v-if="screen.getImage('medium')"
-                    :src="screen.getImage('medium')"
-                    :alt="screen.title"
-                    class="img"
-                >
-                <i v-else class="fe fe-image img"></i>
+                <span v-if="isReplacing" class="loader loader-blend"></span>
+
+                <template v-else>
+                    <img v-if="screen.getImage('medium')"
+                        :src="screen.getImage('medium')"
+                        :alt="screen.title"
+                        class="img"
+                    >
+                    <i v-else class="fe fe-image img"></i>
+                </template>
             </div>
 
             <div class="thumb-overlay">
@@ -73,15 +78,23 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ApiClient from '@/utils/ApiClient';
-import Screen    from '@/models/Screen';
+import CommonHelper       from '@/utils/CommonHelper';
+import ApiClient          from '@/utils/ApiClient';
+import Screen             from '@/models/Screen';
+import ScreenReplaceMixin from '@/views/screens/ScreenReplaceMixin';
 
 export default {
     name: 'screen-box',
+    mixins: [ScreenReplaceMixin],
     props: {
         screen: {
             type:     Screen,
             required: true,
+        },
+    },
+    data() {
+        return {
+            isReplaceHandleClickable: false,
         }
     },
     computed: {
@@ -104,6 +117,14 @@ export default {
                 }
             },
         },
+    },
+    watch: {
+        screen(newVal, oldVal) {
+            this.initReplace(this.screen);
+        },
+    },
+    mounted() {
+        this.initReplace(this.screen);
     },
     methods: {
         ...mapActions({
@@ -134,7 +155,7 @@ export default {
                 this.screen,
                 ApiClient.Screens.update
             );
-        }
+        },
     },
 }
 </script>

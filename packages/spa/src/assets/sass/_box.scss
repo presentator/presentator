@@ -288,6 +288,9 @@
     &.sortable-ghost {
         opacity: 0.5;
     }
+    &.dz-drag-hover {
+        @include shadowize(0px 0px 0px 2px $successColor);
+    }
 }
 
 // placeholder box
@@ -343,6 +346,7 @@
     }
     &.dz-drag-hover {
         opacity: 1;
+        border-style: solid;
         @include shadowize;
     }
     &:active {
