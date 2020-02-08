@@ -66,6 +66,20 @@ export default class Screens extends BaseResource {
     }
 
     /**
+     * @param  {Object} [bodyParams]
+     * @param  {Object} [queryParams]
+     * @return {Promise}
+     */
+    bulkUpdate(bodyParams = {}, queryParams = {}) {
+        return this.$http({
+            'method': 'put',
+            'url':    '/screens/bulk-update',
+            'params': queryParams,
+            'data':   bodyParams,
+        });
+    }
+
+    /**
      * @param  {String} id
      * @param  {Object} [bodyParams]
      * @param  {Object} [queryParams]
