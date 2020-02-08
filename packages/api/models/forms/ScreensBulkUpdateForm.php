@@ -117,7 +117,7 @@ class ScreensBulkUpdateForm extends ApiForm
     }
 
     /**
-     * Updates all prototype screens settings in a transaction.
+     * Persists model and updates all prototype screens transactional.
      *
      * @return bool
      */
