@@ -297,6 +297,11 @@ export default {
 
             this.onActiveScreenChange();
         },
+        'activeScreen.title': function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+                this.refreshDocumentTitle();
+            }
+        },
         'activeScreen.alignment': function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 this.refreshActiveScreenWrapperAlignment();
@@ -379,8 +384,7 @@ export default {
 
             this.closeOverlayScreen();
             this.refreshActiveScreenWrapperAlignment();
-
-            this.$setDocumentTitle(() => this.$t('Screen') + ' ' + this.activeScreen.title);
+            this.refreshDocumentTitle();
 
             // refocus screen wrapper
             if (this.$refs.activeScreenWrapper) {
@@ -417,6 +421,9 @@ export default {
                     }
                 }, delay);
             });
+        },
+        refreshDocumentTitle() {
+            this.$setDocumentTitle(() => this.$t('Screen') + ' ' + this.activeScreen.title);
         },
 
         // hotspot navigation

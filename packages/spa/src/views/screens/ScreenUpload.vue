@@ -39,6 +39,8 @@ export default {
         }
     },
     mounted() {
+        Dropzone.autoDiscover = false;
+
         this.initDropzone();
     },
     destroyed() {
@@ -48,8 +50,6 @@ export default {
     },
     methods: {
         initDropzone() {
-            Dropzone.autoDiscover = false;
-
             this.dropzone = new Dropzone(this.$refs.uploadContainer, {
                 url: ApiClient.$baseUrl + '/screens',
                 method: 'post',
@@ -96,6 +96,8 @@ export default {
                 if (this.successUploaded > 0) {
                     this.$toast(this.$tc('Successfully uploaded 1 screen. | Successfully uploaded {count} screens.', this.successUploaded));
                 }
+
+                this.dropzone.removeAllFiles(true); // clear queue
             });
 
             this.dropzone.on('error', (file, response, xhr) => {

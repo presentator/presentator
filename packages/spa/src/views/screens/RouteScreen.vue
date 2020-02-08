@@ -171,7 +171,8 @@
 
                 <div class="ctrl-item ctrl-item-circle">
                     <div v-tooltip.top="$t('Screen settings')">
-                        <i class="fe fe-settings"></i>
+                        <span v-if="$refs.screenEditPopover && $refs.screenEditPopover.isProcessing" class="loader"></span>
+                        <i v-else class="fe fe-settings"></i>
                     </div>
 
                     <screen-edit-popover
