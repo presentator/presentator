@@ -6,6 +6,7 @@ use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use presentator\api\models\forms\ScreenSearch;
 use presentator\api\models\forms\ScreenForm;
+use presentator\api\models\forms\ScreensBulkUpdateForm;
 
 /**
  * Screens rest API controller.
@@ -79,6 +80,26 @@ class ScreensController extends ApiController
 
         if ($screen = $model->save()) {
             return $screen;
+        }
+
+        return $this->sendErrorResponse($model->getFirstErrors());
+    }
+
+    /**
+     * Updates all screens settings within a prototype.
+     *
+     * @return mixed
+     */
+    public function actionBulkUpdate()
+    {
+        $user = Yii::$app->user->identity;
+
+        $model = new ScreensBulkUpdateForm($user);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->response->statusCode = 204;
+
+            return null;
         }
 
         return $this->sendErrorResponse($model->getFirstErrors());

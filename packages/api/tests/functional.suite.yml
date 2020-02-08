@@ -3,6 +3,7 @@ class_name: FunctionalTester
 bootstrap: false
 modules:
     enabled:
+        - Asserts
         - Yii2:
             part: [orm, fixtures, email]
         - REST:

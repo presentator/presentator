@@ -10,6 +10,7 @@ use presentator\api\tests\fixtures\PrototypeFixture;
 use presentator\api\tests\fixtures\ScreenFixture;
 use presentator\api\tests\fixtures\UserProjectRelFixture;
 use presentator\api\models\User;
+use presentator\api\models\Prototype;
 use presentator\api\models\Screen;
 
 /**
@@ -343,6 +344,131 @@ class ScreensCest
                 'file'        => 'array',
             ]);
             $I->seeResponseContainsJson($params);
+        }
+    }
+
+
+
+
+
+    /* `ScreensController::actionBulkUpdate()`
+    --------------------------------------------------------------- */
+    /**
+     * `ScreensController::actionBulkUpdate()` failure test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function bulkUpdateFailure(FunctionalTester $I)
+    {
+        $I->wantTo('Unsuccessfully bulk update prototype screens settings');
+
+        $regularUser = User::findOne(1002);
+        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+
+
+        $I->amGoingTo('try accessing the action unauthorized');
+        $I->sendPUT('/screens/bulk-update');
+        $I->seeUnauthorizedResponse();
+
+        $I->amGoingTo('authorize as regular user and try to submit invalid form data');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $regularUser->generateAccessToken());
+        $I->sendPUT('/screens/bulk-update', [
+            'prototypeId' => 1004,
+            'alignment'   => 'invalid',
+            'background'  => '#000',
+            'fixedHeader' => -10,
+            'fixedFooter' => -10,
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => [
+                'prototypeId' => 'string',
+                'alignment'   => 'string',
+                'background'  => 'string',
+                'fixedHeader' => 'string',
+                'fixedFooter' => 'string',
+            ],
+        ]);
+
+        $I->amGoingTo('authorize as super user and try to submit invalid form data');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $superUser->generateAccessToken());
+        $I->sendPUT('/screens/bulk-update', [
+            'prototypeId' => 1004,
+            'alignment'   => 'invalid',
+            'background'  => '#000',
+            'fixedHeader' => -10,
+            'fixedFooter' => -10,
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => [
+                'alignment'   => 'string',
+                'background'  => 'string',
+                'fixedHeader' => 'string',
+                'fixedFooter' => 'string',
+            ],
+        ]);
+        $I->dontSeeResponseJsonMatchesJsonPath('$.errors.prototypeId');
+    }
+
+    /**
+     * `ScreensController::actionBulkUpdate()` success test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function bulkUpdateSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully bulk update prototype screens settings');
+
+        $regularUser = User::findOne(1002);
+        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+
+        $testScenarios = [
+            [
+                'comment'  => 'authorize as regular user and bulk update screens from owned prototype',
+                'token'    => $regularUser->generateAccessToken(),
+                'data'     => [
+                    'prototypeId' => 1001,
+                    'alignment'   => 'left',
+                    'background'  => '#000fff',
+                    'fixedHeader' => 50,
+                    'fixedFooter' => 200,
+                ],
+            ],
+            [
+                'comment' => 'authorize as super user and bulk update screens from a prototype',
+                'token'   => $superUser->generateAccessToken(),
+                'data'    => [
+                    'prototypeId' => 1006,
+                    'alignment'   => 'right',
+                    'background'  => null, // sould be ignored
+                    'fixedHeader' => 0,
+                    'fixedFooter' => null, // should be ignored
+                ],
+            ],
+        ];
+
+        foreach ($testScenarios as $scenario) {
+            $I->amGoingTo($scenario['comment']);
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $scenario['token']);
+            $I->sendPUT('/screens/bulk-update', $scenario['data']);
+            $I->seeResponseCodeIs(204);
+
+            // check whether the screens settings were successfully updated
+            $prototype = Prototype::findOne($scenario['data']['prototypeId']);
+            foreach ($prototype->getScreens()->each() as $screen) {
+                foreach ($scenario['data'] as $key => $value) {
+                    if ($value === null) {
+                        $I->assertNotEquals($screen->$key, $value);
+                    } else {
+                        $I->assertEquals($screen->$key, $value);
+                    }
+                }
+            }
         }
     }
 

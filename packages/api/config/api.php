@@ -143,6 +143,10 @@ return [
                     'pluralize'  => false,
                     'class'      => 'yii\rest\UrlRule',
                     'controller' => 'screens',
+                    'extraPatterns' => [
+                        'PUT,PATCH bulk-update' => 'bulk-update',
+                        'bulk-update'           => 'options',
+                    ],
                 ],
                 // Hotspot templates
                 [
