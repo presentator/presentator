@@ -782,3 +782,37 @@
         }
     }
 }
+
+.card {
+    outline: 0;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+    text-decoration: none;
+    color: $txtColor;
+    padding: ($baseSpacing / 2);
+    border-radius: $baseRadius;
+    background: $lightBorderColor;
+    transition: background $baseAnimationSpeed;
+    .icon {
+        font-size: $largeFontSize;
+        margin-right: $baseSpacing / 2;
+        color: $primaryColor;
+    }
+    .title {
+        color: $primaryColor;
+    }
+    &:hover,
+    &:focus {
+        background: darken($lightBorderColor, 3%);
+    }
+    &:active {
+        background: darken($lightBorderColor, 5%);
+        transition-duration: ($baseAnimationSpeed / 2);
+    }
+}
+.cards-list .card {
+    margin: 0 0 ($baseSpacing / 2);
+}
