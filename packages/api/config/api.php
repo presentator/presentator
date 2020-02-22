@@ -110,8 +110,10 @@ return [
                     'class'      => 'yii\rest\UrlRule',
                     'controller' => 'project-links',
                     'extraPatterns' => [
-                        'POST {id}/share' => 'share',
-                        '{id}/share'      => 'options',
+                        'GET,HEAD accessed' => 'accessed',
+                        'POST {id}/share'   => 'share',
+                        'accessed'          => 'options',
+                        '{id}/share'        => 'options',
                     ],
                 ],
                 // Guideline sections

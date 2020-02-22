@@ -15,7 +15,7 @@ use presentator\api\models\forms\ProjectLinkShareForm;
 class ProjectLinksController extends ApiController
 {
     /**
-     * Returns paginated list with project links.
+     * Returns paginated list with owned project links.
      *
      * @return mixed
      */
@@ -147,5 +147,21 @@ class ProjectLinksController extends ApiController
         }
 
         return $this->sendErrorResponse($model->getFirstErrors());
+    }
+
+    /**
+     * Returns paginated list with recently accessed project links.
+     * Note: The user is not required to be owner of the related project.
+     *
+     * @return mixed
+     */
+    public function actionAccessed()
+    {
+        $user = Yii::$app->user->identity;
+
+        $searchModel  = new ProjectLinkSearch($user->findAccessedProjectLinksQuery());
+        $dataProvider = $searchModel->search(Yii::$app->request->get(), true);
+
+        return $dataProvider;
     }
 }
