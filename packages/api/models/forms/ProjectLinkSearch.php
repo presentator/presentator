@@ -52,19 +52,29 @@ class ProjectLinkSearch extends ApiSearch
 
     /**
      * @param  array [$params]
+     * @param  bool  [$restrictExpand] Whether to allow access via `expand` query parameter to
+     *                                 only the related project info or all available extra fields.
      * @return ActiveDataProvider
      */
-    public function search(array $params = []): ActiveDataProvider
+    public function search(array $params = [], bool $restrictExpand = false): ActiveDataProvider
     {
-        $query = $this->getQuery()->with('prototypes');
+        $query = $this->getQuery();
 
         $dataProvider = new ActiveDataProvider([
             'query'  => $query,
-            'expand' => ['prototypes'],
             'pagination' => [
                 'pageSizeLimit' => [1, 100],
             ],
         ]);
+
+        if ($restrictExpand) {
+            $dataProvider->allowRequestExpand = false;
+            $query->with('project');
+            $dataProvider->expand = ['projectInfo'];
+        } else {
+            $query->with('prototypes');
+            $dataProvider->expand = ['prototypes'];
+        }
 
         // set up sorting
         $dataProvider->sort->defaultOrder = ['createdAt' => SORT_ASC];

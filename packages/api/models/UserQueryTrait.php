@@ -98,7 +98,7 @@ trait UserQueryTrait
     /**
      * Returns single user owned project link by its id.
      *
-     * @param  integer $projectLinkId ID of the prototype to fetch.
+     * @param  integer $projectLinkId ID of the project link to fetch.
      * @param  array   [$filters]     Additional filters to apply to the query.
      * @return null|ProjectLink
      */
@@ -362,6 +362,37 @@ trait UserQueryTrait
         $query = $this->findHotspotsQuery();
 
         return $query->andWhere([Hotspot::tableName() . '.id' => $hotspotId])
+            ->andFilterWhere($filters)
+            ->one();
+    }
+
+    /**
+     * Generates query to fetch recent project links accessed by the user.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findAccessedProjectLinksQuery(): ActiveQuery
+    {
+        return ProjectLink::find()
+            ->joinWith('userProjectLinkRels', false)
+            ->andWhere([
+                UserProjectLinkRel::tableName() . '.userId' => $this->id,
+            ])
+            ->orderBy([UserProjectLinkRel::tableName() . '.updatedAt' => SORT_DESC]);
+    }
+
+    /**
+     * Returns single project link accessed by the user.
+     *
+     * @param  integer $projectLinkId ID of the project link to fetch.
+     * @param  array   [$filters]     Additional filters to apply to the query.
+     * @return null|ProjectLink
+     */
+    public function findAccessedProjectLinkById(int $projectLinkId, array $filters = []): ?ProjectLink
+    {
+        $query = $this->findProjectLinksQuery();
+
+        return $query->andWhere([ProjectLink::tableName() . '.id' => $projectLinkId])
             ->andFilterWhere($filters)
             ->one();
     }

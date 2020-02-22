@@ -69,6 +69,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserProjectLinkRels()
+    {
+        return $this->hasMany(UserProjectLinkRel::class, ['userId' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccessedProjectLinks()
+    {
+        return $this->hasMany(ProjectLink::class, ['id' => 'projectLinkId'])
+            ->via('userProjectLinkRels');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function beforeSave($insert)
@@ -97,7 +114,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        // prevent related projects if no other admins are managing them
+        // delete related projects if no other admins are managing them
         foreach ($this->projects as $project) {
             if (
                 count($project->users) == 1 &&

@@ -52,6 +52,23 @@ class ProjectLink extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserProjectLinkRels()
+    {
+        return $this->hasMany(UserProjectLinkRel::class, ['projectLinkId' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccessedUsers()
+    {
+        return $this->hasMany(User::class, ['id' => 'userId'])
+            ->via('userProjectLinkRels');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function beforeSave($insert)
@@ -91,6 +108,10 @@ class ProjectLink extends ActiveRecord
         $extraFields = parent::extraFields();
 
         $extraFields[] = 'prototypes';
+
+        $extraFields['projectInfo'] = function ($model, $field) {
+            return $model->project->toArray(['id', 'title', 'archived']);;
+        };
 
         return $extraFields;
     }
@@ -240,6 +261,36 @@ class ProjectLink extends ActiveRecord
 
     /* Preview token
     --------------------------------------------------------------- */
+    /**
+     * Registers that the provided user has accessed/previewed the `ProjectLink` model.
+     *
+     * @param  User $user
+     * @return bool
+     */
+    public function logUserAccess(User $user): bool
+    {
+        $rel = UserProjectLinkRel::findOne([
+            'projectLinkId' => $this->id,
+            'userId' => $user->id,
+        ]);
+
+        try {
+            if ($rel) {
+                // existing rel
+                $rel->touch('updatedAt');
+            } else {
+                // new rel
+                $this->link('accessedUsers', $user);
+            }
+
+            return true;
+        } catch (\Exception | \Throwable $e) {
+            Yii::error($e->getMessage());
+        }
+
+        return false;
+    }
+
     /**
      * Generates and returns a unique preview token secret key.
      *
