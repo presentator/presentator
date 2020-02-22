@@ -13,13 +13,13 @@ export default class User extends BaseModel {
 
         super.load(data);
 
-        this.email     = !CommonHelper.isEmpty(data.email)     ? data.email       : '';
-        this.firstName = !CommonHelper.isEmpty(data.firstName) ? data.firstName   : '';
-        this.lastName  = !CommonHelper.isEmpty(data.lastName)  ? data.lastName    : '';
-        this.type      = !CommonHelper.isEmpty(data.type)      ? data.type        : 'regular';
-        this.status    = !CommonHelper.isEmpty(data.status)    ? data.status      : 'active';
-        this.avatar    = !CommonHelper.isEmpty(data.avatar)    ? data.avatar      : {};
-        this.settings  = !CommonHelper.isEmpty(data.settings)  ? data.settings    : {};
+        this.email     = !CommonHelper.isEmpty(data.email)     ? data.email     : '';
+        this.firstName = !CommonHelper.isEmpty(data.firstName) ? data.firstName : '';
+        this.lastName  = !CommonHelper.isEmpty(data.lastName)  ? data.lastName  : '';
+        this.type      = !CommonHelper.isEmpty(data.type)      ? data.type      : 'regular';
+        this.status    = !CommonHelper.isEmpty(data.status)    ? data.status    : 'active';
+        this.avatar    = !CommonHelper.isEmpty(data.avatar)    ? data.avatar    : {};
+        this.settings  = !CommonHelper.isEmpty(data.settings)  ? data.settings  : {};
     }
 
     /**

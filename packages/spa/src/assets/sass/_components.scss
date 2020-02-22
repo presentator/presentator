@@ -789,7 +789,6 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    min-height: 80px;
     text-decoration: none;
     color: $txtColor;
     padding: ($baseSpacing / 2);
@@ -803,6 +802,9 @@
     }
     .title {
         color: $primaryColor;
+        & ~ .meta {
+            margin-top: 2px;
+        }
     }
     &:hover,
     &:focus {

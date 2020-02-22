@@ -24,7 +24,7 @@
                         </form-field>
 
                         <button class="btn btn-primary btn-lg btn-loader block" :class="{'btn-loader-active': isAuthorizing}">
-                            <span class="txt">View project</span>
+                            <span class="txt">{{ $t('View project') }}</span>
                             <i class="fe fe-arrow-right-circle"></i>
                         </button>
                     </form>

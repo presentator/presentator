@@ -16,11 +16,11 @@ export default class GuidelineAsset extends BaseModel {
         super.load(data);
 
         this.guidelineSectionId = !CommonHelper.isEmpty(data.guidelineSectionId) ? data.guidelineSectionId : null;
-        this.type               = !CommonHelper.isEmpty(data.type)               ? data.type                : 'file';
-        this.order              = !CommonHelper.isEmpty(data.order)              ? data.order               : 1;
-        this.hex                = !CommonHelper.isEmpty(data.hex)                ? data.hex                 : '';
-        this.title              = !CommonHelper.isEmpty(data.title)              ? data.title               : '';
-        this.file               = !CommonHelper.isEmpty(data.file)               ? data.file                : {};
+        this.type               = !CommonHelper.isEmpty(data.type)               ? data.type               : 'file';
+        this.order              = !CommonHelper.isEmpty(data.order)              ? data.order              : 1;
+        this.hex                = !CommonHelper.isEmpty(data.hex)                ? data.hex                : '';
+        this.title              = !CommonHelper.isEmpty(data.title)              ? data.title              : '';
+        this.file               = !CommonHelper.isEmpty(data.file)               ? data.file               : {};
     }
 
     /**

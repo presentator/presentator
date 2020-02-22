@@ -20,8 +20,15 @@
                     @click.prevent="$refs.notificationsPanel && $refs.notificationsPanel.toggle()"
                 >
                     <span v-if="unreadComments.length" class="beacon beacon-danger"></span>
-
                     <i class="fe fe-bell"></i>
+                </div>
+
+                <div class="menu-item"
+                    :class="{'active': ($refs.activityPanel && $refs.activityPanel.isActive)}"
+                    v-tooltip.right="$t('Recent activity')"
+                    @click.prevent="$refs.activityPanel && $refs.activityPanel.toggle()"
+                >
+                    <i class="fe fe-activity"></i>
                 </div>
             </nav>
 
@@ -48,17 +55,20 @@
             </div>
         </div>
 
+        <activity-panel ref="activityPanel"></activity-panel>
         <notifications-panel ref="notificationsPanel"></notifications-panel>
     </aside>
 </template>
 
 <script>
 import { mapState }       from 'vuex';
+import ActivityPanel      from '@/views/base/ActivityPanel';
 import NotificationsPanel from '@/views/base/NotificationsPanel';
 
 export default {
     name: 'app-sidebar',
     components: {
+        'activity-panel': ActivityPanel,
         'notifications-panel': NotificationsPanel,
     },
     computed: {

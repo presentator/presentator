@@ -24,7 +24,7 @@ export default class BaseModel {
         this.id        = !CommonHelper.isEmpty(data.id)        ? data.id        : null;
         this.createdAt = !CommonHelper.isEmpty(data.createdAt) ? data.createdAt : null;
         this.updatedAt = !CommonHelper.isEmpty(data.updatedAt) ? data.updatedAt : null;
-        this.metaData  = CommonHelper.isObject(data.metaData)  ? data.metaData : (this.metaData || {});
+        this.metaData  = CommonHelper.isObject(data.metaData)  ? data.metaData  : (this.metaData || {});
     }
 
     /**

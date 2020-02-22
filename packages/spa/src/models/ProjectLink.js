@@ -1,5 +1,6 @@
 import BaseModel    from './BaseModel';
 import Prototype    from './Prototype';
+import Project      from './Project';
 import CommonHelper from '@/utils/CommonHelper';
 
 /**
@@ -16,14 +17,23 @@ export default class ProjectLink extends BaseModel {
 
         this.projectId         = !CommonHelper.isEmpty(data.projectId) ? data.projectId : null;
         this.slug              = !CommonHelper.isEmpty(data.slug)      ? data.slug      : '';
-        this.passwordProtected = data.passwordProtected ? true : false;
-        this.allowComments     = data.allowComments     ? true : false;
-        this.allowGuideline    = data.allowGuideline    ? true : false;
+        this.passwordProtected = data. passwordProtected               ? true           : false;
+        this.allowComments     = data.allowComments                    ? true           : false;
+        this.allowGuideline    = data.allowGuideline                   ? true           : false;
 
         if (CommonHelper.isArray(data.prototypes)) {
             this.prototypes = Prototype.createInstances(data.prototypes);
         } else {
             this.prototypes = this.prototypes || [];
+        }
+
+        this.project = null;
+        if (!CommonHelper.isEmpty(data.projectInfo)) {
+            // restricted project info
+            this.project = new Project(data.projectInfo);
+        } else if (data.project && data.project instanceof Project) {
+            // full project model
+            this.project = data.project;
         }
     }
 
@@ -47,8 +57,15 @@ export default class ProjectLink extends BaseModel {
     /**
      * @return {String}
      */
+    get relativeUrl() {
+        return '/' + this.slug;
+    }
+
+    /**
+     * @return {String}
+     */
     get fullUrl() {
-        return this.baseUrl + '/' + this.slug;
+        return this.baseUrl + this.relativeUrl;
     }
 
     /**

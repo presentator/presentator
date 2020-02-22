@@ -13,14 +13,14 @@ export default class Screen extends BaseModel {
 
         super.load(data);
 
-        this.prototypeId = !CommonHelper.isEmpty(data.prototypeId) ? data.prototypeId    : null;
-        this.order       = !CommonHelper.isEmpty(data.order)       ? data.order << 0     : 1;
-        this.title       = !CommonHelper.isEmpty(data.title)       ? data.title          : '';
-        this.alignment   = !CommonHelper.isEmpty(data.alignment)   ? data.alignment      : 'center';
-        this.background  = !CommonHelper.isEmpty(data.background)  ? data.background     : '#ffffff';
-        this.fixedHeader = !CommonHelper.isEmpty(data.fixedHeader) ? data.fixedHeader    : 0;
-        this.fixedFooter = !CommonHelper.isEmpty(data.fixedFooter) ? data.fixedFooter    : 0;
-        this.file        = !CommonHelper.isEmpty(data.file)        ? data.file           : {};
+        this.prototypeId = !CommonHelper.isEmpty(data.prototypeId) ? data.prototypeId : null;
+        this.order       = !CommonHelper.isEmpty(data.order)       ? data.order << 0  : 1;
+        this.title       = !CommonHelper.isEmpty(data.title)       ? data.title       : '';
+        this.alignment   = !CommonHelper.isEmpty(data.alignment)   ? data.alignment   : 'center';
+        this.background  = !CommonHelper.isEmpty(data.background)  ? data.background  : '#ffffff';
+        this.fixedHeader = !CommonHelper.isEmpty(data.fixedHeader) ? data.fixedHeader : 0;
+        this.fixedFooter = !CommonHelper.isEmpty(data.fixedFooter) ? data.fixedFooter : 0;
+        this.file        = !CommonHelper.isEmpty(data.file)        ? data.file        : {};
     }
 
     /**
