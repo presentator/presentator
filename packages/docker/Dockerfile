@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.4-apache
 
 # disable interactive functions
 ENV DEBIAN_FRONTEND noninteractive
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
         moreutils \
     # php extensions
     && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install zip \
     # composer
