@@ -187,6 +187,11 @@ export default {
                 this.$emit('updated', this.screen.id);
             }).catch((err) => {
                 this.$errResponseHandler(err);
+
+                // ensure that the popover is visible on error
+                if (this.$refs.popover && !this.$refs.popover.isActive) {
+                    this.$refs.popover.show();
+                }
             }).finally(() => {
                 this.isProcessing = false;
             });
