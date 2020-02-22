@@ -94,4 +94,24 @@ export default class ProjectLinks extends BaseResource {
             'data':   bodyParams,
         });
     }
+
+    /**
+     * @param  {Number} [page]
+     * @param  {Number} [perPage]
+     * @param  {Object} [queryParams]
+     * @return {Promise}
+     */
+    getAccessed(page = 1, perPage = 20, queryParams = {}) {
+        queryParams = Object.assign({
+            'page':     page,
+            'per-page': perPage,
+        }, queryParams);
+
+        return this.$http({
+            'method': 'get',
+            'url':    '/project-links/accessed',
+            'params': queryParams,
+        });
+    }
+
 }

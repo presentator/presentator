@@ -109,4 +109,21 @@ describe('ProjectLinks', function () {
             }).then(done).catch(done);
         });
     });
+
+    describe('getAccessed()', function () {
+        it('Should correctly set request data', function (done) {
+            var queryParams = {'query_test1': 1, 'query_test2': 2};
+            var result      = resource.getAccessed(2, 15, queryParams);
+
+            assert.instanceOf(result, Promise);
+            result.then(function (response) {
+                assert.equal(response.config.url, '/project-links/accessed');
+                assert.equal(response.config.method, 'get');
+                assert.deepEqual(response.config.params, Object.assign({
+                    'page':     2,
+                    'per-page': 15,
+                }, queryParams));
+            }).then(done).catch(done);
+        });
+    });
 });
