@@ -16,9 +16,12 @@ use presentator\api\tests\fixtures\HotspotTemplateFixture;
 use presentator\api\tests\fixtures\HotspotTemplateScreenRelFixture;
 use presentator\api\tests\fixtures\UserFixture;
 use presentator\api\tests\fixtures\UserProjectRelFixture;
+use presentator\api\tests\fixtures\UserProjectLinkRelFixture;
 use presentator\api\tests\fixtures\UserScreenCommentRelFixture;
+use presentator\api\models\User;
 use presentator\api\models\ProjectLink;
 use presentator\api\models\ScreenComment;
+use presentator\api\models\UserProjectLinkRel;
 use presentator\api\models\UserScreenCommentRel;
 
 /**
@@ -73,16 +76,73 @@ class PreviewsCest
             'UserProjectRelFixture' => [
                 'class' => UserProjectRelFixture::class,
             ],
+            'UserProjectLinkRelFixture' => [
+                'class' => UserProjectLinkRelFixture::class,
+            ],
             'UserScreenCommentRelFixture' => [
                 'class' => UserScreenCommentRelFixture::class,
             ],
         ]);
     }
 
-    /* `PreviewCest::actionAuthorize()`
+    public function checkPreviewAccessLog(FunctionalTester $I)
+    {
+        $I->wantTo('Check preview access log create and update');
+
+        $user1       = User::findOne(1004);
+        $user2       = User::findOne(1005);
+        $projectLink = ProjectLink::findOne(1004);
+
+        $testScenarios = [
+            [
+                'user'        => $user1,
+                'projectLink' => $projectLink,
+                'authorize'   => true,
+            ],
+            [
+                'user'        => $user2,
+                'projectLink' => $projectLink,
+                'authorize'   => false,
+            ],
+        ];
+
+        foreach ($testScenarios as $scenario) {
+            $actionMethod = $scenario['authorize'] ? 'sendPOST' : 'sendGET';
+
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $scenario['user']->generateAccessToken());
+            $I->haveHttpHeader('X-Preview-Token', $scenario['projectLink']->generatePreviewToken());
+            $I->dontSeeRecord(UserProjectLinkRel::class, [
+                'projectLinkId' => $scenario['projectLink']->id,
+                'userId'        => $scenario['user']->id,
+            ]);
+
+            // create log
+            $I->amGoingTo('check log creation for ' . ($scenario['authorize'] ? 'authorize' : 'index'));
+            $I->$actionMethod('/previews', ['slug' => $scenario['projectLink']->slug]);
+            $I->seeResponseCodeIs(200);
+            $log = UserProjectLinkRel::findOne([
+                'projectLinkId' => $scenario['projectLink']->id,
+                'userId'        => $scenario['user']->id,
+            ]);
+            $I->assertNotEmpty($log);
+            $lastAccess = $log->updatedAt;
+
+            sleep(1);
+
+            // update log
+            $I->amGoingTo('check log update for ' . ($scenario['authorize'] ? 'authorize' : 'index'));
+            $I->$actionMethod('/previews', ['slug' => $scenario['projectLink']->slug]);
+            $I->seeResponseCodeIs(200);
+            $log->refresh();
+            $I->assertGreaterThan($lastAccess, $log->updatedAt);
+        }
+    }
+
+
+    /* `PreviewsController::actionAuthorize()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionAuthorize()` failure test.
+     * `PreviewsController::actionAuthorize()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -108,7 +168,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionAuthorize()` failure test.
+     * `PreviewsController::actionAuthorize()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -177,10 +237,10 @@ class PreviewsCest
         }
     }
 
-    /* `PreviewCest::actionIndex()`
+    /* `PreviewsController::actionIndex()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionIndex()` failure test.
+     * `PreviewsController::actionIndex()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -213,7 +273,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionIndex()` failure test.
+     * `PreviewsController::actionIndex()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -244,10 +304,10 @@ class PreviewsCest
         ]);
     }
 
-    /* `PreviewCest::actionPrototype()`
+    /* `PreviewsController::actionPrototype()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionPrototype()` failure test.
+     * `PreviewsController::actionPrototype()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -278,7 +338,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionPrototype()` failure test.
+     * `PreviewsController::actionPrototype()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -312,10 +372,10 @@ class PreviewsCest
         $I->dontSeeResponseJsonMatchesJsonPath('$..screens.*.screenComments');
     }
 
-    /* `PreviewCest::actionAssets()`
+    /* `PreviewsController::actionAssets()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionAssets()` failure test.
+     * `PreviewsController::actionAssets()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -344,7 +404,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionAssets()` failure test.
+     * `PreviewsController::actionAssets()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -373,10 +433,10 @@ class PreviewsCest
         $I->dontSeeResponseJsonMatchesJsonPath('$..assets.*.project');
     }
 
-    /* `PreviewCest::actionListScreenComments()`
+    /* `PreviewsController::actionListScreenComments()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionLoremactionListScreenComments failure test.
+     * `PreviewsController::actionLoremactionListScreenComments failure test.
      *
      * @param FunctionalTester $I
      */
@@ -405,7 +465,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionListScreenComments()` failure test.
+     * `PreviewsController::actionListScreenComments()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -456,10 +516,10 @@ class PreviewsCest
         );
     }
 
-    /* `PreviewCest::actionCreateScreenComment()`
+    /* `PreviewsController::actionCreateScreenComment()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionLoremactionCreateScreenCommentfailure test.
+     * `PreviewsController::actionLoremactionCreateScreenCommentfailure test.
      *
      * @param FunctionalTester $I
      */
@@ -512,7 +572,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionCreateScreenComment()` failure test.
+     * `PreviewsController::actionCreateScreenComment()` failure test.
      *
      * @param FunctionalTester $I
      */
@@ -559,10 +619,10 @@ class PreviewsCest
         }
     }
 
-    /* `PreviewCest::actionUpdateScreenComment()`
+    /* `PreviewsController::actionUpdateScreenComment()`
     --------------------------------------------------------------- */
     /**
-     * `PreviewCest::actionLoremactionUpdateScreenCommentfailure test.
+     * `PreviewsController::actionLoremactionUpdateScreenCommentfailure test.
      *
      * @param FunctionalTester $I
      */
@@ -608,7 +668,7 @@ class PreviewsCest
     }
 
     /**
-     * `PreviewCest::actionUpdateScreenComment()` failure test.
+     * `PreviewsController::actionUpdateScreenComment()` failure test.
      *
      * @param FunctionalTester $I
      */

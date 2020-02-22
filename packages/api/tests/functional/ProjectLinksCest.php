@@ -7,6 +7,7 @@ use presentator\api\tests\fixtures\ProjectFixture;
 use presentator\api\tests\fixtures\PrototypeFixture;
 use presentator\api\tests\fixtures\ProjectLinkFixture;
 use presentator\api\tests\fixtures\UserProjectRelFixture;
+use presentator\api\tests\fixtures\UserProjectLinkRelFixture;
 use presentator\api\tests\fixtures\ProjectLinkPrototypeRelFixture;
 use presentator\api\models\User;
 use presentator\api\models\ProjectLink;
@@ -41,6 +42,9 @@ class ProjectLinksCest
             ],
             'UserProjectRelFixture' => [
                 'class' => UserProjectRelFixture::class,
+            ],
+            'UserProjectLinkRelFixture' => [
+                'class' => UserProjectLinkRelFixture::class,
             ],
         ]);
     }
@@ -77,6 +81,7 @@ class ProjectLinksCest
             if (!empty($scenarioData['expected'])) {
                 $I->seeResponseMatchesJsonType([
                     'id'                => 'integer',
+                    'slug'              => 'string',
                     'passwordProtected' => 'boolean',
                     'prototypes'        => 'array',
                 ]);
@@ -558,5 +563,76 @@ class ProjectLinksCest
             $totalExpectedEmails += $scenario['expectedEmailsCount'];
             $I->seeEmailIsSent($totalExpectedEmails);
         }
+    }
+
+
+    /* `ProjectLinksController::actionAccessed()`
+    --------------------------------------------------------------- */
+    /**
+     * `ProjectLinksController::actionAccessed()` failure test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function accessedFailure(FunctionalTester $I)
+    {
+        $I->wantTo('Unsuccessfully list recently accessed project links');
+
+        $I->amGoingTo('try accessing the action unauthorized');
+        $I->sendGET('/project-links/accessed');
+        $I->seeUnauthorizedResponse();
+    }
+
+    /**
+     * `ProjectLinksController::actionAccessed()` success test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function accessedSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully list recently accessed project links');
+
+        $user = User::findOne(1002);
+
+        $scenarioCallback = function ($scenarioIndex, $scenarioData) use ($I) {
+            if (!empty($scenarioData['expected'])) {
+                $I->seeResponseMatchesJsonType([
+                    'id'                => 'integer',
+                    'slug'              => 'string',
+                    'passwordProtected' => 'boolean',
+                    'projectInfo'       => 'array',
+                ]);
+                $I->dontSeeResponseJsonMatchesJsonPath('$.*.prototypes');
+                $I->dontSeeResponseJsonMatchesJsonPath('$.*.password');
+                $I->dontSeeResponseJsonMatchesJsonPath('$.*.passwordHash');
+            }
+        };
+
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
+        $I->sendAndCheckDataProviderResponses('/project-links/accessed', [
+            [
+                'params'   => [],
+                'expected' => [1005, 1002, 1003, 1001],
+            ],
+            [
+                'params'   => ['sort' => '-createdAt'],
+                'expected' => [1005, 1003, 1002, 1001], // initially updatedAt desc should be applied and then desc by id
+            ],
+            [
+                'params'   => ['expand' => 'prototypes'], // should be ignored
+                'expected' => [1005, 1002, 1003, 1001],
+            ],
+            [
+                'params'   => ['per-page' => 1, 'page' => 2],
+                'expected' => [1002],
+            ],
+            [
+                'params'   => ['search[projectId]' => 1002],
+                'expected' => [1003],
+            ],
+            [
+                'params'   => ['search[slug]' => 'test5'],
+                'expected' => [1005],
+            ],
+        ], $scenarioCallback);
     }
 }
