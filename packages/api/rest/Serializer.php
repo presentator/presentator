@@ -61,14 +61,28 @@ class Serializer extends \yii\rest\Serializer
     public $envelopeParam = 'envelope';
 
     /**
-     * Helper for the ActiveDataProvider.
+     * Whether to allow specifying `fields` as request query parameter.
+     *
+     * @var bool
+     */
+    public $allowRequestFields = true;
+
+    /**
+     * Whether to allow specifying `expand` as request query parameter.
+     *
+     * @var bool
+     */
+    public $allowRequestExpand = true;
+
+    /**
+     * Helper for the `ArrayDataProvider` and `ActiveDataProvider`.
      *
      * @var array
      */
     private $fields = [];
 
     /**
-     * Helper for the ActiveDataProvider.
+     * Helper for the `ArrayDataProvider` and `ActiveDataProvider`.
      *
      * @var array
      */
@@ -79,22 +93,10 @@ class Serializer extends \yii\rest\Serializer
      */
     public function serialize($data)
     {
-        $result = null;
+        $result = parent::serialize($data);
 
-        if ($data instanceof Model && $data->hasErrors()) {
-            $result = $this->serializeModelErrors($data);
-        } elseif ($data instanceof Arrayable) {
-            $result = $this->serializeModel($data);
-        } elseif ($data instanceof DataProviderInterface) {
-            $result = $this->serializeDataProvider($data);
-        } else {
-            $result = $data;
-        }
-
-        $requestParam     = $this->request->get($this->envelopeParam, false);
-        $envelopeResponse = ($requestParam == 1 || $requestParam === 'true');
-
-        if ($envelopeResponse) {
+        $envelopeParam = $this->request->get($this->envelopeParam, false);
+        if ($envelopeParam == 1 || $envelopeParam === 'true') {
             return [
                 'status'   => $this->response->getStatusCode(),
                 'headers'  => $this->getFirstHeadersValues(),
@@ -111,6 +113,14 @@ class Serializer extends \yii\rest\Serializer
     protected function getRequestedFields()
     {
         $requestFields = parent::getRequestedFields();
+
+        if (!$this->allowRequestFields) {
+            $requestFields[0] = [];
+        }
+
+        if (!$this->allowRequestExpand) {
+            $requestFields[1] = [];
+        }
 
         if (!empty($this->fields) && is_array($this->fields)) {
             $requestFields[0] = array_merge($requestFields[0], $this->fields);
@@ -134,6 +144,10 @@ class Serializer extends \yii\rest\Serializer
         ) {
             $this->fields = $dataProvider->fields;
             $this->expand = $dataProvider->expand;
+
+            $this->allowRequestFields = $dataProvider->allowRequestFields;
+            $this->allowRequestExpand = $dataProvider->allowRequestExpand;
+
         }
 
         $models = $this->serializeModels($dataProvider->getModels());
