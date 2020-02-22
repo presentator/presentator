@@ -26,8 +26,7 @@ class PreviewsController extends ApiController
     {
         $behaviors = parent::behaviors();
 
-        $behaviors['authenticator']['except'] = [
-            'options',
+        $behaviors['authenticator']['optional'] = [
             'authorize',
             'index',
             'prototype',
@@ -64,6 +63,8 @@ class PreviewsController extends ApiController
             throw new UnauthorizedHttpException('Missing or invalid project link password.');
         }
 
+        $this->logLoggedUserAccess($link);
+
         return [
             'token'         => $link->generatePreviewToken(),
             'project'       => $link->project->toArray(),
@@ -82,6 +83,8 @@ class PreviewsController extends ApiController
     public function actionIndex()
     {
         $link = $this->findLinkByPreviewToken();
+
+        $this->logLoggedUserAccess($link);
 
         return [
             'project'       => $link->project->toArray(),
@@ -239,5 +242,15 @@ class PreviewsController extends ApiController
         }
 
         return $link;
+    }
+
+    /**
+     * @param ProjectLink $link
+     */
+    protected function logLoggedUserAccess(ProjectLink $link)
+    {
+        if (Yii::$app->user->identity) {
+            $link->logUserAccess(Yii::$app->user->identity);
+        }
     }
 }
