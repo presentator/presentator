@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
         curl \
         software-properties-common \
         gnupg \
+        libzip-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
