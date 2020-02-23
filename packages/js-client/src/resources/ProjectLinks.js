@@ -113,5 +113,4 @@ export default class ProjectLinks extends BaseResource {
             'params': queryParams,
         });
     }
-
 }
