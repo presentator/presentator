@@ -14,6 +14,11 @@ class m200221_193516_add_user_project_link_rel_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('{{%UserProjectLinkRel}}', [
             'id'            => $this->primaryKey(),
             'userId'        => $this->integer()->notNull(),
