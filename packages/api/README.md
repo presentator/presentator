@@ -149,5 +149,4 @@ The project makes use of the following conventions:
 
 #### DB schema
 
-![erd](https://i.imgur.com/0HSzaGw.png)
-
+![erd](https://i.imgur.com/yjMo9RO.png)
