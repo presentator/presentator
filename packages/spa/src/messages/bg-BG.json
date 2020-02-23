@@ -336,5 +336,10 @@
     "Changing your email address": "Новият имейл адрес се обновява",
     "The provided email change token is invalid or expired.": "Невалиден или изтекъл ключ за смяна на имейл адрес.",
     "Email change confirmation": "Потвърждение за смяна на имейл",
-    "More tools": "Други настройки"
+    "More tools": "Други настройки",
+    "Recent activity": "Последна активност",
+    "Viewed project links": "Последно разгледани линкове",
+    "You haven't accessed any projects links yet.": "Няма скорошна активност за показване.",
+    "View project": "Разгледай проекта",
+    "Apply to all screens": "Приложи за всички екрани"
 }
