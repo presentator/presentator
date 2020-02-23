@@ -347,10 +347,6 @@ class ScreensCest
         }
     }
 
-
-
-
-
     /* `ScreensController::actionBulkUpdate()`
     --------------------------------------------------------------- */
     /**
