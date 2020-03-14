@@ -10,7 +10,7 @@
                 <span class="txt">Github</span>
             </a>
 
-            <div v-if="loggedUser && loggedUser.id && ($getAppConfig('VUE_APP_SHOW_SEND_FEEDBACK') << 0 ? true : false)"
+            <div v-if="loggedUser && loggedUser.id && $getAppConfig('VUE_APP_SHOW_SEND_FEEDBACK') << 0"
                 class="info-item handle"
                 @click.prevent="openFeedbackPopup()"
             >
@@ -27,13 +27,13 @@
             </div>
         </div>
 
-        <div v-if="$getAppConfig('VUE_APP_SHOW_CREDITS') << 0 ? true : false" class="credits">
+        <div v-if="$getAppConfig('VUE_APP_SHOW_CREDITS') << 0" class="credits">
             <i18n path="Crafted by {author}">
                 <a slot="author" href="https://gani.bg" target="_blank" rel="noopener">Gani</a>
             </i18n>
         </div>
 
-        <relocator>
+        <relocator v-if="$getAppConfig('VUE_APP_SHOW_SEND_FEEDBACK') << 0">
             <feedback-popup ref="feedbackPopup"></feedback-popup>
         </relocator>
     </footer>
