@@ -10,13 +10,17 @@
                 <span class="txt">Github</span>
             </a>
 
-            <div v-if="loggedUser && loggedUser.id"
+            <div v-if="loggedUser && loggedUser.id && ($getAppConfig('VUE_APP_SHOW_SEND_FEEDBACK') << 0 ? true : false)"
                 class="info-item handle"
                 @click.prevent="openFeedbackPopup()"
             >
                 <i class="fe fe-life-buoy"></i>
                 <span class="txt">{{ $t('Send feedback') }}</span>
             </div>
+
+            <a v-for="(url, name) in getFooterLinks()" :href="url" class="info-item" target="_blank" rel="noopener">
+                <span class="txt">{{ name }}</span>
+            </a>
 
             <div class="info-item">
                 <languages-select></languages-select>
@@ -53,7 +57,28 @@ export default {
             loggedUser: state => state.user.user,
         }),
     },
+    mounted() {
+        this.getFooterLinks();
+    },
     methods: {
+        getFooterLinks() {
+            const parts = (this.$getAppConfig('VUE_APP_FOOTER_LINKS') || '')
+                .split(',');
+
+            const result = {};
+
+            for (let i = 0; i < parts.length; i++) {
+                let linkParts = parts[i].split('|', 2);
+                let name = (linkParts[0] || '').trim();
+                let link = (linkParts[1] || '').trim();
+
+                if (name.length && link.length) {
+                    result[name] = link;
+                }
+            }
+
+            return result;
+        },
         openFeedbackPopup() {
             if (this.$refs.feedbackPopup) {
                 this.$refs.feedbackPopup.open();
