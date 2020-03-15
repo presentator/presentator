@@ -57,9 +57,6 @@ export default {
             loggedUser: state => state.user.user,
         }),
     },
-    mounted() {
-        this.getFooterLinks();
-    },
     methods: {
         getFooterLinks() {
             const parts = (this.$getAppConfig('VUE_APP_FOOTER_LINKS') || '')
