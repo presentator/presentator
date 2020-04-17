@@ -231,6 +231,7 @@ export default {
                 url: ApiClient.$baseUrl + '/users/' + this.user.id,
                 method: 'put',
                 maxFiles: 1,
+                timeout: 0,
                 paramName: 'avatar',
                 parallelUploads: 1,
                 uploadMultiple: false,

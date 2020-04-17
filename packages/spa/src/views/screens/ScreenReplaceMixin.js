@@ -40,6 +40,7 @@ export default {
                 method: 'put',
                 paramName: 'file',
                 maxFiles: 1,
+                timeout: 0,
                 parallelUploads: 1,
                 uploadMultiple: false,
                 thumbnailWidth: null,

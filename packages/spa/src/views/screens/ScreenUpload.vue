@@ -54,6 +54,7 @@ export default {
                 url: ApiClient.$baseUrl + '/screens',
                 method: 'post',
                 paramName: 'file',
+                timeout: 0,
                 parallelUploads: 1, // limit parallel uploads to keep seletection files order
                 uploadMultiple: false,
                 thumbnailWidth: null,
