@@ -799,11 +799,35 @@
         font-size: $largeFontSize;
         margin-right: $baseSpacing / 2;
         color: $primaryColor;
+        min-width: 15px;
+        text-align: center;
+        .txt {
+            display: block;
+        }
     }
     .title {
         color: $primaryColor;
+        line-height: 20px;
         & ~ .meta {
-            margin-top: 2px;
+            margin-top: 3px;
+        }
+    }
+    .meta {
+        .meta-item {
+            @include ellipsis();
+            max-width: 155px;
+            margin-right: 8px;
+            padding-right: 10px;
+            &:last-child {
+                margin-right: 0;
+                padding-right: 0;
+            }
+            &:after {
+                position: absolute;
+                right: -0;
+                top: 0;
+                margin: 0;
+            }
         }
     }
     &:hover,
@@ -811,10 +835,28 @@
         background: darken($lightBorderColor, 3%);
     }
     &:active {
-        background: darken($lightBorderColor, 5%);
+        background: darken($lightBorderColor, 7%);
         transition-duration: ($baseAnimationSpeed / 2);
+    }
+    &.active {
+        background: darken($lightBorderColor, 5%);
     }
 }
 .cards-list .card {
     margin: 0 0 ($baseSpacing / 2);
+}
+
+.placeholder-block {
+    @extend %block;
+    text-align: center;
+    padding: 0;
+    margin: $largeSpacing 0;
+    font-weight: normal;
+    color: $lightTxtColor;
+    .icon {
+        margin: 0 0 $baseSpacing / 2;
+        line-height: 1;
+        font-size: 50px;
+        opacity: 0.3;
+    }
 }

@@ -1,6 +1,6 @@
 <template>
     <transition name="sidebarPanel">
-        <div v-if="isActive" class="app-sidebar-panel"
+        <aside v-if="isActive" class="app-sidebar-panel no-b"
             v-shortcut.27="hide"
             v-outside-click="{
                 'handler': hide,
@@ -37,10 +37,13 @@
             </div>
 
             <div class="app-sidebar-section app-sidebar-content">
-                <div class="block txt-center txt-hint">
-                    <span v-if="isLoading" class="loader"></span>
+                <div v-if="isLoading" class="placeholder-block">
+                    <span class="loader"></span>
+                </div>
 
-                    <p v-if="!isLoading && !activeUnreadComments.length">{{ $t('No unread comments.') }}</p>
+                <div v-if="!isLoading && !activeUnreadComments.length" class="placeholder-block">
+                    <div class="icon"><i class="fe fe-bell"></i></div>
+                    <div class="content">{{ $t('No notifications to show.') }}</div>
                 </div>
 
                 <div v-if="!isLoading && activeUnreadComments.length" class="comments-list">
@@ -56,9 +59,9 @@
                             <i v-else class="fe fe-user"></i>
                         </figure>
                         <div class="content">
-                            <small>
+                            <small class="content-header">
                                 <span class="name">{{ comment.user ? comment.user.identifier : comment.from}}</span>
-                                <span class="date txt-hint m-l-5">{{ comment.createdAtFromNow }}</span>
+                                <span class="date txt-hint">{{ comment.createdAtFromNow }}</span>
                             </small>
                             <div class="message">{{ comment.message }}</div>
                             <div v-if="comment.metaData" class="meta">
@@ -97,7 +100,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     </transition>
 </template>
 

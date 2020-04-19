@@ -1,7 +1,7 @@
 <template>
     <transition name="sidebarPanel">
-        <div v-if="isActive"
-            class="app-sidebar-panel"
+        <aside v-if="isActive"
+            class="app-sidebar-panel no-b"
             v-shortcut.27="hide"
             v-outside-click="{
                 'handler': hide,
@@ -29,10 +29,13 @@
             </div>
 
             <div class="app-sidebar-section app-sidebar-content">
-                <div class="block txt-center txt-hint">
-                    <span v-if="isLoading" class="loader"></span>
+                <div v-if="isLoading" class="placeholder-block">
+                    <span class="loader"></span>
+                </div>
 
-                    <p v-if="!isLoading && !projectLinks.length">{{ $t('You haven\'t accessed any projects links yet.') }}</p>
+                <div v-if="!isLoading && !projectLinks.length" class="placeholder-block">
+                    <div class="icon"><i class="fe fe-activity"></i></div>
+                    <div class="content">{{ $t('No recent activity to show.') }}</div>
                 </div>
 
                 <div v-if="!isLoading && projectLinks.length" class="cards-list">
@@ -53,7 +56,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </aside>
     </transition>
 </template>
 
