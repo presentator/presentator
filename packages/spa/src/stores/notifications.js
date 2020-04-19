@@ -99,5 +99,17 @@ export default CommonHelper.createResettableStore({
         getUnreadCommentsForComment: (state, getters) => (commentId) => {
             return getters.getUnreadCommentsForProp('replyTo', commentId);
         },
+        isCommentUnread: (state) => (commentId) => {
+            for (let i = state.unreadComments.length - 1; i >= 0; i--) {
+                if (
+                    state.unreadComments[i].id == commentId ||
+                    state.unreadComments[i].replyTo == commentId
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     },
 });

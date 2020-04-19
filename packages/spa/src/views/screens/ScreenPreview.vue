@@ -313,6 +313,11 @@ export default {
     },
     mounted() {
         this.onActiveScreenChange();
+
+        window.addEventListener('resize', this.onResize, {passive: true});
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize, {passive: true});
     },
     methods: {
         ...mapActions({
@@ -568,6 +573,9 @@ export default {
 
                 this.closeOverlayScreen();
             }
+        },
+        onResize(e) {
+            this.refreshActiveScreenWrapperAlignment();
         }
     },
 }

@@ -95,7 +95,7 @@ import Project            from '@/models/Project';
 import ProjectCreatePopup from '@/views/projects/ProjectCreatePopup';
 import Relocator          from '@/components/Relocator';
 
-const PROJECTS_PER_PAGE = 40;
+const PROJECTS_PER_PAGE = 60;
 
 const defaultData = {
     isLoadingProjects: false,

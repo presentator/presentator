@@ -79,6 +79,10 @@
     .content {
         flex-grow: 1;
         flex-shrink: 1;
+        .content-header {
+            display: flex;
+            flex-wrap: wrap;
+        }
         .message {
             @extend %content;
             margin-top: 5px;
@@ -86,8 +90,8 @@
         .meta {
             margin-top: 5px;
         }
-        .name, .date {
-            display: inline;
+        .name {
+            margin-right: 5px;
         }
     }
     .avatar {

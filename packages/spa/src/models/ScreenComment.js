@@ -12,8 +12,10 @@ export default class ScreenComment extends BaseModel {
     load(data) {
         data = data || {};
 
+
         super.load(data);
 
+        this.id       = !CommonHelper.isEmpty(data.id)       ? data.id                 : -1;
         this.replyTo  = !CommonHelper.isEmpty(data.replyTo)  ? data.replyTo            : null;
         this.screenId = !CommonHelper.isEmpty(data.screenId) ? data.screenId           : null;
         this.from     = !CommonHelper.isEmpty(data.from)     ? data.from               : '';
@@ -27,6 +29,15 @@ export default class ScreenComment extends BaseModel {
         if (!this.user && data.user instanceof User) {
             this.user = data.user;
         }
+    }
+
+    /**
+     * Checks whether the comment is a new (not saved yet) record.
+     *
+     * @return {Boolean}
+     */
+    get isNew() {
+        return this.id == -1;
     }
 
     /**

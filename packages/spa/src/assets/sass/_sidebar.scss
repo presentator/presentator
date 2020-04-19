@@ -222,6 +222,8 @@
     justify-content: space-between;
     color: $txtColor;
     text-align: left;
+    border-left: 1px solid $lightBorderColor;
+    border-right: 1px solid $lightBorderColor;
     .app-sidebar-section {
         margin: 0;
         padding: 20px;
@@ -244,7 +246,9 @@
         }
     }
     .app-sidebar-content {
-        padding-top: 0;
-        padding-bottom: 0;
+        margin-top: -5px;
+        margin-bottom: -5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 }

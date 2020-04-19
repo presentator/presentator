@@ -702,28 +702,14 @@
         transition-duration: 0.1s;
         background: $lightBorderColor;
     }
-    &.ctrl-primary {
-        &:hover,
-        &:active {
-            color: $primaryColor;
-        }
-    }
-    &.ctrl-danger {
-        &:hover,
-        &:active {
-            color: $dangerColor;
-        }
-    }
-    &.ctrl-success {
-        &:hover,
-        &:active {
-            color: $successColor;
-        }
-    }
-    &.ctrl-warning {
-        &:hover,
-        &:active {
-            color: $warningColor;
+
+    // themes
+    @each $color in $colorsList {
+        &.ctrl-#{nth($color, 1)} {
+            &:hover,
+            &:active {
+                color: nth($color, 2);
+            }
         }
     }
 }
@@ -794,7 +780,7 @@
     padding: ($baseSpacing / 2);
     border-radius: $baseRadius;
     background: $lightBorderColor;
-    transition: background $baseAnimationSpeed;
+    transition: background $baseAnimationSpeed, box-shadow $baseAnimationSpeed;
     .icon {
         font-size: $largeFontSize;
         margin-right: $baseSpacing / 2;
@@ -803,6 +789,7 @@
         text-align: center;
         .txt {
             display: block;
+            white-space: nowrap;
         }
     }
     .title {
@@ -840,6 +827,13 @@
     }
     &.active {
         background: darken($lightBorderColor, 5%);
+    }
+
+    // themes
+    @each $color in $colorsList {
+        &.card-#{nth($color, 1)} {
+            box-shadow: inset 0 0 0 2px nth($color, 2);
+        }
     }
 }
 .cards-list .card {

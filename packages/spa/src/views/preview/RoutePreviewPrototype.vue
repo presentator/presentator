@@ -1,155 +1,154 @@
 <template>
-    <div class="preview-container"
-        :class="{
-            'comments-mode':      isInCommentsMode,
-            'preview-mode':       isInPreviewMode,
-            'preview-mode-hints': isPreviewModeHintsActive,
-        }"
-        :style="{
-            'background': activePrototype && activeScreen && activePrototype.isForDesktop ? activeScreen.background : null
-        }"
-        tabindex="-1"
-        @keydown.esc="onEscPress"
-    >
-        <div class="flex-fill-block"></div>
-
-        <comment-popover ref="commentPopover"
-            :isForPreview="true"
-            :mentionsList="mentionsList"
-            @closed="onCommentPopoverClose"
-        ></comment-popover>
-
-        <div v-if="isLoadingData" class="block txt-center">
-            <span class="loader loader-lg loader-blend"></span>
-        </div>
-
-        <div v-if="!isLoadingData && !screens.length" class="block scroll-block txt-center p-base">
-            <figure class="mockup m-b-small">
-                <div class="mockup-bg"></div>
-                <div class="browser secondary"></div>
-                <div class="browser primary"><i class="fe fe-image"></i></div>
-            </figure>
-
-            <h4>{{ $t('No prototype screens to show.') }}</h4>
-        </div>
-
-        <screen-preview
-            v-if="!isLoadingData && screens.length"
-            ref="screenPreview"
-            :interactions="isInPreviewMode"
-            :activeScreenTooltip="modeHelpTooltip"
-            :fitToScreen="fitToScreen"
-            @activeScreenClick="onActiveScreenClick"
+    <div class="preview-container-wrapper">
+        <div class="preview-container"
+            :class="{
+                'comments-mode':      isInCommentsMode,
+                'preview-mode':       isInPreviewMode,
+                'preview-mode-hints': isPreviewModeHintsActive,
+            }"
+            :style="{
+                'background': activePrototype && activeScreen && activePrototype.isForDesktop ? activeScreen.background : null
+            }"
+            tabindex="-1"
+            @keydown.esc="onEscPress"
         >
-            <div v-if="isInCommentsMode" class="block comments-block">
-                <comment-pin v-for="comment in activeScreenComments"
-                    ref="screenCommentPins"
-                    :key="'comment_' + comment.id"
-                    :comment="comment"
-                    :allowPositionChange="false"
-                    :class="{
-                        'soft-hidden': (!showResolvedComments && comment.isResolved),
-                        'unread': isCommentUnread(comment.id),
-                    }"
-                    @beforeActivate="onCommentActivate"
-                ></comment-pin>
+            <div class="flex-fill-block"></div>
+
+            <active-comment-popover
+                ref="commentPopover"
+                :isForPreview="true"
+                :mentionsList="mentionsList"
+            ></active-comment-popover>
+
+            <div v-if="isLoadingData" class="block txt-center">
+                <span class="loader loader-lg loader-blend"></span>
             </div>
-        </screen-preview>
 
-        <div class="flex-fill-block"></div>
+            <div v-if="!isLoadingData && !screens.length" class="block scroll-block txt-center p-base">
+                <figure class="mockup m-b-small">
+                    <div class="mockup-bg"></div>
+                    <div class="browser secondary"></div>
+                    <div class="browser primary"><i class="fe fe-image"></i></div>
+                </figure>
 
-        <preview-bar
-            :project="project"
-            :projectLink="projectLink"
-            @hide="$refs.screensPanel ? $refs.screensPanel.hide() : true"
-        >
-            <template v-slot:left>
-                <div v-if="activeScreen && $refs.screensPanel"
-                    class="ctrl-item ctrl-item-screens"
-                    :class="{'active': $refs.screensPanel.isActive}"
-                    v-tooltip.top="$refs.screensPanel.isActive ? $t('Hide screens panel') : $t('Show screens panel')"
-                    @click.prevent="$refs.screensPanel.toggle()"
-                >
-                    <span class="txt screen-title">{{ activeScreen.title }}</span>
-                    <span class="txt counter m-l-5">({{ activeScreenOrderedIndex + 1 }} of {{ screens.length }})</span>
-                    <i class="m-l-5 fe" :class="$refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+                <h4>{{ $t('No prototype screens to show.') }}</h4>
+            </div>
+
+            <screen-preview
+                v-if="!isLoadingData && screens.length"
+                ref="screenPreview"
+                :interactions="isInPreviewMode"
+                :activeScreenTooltip="modeHelpTooltip"
+                :fitToScreen="fitToScreen"
+                @activeScreenClick="onActiveScreenClick"
+            >
+                <div v-if="isInCommentsMode" class="block comments-block">
+                    <comment-pin v-for="comment in activeScreenComments"
+                        ref="screenCommentPins"
+                        :key="'comment_' + comment.id"
+                        :comment="comment"
+                        :allowPositionChange="false"
+                        :class="{
+                            'soft-hidden': (!showResolvedComments && comment.isResolved),
+                            'unread': isCommentUnread(comment.id),
+                        }"
+                    ></comment-pin>
                 </div>
-            </template>
+            </screen-preview>
 
-            <template v-slot:right>
-                <div v-if="isInCommentsMode && totalActiveScreenComments > 0" class="form-group">
-                    <input type="checkbox" id="toggle_resolved_comments" v-model="showResolvedComments">
-                    <label for="toggle_resolved_comments" class="resolved-comments-label desktop-only">
-                        {{ $t('Show resolved comments') }}
-                        ({{ $t('{current} of {total}', {
-                            current: totalActiveScreenResolvedComments,
-                            total:   totalActiveScreenComments,
-                        }) }})
-                    </label>
-                    <label for="toggle_resolved_comments"
-                        class="resolved-comments-label responsive-only"
-                        v-tooltip.top="$t('Show resolved comments') + ' (' + $t('{current} of {total}', {
-                            current: totalActiveScreenResolvedComments,
-                            total:   totalActiveScreenComments,
-                        }) + ')'"
-                    ></label>
-                </div>
+            <div class="flex-fill-block"></div>
 
-                <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"
-                    class="ctrl-item ctrl-item-circle"
-                    :class="fitToScreen ? 'ctrl-item-success active bg-light-border' : ''"
-                    v-tooltip.top="$t('Toggle fit to screen')"
-                    @click.prevent="toggleFitToScreen"
-                >
-                    <i class="fe fe-maximize"></i>
-                </div>
+            <preview-bar
+                :project="project"
+                :projectLink="projectLink"
+                @hide="$refs.screensPanel ? $refs.screensPanel.hide() : true"
+            >
+                <template v-slot:left>
+                    <div v-if="activeScreen && $refs.screensPanel"
+                        class="ctrl-item ctrl-item-screens"
+                        :class="{'active': $refs.screensPanel.isActive}"
+                        v-tooltip.top="$refs.screensPanel.isActive ? $t('Hide screens panel') : $t('Show screens panel')"
+                        @click.prevent="$refs.screensPanel.toggle()"
+                    >
+                        <span class="txt screen-title">{{ activeScreen.title }}</span>
+                        <span class="txt counter m-l-5">({{ activeScreenOrderedIndex + 1 }} of {{ screens.length }})</span>
+                        <i class="m-l-5 fe" :class="$refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+                    </div>
+                </template>
 
-                <div v-if="prototypes.length > 1"
-                    class="btn btn-sm btn-default m-l-small"
-                    v-tooltip.top="!$refs.prototypesDropdown || !$refs.prototypesDropdown.isActive ? $t('Change prototype') : ''"
-                >
-                    <i class="fe" :class="activePrototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
-                    <span class="txt title m-l-5 m-r-5">{{ activePrototype.title }}</span>
-                    <i class="fe" :class="$refs.prototypesDropdown && $refs.prototypesDropdown.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+                <template v-slot:right>
+                    <button v-if="isInCommentsMode && $refs.commentsPanel"
+                        class="btn btn-sm no-shadow comments-panel-toggle"
+                        :class="$refs.commentsPanel.isActive ? 'btn-danger' : 'btn-transp-danger'"
+                        @click.prevent="$refs.commentsPanel.toggle()"
+                    >
+                        <span class="txt">
+                            {{ $t('Comments panel ({resolved}/{total})', {
+                                resolved: totalActiveScreenResolvedComments,
+                                total: totalActiveScreenComments,
+                            }) }}
+                        </span>
+                    </button>
 
-                    <toggler ref="prototypesDropdown" class="dropdown">
-                        <div class="dropdown-item"
-                            v-for="prototype in prototypes"
-                            :key="prototype.id"
-                            :class="{'active': activePrototype.id == prototype.id}"
-                            @click.prevent="setActivePrototypeId(prototype.id)"
-                        >
-                            <i class="fe" :class="prototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
-                            <span class="txt">{{ prototype.title }}</span>
-                        </div>
-                    </toggler>
-                </div>
-            </template>
-        </preview-bar>
+                    <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"
+                        class="ctrl-item ctrl-item-circle"
+                        :class="fitToScreen ? 'ctrl-item-success active bg-light-border' : ''"
+                        v-tooltip.top="$t('Toggle fit to screen')"
+                        @click.prevent="toggleFitToScreen"
+                    >
+                        <i class="fe fe-maximize"></i>
+                    </div>
 
-        <screens-panel ref="screensPanel"></screens-panel>
+                    <div v-if="prototypes.length > 1"
+                        class="btn btn-sm btn-default m-l-small"
+                        v-tooltip.top="!$refs.prototypesDropdown || !$refs.prototypesDropdown.isActive ? $t('Change prototype') : ''"
+                    >
+                        <i class="fe" :class="activePrototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
+                        <span class="txt title m-l-5 m-r-5">{{ activePrototype.title }}</span>
+                        <i class="fe" :class="$refs.prototypesDropdown && $refs.prototypesDropdown.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+
+                        <toggler ref="prototypesDropdown" class="dropdown">
+                            <div class="dropdown-item"
+                                v-for="prototype in prototypes"
+                                :key="prototype.id"
+                                :class="{'active': activePrototype.id == prototype.id}"
+                                @click.prevent="setActivePrototypeId(prototype.id)"
+                            >
+                                <i class="fe" :class="prototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
+                                <span class="txt">{{ prototype.title }}</span>
+                            </div>
+                        </toggler>
+                    </div>
+                </template>
+            </preview-bar>
+
+            <screens-panel ref="screensPanel"></screens-panel>
+        </div>
+
+        <comments-panel ref="commentsPanel"></comments-panel>
     </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import moment            from 'moment';
-import AppConfig         from '@/utils/AppConfig';
-import ApiClient         from '@/utils/ApiClient';
-import CommonHelper      from '@/utils/CommonHelper';
-import ClientStorage     from '@/utils/ClientStorage';
-import Project           from '@/models/Project';
-import ProjectLink       from '@/models/ProjectLink';
-import GuidelineSection  from '@/models/GuidelineSection';
-import ScreenComment     from '@/models/ScreenComment';
-import ScreenPreview     from '@/views/screens/ScreenPreview';
-import ScreensPanel      from '@/views/screens/ScreensPanel';
-import CommentPin        from '@/views/comments/CommentPin';
-import CommentPopover    from '@/views/comments/CommentPopover';
-import PreviewModeMixin  from '@/views/screens/PreviewModeMixin';
-import CommentsModeMixin from '@/views/screens/CommentsModeMixin';
-import SectionPreview    from '@/views/guidelines/SectionPreview';
-import PreviewBar        from '@/views/preview/PreviewBar';
+import moment               from 'moment';
+import AppConfig            from '@/utils/AppConfig';
+import ApiClient            from '@/utils/ApiClient';
+import CommonHelper         from '@/utils/CommonHelper';
+import ClientStorage        from '@/utils/ClientStorage';
+import Project              from '@/models/Project';
+import ProjectLink          from '@/models/ProjectLink';
+import GuidelineSection     from '@/models/GuidelineSection';
+import ScreenComment        from '@/models/ScreenComment';
+import ScreenPreview        from '@/views/screens/ScreenPreview';
+import ScreensPanel         from '@/views/screens/ScreensPanel';
+import CommentPin           from '@/views/comments/CommentPin';
+import CommentsPanel        from '@/views/comments/CommentsPanel';
+import ActiveCommentPopover from '@/views/comments/ActiveCommentPopover';
+import PreviewModeMixin     from '@/views/screens/PreviewModeMixin';
+import CommentsModeMixin    from '@/views/screens/CommentsModeMixin';
+import SectionPreview       from '@/views/guidelines/SectionPreview';
+import PreviewBar           from '@/views/preview/PreviewBar';
 
 const MODE_PREVIEW  = 'preview';
 const MODE_COMMENTS = 'comments';
@@ -180,7 +179,8 @@ export default {
         'screen-preview':            ScreenPreview,
         'screens-panel':             ScreensPanel,
         'comment-pin':               CommentPin,
-        'comment-popover':           CommentPopover,
+        'comments-panel':            CommentsPanel,
+        'active-comment-popover':    ActiveCommentPopover,
         'guideline-section-preview': SectionPreview,
         'preview-bar':               PreviewBar,
     },

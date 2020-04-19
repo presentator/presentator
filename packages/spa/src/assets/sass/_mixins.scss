@@ -180,7 +180,7 @@
 }
 
 @mixin shadowize($value...) {
-    box-shadow: 0px 3px 10px 0px rgba(#0e104d, 0.07), $value;
+    box-shadow: 0px 3px 10px 0px rgba(#0e104d, 0.06), $value;
 }
 
 @mixin clear-list {

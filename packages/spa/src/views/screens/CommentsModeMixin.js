@@ -7,21 +7,25 @@ export default {
     data() {
         return {
             isLoadingComments:    false,
-            showResolvedComments: false,
+            showCommentsPanel:    false,
             mentionsList:         [],
         }
     },
     computed: {
         ...mapState({
-            activePrototypeId: state => state.prototypes.activePrototypeId,
-            activeScreenId:    state => state.screens.activeScreenId,
-            scaleFactor:       state => state.screens.scaleFactor,
-            previewToken:      state => state.preview.previewToken,
-            unreadComments:    state => state.notifications.unreadComments,
+            activePrototypeId:    state => state.prototypes.activePrototypeId,
+            activeScreenId:       state => state.screens.activeScreenId,
+            scaleFactor:          state => state.screens.scaleFactor,
+            previewToken:         state => state.preview.previewToken,
+            showResolvedComments: state => state.comments.showResolvedComments,
+            activeCommentId:      state => state.comments.activeCommentId,
+            unreadComments:       state => state.notifications.unreadComments,
         }),
         ...mapGetters({
             getCommentsForScreen:       'comments/getCommentsForScreen',
+            activeComment:              'comments/activeComment',
             getUnreadCommentsForScreen: 'notifications/getUnreadCommentsForScreen',
+            isCommentUnread:            'notifications/isCommentUnread',
         }),
 
         activeScreenComments() {
@@ -49,12 +53,21 @@ export default {
                 }
             }
         },
+        activeCommentId(newVal, oldVal) {
+            this.updateQueryCommentIdParam();
+
+            if (this.activeComment && this.activeComment.isResolved) {
+                this.setShowResolvedComments(true);
+            }
+        },
     },
     methods: {
         ...mapActions({
-            setComments:    'comments/setComments',
-            addComment:     'comments/addComment',
-            appendComments: 'comments/appendComments',
+            setComments:             'comments/setComments',
+            addComment:              'comments/addComment',
+            appendComments:          'comments/appendComments',
+            setShowResolvedComments: 'comments/setShowResolvedComments',
+            setActiveCommentId:      'comments/setActiveCommentId',
         }),
 
         convertCollaboratorsListToMentionsList(collaborators, excludeEmails = []) {
@@ -76,18 +89,6 @@ export default {
             }
 
             return result;
-        },
-        isCommentUnread(commentId) {
-            for (let i in this.activeUnreadComments) {
-                if (
-                    this.activeUnreadComments[i].id == commentId ||
-                    this.activeUnreadComments[i].replyTo == commentId
-                ) {
-                    return true;
-                }
-            }
-
-            return false;
         },
         loadComments(prototypeId, page = 1, forPreview = false) {
             prototypeId = prototypeId || this.activePrototypeId;
@@ -136,7 +137,7 @@ export default {
 
                 if (this.$route.query.commentId) {
                     setTimeout(() => {
-                        this.viewComment(this.$route.query.commentId);
+                        this.setActiveCommentId(this.$route.query.commentId);
                     }, 300); // animation delay
                 }
             }).catch((err) => {
@@ -148,92 +149,35 @@ export default {
                 return;
             }
 
-            screenId = screenId || this.activeScreenId;
+            this.deactivateComments();
 
             var comment = new ScreenComment({
-                screenId: screenId,
+                screenId: (screenId || this.activeScreenId),
                 left:     this.scaleFactor > 0 ? (e.offsetX / this.scaleFactor) : e.offsetX,
                 top:      this.scaleFactor > 0 ? (e.offsetY / this.scaleFactor) : e.offsetY,
             });
 
             this.addComment(comment);
 
-            this.$nextTick(() => {
-                if (this.$refs.screenCommentPins) {
-                    var commentPin = this.$refs.screenCommentPins[this.$refs.screenCommentPins.length - 1];
-
-                    commentPin && commentPin.activate();
-                }
-            });
-        },
-        viewComment(commentId) {
-            if (!this.$refs.screenCommentPins) {
-                return;
-            }
-
-            for (let i in this.$refs.screenCommentPins) {
-                let commentPin = this.$refs.screenCommentPins[i];
-                if (commentPin.comment && commentPin.comment.id == commentId) {
-                    if (commentPin.comment.status === 'resolved') {
-                        this.showResolvedComments = true;
-                    }
-
-                    commentPin.activate();
-
-                    break;
-                }
-            }
+            this.setActiveCommentId(comment.id);
         },
         deactivateComments() {
-            if (this.$refs.commentPopover) {
-                this.$refs.commentPopover.close();
-            }
+            this.setActiveCommentId(null);
+        },
+        updateQueryCommentIdParam() {
+            var query = Object.assign({}, this.$route.query);
 
-            var deactivatedCommentIds = [];
-            if (this.$refs.screenCommentPins) {
-                for (let i in this.$refs.screenCommentPins) {
-                    if (this.$refs.screenCommentPins[i].isActive) {
-                        this.$refs.screenCommentPins[i].deactivate();
-
-                        deactivatedCommentIds.push(this.$refs.screenCommentPins[i].comment.id);
-                    }
-                }
-            }
-
-            // remove commentId from the query string
-            if (
-                this.$route.query.commentId &&
-                CommonHelper.inArray(deactivatedCommentIds, this.$route.query.commentId)
-            ) {
-                var query = Object.assign({}, this.$route.query);
+            if (this.activeComment && this.activeComment.isNew) {
+                query.commentId = this.activeCommentId;
+            } else {
                 delete(query.commentId);
-                this.$router.replace({
-                    name:   this.$route.name,
-                    params: Object.assign({}, this.$route.params),
-                    query:  query,
-                });
             }
-        },
-        onCommentPopoverClose() {
-            this.deactivateComments();
-        },
-        onCommentActivate(comment, elem) {
-            this.deactivateComments();
 
-            if (this.$refs.commentPopover) {
-                this.$refs.commentPopover.open(comment, elem);
-
-                // set commentId query param
-                if (comment.id && this.$route.query.commentId != comment.id) {
-                    this.$router.replace({
-                        name: this.$route.name,
-                        params: Object.assign({}, this.$route.params),
-                        query: Object.assign({}, this.$route.query, {
-                            commentId: comment.id,
-                        }),
-                    });
-                }
-            }
+            this.$router.replace({
+                name: this.$route.name,
+                params: Object.assign({}, this.$route.params),
+                query: query,
+            });
         },
         onCommentRepositioning(comment, elem) {
             if (this.$refs.commentPopover) {

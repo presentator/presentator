@@ -6,23 +6,23 @@
             class="popover comment-popover"
             :class="{'active': isActive}"
         >
-            <div v-if="comment.id" class="form-group resolved-checkbox">
+            <div v-if="!lastActiveComment.isNew" class="form-group resolved-checkbox">
                 <input type="checkbox"
-                    :id="'mark_as_resoved_' + comment.id"
-                    v-model="comment.status"
+                    :id="'mark_as_resoved_' + lastActiveComment.id"
+                    v-model="lastActiveComment.status"
                     true-value="resolved"
                     false-value="pending"
                     @change="saveCommentStatus()"
                 >
 
-                <label :for="'mark_as_resoved_' + comment.id">{{ $t('Mark as resolved') }}</label>
+                <label :for="'mark_as_resoved_' + lastActiveComment.id">{{ $t('Mark as resolved') }}</label>
             </div>
 
             <div v-if="isLoadingReplies" class="block txt-center txt-hint p-small">
                 <span class="loader"></span>
             </div>
 
-            <div v-if="!isLoadingReplies && comment.id" ref="commentsListContainer" class="comments-list">
+            <div v-if="!isLoadingReplies && !lastActiveComment.isNew" ref="commentsListContainer" class="comments-list">
                 <div v-for="listItem in commentsList"
                     :key="'reply_' + listItem.id"
                     :class="{'primary': listItem.isPrimary}"
@@ -36,9 +36,9 @@
                         <i v-else class="fe fe-user"></i>
                     </figure>
                     <div class="content">
-                        <small>
+                        <small class="content-header">
                             <span class="name">{{ listItem.user ? listItem.user.identifier : listItem.from}}</span>
-                            <span class="date txt-hint m-l-5">{{ listItem.createdAtFromNow }}</span>
+                            <span class="date txt-hint">{{ listItem.createdAtFromNow }}</span>
                         </small>
                         <div class="message">{{ listItem.message }}</div>
                     </div>
@@ -105,7 +105,7 @@ import ScreenComment from '@/models/ScreenComment';
 import MentionsList  from '@/components/MentionsList';
 
 export default {
-    name: 'comment-popover',
+    name: 'active-comment-popover',
     components: {
         'mentions-list': MentionsList,
     },
@@ -123,11 +123,10 @@ export default {
     },
     data() {
         return {
-            isActive:         false,
-            isProcessing:     false,
-            isLoadingReplies: false,
-            comment:          new ScreenComment,
-            replies:          [],
+            isProcessing:      false,
+            isLoadingReplies:  false,
+            lastActiveComment: new ScreenComment,
+            replies:           [],
             // form fields
             message: '',
             from:    '',
@@ -135,18 +134,23 @@ export default {
     },
     computed: {
         ...mapState({
-            previewToken: state => state.preview.previewToken,
+            previewToken:    state => state.preview.previewToken,
+            activeCommentId: state => state.comments.activeCommentId,
         }),
         ...mapGetters({
+            activeComment:               'comments/activeComment',
             getUnreadComment:            'notifications/getUnreadComment',
             getUnreadCommentsForComment: 'notifications/getUnreadCommentsForComment',
         }),
 
+        isActive() {
+            return this.activeComment != null;
+        },
         commentsList() {
             var result = this.replies.slice();
 
-            if (this.comment.id) {
-                result.unshift(this.comment);
+            if (this.lastActiveComment && !this.lastActiveComment.isNew) {
+                result.unshift(this.lastActiveComment);
             }
 
             result.sort((a, b) => (Date.parse(a['createdAt']) - Date.parse(b['createdAt'])));
@@ -154,7 +158,7 @@ export default {
             return result;
         },
         unreadCommentReplies() {
-            return this.getUnreadCommentsForComment(this.comment.id);
+            return this.getUnreadCommentsForComment(this.activeCommentId);
         },
     },
     watch: {
@@ -181,6 +185,13 @@ export default {
                 }
             }
         },
+        activeCommentId(newVal, oldVal) {
+            if (this.activeComment) {
+                this.open();
+            } else {
+                this.close();
+            }
+        },
     },
     mounted() {
         document.addEventListener('scroll', this.onEventPopoverReposition, {
@@ -203,6 +214,7 @@ export default {
     },
     methods: {
         ...mapActions({
+            setActiveCommentId:  'comments/setActiveCommentId',
             removeComment:       'comments/removeComment',
             removeUnreadComment: 'notifications/removeUnreadComment',
             markAsRead:          'notifications/markAsRead',
@@ -215,57 +227,35 @@ export default {
                 this.$refs.messageBtn.blur();
             }
         },
-        open(comment, repositionToElem) {
-            if (this.isActive) {
-                return;
-            }
-
-            this.isActive = true;
+        open() {
+            this.lastActiveComment = this.activeComment;
 
             this.replies = [];
-
-            if (comment instanceof ScreenComment) {
-                this.comment = comment;
-            } else {
-                this.comment = new ScreenComment(comment);
-            }
 
             this.resetForm();
 
             this.loadReplies();
 
-            if (repositionToElem) {
-                this.$nextTick(() => {
-                    this.reposition(repositionToElem);
-                });
-            }
+            this.$nextTick(() => this.reposition());
 
-            if (!this.comment.id && this.$refs.messageField) {
+            if (this.lastActiveComment.isNew && this.$refs.messageField) {
                 setTimeout(() => {
                     if (this.$refs.messageField) {
                         this.$refs.messageField.focus();
                     }
                 }, 100); // popover animation delay
             }
-
-            this.$emit('opened');
         },
         close() {
-            if (!this.isActive) {
-                return;
-            }
+            this.setActiveCommentId(null);
 
-            this.isActive = false;
-
-            if (!this.comment.id) {
-                this.removeComment(this.comment.id);
+            if (this.lastActiveComment.isNew) {
+                this.removeComment(this.lastActiveComment.id);
             }
 
             if (this.$refs.mentionsList) {
                 this.$refs.mentionsList.hide();
             }
-
-            this.$emit('closed');
         },
         onEventPopoverReposition(e) {
             if (this.isActive) {
@@ -273,11 +263,12 @@ export default {
             }
         },
         reposition(repositionToElem) {
-            repositionToElem = repositionToElem || document.querySelector('.comment-pin[data-id="' + this.comment.id + '"]');
+            repositionToElem = repositionToElem || document.querySelector('.comment-pin[data-id="' + this.lastActiveComment.id + '"]');
             if (!this.isActive || !repositionToElem) {
                 return;
             }
 
+            var container = document.querySelector('.preview-container') || document.documentElement;
             var popover   = this.$refs.popover;
             var elPos     = repositionToElem.getBoundingClientRect();
             var tolerance = 5;
@@ -289,7 +280,7 @@ export default {
             popover.style.top  = '0px';
 
             // right screen edge constraint
-            if (left + popover.offsetWidth > document.documentElement.clientWidth) {
+            if (left + popover.offsetWidth > container.clientWidth) {
                 left = elPos.left - popover.offsetWidth - tolerance;
             }
 
@@ -297,8 +288,8 @@ export default {
             left = left >= 0 ? left : 0;
 
             // bottom screen edge constraint
-            if (top + popover.offsetHeight > document.documentElement.clientHeight) {
-                top = document.documentElement.clientHeight - popover.offsetHeight;
+            if (top + popover.offsetHeight > container.clientHeight) {
+                top = container.clientHeight - popover.offsetHeight;
             }
 
             // top screen edge constraint
@@ -312,7 +303,7 @@ export default {
         // ---
 
         loadReplies() {
-            if (this.isLoadingReplies || !this.comment.id) {
+            if (this.isLoadingReplies || this.lastActiveComment.isNew) {
                 return;
             }
 
@@ -324,13 +315,13 @@ export default {
 
             if (this.isForPreview) {
                 request = ApiClient.Previews.getScreenCommentsList(this.previewToken, 1, 199, {
-                    'search[screenId]': this.comment.screenId,
-                    'search[replyTo]':  this.comment.id,
+                    'search[screenId]': this.lastActiveComment.screenId,
+                    'search[replyTo]':  this.lastActiveComment.id,
                 });
             } else {
                 request = ApiClient.ScreenComments.getList(1, 199, {
-                    'search[screenId]': this.comment.screenId,
-                    'search[replyTo]':  this.comment.id,
+                    'search[screenId]': this.lastActiveComment.screenId,
+                    'search[replyTo]':  this.lastActiveComment.id,
                 });
             }
 
@@ -375,7 +366,7 @@ export default {
             this.removeComment(commentId);
 
             // close popover on primary comment deletion
-            if (this.comment.id == commentId) {
+            if (this.lastActiveComment.id == commentId) {
                 this.close();
             }
 
@@ -398,23 +389,23 @@ export default {
             this.isProcessing = true;
 
             var request;
-            var replyTo = this.comment.id || null;
+            var replyTo = !this.lastActiveComment.isNew ? this.lastActiveComment.id : null;
 
             if (this.isForPreview) {
                 request = ApiClient.Previews.createScreenComment(this.previewToken, {
                     replyTo:  replyTo,
-                    screenId: this.comment.screenId,
-                    left:     this.comment.left,
-                    top:      this.comment.top,
+                    screenId: this.lastActiveComment.screenId,
+                    left:     this.lastActiveComment.left,
+                    top:      this.lastActiveComment.top,
                     message:  this.message,
                     from:     this.from,
                 });
             } else {
                 request = ApiClient.ScreenComments.create({
                     replyTo:  replyTo,
-                    screenId: this.comment.screenId,
-                    left:     this.comment.left,
-                    top:      this.comment.top,
+                    screenId: this.lastActiveComment.screenId,
+                    left:     this.lastActiveComment.left,
+                    top:      this.lastActiveComment.top,
                     message:  this.message,
                 });
             }
@@ -426,7 +417,7 @@ export default {
 
                 this.$toast(this.$t('Successfully added new comment.'));
 
-                var comment = replyTo ? new ScreenComment() : this.comment;
+                var comment = replyTo ? new ScreenComment() : this.lastActiveComment;
 
                 comment.load(response.data);
 
@@ -448,7 +439,7 @@ export default {
             });
         },
         saveCommentStatus() {
-            if (this.isProcessing || !this.comment.id) {
+            if (this.isProcessing || this.lastActiveComment.isNew) {
                 return;
             }
 
@@ -457,25 +448,25 @@ export default {
             var request;
 
             if (this.isForPreview) {
-                request = ApiClient.Previews.updateScreenComment(this.previewToken, this.comment.id, {
-                    'status': this.comment.status,
+                request = ApiClient.Previews.updateScreenComment(this.previewToken, this.lastActiveComment.id, {
+                    'status': this.lastActiveComment.status,
                 });
             } else {
-                request = ApiClient.ScreenComments.update(this.comment.id, {
-                    'status': this.comment.status,
+                request = ApiClient.ScreenComments.update(this.lastActiveComment.id, {
+                    'status': this.lastActiveComment.status,
                 });
             }
 
             request.then((response) => {
-                this.comment.load(response.data);
+                this.lastActiveComment.load(response.data);
 
                 this.$toast(this.$t('Successfully updated comment state.'));
 
-                if (this.comment.isResolved) {
+                if (this.lastActiveComment.isResolved) {
                     this.close();
                 }
 
-                this.$emit('commentUpdated', this.comment);
+                this.$emit('commentUpdated', this.lastActiveComment);
             }).catch((err) => {
                 this.$errResponseHandler(err);
             }).finally(() => {

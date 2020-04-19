@@ -125,8 +125,8 @@ export default class CommonHelper {
     /**
      * Returns single element from objects array by matching a property value.
      *
-     * @param  {Array}  objectArr
-     * @param  {String} key
+     * @param  {Array} objectArr
+     * @param  {Mixed} key
      * @param  {Mixed} value
      * @return {Object}
      */
@@ -143,9 +143,9 @@ export default class CommonHelper {
     /**
      * Moves a single element objects array at the beginning.
      *
-     * @param {Array}  objectArr
-     * @param {String} key
-     * @param {Mixed}  value
+     * @param {Array} objectArr
+     * @param {Mixed} key
+     * @param {Mixed} value
      */
     static unshiftByKey(objectArr, key, value) {
         for (let i = objectArr.length - 1; i >= 0; i--) {
@@ -165,7 +165,7 @@ export default class CommonHelper {
      *
      * @param  {Array}  objectArr
      * @param  {Object} item
-     * @param  {String} [key]
+     * @param  {Mixed}  [key]
      * @return {Array}
      */
     static pushUnique(objectArr, item, key = 'id') {
@@ -190,7 +190,7 @@ export default class CommonHelper {
      * ```
      *
      * @param  {Object|Array} obj
-     * @param  {String}       key
+     * @param  {Mixed}        key
      * @param  {Mixed}        [defaultVal]
      * @param  {String}       [delimiter]
      * @return {Mixed}

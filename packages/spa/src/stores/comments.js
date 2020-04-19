@@ -5,10 +5,18 @@ export default CommonHelper.createResettableStore({
     namespaced: true,
     initialState() {
         return {
+            showResolvedComments: false,
+            activeCommentId: null,
             comments: [],
         };
     },
     mutations: {
+        setShowResolvedComments(state, isVisible) {
+            state.showResolvedComments = !!isVisible;
+        },
+        setActiveCommentId(state, id) {
+            state.activeCommentId = id;
+        },
         setComments(state, commentsData) {
             state.comments = ScreenComment.createInstances(commentsData);
         },
@@ -33,8 +41,29 @@ export default CommonHelper.createResettableStore({
         },
     },
     actions: {
+        setShowResolvedComments(context, isVisible) {
+            context.commit('setShowResolvedComments', isVisible);
+
+            // nullify active comment if is resolved and the resolved comments are not visible
+            if (!isVisible &&
+                context.getters.activeComment &&
+                context.getters.activeComment.isResolved
+            ) {
+                context.dispatch('setActiveCommentId', null);
+            }
+        },
+        setActiveCommentId(context, id) {
+            var comment = id !== null ? context.getters.getComment(id) : null;
+
+            context.commit('setActiveCommentId', comment ? comment.id : null);
+        },
         setComments(context, commentsData) {
             context.commit('setComments', commentsData);
+
+            // reset stored active comment id if a corresponding model doesn't exist
+            if (!context.getters.activeComment) {
+                context.dispatch('setActiveCommentId', null);
+            }
         },
         appendComments(context, commentsData) {
             for (let i in commentsData) {
@@ -49,9 +78,16 @@ export default CommonHelper.createResettableStore({
         },
         removeComment(context, id) {
             context.commit('removeComment', id);
+
+            if (context.state.activeCommentId == id) {
+                context.dispatch('setActiveCommentId', null);
+            }
         },
     },
     getters: {
+        activeComment: (state, getters) => {
+            return getters.getComment(state.activeCommentId);
+        },
         getComment: (state) => (id) => {
             return CommonHelper.findByKey(state.comments, 'id', id);
         },

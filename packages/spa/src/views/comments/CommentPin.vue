@@ -1,7 +1,7 @@
 <template>
     <dragger class="comment-pin"
         :class="{
-            'new':       !comment.id,
+            'new':       comment.isNew,
             'completed': comment.isResolved,
             'active':    isActive,
             'loader':    isProcessing,
@@ -13,7 +13,7 @@
         :data-id="comment.id"
         :enable="allowPositionChange"
         wrapperSelector=".screen-inner-wrapper"
-        @click.native.prevent="activate()"
+        @click.native.prevent="setActiveCommentId(comment.id)"
         @dragging="onRepositioning()"
         @dragStopped="updatePinPosition()"
     >
@@ -43,50 +43,45 @@ export default {
     },
     data() {
         return {
-            isActive:     false,
             isProcessing: false,
         }
     },
+    watch: {
+        activeCommentId(newVal, oldVal) {
+            if (this.comment.id == newVal) {
+                this.onActivate();
+            } else {
+                this.onDeactivate();
+            }
+        },
+    },
     computed: {
         ...mapState({
-            scaleFactor: state => state.screens.scaleFactor,
+            scaleFactor:     state => state.screens.scaleFactor,
+            activeCommentId: state => state.comments.activeCommentId,
         }),
+
+        isActive() {
+            return this.comment.id == this.activeCommentId;
+        },
     },
     methods: {
         ...mapActions({
-            removeComment: 'comments/removeComment',
+            removeComment:      'comments/removeComment',
+            setActiveCommentId: 'comments/setActiveCommentId',
         }),
 
-        activate() {
-            if (this.isActive) {
-                return;
-            }
-
-            this.$emit('beforeActivate', this.comment, this.$el);
-
-            this.isActive = true;
-
+        onActivate() {
             this.$nextTick(() => {
                 this.positionWithinView();
             });
-
-            this.$emit('activated', this.comment, this.$el);
         },
-        deactivate() {
-            if (!this.isActive) {
-                return;
-            }
-
-            this.isActive = false;
-
-            this.$emit('beforeDeactivate', this.comment, this.$el);
-
-            if (!this.comment.id) {
+        onDeactivate() {
+            if (this.comment.isNew) {
                 this.removeComment(this.comment.id);
             }
-
-            this.$emit('deactivated', this.comment, this.$el);
         },
+
         // ensures that the comment pin is in visible viewport
         positionWithinView() {
             this.$el.scrollIntoView({
@@ -98,7 +93,7 @@ export default {
             this.comment.left = this.$el.offsetLeft / this.scaleFactor;
             this.comment.top  = this.$el.offsetTop / this.scaleFactor;
 
-            if (!this.comment.id) {
+            if (this.comment.isNew) {
                 return;
             }
 

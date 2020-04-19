@@ -6,193 +6,197 @@
         </div>
         <div class="flex-fill-block"></div>
     </div>
-    <div v-else-if="activeScreen"
-        ref="previewContainer"
-        class="preview-container"
-        :class="{
-            'comments-mode':      isInCommentsMode,
-            'hotspots-mode':      isInHotspotsMode,
-            'preview-mode':       isInPreviewMode,
-            'preview-mode-hints': isPreviewModeHintsActive,
-        }"
-        :style="{
-            'background': activePrototype.isForDesktop && activeScreen ? activeScreen.background : null
-        }"
-        tabindex="-1"
-        @keydown.esc="onEscPress"
-        @keydown.ctrl.83.exact.prevent=""
-        @keyup.ctrl.83.exact.prevent="snapActiveHotspot"
-    >
-        <div class="flex-fill-block"></div>
 
-        <hotspot-popover
-            ref="hotspotPopover"
-            @closed="onHotspotPopoverClose"
-        ></hotspot-popover>
-
-        <comment-popover
-            ref="commentPopover"
-            :isForPreview="false"
-            :mentionsList="mentionsList"
-            @closed="onCommentPopoverClose"
-        ></comment-popover>
-
-        <screen-preview
-            ref="screenPreview"
-            :interactions="isInPreviewMode"
-            :activeScreenTooltip="modeHelpTooltip"
-            :fitToScreen="fitToScreen"
-            @activeScreenMousedown="onActiveScreenMousedown"
-            @activeScreenClick="onActiveScreenClick"
+    <div v-else-if="activeScreen" class="preview-container-wrapper">
+        <div ref="previewContainer"
+            class="preview-container"
+            :class="{
+                'comments-mode':      isInCommentsMode,
+                'hotspots-mode':      isInHotspotsMode,
+                'preview-mode':       isInPreviewMode,
+                'preview-mode-hints': isPreviewModeHintsActive,
+            }"
+            :style="{
+                'background': activePrototype.isForDesktop && activeScreen ? activeScreen.background : null
+            }"
+            tabindex="-1"
+            @keydown.esc="onEscPress"
+            @keydown.ctrl.83.exact.prevent=""
+            @keyup.ctrl.83.exact.prevent="snapActiveHotspot"
         >
-            <div v-if="isInHotspotsMode" class="block hotspots-block">
-                <hotspot-box v-for="hotspot in activeScreenHotspots"
-                    ref="hotspotBoxes"
-                    :key="hotspot.id"
-                    :hotspot="hotspot"
-                    :snapToImage="$refs.screenPreview ? $refs.screenPreview.$refs.activeScreen : null"
-                    @repositioning="onHotspotRepositioning"
-                    @repositionStopped="onHotspotRepositioning"
-                    @beforeActivate="onHotspotActivate"
-                ></hotspot-box>
-            </div>
+            <div class="flex-fill-block"></div>
 
-            <div v-if="isInCommentsMode" class="block comments-block">
-                <comment-pin v-for="comment in activeScreenComments"
-                    ref="screenCommentPins"
-                    :key="comment.id"
-                    :comment="comment"
-                    :allowPositionChange="true"
-                    :class="{
-                        'soft-hidden': (!showResolvedComments && comment.isResolved),
-                        'unread': isCommentUnread(comment.id),
-                    }"
-                    @repositioning="onCommentRepositioning"
-                    @beforeActivate="onCommentActivate"
-                ></comment-pin>
-            </div>
-        </screen-preview>
+            <hotspot-popover
+                ref="hotspotPopover"
+                @closed="onHotspotPopoverClose"
+            ></hotspot-popover>
 
-        <div class="flex-fill-block"></div>
+            <active-comment-popover
+                ref="commentPopover"
+                :isForPreview="false"
+                :mentionsList="mentionsList"
+            ></active-comment-popover>
 
-        <nav class="floating-bar preview-bar active"
-            :class="{'responsive-show-more': isResponsiveShowMoreActive}"
-        >
-            <div class="nav nav-left">
-                <router-link :to="{name: 'prototype', params: {projectId: activePrototype.projectId, prototypeId: activePrototype.id}}"
-                    class="ctrl-item ctrl-item-circle ctrl-item-close"
-                    v-tooltip.top="$t('Back to listing')"
-                >
-                    <i class="fe fe-arrow-left"></i>
-                </router-link>
-
-                <div v-if="$refs.screensPanel"
-                    class="ctrl-item ctrl-item-screens"
-                    :class="{'active': $refs.screensPanel.isActive}"
-                    v-tooltip.top="$t($refs.screensPanel.isActive ? 'Hide screens panel' : 'Show screens panel')"
-                    @click.prevent="$refs.screensPanel.toggle()"
-                >
-                    <span class="txt screen-title">{{ activeScreen.title }}</span>
-                    <span class="txt counter m-l-5">({{ $t('{current} of {total}', {current: activeScreenOrderedIndex + 1, total: screens.length}) }})</span>
-                    <i class="m-l-5 fe" :class="$refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
-                </div>
-            </div>
-            <div class="nav nav-center">
-                <div class="ctrl-item ctrl-item-circle ctrl-item-success"
-                    :class="{'highlight': isInPreviewMode}"
-                    v-tooltip.top="$t('Preview mode ({shortcut})', {shortcut: 'P'})"
-                    v-shortcut.80="setPreviewMode"
-                    @click.prevent="setPreviewMode()"
-                >
-                    <i class="fe fe-eye"></i>
+            <screen-preview
+                ref="screenPreview"
+                :interactions="isInPreviewMode"
+                :activeScreenTooltip="modeHelpTooltip"
+                :fitToScreen="fitToScreen"
+                @activeScreenMousedown="onActiveScreenMousedown"
+                @activeScreenClick="onActiveScreenClick"
+            >
+                <div v-if="isInHotspotsMode" class="block hotspots-block">
+                    <hotspot-box v-for="hotspot in activeScreenHotspots"
+                        ref="hotspotBoxes"
+                        :key="hotspot.id"
+                        :hotspot="hotspot"
+                        :snapToImage="$refs.screenPreview ? $refs.screenPreview.$refs.activeScreen : null"
+                        @repositioning="onHotspotRepositioning"
+                        @repositionStopped="onHotspotRepositioning"
+                        @beforeActivate="onHotspotActivate"
+                    ></hotspot-box>
                 </div>
 
-                <div class="ctrl-item ctrl-item-circle ctrl-item-primary"
-                    :class="{'highlight': isInHotspotsMode}"
-                    v-tooltip.top="$t('Hotspots mode ({shortcut})', {shortcut: 'H'})"
-                    v-shortcut.72="setHotspotsMode"
-                    @click.prevent="setHotspotsMode()"
-                >
-                    <span v-if="isLoadingHotspots || isLoadingHotspotTemplates" class="loader"></span>
-                    <i v-else class="fe fe-target"></i>
+                <div v-if="isInCommentsMode" class="block comments-block">
+                    <comment-pin v-for="comment in activeScreenComments"
+                        ref="screenCommentPins"
+                        :key="comment.id"
+                        :comment="comment"
+                        :allowPositionChange="true"
+                        :class="{
+                            'soft-hidden': (!showResolvedComments && comment.isResolved),
+                            'unread': isCommentUnread(comment.id),
+                        }"
+                        @repositioning="onCommentRepositioning"
+                    ></comment-pin>
                 </div>
+            </screen-preview>
 
-                <div class="ctrl-item ctrl-item-circle ctrl-item-danger"
-                    :class="{'highlight': isInCommentsMode}"
-                    v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
-                    v-shortcut.67="setCommentsMode"
-                    @click.prevent="setCommentsMode()"
-                >
-                    <span v-if="activeUnreadComments.length" class="beacon beacon-danger"></span>
+            <div class="flex-fill-block"></div>
 
-                    <span v-if="isLoadingComments" class="loader"></span>
-                    <i v-else class="fe fe-message-circle"></i>
+            <nav class="floating-bar preview-bar active"
+                :class="{'responsive-show-more': isResponsiveShowMoreActive}"
+            >
+                <div class="nav nav-left">
+                    <router-link :to="{name: 'prototype', params: {projectId: activePrototype.projectId, prototypeId: activePrototype.id}}"
+                        class="ctrl-item ctrl-item-circle ctrl-item-close"
+                        v-tooltip.top="$t('Back to listing')"
+                    >
+                        <i class="fe fe-arrow-left"></i>
+                    </router-link>
+
+                    <div v-if="$refs.screensPanel"
+                        class="ctrl-item ctrl-item-screens"
+                        :class="{'active': $refs.screensPanel.isActive}"
+                        v-tooltip.top="$t($refs.screensPanel.isActive ? 'Hide screens panel' : 'Show screens panel')"
+                        @click.prevent="$refs.screensPanel.toggle()"
+                    >
+                        <span class="txt screen-title">{{ activeScreen.title }}</span>
+                        <span class="txt counter m-l-5">({{ $t('{current} of {total}', {current: activeScreenOrderedIndex + 1, total: screens.length}) }})</span>
+                        <i class="m-l-5 fe" :class="$refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+                    </div>
                 </div>
-
-                <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-show-more responsive-only"
-                    v-tooltip.top="$t('More tools')"
-                    @click.prevent="responsiveShowMore"
-                >
-                    <i class="fe fe-more-horizontal"></i>
-                </div>
-            </div>
-            <div class="nav nav-right">
-                <div v-if="isInCommentsMode && totalActiveScreenComments > 0" class="form-group">
-                    <input type="checkbox" id="toggle_resolved_comments" v-model="showResolvedComments">
-                    <label for="toggle_resolved_comments">
-                        {{ $t('Show resolved comments') }}
-                        ({{ $t('{current} of {total}', {
-                            current: totalActiveScreenResolvedComments,
-                            total:   totalActiveScreenComments,
-                        }) }})
-                    </label>
-                </div>
-
-                <div v-if="isInHotspotsMode" class="ctrl-item ctrl-item-templates txt-default">
-                    <span class="txt title m-r-5">
-                        {{ $tc('0 Active hotspot templates | 1 Active hotspot template | {count} Active hotspot templates', totalActiveHotspotTemplates) }}
-                    </span>
-                    <i class="fe fe-chevron-up"></i>
-
-                    <hotspot-templates-popover
-                        class="transform-bottom-right"
-                        :screen="activeScreen"
-                    ></hotspot-templates-popover>
-                </div>
-
-                <div v-if="activePrototype.scaleFactor != 0"
-                    class="ctrl-item ctrl-item-circle"
-                    :class="fitToScreen ? 'ctrl-item-success active bg-light-border' : ''"
-                    v-tooltip.top="$t('Toggle fit to screen')"
-                    @click.prevent="toggleFitToScreen"
-                >
-                    <i class="fe fe-maximize"></i>
-                </div>
-
-                <div class="ctrl-item ctrl-item-circle">
-                    <div v-tooltip.top="$t('Screen settings')">
-                        <span v-if="$refs.screenEditPopover && $refs.screenEditPopover.isProcessing" class="loader"></span>
-                        <i v-else class="fe fe-settings"></i>
+                <div class="nav nav-center">
+                    <div class="ctrl-item ctrl-item-circle ctrl-item-success"
+                        :class="{'highlight': isInPreviewMode}"
+                        v-tooltip.top="$t('Preview mode ({shortcut})', {shortcut: 'P'})"
+                        v-shortcut.80="setPreviewMode"
+                        @click.prevent="setPreviewMode()"
+                    >
+                        <i class="fe fe-eye"></i>
                     </div>
 
-                    <screen-edit-popover
-                        ref="screenEditPopover"
-                        class="transform-bottom-right"
-                        :screen="activeScreen"
-                    ></screen-edit-popover>
+                    <div class="ctrl-item ctrl-item-circle ctrl-item-primary"
+                        :class="{'highlight': isInHotspotsMode}"
+                        v-tooltip.top="$t('Hotspots mode ({shortcut})', {shortcut: 'H'})"
+                        v-shortcut.72="setHotspotsMode"
+                        @click.prevent="setHotspotsMode()"
+                    >
+                        <span v-if="isLoadingHotspots || isLoadingHotspotTemplates" class="loader"></span>
+                        <i v-else class="fe fe-target"></i>
+                    </div>
+
+                    <div class="ctrl-item ctrl-item-circle ctrl-item-danger"
+                        :class="{'highlight': isInCommentsMode}"
+                        v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
+                        v-shortcut.67="setCommentsMode"
+                        @click.prevent="setCommentsMode()"
+                    >
+                        <span v-if="activeUnreadComments.length" class="beacon beacon-danger"></span>
+
+                        <span v-if="isLoadingComments" class="loader"></span>
+                        <i v-else class="fe fe-message-circle"></i>
+                    </div>
+
+                    <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-show-more responsive-only"
+                        v-tooltip.top="$t('More tools')"
+                        @click.prevent="responsiveShowMore"
+                    >
+                        <i class="fe fe-more-horizontal"></i>
+                    </div>
                 </div>
+                <div class="nav nav-right">
+                    <button v-if="isInCommentsMode && $refs.commentsPanel"
+                        class="btn btn-sm no-shadow comments-panel-toggle"
+                        :class="$refs.commentsPanel.isActive ? 'btn-danger' : 'btn-transp-danger'"
+                        @click.prevent="$refs.commentsPanel.toggle()"
+                    >
+                        <span class="txt">
+                            {{ $t('Comments panel ({resolved}/{total})', {
+                                resolved: totalActiveScreenResolvedComments,
+                                total: totalActiveScreenComments,
+                            }) }}
+                        </span>
+                    </button>
 
-                <div class="flex-fill-block responsive-only"></div>
+                    <div v-if="isInHotspotsMode" class="ctrl-item ctrl-item-templates txt-default">
+                        <span class="txt title m-r-5">
+                            {{ $tc('0 Active hotspot templates | 1 Active hotspot template | {count} Active hotspot templates', totalActiveHotspotTemplates) }}
+                        </span>
+                        <i class="fe fe-chevron-up"></i>
 
-                <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more responsive-only"
-                    @click.prevent="responsiveHideMore"
-                >
-                    <i class="fe fe-x"></i>
+                        <hotspot-templates-popover
+                            class="transform-bottom-right"
+                            :screen="activeScreen"
+                        ></hotspot-templates-popover>
+                    </div>
+
+                    <div v-if="activePrototype.scaleFactor != 0"
+                        class="ctrl-item ctrl-item-circle"
+                        :class="fitToScreen ? 'ctrl-item-success active bg-light-border' : ''"
+                        v-tooltip.top="$t('Toggle fit to screen')"
+                        @click.prevent="toggleFitToScreen"
+                    >
+                        <i class="fe fe-maximize"></i>
+                    </div>
+
+                    <div class="ctrl-item ctrl-item-circle">
+                        <div v-tooltip.top="$t('Screen settings')">
+                            <span v-if="$refs.screenEditPopover && $refs.screenEditPopover.isProcessing" class="loader"></span>
+                            <i v-else class="fe fe-settings"></i>
+                        </div>
+
+                        <screen-edit-popover
+                            ref="screenEditPopover"
+                            class="transform-bottom-right"
+                            :screen="activeScreen"
+                        ></screen-edit-popover>
+                    </div>
+
+                    <div class="flex-fill-block responsive-only"></div>
+
+                    <div class="ctrl-item ctrl-item-circle ctrl-item-responsive-hide-more responsive-only"
+                        @click.prevent="responsiveHideMore"
+                    >
+                        <i class="fe fe-x"></i>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <screens-panel ref="screensPanel"></screens-panel>
+            <screens-panel ref="screensPanel"></screens-panel>
+        </div>
+
+        <comments-panel ref="commentsPanel"></comments-panel>
     </div>
 </template>
 
@@ -207,7 +211,8 @@ import HotspotBox              from '@/views/hotspots/HotspotBox';
 import HotspotPopover          from '@/views/hotspots/HotspotPopover';
 import HotspotTemplatesPopover from '@/views/hotspots/HotspotTemplatesPopover';
 import CommentPin              from '@/views/comments/CommentPin';
-import CommentPopover          from '@/views/comments/CommentPopover';
+import ActiveCommentPopover    from '@/views/comments/ActiveCommentPopover';
+import CommentsPanel           from '@/views/comments/CommentsPanel';
 import PreviewModeMixin        from '@/views/screens/PreviewModeMixin';
 import CommentsModeMixin       from '@/views/screens/CommentsModeMixin';
 import HotspotsModeMixin       from '@/views/screens/HotspotsModeMixin';
@@ -230,7 +235,8 @@ export default {
         'screens-panel':             ScreensPanel,
         'screen-edit-popover':       ScreenEditPopover,
         'comment-pin':               CommentPin,
-        'comment-popover':           CommentPopover,
+        'active-comment-popover':    ActiveCommentPopover,
+        'comments-panel':            CommentsPanel,
         'hotspot-box':               HotspotBox,
         'hotspot-popover':           HotspotPopover,
         'hotspot-templates-popover': HotspotTemplatesPopover,
@@ -280,6 +286,11 @@ export default {
     },
     watch: {
         mode(newVal, oldVal) {
+            // close comments panel
+            if (!this.isInCommentsMode && this.$refs.commentsPanel) {
+                this.$refs.commentsPanel.hide();
+            }
+
             this.updateRouteMode();
         },
         activeScreenId(newVal, oldVal) {

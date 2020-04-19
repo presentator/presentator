@@ -78,4 +78,8 @@
     .languages-select .selected-language .language-title {
         display: none !important;
     }
+    .screen-comments-panel,
+    .floating-bar .comments-panel-toggle {
+        display: none;
+    }
 }
