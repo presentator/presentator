@@ -50,7 +50,7 @@
         <div class="row align-items-center">
             <div class="col-6">
                 <div class="form-group">
-                    <input type="checkbox" id="screen_fixed_header_check" v-model="hasFixedHeader">
+                    <input type="checkbox" id="screen_fixed_header_check" v-model="hasFixedHeader" @change="onFixedHeaderToggleChange()">
                     <label for="screen_fixed_header_check">
                         <span class="txt">{{ $t('Has fixed header') }}</span>
                         <screen-bulk-setting-handle :screen="screen" setting="fixedHeader"></screen-bulk-setting-handle>
@@ -69,7 +69,7 @@
         <div class="row align-items-center">
             <div class="col-6">
                 <div class="form-group m-b-0">
-                    <input type="checkbox" id="screen_fixed_footer_check" v-model="hasFixedFooter">
+                    <input type="checkbox" id="screen_fixed_footer_check" v-model="hasFixedFooter" @change="onFixedFooterToggleChange()">
                     <label for="screen_fixed_footer_check">
                         <span class="txt">{{ $t('Has fixed footer') }}</span>
                         <screen-bulk-setting-handle :screen="screen" setting="fixedFooter"></screen-bulk-setting-handle>
@@ -130,18 +130,6 @@ export default {
 
             this.initReplace(this.screen);
         },
-        hasFixedHeader(newVal, oldVal) {
-            if (!newVal) {
-                this.screen.fixedHeader = 0;
-                this.saveChanges();
-            }
-        },
-        hasFixedFooter(newVal, oldVal) {
-            if (!newVal) {
-                this.screen.fixedFooter = 0;
-                this.saveChanges();
-            }
-        }
     },
     mounted() {
         this.initForm();
@@ -166,6 +154,20 @@ export default {
             this.hasFixedHeader = this.screen.fixedHeader > 0 ? true : false;
             this.hasFixedFooter = this.screen.fixedFooter > 0 ? true : false;
         },
+        onFixedHeaderToggleChange() {
+            // unset on toggle off
+            if (!this.hasFixedHeader && this.screen.fixedHeader > 0) {
+                this.screen.fixedHeader = 0;
+                this.saveChanges();
+            }
+        },
+        onFixedFooterToggleChange() {
+            // unset on toggle off
+            if (!this.hasFixedFooter && this.screen.fixedFooter > 0) {
+                this.screen.fixedFooter = 0;
+                this.saveChanges();
+            }
+        },
         saveChanges() {
             if (this.isProcessing) {
                 return;
@@ -173,18 +175,21 @@ export default {
 
             this.isProcessing = true;
 
-            ApiClient.Screens.update(this.screen.id, {
-                'title':       this.screen.title,
-                'background':  this.screen.background,
-                'alignment':   this.screen.alignment,
-                'fixedHeader': this.hasFixedHeader ? this.screen.fixedHeader : 0,
-                'fixedFooter': this.hasFixedFooter ? this.screen.fixedFooter : 0,
+            // copy reference in case the screen prop is changed during update
+            var screen = this.screen;
+
+            ApiClient.Screens.update(screen.id, {
+                'title':       screen.title,
+                'background':  screen.background,
+                'alignment':   screen.alignment,
+                'fixedHeader': this.hasFixedHeader ? screen.fixedHeader : 0,
+                'fixedFooter': this.hasFixedFooter ? screen.fixedFooter : 0,
             }).then((response) => {
-                this.screen.load(response.data);
+                screen.load(response.data);
 
                 this.setErrors({});
 
-                this.$emit('updated', this.screen.id);
+                this.$emit('updated', screen.id);
             }).catch((err) => {
                 this.$errResponseHandler(err);
 

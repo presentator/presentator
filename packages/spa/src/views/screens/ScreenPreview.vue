@@ -331,7 +331,7 @@ export default {
 
             if (
                 !screen ||
-                (!forceChange && id === this.activeScreenId)
+                (!forceChange && id == this.activeScreenId)
             ) {
                 return;
             }
