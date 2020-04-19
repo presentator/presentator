@@ -18,7 +18,6 @@
     "Close panel": "Panel schließen",
     "All projects": "Alle Projekte",
     "Mark all as read": "Alles als gelesen markieren",
-    "No unread comments.": "Keine ungelesenen Kommentare.",
     "User avatar": "Nutzer-Avatar",
     "Mark as read": "Als gelesen markieren",
     "Account activation": "Kontoaktivierung",
@@ -60,7 +59,7 @@
     "Your password has been reset successfully.": "Dein Passwort wurde erfolgreich zurückgesetzt.",
     "Type your new password:": "Gib dein neues Passwort ein:",
     "Confirm new password": "Bestätige dein neues Passwort",
-    "Show resolved comments": "Zeige erledigte Kommentare",
+    "Show resolved comments ({count})": "Zeige erledigte Kommentare ({count})",
     "Mark as resolved": "Als erledigt markieren",
     "Delete": "Löschen",
     "Your email": "Deine E-Mail Adresse",
@@ -334,5 +333,6 @@
     "Changing your email address": "Ändern deiner E-Mail Adresse",
     "The provided email change token is invalid or expired.": "Der Token zum Ändern der E-Mail Adresse ist ungültig oder abgelaufen.",
     "Email change confirmation": "Bestätigung zur Änderung der E-Mail Adresse",
-    "More tools": "Mehr"
+    "More tools": "Mehr",
+    "View project": "Projekt ansehen"
 }

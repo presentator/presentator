@@ -18,7 +18,6 @@
     "Close panel": "Затвори",
     "All projects": "Всички проекти",
     "Mark all as read": "Маркирай всички като прочетени",
-    "No unread comments.": "Няма непрочетени коментари.",
     "User avatar": "Аватар",
     "Mark as read": "Маркирай като прочетен",
     "Account activation": "Активиране на акаунт",
@@ -60,7 +59,7 @@
     "Your password has been reset successfully.": "Твоята парола бе променена успешно.",
     "Type your new password:": "Въведи новата си парола:",
     "Confirm new password": "Потвърждение на новата парола",
-    "Show resolved comments": "Покажи завършените коментари",
+    "Show resolved comments ({count})": "Покажи финализираните коментари ({count})",
     "Mark as resolved": "Маркирай като завършен",
     "Delete": "Изтрий",
     "Your email": "Твоят имейл",
@@ -339,7 +338,12 @@
     "More tools": "Други настройки",
     "Recent activity": "Последна активност",
     "Viewed project links": "Последно разгледани линкове",
-    "You haven't accessed any projects links yet.": "Няма скорошна активност за показване.",
     "View project": "Разгледай проекта",
-    "Apply to all screens": "Приложи за всички екрани"
+    "Apply to all screens": "Приложи за всички екрани",
+    "No recent activity to show.": "Няма скорошна активност за показване.",
+    "No notifications to show.": "Няма известия за показване.",
+    "Screen comments": "Коментари към екрана",
+    "The screen doesn't have any comments yet.": "Екранът няма оставени коментари.",
+    "All screen comments have been resolved.": "Всички коментари към екрана са финализирани.",
+    "Comments panel ({resolved}/{total})": "Коментари ({resolved}/{total})"
 }

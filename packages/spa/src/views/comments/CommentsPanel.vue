@@ -21,7 +21,7 @@
             <div class="app-sidebar-section app-sidebar-content">
                 <div v-if="totalActiveScreenComments <= 0" class="placeholder-block">
                     <div class="icon"><i class="fe fe-message-circle"></i></div>
-                    <div class="content">{{ $t('The screen doesn\'t have any screen comments yet.') }}</div>
+                    <div class="content">{{ $t("The screen doesn't have any comments yet.") }}</div>
                 </div>
 
                 <div v-else-if="!showResolvedComments && totalActiveScreenComments > 0 && !hasUnresolvedComments" class="placeholder-block">
