@@ -6,9 +6,9 @@ import ScreenComment from '@/models/ScreenComment';
 export default {
     data() {
         return {
-            isLoadingComments:    false,
-            showCommentsPanel:    false,
-            mentionsList:         [],
+            isLoadingComments: false,
+            showCommentsPanel: false,
+            mentionsList:      [],
         }
     },
     computed: {
@@ -167,8 +167,8 @@ export default {
         updateQueryCommentIdParam() {
             var query = Object.assign({}, this.$route.query);
 
-            if (this.activeComment && this.activeComment.isNew) {
-                query.commentId = this.activeCommentId;
+            if (this.activeComment && !this.activeComment.isNew) {
+                query.commentId = this.activeComment.id;
             } else {
                 delete(query.commentId);
             }
