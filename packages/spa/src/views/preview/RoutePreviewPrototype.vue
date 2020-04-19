@@ -251,6 +251,12 @@ export default {
             this.updateRouteScreenId();
             this.deactivateComments();
         },
+        mode(newVal, oldVal) {
+            // close comments panel
+            if (!this.isInCommentsMode && this.$refs.commentsPanel) {
+                this.$refs.commentsPanel.hide();
+            }
+        },
     },
     activated() {
         if (!this.isLoadingData && !this.screens.length) {
