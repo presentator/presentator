@@ -82,7 +82,7 @@
                 </div>
 
                 <div v-show="type === 'overlay'" class="form-group form-group-sm">
-                    <label for="">{{ $t('Offset')}} <small class="txt-hint">(px)</small></label>
+                    <label>{{ $t('Offset')}} <small class="txt-hint">(px)</small></label>
                     <div class="input-group">
                         <div class="input-addon bg-light-border">T</div>
                         <input type="number" v-model.number="offsetTop" v-tooltip.bottom="$t('Top offset')">

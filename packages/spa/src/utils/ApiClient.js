@@ -8,7 +8,7 @@ PresentatorClient.prototype.storeApiToken = function (token) {
     this.setToken(token);
 };
 
-PresentatorClient.prototype.getStoredApiToken = function (token) {
+PresentatorClient.prototype.getStoredApiToken = function () {
     return ClientStorage.getItem('auth_token', '');
 };
 

@@ -106,9 +106,6 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import ApiClient     from '@/utils/ApiClient';
-import CommonHelper  from '@/utils/CommonHelper';
-import ScreenComment from '@/models/ScreenComment';
 
 export default {
     name: 'notifications-panel',
@@ -136,11 +133,6 @@ export default {
                 }
             }
 
-            // reset selected project id if missing from the list
-            if (this.activeProjectId && !result[this.activeProjectId]) {
-                this.activeProjectId = null;
-            }
-
             return result;
         },
         activeUnreadComments() {
@@ -149,6 +141,14 @@ export default {
             }
 
             return this.getUnreadCommentsForProject(this.activeProjectId);
+        },
+    },
+    watch: {
+        projectsList(newVal, oldVal) {
+            // reset selected project id if missing from the list
+            if (this.activeProjectId && !this.projectsList[this.activeProjectId]) {
+                this.activeProjectId = null;
+            }
         },
     },
     methods: {

@@ -66,7 +66,7 @@ export default {
             }
 
             for (let i in this.$refs.hotspotBoxes) {
-                let hotspot = this.$refs.hotspotBoxes[i];
+                let hotspotBox = this.$refs.hotspotBoxes[i];
                 if (hotspotBox.hotspot && hotspotBox.hotspot.id == hotspotId) {
                     hotspotBox.activate();
 

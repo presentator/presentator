@@ -422,12 +422,10 @@ export default class CommonHelper {
      * @return {Object} Object with `x`, `y`, `w` and `h` properties of the found feature.
      */
     static closestFeatureEdge(imgElem, crop = {}, threshold = 5) {
-        imgElem   = imgElem;
-        threshold = threshold;
-        crop.x    = crop.x || 0;
-        crop.y    = crop.y || 0;
-        crop.w    = crop.w || imgElem.naturalWidth;
-        crop.h    = crop.h || imgElem.naturalHeight;
+        crop.x = crop.x || 0;
+        crop.y = crop.y || 0;
+        crop.w = crop.w || imgElem.naturalWidth;
+        crop.h = crop.h || imgElem.naturalHeight;
 
         // create in memory canvas to get image data
         var canvas    = document.createElement('canvas');
@@ -555,7 +553,7 @@ export default class CommonHelper {
         }
 
         return true;
-    };
+    }
 
     /**
      * Opens url address within a new popup window.
@@ -639,7 +637,7 @@ export default class CommonHelper {
         }
 
         return {};
-    };
+    }
 
     /**
      * Helper factory method that adds reset functionality to a vuex store definition.
@@ -680,5 +678,5 @@ export default class CommonHelper {
         }
 
         return definition;
-    };
+    }
 }

@@ -12,20 +12,20 @@
             <template v-slot:content>
                 <form-field class="required" name="email">
                     <label for="user_email">{{ $t('Email') }}</label>
-                    <input type="email" v-model.trim="email" id="user_email"" required>
+                    <input type="email" v-model.trim="email" id="user_email" required>
                 </form-field>
 
                 <div class="row">
                     <div class="col-6">
                         <form-field name="firstName">
                             <label for="user_first_name">{{ $t('First name') }}</label>
-                            <input type="text" v-model.trim="firstName" id="user_first_name"">
+                            <input type="text" v-model.trim="firstName" id="user_first_name">
                         </form-field>
                     </div>
                     <div class="col-6">
                         <form-field name="lastName">
                             <label for="user_last_name">{{ $t('Last name') }}</label>
-                            <input type="text" v-model.trim="lastName" id="user_last_name"">
+                            <input type="text" v-model.trim="lastName" id="user_last_name">
                         </form-field>
                     </div>
                 </div>

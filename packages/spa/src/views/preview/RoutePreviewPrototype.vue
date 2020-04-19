@@ -138,7 +138,6 @@ import CommonHelper         from '@/utils/CommonHelper';
 import ClientStorage        from '@/utils/ClientStorage';
 import Project              from '@/models/Project';
 import ProjectLink          from '@/models/ProjectLink';
-import GuidelineSection     from '@/models/GuidelineSection';
 import ScreenComment        from '@/models/ScreenComment';
 import ScreenPreview        from '@/views/screens/ScreenPreview';
 import ScreensPanel         from '@/views/screens/ScreensPanel';
@@ -147,7 +146,6 @@ import CommentsPanel        from '@/views/comments/CommentsPanel';
 import ActiveCommentPopover from '@/views/comments/ActiveCommentPopover';
 import PreviewModeMixin     from '@/views/screens/PreviewModeMixin';
 import CommentsModeMixin    from '@/views/screens/CommentsModeMixin';
-import SectionPreview       from '@/views/guidelines/SectionPreview';
 import PreviewBar           from '@/views/preview/PreviewBar';
 
 const MODE_PREVIEW  = 'preview';
@@ -176,13 +174,12 @@ export default {
         },
     },
     components: {
-        'screen-preview':            ScreenPreview,
-        'screens-panel':             ScreensPanel,
-        'comment-pin':               CommentPin,
-        'comments-panel':            CommentsPanel,
-        'active-comment-popover':    ActiveCommentPopover,
-        'guideline-section-preview': SectionPreview,
-        'preview-bar':               PreviewBar,
+        'screen-preview':         ScreenPreview,
+        'screens-panel':          ScreensPanel,
+        'comment-pin':            CommentPin,
+        'comments-panel':         CommentsPanel,
+        'active-comment-popover': ActiveCommentPopover,
+        'preview-bar':            PreviewBar,
     },
     data() {
         return {

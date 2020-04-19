@@ -34,9 +34,7 @@
 </template>
 
 <script>
-import CommonHelper     from '@/utils/CommonHelper';
 import GuidelineSection from '@/models/GuidelineSection';
-import GuidelineAsset   from '@/models/GuidelineAsset';
 import AssetBoxPreview  from '@/views/guidelines/AssetBoxPreview';
 
 export default {

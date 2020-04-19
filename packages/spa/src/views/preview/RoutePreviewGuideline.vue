@@ -54,7 +54,6 @@ import ProjectLink      from '@/models/ProjectLink';
 import GuidelineSection from '@/models/GuidelineSection';
 import SectionPreview   from '@/views/guidelines/SectionPreview';
 import PreviewBar       from '@/views/preview/PreviewBar';
-import ClientStorage    from '@/utils/ClientStorage';
 
 export default {
     name: 'preview-guideline',

@@ -802,7 +802,7 @@
     .meta {
         .meta-item {
             @include ellipsis();
-            max-width: 155px;
+            max-width: 152px;
             margin-right: 8px;
             padding-right: 10px;
             &:last-child {

@@ -49,7 +49,6 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import PrototypeUpsertPopup from '@/views/prototypes/PrototypeUpsertPopup';
-import Prototype            from '@/models/Prototype';
 import Relocator            from '@/components/Relocator';
 
 export default {

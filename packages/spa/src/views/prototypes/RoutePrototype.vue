@@ -60,7 +60,6 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ApiClient        from '@/utils/ApiClient';
-import CommonHelper     from '@/utils/CommonHelper';
 import AppFooter        from '@/views/base/AppFooter';
 import ProjectSidebar   from '@/views/projects/ProjectSidebar';
 import ScreensListing   from '@/views/screens/ScreensListing';

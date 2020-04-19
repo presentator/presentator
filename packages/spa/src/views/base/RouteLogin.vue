@@ -67,7 +67,6 @@
 
 <script>
 import ApiClient      from '@/utils/ApiClient';
-import CommonHelper   from '@/utils/CommonHelper';
 import AppHeader      from '@/views/base/AppHeader';
 import AppFooter      from '@/views/base/AppFooter';
 import AuthClientsBar from '@/views/base/AuthClientsBar';
