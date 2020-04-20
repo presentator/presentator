@@ -1,10 +1,8 @@
 <template>
-    <toggler class="popover popover-sm hotspot-templates-popover"
-        :hideOnChildClick="false"
-    >
+    <toggler class="popover hotspot-templates-popover" :hideOnChildClick="false">
         <div class="hotspot-templates-list" v-show="hotspotTemplates.length">
             <template v-for="(template, i) in hotspotTemplates">
-                <div class="form-group m-0 flex-block flex-nowrap">
+                <div class="form-group form-group-switch m-0 flex-block flex-nowrap">
                     <input type="checkbox"
                         :id="'link_hotspot_template_' + template.id"
                         :value="template.id"
@@ -55,13 +53,16 @@
     </toggler>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .hotspot-templates-list {
     overflow: auto;
     width: auto;
     padding: 2px 15px;
     margin: -2px -15px 8px;
     max-height: 400px;
+}
+.popover {
+    width: 300px;
 }
 </style>
 
