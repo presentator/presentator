@@ -27,15 +27,15 @@
     "axios": "^0.18.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "axios-mock-adapter": "^1.17.0",
-    "babel-loader": "^8.0.6",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "axios-mock-adapter": "^1.18.1",
+    "babel-loader": "^8.1.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
+    "mocha": "^6.2.3",
     "mocha-webpack": "^2.0.0-beta.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   }
 }
