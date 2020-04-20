@@ -58,7 +58,7 @@
     </transition>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .screen-comments-panel {
     position: relative;
     left: auto;

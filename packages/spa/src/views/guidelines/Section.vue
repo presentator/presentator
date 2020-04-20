@@ -111,6 +111,13 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+.box-btns {
+    min-height: 250px;
+    order: 199; // simulate slot="footer" with slot="header" since vue.draggable doesn't support ignore elements yet
+}
+</style>
+
 <script>
 import Dropzone         from 'dropzone';
 import ApiClient        from '@/utils/ApiClient';
@@ -447,10 +454,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-.box-btns {
-    min-height: 250px;
-    order: 199; // simulate slot="footer" with slot="header" since vue.draggable doesn't support ignore elements yet
-}
-</style>

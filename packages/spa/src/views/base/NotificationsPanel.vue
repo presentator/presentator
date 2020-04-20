@@ -104,6 +104,17 @@
     </transition>
 </template>
 
+<style lang="scss" scoped>
+.meta-item .screen-title {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+</style>
+
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 
@@ -188,14 +199,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-.meta-item .screen-title {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 100px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-</style>

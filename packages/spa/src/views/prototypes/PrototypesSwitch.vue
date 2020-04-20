@@ -46,6 +46,18 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+.prototypes-ctrl {
+    min-width: 210px;
+    & > .txt {
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+</style>
+
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import PrototypeUpsertPopup from '@/views/prototypes/PrototypeUpsertPopup';
@@ -84,15 +96,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.prototypes-ctrl {
-    min-width: 210px;
-    & > .txt {
-        max-width: 180px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-</style>

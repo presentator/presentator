@@ -55,6 +55,16 @@
     </toggler>
 </template>
 
+<style lang="scss">
+.hotspot-templates-list {
+    overflow: auto;
+    width: auto;
+    padding: 2px 15px;
+    margin: -2px -15px 8px;
+    max-height: 400px;
+}
+</style>
+
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ApiClient    from '@/utils/ApiClient';
@@ -242,13 +252,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-.hotspot-templates-list {
-    overflow: auto;
-    width: auto;
-    padding: 2px 15px;
-    margin: -2px -15px 8px;
-    max-height: 400px;
-}
-</style>

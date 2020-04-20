@@ -135,6 +135,14 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+.asset-color-input {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+</style>
+
 <script>
 import ApiClient      from '@/utils/ApiClient';
 import CommonHelper   from '@/utils/CommonHelper';
@@ -238,11 +246,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-.asset-color-input {
-    position: absolute;
-    opacity: 0;
-    visibility: hidden;
-}
-</style>

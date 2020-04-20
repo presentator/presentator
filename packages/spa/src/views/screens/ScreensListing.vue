@@ -85,6 +85,13 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+.box-placeholder.expanded {
+    width: 100%;
+    min-height: 320px;
+}
+</style>
+
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import draggable    from 'vuedraggable'
@@ -307,10 +314,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.box-placeholder.expanded {
-    width: 100%;
-    min-height: 320px;
-}
-</style>

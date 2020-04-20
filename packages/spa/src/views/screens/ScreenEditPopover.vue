@@ -97,6 +97,12 @@
     </toggler>
 </template>
 
+<style lang="scss" scoped>
+.screen-edit-popover {
+    width: 450px;
+}
+</style>
+
 <script>
 import { mapActions } from 'vuex';
 import ApiClient               from '@/utils/ApiClient';
@@ -204,9 +210,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-.screen-edit-popover {
-    width: 450px;
-}
-</style>
