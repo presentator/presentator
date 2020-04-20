@@ -64,6 +64,9 @@
     left: auto;
     right: auto;
     flex-shrink: 0;
+    .comment-card .meta .meta-item {
+        max-width: 152px;
+    }
 }
 </style>
 
