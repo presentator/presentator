@@ -14,17 +14,17 @@ This repo provides a `Dockerfile` to quickly build and set-up a production ready
 ## Versions
 
 - `ganigeorgiev/presentator:latest`, `ganigeorgiev/presentator:2`
-- `ganigeorgiev/presentator:2.5.0`, `ganigeorgiev/presentator:2.5`
-- `ganigeorgiev/presentator:2.4.0`, `ganigeorgiev/presentator:2.4`
-- `ganigeorgiev/presentator:2.3.3`, `ganigeorgiev/presentator:2.3.2`, `ganigeorgiev/presentator:2.3.1`, `ganigeorgiev/presentator:2.3.0`, `ganigeorgiev/presentator:2.3`
-- `ganigeorgiev/presentator:2.2.2`, `ganigeorgiev/presentator:2.2.1`, `ganigeorgiev/presentator:2.2.0`, `ganigeorgiev/presentator:2.2`
-- `ganigeorgiev/presentator:2.1.2`, `ganigeorgiev/presentator:2.1.1`, `ganigeorgiev/presentator:2.1.0`, `ganigeorgiev/presentator:2.1`
-- `ganigeorgiev/presentator:2.0.6`, `ganigeorgiev/presentator:2.0.5`, `ganigeorgiev/presentator:2.0.4`, `ganigeorgiev/presentator:2.0`
-- `ganigeorgiev/presentator:1.13.2`, `ganigeorgiev/presentator:1.13.1`, `ganigeorgiev/presentator:1.13.0`, `ganigeorgiev/presentator:1.13`
-- `ganigeorgiev/presentator:1.12.0`, `ganigeorgiev/presentator:1.12`
-- `ganigeorgiev/presentator:1.11.3`, `ganigeorgiev/presentator:1.11.2`, `ganigeorgiev/presentator:1.11.1`, `ganigeorgiev/presentator:1.11.0`, `ganigeorgiev/presentator:1.11`
-- `ganigeorgiev/presentator:1.10.0`, `ganigeorgiev/presentator:1.10`
-- `ganigeorgiev/presentator:1.9.1`, `ganigeorgiev/presentator:1.9.0`, `ganigeorgiev/presentator:1.9`
+- `ganigeorgiev/presentator:2.5`, `ganigeorgiev/presentator:2.5.0`, `ganigeorgiev/presentator:2.5.1`
+- `ganigeorgiev/presentator:2.4`, `ganigeorgiev/presentator:2.4.0`
+- `ganigeorgiev/presentator:2.3`, `ganigeorgiev/presentator:2.3.0`, `ganigeorgiev/presentator:2.3.1`, `ganigeorgiev/presentator:2.3.2`, `ganigeorgiev/presentator:2.3.3`
+- `ganigeorgiev/presentator:2.2`, `ganigeorgiev/presentator:2.2.0`, `ganigeorgiev/presentator:2.2.1`, `ganigeorgiev/presentator:2.2.2`
+- `ganigeorgiev/presentator:2.1`, `ganigeorgiev/presentator:2.1.0`, `ganigeorgiev/presentator:2.1.1`, `ganigeorgiev/presentator:2.1.2`
+- `ganigeorgiev/presentator:2.0`, `ganigeorgiev/presentator:2.0.4`, `ganigeorgiev/presentator:2.0.5`, `ganigeorgiev/presentator:2.0.6`
+- `ganigeorgiev/presentator:1.13`, `ganigeorgiev/presentator:1.13.0`, `ganigeorgiev/presentator:1.13.1`, `ganigeorgiev/presentator:1.13.2`
+- `ganigeorgiev/presentator:1.12`, `ganigeorgiev/presentator:1.12.0`
+- `ganigeorgiev/presentator:1.11`, `ganigeorgiev/presentator:1.11.0`, `ganigeorgiev/presentator:1.11.1`, `ganigeorgiev/presentator:1.11.2`, `ganigeorgiev/presentator:1.11.3`
+- `ganigeorgiev/presentator:1.10`, `ganigeorgiev/presentator:1.10.0`
+- `ganigeorgiev/presentator:1.9`, `ganigeorgiev/presentator:1.9.0`, `ganigeorgiev/presentator:1.9.1`
 
 > The tag versions correspond to the actual [release versions of Presentator](https://github.com/presentator/presentator/releases).
 
