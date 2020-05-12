@@ -43,6 +43,8 @@ export default {
             ApiClient.Hotspots.getList(page, 200, {
                 'envelope': true,
                 'search[prototypeId]': prototypeId,
+            }).finally(() => {
+                this.isLoadingHotspots = false;
             }).then((response) => {
                 var hotspotsData = CommonHelper.getNestedVal(response, 'data.response', []);
                 var currentPage  = CommonHelper.getNestedVal(response, 'data.headers.x-pagination-current-page', 1);
@@ -60,8 +62,6 @@ export default {
                 }
             }).catch((err) => {
                 this.$errResponseHandler(err);
-            }).finally(() => {
-                this.isLoadingHotspots = false;
             });
         },
         loadHotspotTemplates(prototypeId) {
