@@ -24,7 +24,7 @@ The only requirements are those from the [Presentator API](https://github.com/pr
 
 Before getting started make sure that you have checked the project requirements and installed [Composer](https://getcomposer.org/).
 
-1. Either [download the latest repo archive](https://github.com/presentator/presentator-starter/archive/master.zip), or install through Composer:
+1. Install through Composer:
 
     ```bash
     composer create-project presentator/starter /path/to/starter/
@@ -45,7 +45,6 @@ Before getting started make sure that you have checked the project requirements 
 4. Overwrite the default Presentator SPA configurations by editing the `extra.starter.spaConfig` key of `/path/to/starter/composer.json`.
 
     > All available Presentator SPA configurations could be found in the [base SPA `.env` file](https://github.com/presentator/presentator-spa/blob/master/.env).
-
 
 5. Run `composer install` while in the project root directory.
 
