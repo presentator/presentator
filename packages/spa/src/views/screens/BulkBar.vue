@@ -12,12 +12,15 @@
                 <span class="txt">{{ $t('Move selected') }}</span>
                 <i class="fe fe-chevron-up m-l-5"></i>
 
-                <toggler class="dropdown dropdown-wrapped dropdown-sm">
+                <toggler class="dropdown dropdown-wrapped dropdown-sm prototypes-dropdown">
                     <div v-for="prototype in movablePrototypes"
                         :key="prototype.id"
                         class="dropdown-item"
                         @click.prevent="moveScreensToPrototype(prototype.id)"
-                    >{{ prototype.title }}</div>
+                    >
+                        <i class="fe" :class="prototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
+                        <span class="txt">{{ prototype.title }}</span>
+                    </div>
                 </toggler>
             </button>
 
@@ -38,6 +41,14 @@
         </div>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.prototypes-dropdown {
+    right: auto;
+    left: 0;
+    min-width: 230px;
+}
+</style>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';

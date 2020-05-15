@@ -100,14 +100,14 @@
                     </div>
 
                     <div v-if="prototypes.length > 1"
-                        class="btn btn-sm btn-default m-l-small"
+                        class="btn btn-sm btn-default m-l-small prototypes-ctrl"
                         v-tooltip.top="!$refs.prototypesDropdown || !$refs.prototypesDropdown.isActive ? $t('Change prototype') : ''"
                     >
                         <i class="fe" :class="activePrototype.isForDesktop ? 'fe-monitor' : 'fe-smartphone'"></i>
                         <span class="txt title m-l-5 m-r-5">{{ activePrototype.title }}</span>
                         <i class="fe" :class="$refs.prototypesDropdown && $refs.prototypesDropdown.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
 
-                        <toggler ref="prototypesDropdown" class="dropdown">
+                        <toggler ref="prototypesDropdown" class="dropdown dropdown-wrapped prototypes-dropdown">
                             <div class="dropdown-item"
                                 v-for="prototype in prototypes"
                                 :key="prototype.id"
@@ -128,6 +128,18 @@
         <comments-panel ref="commentsPanel"></comments-panel>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.prototypes-ctrl > .txt {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.prototypes-dropdown {
+    min-width: 230px;
+}
+</style>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
