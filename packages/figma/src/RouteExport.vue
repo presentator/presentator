@@ -10,10 +10,17 @@
 
         <div class="field-group">
            <label for="export_filter" class="section-title">Screens to export</label>
-           <select v-model="exportFilter" id="export_filter">
-               <option value="all">All screens</option>
-               <option value="selection">Only the selected screen(s)</option>
-           </select>
+           <div class="row">
+               <select v-model="exportFilter" id="export_filter">
+                   <option value="all">All screens</option>
+                   <option value="selection">Only the selected screen(s)</option>
+               </select>
+
+               <select v-model.number="exportScale" id="export_scale" class="scale-select" title="Scale">
+                   <option value="1">1x</option>
+                   <option value="2">2x</option>
+               </select>
+           </div>
         </div>
 
         <div class="spacer"></div>
@@ -36,7 +43,14 @@
     </div>
 </template>
 
+<style>
+.scale-select {
+    width: 50px;
+}
+</style>
+
 <script>
+import clientStorage   from '@/utils/ClientStorage';
 import apiClient       from '@/utils/ApiClient';
 import ProjectPicker   from '@/ProjectPicker';
 import PrototypePicker from '@/PrototypePicker';
@@ -54,11 +68,17 @@ export default {
             selectedProject:   null,
             selectedPrototype: null,
             exportFilter:      'all',
+            exportScale:       clientStorage.getItem('lasExportScale') || 1,
         };
     },
     computed: {
         canExport() {
             return this.selectedProject && this.selectedPrototype && !this.isExporting;
+        },
+    },
+    watch: {
+        exportScale(newVal, oldVal) {
+            clientStorage.setItem('lasExportScale', newVal);
         },
     },
     mounted() {
@@ -110,9 +130,16 @@ export default {
                     'fields': 'id, title, file',
                 })).data;
 
+                const exportSettings = {
+                    'constraint': {
+                        'type': 'SCALE',
+                        'value': this.exportScale || 1,
+                    },
+                };
+
                 for (let i = 0; i < frames.length; i++) {
                     let frame     = frames[i];
-                    let frameData = await this.$exportFrame(frame.id);
+                    let frameData = await this.$exportFrame(frame.id, exportSettings);
 
                     if (!frameData) {
                         continue;

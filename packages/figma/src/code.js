@@ -107,7 +107,7 @@ figma.ui.onmessage = async (message) => {
             data:  frames,
         });
     } else if (message.type === types.MESSAGE_EXPORT_FRAME) {
-        let data = await exportFrame(message.data.id);
+        let data = await exportFrame(message.data.id, message.data.settings);
 
         // send the result to the ui
         figma.ui.postMessage({

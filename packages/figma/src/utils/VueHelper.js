@@ -137,10 +137,11 @@ export default {
         /**
          * Exports a single frame image data.
          *
-         * @param  {String} frameId ID of the frame to export.
+         * @param  {String} frameId    ID of the frame to export.
+         * @param  {Object} [settings] Additional settings to be passed to the export command.
          * @return {Promise}
          */
-        Vue.prototype.$exportFrame = function(frameId) {
+        Vue.prototype.$exportFrame = function(frameId, settings) {
             const state = ('export_frame_' + frameId + Date.now());
 
             return new Promise(function(resolve, reject) {
@@ -166,7 +167,6 @@ export default {
                 // force resolve after 10 seconds
                 forceTimeoutId = setTimeout(() => {
                     window.removeEventListener('message', handler);
-
                     Promise.resolve([]);
                 }, 10000);
 
@@ -177,6 +177,7 @@ export default {
                         type: types.MESSAGE_EXPORT_FRAME,
                         data: {
                             id: frameId,
+                            settings: settings,
                         },
                     },
                 }, '*');
