@@ -24,7 +24,7 @@ You can join them in supporting Presentator development by visiting our [Support
 
 
 ## Backers via PayPal (one time)
-- Marian Brchan - $75.00 USD
+- [Marian Brchan](http://marianbrchan.com) - $75.00 USD
 - Militsa Dimitrova - €25.00 EUR
 - Jérémie Kornobis - €15.00 EUR
 - Stan Vladimirov - €10.00 EUR
