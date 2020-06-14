@@ -148,4 +148,4 @@ For other adapters and more options, go to https://github.com/creocoder/yii2-fly
 
 To update your Presentator application to the latest available version, just run `composer update` while in the project root directory.
 
-> For a finer control, check the packages cversion constraint in the `require` section of `/path/to/starter/composer.json`.
+> For a finer control, check the packages version constraint in the `require` section of `/path/to/starter/composer.json`.
