@@ -57,7 +57,7 @@ Before getting started make sure that you have checked the project requirements 
 
 **That’s it!** Check the application in your browser to verify that everything is working fine.
 
-#### Additional console commands you may found useful
+#### Additional console commands you may find useful
 
 ```bash
 # set Super User access rights to a single User model

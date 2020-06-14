@@ -98,7 +98,7 @@ Before getting started make sure that you have checked the project requirements 
 
 **That's it!** You should be able to make HTTP requests to the previously defined server address.
 
-Additional console commands you may found useful:
+Additional console commands you may find useful:
 
 ```bash
 # set Super User access rights to a single User model
