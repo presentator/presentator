@@ -96,7 +96,7 @@ For example, if you want to allow your users to login with their Facebook accoun
             ],
         ],
     ]
-```
+    ```
 
 #### Different storage mechanism
 
