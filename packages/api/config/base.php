@@ -100,6 +100,21 @@ return [
         //     'authConfig' => '/path/to/firebase-auth.json',
         //     'projectId'  => 'presentator-v2',
         // ],
+
+        // Activates webhooks support
+        // ---
+        // 'webhooks' => [
+        //     'class' => 'presentator\api\base\Webhooks',
+        //     'definitions' => [
+        //         'presentator\api\models\ScreenComment' => [
+        //             'createUrl' => 'YOU_WEBHOOK_URL',        // notified after model create
+        //             'updateUrl' => 'YOU_WEBHOOK_URL',        // notified after model update
+        //             'deleteUrl' => 'YOU_WEBHOOK_URL',        // notified before model delete
+        //             'expand'    => ['fromUser', 'metaData'], // additional fields defined in the model's `extraFields()` method
+        //         ],
+        //         // ... any other model that extends `presentator\api\models\ActiveRecord`
+        //     ],
+        // ],
     ],
     'params' => $params,
 ];

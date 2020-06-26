@@ -1,8 +1,11 @@
 <?php
 namespace presentator\api\models;
 
-use yii\behaviors\TimestampBehavior;
+use Yii;
 use yii\helpers\StringHelper;
+use yii\behaviors\TimestampBehavior;
+use presentator\api\behaviors\WebhooksBehavior;
+
 
 /**
  * Custom ActiveRecord class that implements commonly used methods and properties
@@ -28,11 +31,18 @@ abstract class ActiveRecord extends \yii\db\ActiveRecord
         $behaviors = parent::behaviors();
 
         $behaviors['timestamp'] = [
-            'class'              => TimestampBehavior::className(),
+            'class'              => TimestampBehavior::class,
             'createdAtAttribute' => 'createdAt',
             'updatedAtAttribute' => 'updatedAt',
             'value'              => function () { return date('Y-m-d H:i:s'); },
         ];
+
+        if (Yii::$app->has('webhooks')) {
+            $behaviors['webhooks'] = array_merge(
+                Yii::$app->webhooks->getDefinition(get_called_class()),
+                ['class' => WebhooksBehavior::class]
+            );
+        }
 
         return $behaviors;
     }

@@ -233,7 +233,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Returns list with all model's avatar urls.
      *
-     * @return null|array
+     * @return array
      */
     public function getAvatar(): array
     {

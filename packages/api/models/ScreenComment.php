@@ -132,6 +132,7 @@ class ScreenComment extends ActiveRecord
             return [
                 'screenId'       => $model->screen->id,
                 'screenTitle'    => $model->screen->title,
+                'screenFile'     => $model->screen->getFile(),
                 'prototypeId'    => $model->screen->prototype->id,
                 'prototypeTitle' => $model->screen->prototype->title,
                 'projectId'      => $model->screen->prototype->project->id,
@@ -203,8 +204,9 @@ class ScreenComment extends ActiveRecord
             if ($sendGuestsMentionEmails) {
                 try {
                     $this->sendGuestsMentionEmails();
-                } catch (\Exception | \Throwable $je) {
-                    // silence any errors
+                } catch (\Exception | \Throwable $e) {
+                    // shouldn't affect the transaction, so there is no need to rethrow
+                    Yii::error($e->getMessage());
                 }
             }
 
@@ -220,17 +222,16 @@ class ScreenComment extends ActiveRecord
                         'presentator_notifications',
                         ('p' . $this->screen->prototype->projectId),
                         $data,
-                        ['timeout' => 0.1] // we don't need the response so it is not needed to wait for it
+                        ['timeout' => 0.1] // we don't need the response so there is no needed to wait too longer for it
                     );
                 } catch (\Exception | \Throwable $e) {
-                    // silence any errors
+                    // silence timeout errors...
                 }
             }
 
             return true;
         } catch (\Exception | \Throwable $e) {
             $transaction->rollBack();
-
             Yii::error($e->getMessage());
         }
 

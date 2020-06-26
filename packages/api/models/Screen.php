@@ -135,15 +135,7 @@ class Screen extends ActiveRecord
         unset($fields['filePath']);
 
         $fields['file'] = function ($model, $field) {
-            if ($model->filePath) {
-                return [
-                    'original' => $model->getUrl(),
-                    'small'    => $model->getThumbUrl('small'),
-                    'medium'   => $model->getThumbUrl('medium'),
-                ];
-            }
-
-            return null;
+            return (object) $model->getFile();
         };
 
         return $fields;
@@ -160,5 +152,23 @@ class Screen extends ActiveRecord
         $extraFields['screenComments'] = 'screenComments';
 
         return $extraFields;
+    }
+
+    /**
+     * Returns list with all model's file urls.
+     *
+     * @return array
+     */
+    public function getFile(): array
+    {
+        if ($this->filePath) {
+            return [
+                'original' => $this->getUrl(),
+                'small'    => $this->getThumbUrl('small'),
+                'medium'   => $this->getThumbUrl('medium'),
+            ];
+        }
+
+        return [];
     }
 }
