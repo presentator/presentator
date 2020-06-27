@@ -9,8 +9,6 @@ use presentator\api\models\Project;
 use GuzzleHttp\Client;
 use AspectMock\Test as test;
 
-
-
 /**
  * WebhooksBehavior tests.
  *
