@@ -1,0 +1,7 @@
+suite_namespace: presentator\api\tests\unit
+class_name: UnitTester
+bootstrap: false
+modules:
+    enabled:
+        - Yii2:
+            part: [fixtures, email]

@@ -31,7 +31,8 @@
         "flow/jsonpath":           "^0.4.0",
         "codeception/codeception": "~3.0",
         "codeception/verify":      "~1.0",
-        "codeception/specify":     "~1.0"
+        "codeception/specify":     "~1.0",
+        "codeception/aspect-mock": "~3.0"
     },
     "config": {
         "platform": {

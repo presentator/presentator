@@ -49,7 +49,7 @@ class Webhooks extends Component
      */
     public function getDefinition(string $modelClass)
     {
-        if (array_key_exists($modelClass, $this->definitions)) {
+        if (!empty($this->definitions[$modelClass]) && is_array($this->definitions[$modelClass])) {
             return $this->definitions[$modelClass];
         }
 

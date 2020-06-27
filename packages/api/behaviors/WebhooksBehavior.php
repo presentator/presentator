@@ -122,6 +122,9 @@ class WebhooksBehavior extends Behavior
 
         $urls = is_array($urls) ? $urls : [$urls];
 
+        // ensures that all model fields are fetched
+        $event->sender->refresh();
+
         $data = [
             'event' => $event->name,
             'model' => StringHelper::basename(get_class($event->sender)),
