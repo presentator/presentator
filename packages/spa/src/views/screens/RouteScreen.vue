@@ -122,7 +122,12 @@
                         v-shortcut.67="setCommentsMode"
                         @click.prevent="setCommentsMode()"
                     >
-                        <span v-if="activeUnreadComments.length" class="beacon beacon-danger"></span>
+                        <span v-if="!isLoadingComments && totalActiveScreenUnresolvedComments > 0"
+                            class="pin"
+                            :class="{'animate': totalActiveScreenUnreadComments > 0}"
+                        >
+                            {{totalActiveScreenUnresolvedComments}}
+                        </span>
 
                         <span v-if="isLoadingComments" class="loader"></span>
                         <i v-else class="fe fe-message-circle"></i>
@@ -141,12 +146,7 @@
                         :class="$refs.commentsPanel.isActive ? 'btn-danger' : 'btn-transp-danger'"
                         @click.prevent="$refs.commentsPanel.toggle()"
                     >
-                        <span class="txt">
-                            {{ $t('Comments panel ({resolved}/{total})', {
-                                resolved: totalActiveScreenResolvedComments,
-                                total: totalActiveScreenComments,
-                            }) }}
-                        </span>
+                        <span class="txt">{{ $t('Comments panel') }}</span>
                     </button>
 
                     <div v-if="isInHotspotsMode" class="ctrl-item ctrl-item-templates txt-default">

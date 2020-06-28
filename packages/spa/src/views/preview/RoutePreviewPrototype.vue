@@ -82,12 +82,7 @@
                         :class="$refs.commentsPanel.isActive ? 'btn-danger' : 'btn-transp-danger'"
                         @click.prevent="$refs.commentsPanel.toggle()"
                     >
-                        <span class="txt">
-                            {{ $t('Comments panel ({resolved}/{total})', {
-                                resolved: totalActiveScreenResolvedComments,
-                                total: totalActiveScreenComments,
-                            }) }}
-                        </span>
+                        <span class="txt">{{ $t('Comments panel') }}</span>
                     </button>
 
                     <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"

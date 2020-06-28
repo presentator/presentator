@@ -345,5 +345,5 @@
     "Screen comments": "Коментари към екрана",
     "The screen doesn't have any comments yet.": "Екранът няма оставени коментари.",
     "All screen comments have been resolved.": "Всички коментари към екрана са финализирани.",
-    "Comments panel ({resolved}/{total})": "Коментари ({resolved}/{total})"
+    "Comments panel": "Коментари"
 }

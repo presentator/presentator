@@ -49,7 +49,12 @@
                 v-tooltip.top="$t('Comments mode ({shortcut})', {shortcut: 'C'})"
                 v-shortcut.67="selfClick"
             >
-                <span v-if="activeUnreadComments.length" class="beacon beacon-danger"></span>
+                <span v-if="$route.name == 'preview-prototype' && totalActiveScreenUnresolvedComments > 0"
+                    class="pin"
+                    :class="{'animate': totalActiveScreenUnreadComments > 0}"
+                >
+                    {{totalActiveScreenUnresolvedComments}}
+                </span>
 
                 <i class="fe fe-message-circle"></i>
             </router-link>
@@ -123,11 +128,30 @@ export default {
             activeScreenId:    state => state.screens.activeScreenId,
         }),
         ...mapGetters({
+            getCommentsForScreen:       'comments/getCommentsForScreen',
             getUnreadCommentsForScreen: 'notifications/getUnreadCommentsForScreen',
         }),
 
-        activeUnreadComments() {
+        activeScreenComments() {
+            return this.getCommentsForScreen(this.activeScreenId);
+        },
+        totalActiveScreenComments() {
+            return this.activeScreenComments.length;
+        },
+        activeScreenResolvedComments() {
+            return this.getCommentsForScreen(this.activeScreenId, 'resolved');
+        },
+        totalActiveScreenResolvedComments() {
+            return this.activeScreenResolvedComments.length;
+        },
+        activeScreenUnreadComments() {
             return this.getUnreadCommentsForScreen(this.activeScreenId);
+        },
+        totalActiveScreenUnreadComments() {
+            return this.activeScreenUnreadComments.length
+        },
+        totalActiveScreenUnresolvedComments() {
+            return this.totalActiveScreenComments - this.totalActiveScreenResolvedComments;
         },
     },
     mounted() {

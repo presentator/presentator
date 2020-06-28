@@ -78,21 +78,25 @@
             line-height: inherit;
         }
         .pin {
-            $size: 18px;
+            $size: 16px;
             position: absolute;
             display: inline-block;
             vertical-align: top;
             z-index: 2;
-            right: 0;
-            top: 0;
+            right: 2px;
+            top: 2px;
             width: $size;
             height: $size;
             line-height: $size;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
+            color: $txtColor;
             border-radius: $size;
             background: $borderColor;
             animation: scaleIn $baseAnimationSpeed;
+            &.animate {
+                animation: beacon-default $pulseAnimationSpeed linear infinite;
+            }
         }
         &:hover,
         &:active,
@@ -154,6 +158,9 @@
                     .pin {
                         color: nth($color, 3);
                         background: nth($color, 2);
+                        &.animate {
+                            animation-name: beacon-#{nth($color, 1)};
+                        }
                     }
                     &:after {
                         background: nth($color, 2);
@@ -164,6 +171,11 @@
                     &.active,
                     &.highlight {
                         color: nth($color, 2);
+                    }
+                    &.highlight {
+                        .pin.animate {
+                            animation: none;
+                        }
                     }
                 }
             }

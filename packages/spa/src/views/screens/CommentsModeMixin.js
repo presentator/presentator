@@ -40,12 +40,18 @@ export default {
         totalActiveScreenResolvedComments() {
             return this.activeScreenResolvedComments.length;
         },
-        activeUnreadComments() {
+        activeScreenUnreadComments() {
             return this.getUnreadCommentsForScreen(this.activeScreenId);
+        },
+        totalActiveScreenUnreadComments() {
+            return this.activeScreenUnreadComments.length
+        },
+        totalActiveScreenUnresolvedComments() {
+            return this.totalActiveScreenComments - this.totalActiveScreenResolvedComments;
         },
     },
     watch: {
-        activeUnreadComments(newVal, oldVal) {
+        activeScreenUnreadComments(newVal, oldVal) {
             // adds unread primary comments to the comment pins list
             for (let i in newVal) {
                 if (!newVal[i].replyTo) {
