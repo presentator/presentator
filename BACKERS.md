@@ -16,11 +16,11 @@ You can join them in supporting Presentator development by visiting our [Support
 
 #### Generous Backer ($5+)
 - [Ryan Gorley (Freehive)](https://freehive.com/)
-- [Xaviju](https://xaviju.github.io/)
-- [Ura Design](https://ura.design/)
+- [Xaviju](https://xaviju.github.io/) (inactive)
+- [Ura Design](https://ura.design/) (inactive)
 
 #### Backer ($1+)
-- [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/)
+- [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/) (inactive)
 
 
 ## Backers via PayPal (one time)
