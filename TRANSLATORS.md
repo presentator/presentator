@@ -29,6 +29,12 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - *(v2)* Lennart Fries ([https://pringuin.de](https://pringuin.de/))
 
 
+### Dutch
+
+- *(v2)* Koen Glotzbach ([glotzbach](https://www.transifex.com/user/profile/glotzbach/))
+- *(v2)* Maurits van Wijlnad ([mvwijland](https://www.transifex.com/user/profile/mvwijland/))
+
+
 ### Polish
 
 - *(v1)* Bizley ([http://bizley.pl](http://bizley.pl))
