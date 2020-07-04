@@ -15,6 +15,12 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - *(v1)* Jan Vince ([https://www.vince.cz](https://www.vince.cz))
 
 
+### Dutch
+
+- *(v2)* Koen Glotzbach ([glotzbach](https://www.transifex.com/user/profile/glotzbach/))
+- *(v2)* Maurits van Wijlnad ([mvwijland](https://www.transifex.com/user/profile/mvwijland/))
+
+
 ### French
 
 - *(v1)* Ben Cousin ([Bewod](https://www.transifex.com/user/profile/Bewod/))
@@ -27,12 +33,6 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 - *(v1, v2)* Dave ([https://mdxdave.de](https://mdxdave.de))
 - *(v2)* Lennart Fries ([https://pringuin.de](https://pringuin.de/))
-
-
-### Dutch
-
-- *(v2)* Koen Glotzbach ([glotzbach](https://www.transifex.com/user/profile/glotzbach/))
-- *(v2)* Maurits van Wijlnad ([mvwijland](https://www.transifex.com/user/profile/mvwijland/))
 
 
 ### Polish
