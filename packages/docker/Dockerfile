@@ -47,7 +47,7 @@ RUN curl https://github.com/presentator/presentator-starter/archive/v2.5.3.tar.g
     && rm presentator.tar.gz
 
 # require specific app dependency version
-RUN composer require presentator/api:2.5.3 presentator/spa:2.5.3 -d /var/www/html --no-update --no-suggest --no-scripts
+RUN composer require presentator/api:2.6.0 presentator/spa:2.6.0 -d /var/www/html --no-update --no-suggest --no-scripts
 
 # install and initialize the application
 RUN composer install -d /var/www/html --no-interaction --no-dev --optimize-autoloader
