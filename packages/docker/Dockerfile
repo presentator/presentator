@@ -42,7 +42,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
 USER www-data
 
 # download and extract the latest presentator-starter archive
-RUN curl https://github.com/presentator/presentator-starter/archive/v2.5.3.tar.gz -L -o presentator.tar.gz \
+RUN curl https://github.com/presentator/presentator-starter/archive/v2.6.0.tar.gz -L -o presentator.tar.gz \
     && tar -xvf presentator.tar.gz --strip 1 \
     && rm presentator.tar.gz
 
