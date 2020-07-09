@@ -17,7 +17,7 @@
                             <option value="next">{{ $t('Next screen in series') }}</option>
                             <option value="back">{{ $t('Back (last visited screen)') }}</option>
                             <option value="scroll">{{ $t('Position (scroll to)') }}</option>
-                            <option value="url">{{ $t('External URL') }}</option>
+                            <option v-if="$getAppConfig('VUE_APP_ALLOW_HOTSPOTS_URL') << 0" value="url">{{ $t('External URL') }}</option>
                         </select>
                     </div>
                 </form-field>
@@ -126,7 +126,7 @@
                     <label :for="'hotspot_screen_overlay_outside_click_' + hotspot.id">{{ $t('Close on outside click') }}</label>
                 </form-field>
 
-                <form-field v-show="type === 'url'" name="settingUrl">
+                <form-field v-if="$getAppConfig('VUE_APP_ALLOW_HOTSPOTS_URL') << 0" v-show="type === 'url'" name="settingUrl">
                     <label :for="'hotspot_external_url_' + hotspot.id">URL</label>
                     <input type="url" :id="'hotspot_external_url_' + hotspot.id" v-model="url" :placeholder="$t('eg.') + ' https://google.com'">
                 </form-field>

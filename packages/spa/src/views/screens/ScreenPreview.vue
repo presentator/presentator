@@ -440,7 +440,7 @@ export default {
 
             var transition = hotspot.settings.transition || 'none';
 
-            if (hotspot.type === 'url') {
+            if (hotspot.type === 'url' && (this.$getAppConfig('VUE_APP_ALLOW_HOTSPOTS_URL') << 0)) {
                 window.open(hotspot.settings.url || '#', '_blank');
             } else if (hotspot.type === 'prev') {
                 if (this.orderedScreens[this.activeScreenOrderedIndex - 1]) {
