@@ -345,5 +345,9 @@
     "Screen comments": "Коментари към екрана",
     "The screen doesn't have any comments yet.": "Екранът няма оставени коментари.",
     "All screen comments have been resolved.": "Всички коментари към екрана са финализирани.",
-    "Comments panel": "Коментари"
+    "Comments panel": "Коментари",
+    "Report": "Докладвай",
+    "Report this project for spam or abusive content": "Докладвай този проект за спам или злоупотребяващо съдържания.",
+    "Additional details": "Допълнителна информация",
+    "Thank you, we will investigate and remove the project if found inappropriate.": "Благодарим ти, ще проучим и премахнем проекта при намерена злоупотреба."
 }
