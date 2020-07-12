@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use presentator\api\helpers\CastHelper;
 use presentator\api\models\ProjectLink;
 use presentator\api\models\Prototype;
+use presentator\api\models\forms\ReportForm;
 use presentator\api\models\forms\ScreenCommentSearch;
 use presentator\api\models\forms\PreviewScreenCommentForm;
 use presentator\api\models\forms\PreviewScreenCommentStatusChangeForm;
@@ -34,6 +35,7 @@ class PreviewsController extends ApiController
             'list-screen-comments',
             'create-screen-comment',
             'update-screen-comment',
+            'report',
         ];
 
         return $behaviors;
@@ -222,6 +224,29 @@ class PreviewsController extends ApiController
 
         if ($comment = $model->save()) {
             return $comment->toArray([], ['fromUser']);
+        }
+
+        return $this->sendErrorResponse($model->getFirstErrors());
+    }
+
+    /**
+     * Reports a project link for spam, malware or other abusive content.
+     *
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionReport()
+    {
+        $link = $this->findLinkByPreviewToken();
+
+        $model = new ReportForm($link);
+
+        $model->load(Yii::$app->request->post());
+
+        if ($model->send()) {
+            Yii::$app->response->statusCode = 204;
+
+            return null;
         }
 
         return $this->sendErrorResponse($model->getFirstErrors());

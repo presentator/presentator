@@ -694,4 +694,51 @@ class PreviewsCest
         $I->seeResponseContainsJson($data);
         $I->dontSeeResponseContainsUserHiddenFields('fromUser');
     }
+
+    /* `PreviewsController::actionReport()`
+    --------------------------------------------------------------- */
+    /**
+     * `PreviewsController::actionReport()` failure test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function reportFailure(FunctionalTester $I)
+    {
+        $I->wantTo('Unsuccessfully submit a report');
+
+        $I->amGoingTo('try accessing the action unauthorized');
+        $I->sendPost('/previews/report');
+        $I->seeUnauthorizedResponse();
+
+        $projectLink = ProjectLink::findOne(1001);
+
+        // simulate expired token
+        $previewTokenDuration = Yii::$app->params['previewTokenDuration'];
+        Yii::$app->params['previewTokenDuration'] = -1000;
+        $I->amGoingTo('try accessing the action with expired preview token');
+        $I->haveHttpHeader('X-Preview-Token', $projectLink->generatePreviewToken());
+        $I->sendPost('/previews/report');
+        $I->seeUnauthorizedResponse();
+        // revert changes
+        Yii::$app->params['previewTokenDuration'] = $previewTokenDuration;
+    }
+
+    /**
+     * `PreviewsController::actionReport()` failure test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function reportSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully submit a report');
+
+        $projectLink = ProjectLink::findOne(1001);
+
+        $I->haveHttpHeader('X-Preview-Token', $projectLink->generatePreviewToken());
+        $I->sendPost('/previews/report', [
+            'details' => 'Lorem ipsum dolor sit amet...',
+        ]);
+        $I->seeResponseCodeIs(204);
+        $I->seeEmailIsSent();
+    }
 }
