@@ -130,4 +130,23 @@ describe('Previews', function () {
             }).then(done).catch(done);
         });
     });
+
+    describe('report()', function () {
+        it('Should correctly set request data', function (done) {
+            var bodyParams  = {'body_test1': 1, 'body_test2': 2};
+            var queryParams = {'query_test1': 1, 'query_test2': 2};
+            var result      = resource.report('test_token', 'test', bodyParams, queryParams);
+
+            assert.instanceOf(result, Promise);
+            result.then(function (response) {
+                assert.equal(response.config.url, '/previews/report');
+                assert.equal(response.config.method, 'post');
+                assert.deepEqual(response.config.params, queryParams);
+                assert.deepEqual(JSON.parse(response.config.data), Object.assign({
+                    'details': 'test',
+                }, bodyParams));
+                assert.equal(response.config.headers['X-Preview-Token'], 'test_token');
+            }).then(done).catch(done);
+        });
+    });
 });

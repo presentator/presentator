@@ -121,4 +121,25 @@ export default class Previews extends BaseResource {
             'headers': { 'X-Preview-Token': previewToken },
         });
     }
+
+    /**
+     * @param  {String} previewToken
+     * @param  {String} [details]
+     * @param  {Object} [bodyParams]
+     * @param  {Object} [queryParams]
+     * @return {Promise}
+     */
+    report(previewToken, details = '', bodyParams = {}, queryParams = {}) {
+        bodyParams = Object.assign({
+            'details': details,
+        }, bodyParams);
+
+        return this.$http({
+            'method':  'post',
+            'url':     '/previews/report',
+            'params':  queryParams,
+            'data':    bodyParams,
+            'headers': { 'X-Preview-Token': previewToken },
+        });
+    }
 }
