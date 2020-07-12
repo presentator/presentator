@@ -230,7 +230,7 @@ class PreviewsController extends ApiController
     }
 
     /**
-     * Reports a project link for spam, malware or other abusive content.
+     * Reports a project link for spam or other abusive content.
      *
      * @return mixed
      * @throws NotFoundHttpException
