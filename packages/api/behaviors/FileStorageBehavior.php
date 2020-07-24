@@ -141,7 +141,7 @@ class FileStorageBehavior extends Behavior
         $filePathPrefix = rtrim($this->resolveFilePathPrefix(), '/');
 
         // determine the name of the file
-        $basename = substr(Inflector::slug($file->basename, '_'), 0, 100); // max 100 chars length
+        $basename = substr(Inflector::slug($file->basename, '_'), 0, 88) . '_' . time(); // ~100 chars max length
         $filename = $basename . '.' . $file->extension;
         $duplicateCounter = 2;
         while (Yii::$app->fs->has($filePathPrefix . '/' . $filename)) {
