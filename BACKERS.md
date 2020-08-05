@@ -15,11 +15,13 @@ You can join them in supporting Presentator development by visiting our [Support
 `none`
 
 #### Generous Backer ($5+)
+- [gondon](https://www.patreon.com/gondon/creators)
 - [Ryan Gorley (Freehive)](https://freehive.com/)
 - [Xaviju](https://xaviju.github.io/) (inactive)
 - [Ura Design](https://ura.design/) (inactive)
 
 #### Backer ($1+)
+- [Bruno Sersocima](https://www.patreon.com/user/creators?u=40134475)
 - [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/) (inactive)
 
 
