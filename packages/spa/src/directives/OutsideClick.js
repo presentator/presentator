@@ -62,7 +62,6 @@ export default {
                     el._outsideClickStatus = status;
                     el._outsideMouseDown = false;
                 }
-
             },
             unbind(el, binding, vnode, oldVnode) {
                 document.removeEventListener('mousedown', el._outsideMousedownHandler);
