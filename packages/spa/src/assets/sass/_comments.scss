@@ -86,6 +86,7 @@
         .message {
             @extend %content;
             margin-top: 5px;
+            white-space: pre-line;
         }
         .meta {
             margin-top: 5px;
@@ -100,6 +101,7 @@
     }
     .list-ctrls {
         align-self: flex-start;
+        margin-right: -5px; // visual alignment with the message ctrls
     }
 
     // styles
@@ -194,47 +196,84 @@
     .email-field {
         border-bottom: 1px solid $lightBorderColor;
     }
-    .submit-icon {
-        $size: 25px;
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        z-index: 2;
-        border: 0;
-        padding: 0;
-        outline: 0;
-        min-width: $size;
-        height: $size;
-        line-height: $size;
-        text-align: center;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;
+    .ctrls-bar {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        .ctrl-item {
+            $size: 25px;
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+            z-index: 2;
+            border: 0;
+            outline: 0;
+            padding: 0;
+            margin: 0;
+            min-width: $size;
+            height: $size;
+            line-height: $size;
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: $baseRadius;
+            color: $lightTxtColor;
+            background: none;
+            transition: color $baseAnimationSpeed,
+                        background $baseAnimationSpeed,
+                        box-shadow $baseAnimationSpeed;
+            @include user-select(none);
+            i {
+                line-height: inherit;
+            }
+            .loader:before {
+                font-size: 17px;
+            }
+            &:hover,
+            &:focus {
+                color: $txtColor;
+                background: $lightBorderColor;
+            }
+            &:active {
+                transition-duration: 0.1s;
+                background: $borderColor;
+            }
+        }
+    }
+    .emojis-bar {
+        @include shadowize;
+        @include hide;
+        position: absolute;
+        right: 100%;
+        top: -3px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 155px;
+        background: #fff;
         border-radius: $baseRadius;
-        color: $primaryColor;
-        background: none;
-        transition: color $baseAnimationSpeed,
-                    background $baseAnimationSpeed,
-                    box-shadow $baseAnimationSpeed;
-        @include user-select(none);
-        i {
-            line-height: inherit;
+        transition: opacity $baseAnimationSpeed,
+                    visibility $baseAnimationSpeed;
+        .emoji {
+            font-size: 1.1rem;
+            margin: 0 7px;
+            display: inline-block;
+            vertical-align: top;
+            transition: transform $baseAnimationSpeed;
+            &:hover {
+                transform: scale(1.2);
+            }
+            &:active {
+                transition-duration: 0.1s;
+                transform: scale(1.3);
+            }
         }
-        .loader:before {
-            font-size: 17px;
-        }
-        &:hover,
-        &:active {
-            color: #fff;
-            background: $primaryColor;
-        }
-        &:focus,
-        &:active {
-            box-shadow: 0px 0px 0px 2px lighten($primaryColor, 20%);
-        }
-        &:active {
-            transition-duration: 0.1s;
-            background: darken($primaryColor, 5%);
+        &.active {
+            @include show;
         }
     }
     .message-field {
@@ -242,21 +281,24 @@
         textarea {
             min-height: 0;
             height: $messageHeight;
+            padding-right: ($baseSpacing + 3);
             padding-top: ($smallSpacing - 3);
             padding-bottom: ($smallSpacing - 3);
             line-height: $baseLineHeight - 2;
             resize: none;
             border-radius: inherit;
         }
-        .submit-icon {
+        .ctrls-bar {
             position: absolute;
-            top: $messageHeight - 30px;
-            right: 8px;
+            top: 0;
+            right: 0;
+            height: $messageHeight;
         }
         .input-dropdown {
             position: relative;
             border: 0;
             margin: 0;
+            padding: 0;
             max-height: 120px;
             box-shadow: 0px 0px 0px 1px #ffffff;
         }

@@ -259,6 +259,6 @@ export default {
                 }).catch((err) => {
                     this.$errResponseHandler(err);
                 });
-        }
+        };
     }
 }

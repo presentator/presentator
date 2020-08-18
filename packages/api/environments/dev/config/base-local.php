@@ -6,7 +6,7 @@ return [
             'dsn'      => 'mysql:host=db;dbname=presentator',
             'username' => 'presentator',
             'password' => 'presentator',
-            'charset'  => 'utf8',
+            'charset'  => 'utf8mb4',
             // schema cache
             'enableSchemaCache'   => true,
             'schemaCacheDuration' => 604800, // 1 week

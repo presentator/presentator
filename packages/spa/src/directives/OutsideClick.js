@@ -23,11 +23,10 @@ export default {
                 el._outsideClickStatus &&
                 e.target &&
                 el !== e.target &&
-                !el.contains(e.target)
+                !el.contains(e.target) &&
+                typeof callback === 'function'
             ) {
-                if (typeof callback === 'function') {
-                    callback();
-                }
+                callback();
             }
         };
 
@@ -61,7 +60,9 @@ export default {
 
                 if (status != oldStatus) {
                     el._outsideClickStatus = status;
+                    el._outsideMouseDown = false;
                 }
+
             },
             unbind(el, binding, vnode, oldVnode) {
                 document.removeEventListener('mousedown', el._outsideMousedownHandler);

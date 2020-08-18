@@ -21,7 +21,7 @@ return [
             'dsn'                 => 'mysql:host=mariadb;dbname=presentator',
             'username'            => 'presentator',
             'password'            => 'presentator',
-            'charset'             => 'utf8',
+            'charset'             => 'utf8mb4',
             'enableSchemaCache'   => true,
             'schemaCacheDuration' => 604800, // 1 week
             'schemaCache'         => 'cache',

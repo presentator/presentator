@@ -14,7 +14,6 @@
                     false-value="pending"
                     @change="saveCommentStatus()"
                 >
-
                 <label :for="'mark_as_resoved_' + lastActiveComment.id">{{ $t('Mark as resolved') }}</label>
             </div>
 
@@ -23,28 +22,28 @@
             </div>
 
             <div v-if="!isLoadingReplies && !lastActiveComment.isNew" ref="commentsListContainer" class="comments-list">
-                <div v-for="listItem in commentsList"
-                    :key="'reply_' + listItem.id"
-                    :class="{'primary': listItem.isPrimary}"
+                <div v-for="comment in commentsList"
+                    :key="'reply_' + comment.id"
+                    :class="{'primary': comment.isPrimary}"
                     class="comment-list-item"
                 >
                     <figure class="avatar">
-                        <img v-if="listItem.user && listItem.user.getAvatar('small')"
-                            :src="listItem.user.getAvatar('small')"
+                        <img v-if="comment.user && comment.user.getAvatar('small')"
+                            :src="comment.user.getAvatar('small')"
                             alt="User avatar"
                         >
                         <i v-else class="fe fe-user"></i>
                     </figure>
                     <div class="content">
                         <small class="content-header">
-                            <span class="name">{{ listItem.user ? listItem.user.identifier : listItem.from}}</span>
-                            <span class="date txt-hint">{{ listItem.createdAtFromNow }}</span>
+                            <span class="name">{{ comment.user ? comment.user.identifier : comment.from}}</span>
+                            <span class="date txt-hint">{{ comment.createdAtFromNow }}</span>
                         </small>
-                        <div class="message">{{ listItem.message }}</div>
+                        <div class="message">{{ comment.message }}</div>
                     </div>
                     <div class="list-ctrls">
                         <div class="list-ctrl-item ctrl-danger"
-                            @click.prevent="deleteComment(listItem.id)"
+                            @click.prevent="deleteComment(comment.id)"
                             v-tooltip.top="$t('Delete')"
                             v-if="!isForPreview"
                         >
@@ -78,15 +77,36 @@
                         @keydown.ctrl.enter.exact.prevent="addComment()"
                     ></textarea>
 
-                    <button ref="messageBtn"
-                        class="submit-icon"
-                        v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
-                        @click.prevent="addComment()"
-                        @keydown.ctrl.enter.exact.prevent="addComment()"
-                    >
-                        <span v-if="isProcessing" class="loader"></span>
-                        <i v-else class="fe fe-send"></i>
-                    </button>
+                    <div class="ctrls-bar">
+                        <button type="button" class="ctrl-item emoji-ctrl">
+                            <i class="fe fe-smile"></i>
+                            <toggler ref="emojisBar" class="emojis-bar">
+                                <span class="emoji" title="+1" @click.prevent="insertEmoji('👍')">👍</span>
+                                <span class="emoji" title="-1" @click.prevent="insertEmoji('👎')">👎</span>
+                                <span class="emoji" title="ok" @click.prevent="insertEmoji('👌')">👌</span>
+                                <span class="emoji" title="pray" @click.prevent="insertEmoji('🙏')">🙏</span>
+                                <span class="emoji" title="smile" @click.prevent="insertEmoji('🙂')">🙂</span>
+                                <span class="emoji" title="confused" @click.prevent="insertEmoji('😕')">😕</span>
+                                <span class="emoji" title="thinking" @click.prevent="insertEmoji('🤔')">🤔</span>
+                                <span class="emoji" title="joy" @click.prevent="insertEmoji('😂')">😂</span>
+                                <span class="emoji" title="hooray" @click.prevent="insertEmoji('🎉')">🎉</span>
+                                <span class="emoji" title="watching" @click.prevent="insertEmoji('👀')">👀</span>
+                                <span class="emoji" title="love" @click.prevent="insertEmoji('❤️')">❤️</span>
+                                <span class="emoji" title="poop" @click.prevent="insertEmoji('💩')">💩</span>
+                            </toggler>
+                        </button>
+
+                        <button ref="messageBtn"
+                            type="button"
+                            class="ctrl-item submit-ctrl"
+                            v-tooltip.bottom="$t('Add comment ({shortcut})', {shortcut: 'Ctrl+Enter'})"
+                            @click.prevent="addComment()"
+                            @keydown.ctrl.enter.exact.prevent="addComment()"
+                        >
+                            <span v-if="isProcessing" class="loader"></span>
+                            <i v-else class="fe fe-send"></i>
+                        </button>
+                    </div>
 
                     <mentions-list ref="mentionsList" :list="mentionsList" class="dropdown-compact input-dropdown"></mentions-list>
                 </form-field>
@@ -255,6 +275,10 @@ export default {
 
             if (this.$refs.mentionsList) {
                 this.$refs.mentionsList.hide();
+            }
+
+            if (this.$refs.emojisBar) {
+                this.$refs.emojisBar.hide();
             }
         },
         onEventPopoverReposition(e) {
@@ -495,6 +519,19 @@ export default {
                     }
                 }
             }, delay);
+        },
+        insertEmoji(emoji) {
+            if (!CommonHelper.isEmpty(this.message)) {
+                this.message = (this.message.trim() + ' ');
+            }
+
+            this.message += (emoji + ' ');
+
+            this.$nextTick(() => {
+                if (this.$refs.messageField) {
+                    this.$refs.messageField.focus();
+                }
+            });
         },
     },
 }
