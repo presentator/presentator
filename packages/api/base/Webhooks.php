@@ -1,9 +1,7 @@
 <?php
 namespace presentator\api\base;
 
-use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 
 /**
  * Webhooks is a storage for all webhooks configurations in the application.
@@ -17,11 +15,12 @@ use yii\base\InvalidConfigException;
  *         'definitions' => [
  *             'presentator\api\models\User' => [
  *                 'expand' => ['settings'],
- *                 'createUrl' => [
- *                     'http://my-create-hook1.com',
- *                     'http://my-create-hook2.com',
+ *                 'create' => [
+ *                     'https://my-hook1.com',
+ *                     'https://my-hook2.com',
  *                 ],
- *                 'updateUrl' => 'http://my-create-hook2.com',
+ *                 'update' => ['class' => '\custom\hook\transformer\class'],
+ *                 'delete' => 'https://my-hook3.com',
  *             ],
  *         ],
  *     ]

@@ -2,6 +2,8 @@
 namespace presentator\api\tests\unit\behaviors;
 
 use Yii;
+use presentator\api\base\WebhookTransformer;
+use presentator\api\tests\mocks\WebhookTransformerMock;
 use presentator\api\behaviors\WebhooksBehavior;
 use presentator\api\tests\fixtures\ProjectFixture;
 use presentator\api\tests\fixtures\PrototypeFixture;
@@ -47,32 +49,33 @@ class WebhooksBehaviorTest extends \Codeception\Test\Unit
     }
 
     /**
-     * WebooksBehavior ActiveRecord integration test.
+     * WebooksBehavior ActiveRecord integration test with simple url hooks.
      */
     public function testActiveRecordIntegration()
     {
         $testScenarios = [
-            [ /* no definition options */ ],
+            // no definitions options
+            [],
+            // url as create hook
             [
-                // just create hook
-                'createUrl' => 'http://create-hook1',
+                'create' => 'http://create-hook1',
             ],
+            // url as update hook
             [
-                // just update hook
-                'updateUrl' => 'http://update-hook',
+                'update' => 'http://update-hook',
             ],
+            // url as delete hook
             [
-                // just delete hook
-                'deleteUrl' => 'http://delete-hook',
+                'delete' => 'http://delete-hook',
             ],
+            // url for create, update and delete hooks + custom fields and expand
             [
-                // all hooks + custom fields and expand
-                'createUrl' => ['http://create-hook1', 'http://create-hook2'],
-                'updateUrl' => 'http://update-hook',
-                'deleteUrl' => 'http://delete-hook',
-                'fields'    => ['id'],
-                'expand'    => ['prototypes'],
-            ]
+                'create' => ['http://create-hook1', 'http://create-hook2'],
+                'update' => 'http://update-hook',
+                'delete' => 'http://delete-hook',
+                'fields' => ['id'],
+                'expand' => ['prototypes'],
+            ],
         ];
 
         foreach ($testScenarios as $index => $scenario) {
@@ -87,9 +90,9 @@ class WebhooksBehaviorTest extends \Codeception\Test\Unit
                 $clientDouble = test::double(Client::class, ['request' => null]);
 
                 // normalize scenario fields
-                $createHooks = isset($scenario['createUrl']) ? (array) $scenario['createUrl'] : [];
-                $updateHooks = isset($scenario['updateUrl']) ? (array) $scenario['updateUrl'] : [];
-                $deleteHooks = isset($scenario['deleteUrl']) ? (array) $scenario['deleteUrl'] : [];
+                $createHooks = isset($scenario['create']) ? (array) $scenario['create'] : [];
+                $updateHooks = isset($scenario['update']) ? (array) $scenario['update'] : [];
+                $deleteHooks = isset($scenario['delete']) ? (array) $scenario['delete'] : [];
                 $fields      = isset($scenario['fields']) ? $scenario['fields'] : [];
                 $expand      = isset($scenario['expand']) ? $scenario['expand'] : [];
 
@@ -141,5 +144,39 @@ class WebhooksBehaviorTest extends \Codeception\Test\Unit
                 test::clean();
             });
         }
+    }
+
+    /**
+     * WebooksBehavior test with advanced WebhookTransformer hooks.
+     */
+    public function testWebhookTransformer() {
+        $this->specify('with WebhookTransformer hooks', function() {
+            $clientDouble = test::double(Client::class, ['request' => null]);
+
+            Yii::$app->set('webhooks', Yii::createObject([
+                'class' => 'presentator\api\base\Webhooks',
+                'definitions' => [
+                    Project::class => [
+                        'create' => ['class'=> WebhookTransformerMock::class, 'testData' => []],
+                        'update' => ['class'=> WebhookTransformerMock::class, 'testUrl' => ''],
+                        'delete' => ['class'=> WebhookTransformerMock::class],
+                    ],
+                ],
+            ]));
+
+            // update (empty data)
+            $dummy = new Project(['title' => 'test']);
+            verify('Should create the dummy model successfully and trigger create event', $dummy->save())->true();
+            $clientDouble->verifyNeverInvoked('request');
+
+            // update (empty url)
+            $dummy->title = 'new_test';
+            verify('Should update the dummy model successfully and trigger update event', $dummy->save())->true();
+            $clientDouble->verifyNeverInvoked('request');
+
+            // delete (nonempty url and data)
+            verify('Should delete the dummy model successfully and trigger delete event', $dummy->delete())->equals(1);
+            $clientDouble->verifyInvokedOnce('request', ['POST', 'test_url', ['json' => ['test_key' => 'test_value'], 'timeout' => 1]]);
+        });
     }
 }

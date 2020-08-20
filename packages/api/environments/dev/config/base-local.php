@@ -35,10 +35,10 @@ return [
         //     'class' => 'presentator\api\base\Webhooks',
         //     'definitions' => [
         //         'presentator\api\models\ScreenComment' => [
-        //             'createUrl' => 'YOU_WEBHOOK_URL',        // notified after model create
-        //             'updateUrl' => 'YOU_WEBHOOK_URL',        // notified after model update
-        //             'deleteUrl' => 'YOU_WEBHOOK_URL',        // notified before model delete
-        //             'expand'    => ['fromUser', 'metaData'], // additional fields defined in the model's `extraFields()` method
+        //             'create' => 'YOU_WEBHOOK_URL',        // notified after model create
+        //             'update' => 'YOU_WEBHOOK_URL',        // notified after model update
+        //             'delete' => 'YOU_WEBHOOK_URL',        // notified before model delete
+        //             'expand' => ['fromUser', 'metaData'], // additional fields defined in the model's `extraFields()` method
         //             // ... for all definition options check the public properties of `presentator\api\behaviors\WebhooksBehavior`
         //         ],
         //         // ... any other model that extends `presentator\api\models\ActiveRecord`

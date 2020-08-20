@@ -7,6 +7,7 @@ use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\helpers\StringHelper;
 use GuzzleHttp\Client;
+use presentator\api\base\WebhookTransformer;
 
 /**
  * Adds basic webhooks support to an AR model.
@@ -18,12 +19,12 @@ use GuzzleHttp\Client;
  *     return [
  *         'webhooks' => [
  *             'class' => WebhooksBehavior::class,
- *             'expand' => ['settings'],
- *             'createUrl' => [
- *                 'http://my-create-hook1.com',
- *                 'http://my-create-hook2.com',
+ *             'create' => [
+ *                 'https://my-hook1.com',
+ *                 'https://my-hook2.com',
  *             ],
- *             'updateUrl' => 'http://my-create-hook2.com',
+ *             'update' => ['class' => '\custom\hook\transformer\class'],
+ *             'delete' => 'https://my-hook3.com',
  *         ],
  *         ...
  *     ];
@@ -35,29 +36,39 @@ use GuzzleHttp\Client;
 class WebhooksBehavior extends Behavior
 {
     /**
-     * Url address(es) to send POST data to after model create.
+     * After model create webhook.
+     *
+     * It could be either simple url address(es) or/and `WebhookTransformer`
+     * class instance for the more advanced cases.
      *
      * @var null|string|array
      */
-    public $createUrl;
+    public $create;
 
     /**
-     * Url address(es) to send POST data to after model update.
+     * After model update webhook.
+     *
+     * It could be either simple url address(es) or/and `WebhookTransformer`
+     * class instance for the more advanced cases.
      *
      * @var null|string|array
      */
-    public $updateUrl;
+    public $update;
 
     /**
-     * Url address(es) to send POST data to before model delete.
+     * Before model delete webhook.
+     *
+     * It could be either simple url address(es) or/and `WebhookTransformer`
+     * class instance for the more advanced cases.
      *
      * @var null|string|array
      */
-    public $deleteUrl;
+    public $delete;
 
     /**
      * List of model fields that the webhook data should contain.
      * If this parameter is empty, all fields as specified in the model's `fields()` will be returned.
+     * This property is used only with the simple url type webhooks.
      *
      * @var array
      */
@@ -66,6 +77,7 @@ class WebhooksBehavior extends Behavior
     /**
      * Additional fields from the model `extraFields()` that the webhook data should contain.
      * If this parameter is empty, no extra fields will be returned.
+     * This property is used only with the simple url type webhooks.
      *
      * @var array
      */
@@ -90,7 +102,7 @@ class WebhooksBehavior extends Behavior
      */
     public function afterInsert($event)
     {
-        $this->send($this->createUrl, $event);
+        $this->send($this->create, $event);
     }
 
     /**
@@ -98,7 +110,7 @@ class WebhooksBehavior extends Behavior
      */
     public function afterUpdate($event)
     {
-        $this->send($this->updateUrl, $event);
+        $this->send($this->update, $event);
     }
 
     /**
@@ -106,41 +118,58 @@ class WebhooksBehavior extends Behavior
      */
     public function beforeDelete($event)
     {
-        $this->send($this->deleteUrl, $event);
+        $this->send($this->delete, $event);
     }
 
     /**
-     * POST `$event` data as json to the provided url(s).
+     * POST `$event` to the provided hook(s).
      *
-     * @param  string|array $urls
+     * @param  string|array $hooks
      * @param  Event        $event
      */
-    protected function send($urls, Event $event) {
-        if (empty($urls)) {
-            return; // no hook url(s)
+    protected function send($hooks, Event $event)
+    {
+        if (empty($hooks)) {
+            return; // no hook(s)
         }
 
-        $urls = is_array($urls) ? $urls : [$urls];
+        // normalize
+        $hooks = is_array($hooks) && isset($hooks[0]) ? $hooks : [$hooks];
 
-        // ensures that all model fields are fetched
+        // ensures that all model fields are up-to-date
         $event->sender->refresh();
-
-        $data = [
-            'event' => $event->name,
-            'model' => StringHelper::basename(get_class($event->sender)),
-            'data'  => $event->sender->toArray($this->fields, $this->expand),
-        ];
 
         $client = new Client();
 
-        foreach ($urls as $url) {
+        foreach ($hooks as $hook) {
             try {
+                if (is_string($hook)) {
+                    $url = $hook;
+                    $data = [
+                        'event' => $event->name,
+                        'model' => StringHelper::basename(get_class($event->sender)),
+                        'data'  => $event->sender->toArray($this->fields, $this->expand),
+                    ];
+                } else {
+                    $transformer = Yii::createObject($hook);
+                    if (!($transformer instanceof WebhookTransformer)) {
+                        continue;
+                    }
+
+                    $url = $transformer->getUrl($event);
+                    $data = $transformer->getData($event);
+                }
+
+                if (empty($url) || empty($data)) {
+                    continue;
+                }
+
                 $client->request('POST', $url, [
                     'json' => $data,
                     'timeout' => 1, // we don't need the response so there is no needed to wait too longer for it
                 ]);
             } catch (\Exception | \Throwable $e) {
-                // silence timeout exceptions
+                Yii::error($e->getMessage());
             }
         }
     }
