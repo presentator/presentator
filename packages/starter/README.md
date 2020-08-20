@@ -77,7 +77,7 @@ It wraps all required components for a Presentator installation in a single pack
 
     > Check [.env](https://github.com/presentator/presentator-spa/blob/master/.env) for all available options.
 
-7. Run again `composer install` to make sure that the application is inited correctly.
+7. Run `composer install` to make sure that the application is properly inited.
 
 6. (optional) Setup a cron task to process unread screen comments:
 
