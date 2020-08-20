@@ -24,6 +24,9 @@ export default {
             getHotspotsForScreen: 'hotspots/getHotspotsForScreen',
         }),
     },
+    mounted() {
+        this.fitToScreen = this.$route.query.fit == 1;
+    },
     methods: {
         ...mapActions({
             setHotspots:         'hotspots/setHotspots',
@@ -97,6 +100,14 @@ export default {
         },
         toggleFitToScreen() {
             this.fitToScreen = !this.fitToScreen;
+
+            this.$router.replace({
+                name:   this.$route.name,
+                params: Object.assign({}, this.$route.params),
+                query:  Object.assign({}, this.$route.query, {
+                    fit: this.fitToScreen ? '1' : '0',
+                }),
+            });
         },
     },
 }
