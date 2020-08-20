@@ -18,14 +18,16 @@ class WebhookTransformerMock extends WebhookTransformer
     /**
      * @inheritdoc
      */
-    public function getUrl(Event $event): string {
+    public function getUrl(Event $event): string
+    {
         return $this->testUrl;
     }
 
     /**
      * @inheritdoc
      */
-    public function getData(Event $event): array {
+    public function getData(Event $event): array
+    {
         return $this->testData;
     }
 }

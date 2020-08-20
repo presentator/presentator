@@ -149,7 +149,8 @@ class WebhooksBehaviorTest extends \Codeception\Test\Unit
     /**
      * WebooksBehavior test with advanced WebhookTransformer hooks.
      */
-    public function testWebhookTransformer() {
+    public function testWebhookTransformer()
+    {
         $this->specify('with WebhookTransformer hooks', function() {
             $clientDouble = test::double(Client::class, ['request' => null]);
 
