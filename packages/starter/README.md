@@ -12,17 +12,44 @@ It wraps all required components for a Presentator installation in a single pack
 > **This repository is READ-ONLY.**
 > **Report issues and send pull requests in the [main Presentator repository](https://github.com/presentator/presentator/issues).**
 
+> If you prefer a dockerized version of the starter package, please check [presentator-docker](https://github.com/presentator/presentator-docker).
+
 
 ## Requirements
 
-The only requirements are those from the [Presentator API](https://github.com/presentator/presentator-api/blob/master/README.md#requirements).
+- Apache/Nginx HTTP server
 
+- SQL database (MySQL/MariadDB/PostgreSQL)
+
+    > For MySQL up to 5.6 and MariaDB up to 10.1 you may need to set `innodb_large_prefix=1` and `innodb_default_row_format=dynamic` to prevent migration errors (see [#104](https://github.com/presentator/presentator/issues/104)).
+
+- PHP 7.1+ with the following extensions:
+
+    ```
+    Reflection
+    PCRE
+    SPL
+    MBString
+    OpenSSL
+    Intl
+    ICU version
+    Fileinfo
+    DOM extensions
+    GD or Imagick
+    ```
+
+    In addition, here are some recommended `php.ini` configuration settings:
+    ```
+    post_max_size       = 64M
+    upload_max_filesize = 64M
+    max_execution_time  = 60
+    memory_limit        = 256M
+    ```
+
+- [Composer](https://getcomposer.org/)
 
 ## Installation
 
-> If you prefer a dockerized version of the starter package, please check [presentator-docker](https://github.com/presentator/presentator-docker).
-
-Before getting started make sure that you have checked the project requirements and installed [Composer](https://getcomposer.org/).
 
 1. Install through Composer:
 
@@ -36,17 +63,21 @@ Before getting started make sure that you have checked the project requirements 
 
     > By default a generic `.htaccess` file will be created for you after initialization. If you are using nginx, you could check the following [sample configuration](https://github.com/presentator/presentator/issues/120#issuecomment-539844456).
 
-3. Create a new database (with `utf8mb4_unicode_ci` or `utf8_unicode_ci` collation) and edit the necessary Presentator API environment config files located in the `/path/to/starter/config/`.
+3. Create a new database (with `utf8mb4_unicode_ci` collation).
 
-    > Usually only `base-local.php` and `params-local.php` config files need to change.
+4. Adjust the **db**, **mailer** and other components configuration in `config/base-local.php` accordingly.
 
-    > Check the corresponding [non `-local` config files](https://github.com/presentator/presentator-api/blob/master/config) for all available options.
+    > Check [base.php](https://github.com/presentator/presentator-api/blob/master/config/base.php) for all available options.
 
-4. Overwrite the default Presentator SPA configurations by editing the `extra.starter.spaConfig` key of `/path/to/starter/composer.json`.
+5. Adjust your environment specific parameters (public urls, support email, etc.) in `config/params-local.php` accordingly.
 
-    > All available Presentator SPA configurations could be found in the [base SPA `.env` file](https://github.com/presentator/presentator-spa/blob/master/.env).
+    > Check [params.php](https://github.com/presentator/presentator-api/blob/master/config/params.php) for all available options.
 
-5. Run `composer install` while in the project root directory.
+6. (optional) If needed, you could also adjust the frontend (aka. SPA) settings by editing the `extra.starter.spaConfig` key in your `composer.json` file.
+
+    > Check [.env](https://github.com/presentator/presentator-spa/blob/master/.env) for all available options.
+
+7. Run again `composer install` to make sure that the application is inited correctly.
 
 6. (optional) Setup a cron task to process unread screen comments:
 

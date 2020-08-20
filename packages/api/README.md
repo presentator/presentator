@@ -75,7 +75,7 @@ Before getting started make sure that you have checked the project requirements 
     php init
     ```
 
-4. Create a new database (with `utf8mb4_unicode_ci` or `utf8_unicode_ci` collation) and adjust the db, mailer and other component configurations in `config/base-local.php` accordingly.
+4. Create a new database (with `utf8mb4_unicode_ci` collation) and adjust the db, mailer and other component configurations in `config/base-local.php` accordingly.
 
     > **All available app components with their default values could be found in `config/base.php`.**
 

@@ -23,11 +23,6 @@ The project is organized in a monorepo and consists of several decoupled package
 - [figma](https://github.com/presentator/presentator-figma)
 
 
-## Upgrade from v1
-
-If you have previously installed Presentator v1, please follow the [upgrade instructions](UPGRADE.md).
-
-
 ## Installation
 
 #### Production
@@ -88,6 +83,11 @@ The following helper docker scripts are available:
 ```
 
 To stop and shutdown every container just run `docker-compose down` while in the project root directory.
+
+
+## Upgrade from v1
+
+If you have previously installed Presentator v1, please follow the [upgrade instructions](UPGRADE.md).
 
 
 ## Contributing
