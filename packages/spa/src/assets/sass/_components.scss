@@ -798,9 +798,6 @@
         color: $primaryColor;
         line-height: 20px;
         white-space: pre-line;
-        & ~ .meta {
-            margin-top: 3px;
-        }
     }
     .meta {
         .meta-item {
@@ -819,6 +816,10 @@
                 margin: 0;
             }
         }
+    }
+    .title ~ .meta,
+    .meta ~ .title {
+        margin-top: 3px;
     }
     &:hover,
     &:focus {

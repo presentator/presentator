@@ -45,11 +45,11 @@
                             <i v-if="comment.isResolved" class="fe fe-check txt-success"></i>
                         </figure>
                         <div class="content">
-                            <div class="title txt-default">{{ comment.message }}</div>
                             <div class="meta">
                                 <div class="meta-item">{{ comment.user ? comment.user.identifier : comment.from }}</div>
                                 <div class="meta-item">{{ comment.createdAtFromNow }}</div>
                             </div>
+                            <div class="title txt-default">{{ comment.message }}</div>
                         </div>
                     </div>
                 </div>
