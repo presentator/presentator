@@ -1,4 +1,4 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c9af8"],{"59ca":function(e,n,t){"use strict";function c(e){return e&&"object"===typeof e&&"default"in e?e["default"]:e}var o=c(t("c23d")),a="firebase",i="7.17.1";
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c9af8"],{"59ca":function(e,t,a){"use strict";var n=a("c23d");function c(e){return e&&"object"===typeof e&&"default"in e?e:{default:e}}var o=c(n),r="firebase",u="7.19.1";
 /**
  * @license
  * Copyright 2018 Google LLC
@@ -15,4 +15,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-o.registerVersion(a,i,"app"),e.exports=o}}]);
+o["default"].registerVersion(r,u,"app"),e.exports=o["default"]}}]);
