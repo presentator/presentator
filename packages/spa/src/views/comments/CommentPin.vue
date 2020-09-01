@@ -85,8 +85,7 @@ export default {
         // ensures that the comment pin is in visible viewport
         positionWithinView() {
             this.$el.scrollIntoView({
-                behavior: 'smooth',
-                block:    'nearest',
+                block: 'nearest',
             });
         },
         updatePinPosition() {
