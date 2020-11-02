@@ -104,6 +104,10 @@ return [
                     'pluralize'  => false,
                     'class'      => 'yii\rest\UrlRule',
                     'controller' => 'prototypes',
+                    'extraPatterns' => [
+                        'POST {id}/duplicate' => 'duplicate',
+                        '{id}/duplicate'      => 'options',
+                    ],
                 ],
                 // Project links
                 [

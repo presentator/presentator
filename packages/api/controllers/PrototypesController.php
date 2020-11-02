@@ -118,4 +118,23 @@ class PrototypesController extends ApiController
 
         return $this->sendErrorResponse();
     }
+
+    /**
+     * Duplicates an existing `Prototype` model.
+     *
+     * @param  integer $id ID of the prototype to duplicate.
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionDuplicate($id)
+    {
+        $user = Yii::$app->user->identity;
+
+        $prototype = $user->findPrototypeById($id);
+        if (!$prototype) {
+            throw new NotFoundHttpException();
+        }
+
+        return $prototype->duplicate((string) $request->post('title'));
+    }
 }
