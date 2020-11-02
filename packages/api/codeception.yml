@@ -4,7 +4,7 @@ paths:
     tests:   tests
     log:     tests/_output
     data:    tests/_data
-    helpers: tests/_support
+    helpers: tests
 bootstrap: _bootstrap.php
 settings:
     memory_limit: 1024M
