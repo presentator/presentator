@@ -93,4 +93,20 @@ describe('Prototypes', function () {
             }).then(done).catch(done);
         });
     });
+
+    describe('duplicate()', function () {
+        it('Should correctly set request data', function (done) {
+            var bodyParams  = {'body_test1': 1, 'body_test2': 2};
+            var queryParams = {'query_test1': 1, 'query_test2': 2};
+            var result      = resource.duplicate(123, bodyParams, queryParams);
+
+            assert.instanceOf(result, Promise);
+            result.then(function (response) {
+                assert.equal(response.config.url, '/prototypes/123/duplicate');
+                assert.equal(response.config.method, 'post');
+                assert.deepEqual(response.config.params, queryParams);
+                assert.deepEqual(JSON.parse(response.config.data), bodyParams);
+            }).then(done).catch(done);
+        });
+    });
 });

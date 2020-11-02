@@ -79,4 +79,19 @@ export default class Prototypes extends BaseResource {
             'data':   bodyParams,
         });
     }
+
+    /**
+     * @param  {String} id
+     * @param  {Object} [bodyParams]
+     * @param  {Object} [queryParams]
+     * @return {Promise}
+     */
+    duplicate(id, bodyParams = {}, queryParams = {}) {
+        return this.$http({
+            'method': 'post',
+            'url':    '/prototypes/' + encodeURIComponent(id) + '/duplicate',
+            'params': queryParams,
+            'data':   bodyParams,
+        });
+    }
 }
