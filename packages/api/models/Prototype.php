@@ -129,7 +129,7 @@ class Prototype extends ActiveRecord
             $prototypeCopy = clone $this;
             unset($prototypeCopy->id);
             $prototypeCopy->isNewRecord = true;
-            $prototypeCopy->title = !empty($title) ? $title : ($prototype->title . ' (copy)');
+            $prototypeCopy->title = !empty($title) ? $title : ($this->title . ' (copy)');
             if (!$prototypeCopy->save()) {
                 throw new \Exception('Unable to duplicate prototype ' . $this->id);
             }
@@ -151,11 +151,13 @@ class Prototype extends ActiveRecord
                     throw new \Exception('Unable to duplicate screen ' . $screen->id);
                 }
 
-                // copy the file itself
-                if (!Yii::$app->fs->copy($screen->filePath, $screenCopy->filePath)) {
-                    throw new \Exception('Unable to copy screen file ' . $screen->filePath);
+                // copy the file itself (if exist)
+                if (Yii::$app->fs->has($screen->filePath)) {
+                    if (!Yii::$app->fs->copy($screen->filePath, $screenCopy->filePath)) {
+                        throw new \Exception('Unable to copy screen file ' . $screen->filePath);
+                    }
+                    $newFiles[] = $screenCopy->filePath; // keep track of the created files
                 }
-                $newFiles[] = $screenCopy->filePath; // keep track of the created files
 
                 $screensMap[$screen->id] = $screenCopy;
 

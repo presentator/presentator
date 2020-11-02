@@ -1,13 +1,21 @@
 <?php
 namespace presentator\api\tests\functional;
 
+use Yii;
 use presentator\api\tests\FunctionalTester;
 use presentator\api\tests\fixtures\UserFixture;
 use presentator\api\tests\fixtures\ProjectFixture;
 use presentator\api\tests\fixtures\PrototypeFixture;
+use presentator\api\tests\fixtures\ScreenFixture;
+use presentator\api\tests\fixtures\HotspotTemplateFixture;
+use presentator\api\tests\fixtures\HotspotTemplateScreenRelFixture;
+use presentator\api\tests\fixtures\HotspotFixture;
 use presentator\api\tests\fixtures\UserProjectRelFixture;
 use presentator\api\models\User;
 use presentator\api\models\Prototype;
+use presentator\api\models\Hotspot;
+use presentator\api\models\Screen;
+use AspectMock\Test as test;
 
 /**
  * PrototypesController API functional tests.
@@ -28,6 +36,18 @@ class PrototypesCest
             'PrototypeFixture' => [
                 'class' => PrototypeFixture::class,
             ],
+            'ScreenFixture' => [
+                'class' => ScreenFixture::class,
+            ],
+            'HotspotTemplateFixture' => [
+                'class' => HotspotTemplateFixture::class,
+            ],
+            'HotspotTemplateScreenRelFixture' => [
+                'class' => HotspotTemplateScreenRelFixture::class,
+            ],
+            'HotspotFixture' => [
+                'class' => HotspotFixture::class,
+            ],
             'UserFixture' => [
                 'class' => UserFixture::class,
             ],
@@ -35,6 +55,14 @@ class PrototypesCest
                 'class' => UserProjectRelFixture::class,
             ],
         ]);
+    }
+
+    /**
+     * @inherit
+     */
+    protected function _after()
+    {
+        test::clean();
     }
 
     /* `PrototypesController::actionIndex()`
@@ -430,6 +458,133 @@ class PrototypesCest
             $I->sendDELETE('/prototypes/' . $scenario['prototypeId']);
             $I->seeResponseCodeIs(204);
             $I->dontSeeRecord(Prototype::class, ['id' => $scenario['prototypeId']]);
+        }
+    }
+
+    /* `PrototypesController::actionDuplicate()`
+    --------------------------------------------------------------- */
+    /**
+     * `PrototypesController::actionDuplicate()` failure test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function duplicateFailure(FunctionalTester $I)
+    {
+        $I->wantTo('Unsuccessfully duplicate prototype');
+
+        $regularUser = User::findOne(1002);
+        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+
+        $I->amGoingTo('try accessing the action unauthorized');
+        $I->sendPOST('/prototypes/1006/duplicate');
+        $I->seeUnauthorizedResponse();
+
+        $I->amGoingTo('authorize as regular user and try to view prototype owned by another user');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $regularUser->generateAccessToken());
+        $I->sendPOST('/prototypes/1006/duplicate');
+        $I->seeNotFoundResponse();
+
+        $I->amGoingTo('authorize as super user and try to view unexisting prototype');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $superUser->generateAccessToken());
+        $I->sendPOST('/prototypes/123456/duplicate');
+        $I->seeNotFoundResponse();
+    }
+
+    /**
+     * `PrototypesController::actionDuplicate()` success test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function duplicateSuccess(FunctionalTester $I)
+    {
+        $I->wantTo('Successfully duplicate prototype');
+
+        $regularUser  = User::findOne(1002);
+        $superUser    = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+
+
+        $testScenarios = [
+            [
+                'comment'   => 'authorize as regular user and try to duplicate owned prototype (with custom title)',
+                'token'     => $regularUser->generateAccessToken(),
+                'prototype' => Prototype::findOne(1001),
+                'title'     => 'Duplicated prototype',
+            ],
+            [
+                'comment'   => 'authorize as super user and try to duplicate a prototype (no custom title)',
+                'token'     => $superUser->generateAccessToken(),
+                'prototype' => Prototype::findOne(1004),
+            ],
+        ];
+
+        foreach ($testScenarios as $scenario) {
+            $fsDouble = test::double(Yii::$app->fs, ['has' => true, 'copy' => true, 'delete' => true]);
+
+            $postData = [];
+            if (!empty($scenario['title'])) {
+                $postData['title'] = $scenario['title'];
+            }
+
+            $I->amGoingTo($scenario['comment']);
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $scenario['token']);
+            $I->sendPOST('/prototypes/' . $scenario['prototype']->id . '/duplicate?expand=screens', $postData);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseIsJson();
+            $I->seeResponseMatchesJsonType([
+                'id'      => 'integer:!=' . $scenario['prototype']->id,
+                'title'   => 'string:=' . (!empty($scenario['title']) ? $scenario['title'] : ($scenario['prototype']->title . ' (copy)')),
+                'screens' => 'array',
+            ]);
+            $I->seeRecord(Prototype::class, ['id' => $I->grabDataFromResponseByJsonPath('$.id')]);
+            $duplicatedPrototype = Prototype::findOne($I->grabDataFromResponseByJsonPath('$.id'));
+
+            // verify fs calls
+            $fsDouble->verifyInvokedMultipleTimes('has', count($scenario['prototype']->screens));
+            $fsDouble->verifyInvokedMultipleTimes('copy', count($scenario['prototype']->screens));
+
+            // check screens count
+            $I->assertEquals(count($scenario['prototype']->screens), count($duplicatedPrototype->screens), 'screens count should match');
+
+            // check hotspot templates count
+            $I->assertEquals(count($scenario['prototype']->hotspotTemplates), count($duplicatedPrototype->hotspotTemplates), 'hotspot templates count should match');
+
+            // check hotspot template-screen rels count
+            $screenRels = [];
+            foreach ($scenario['prototype']->hotspotTemplates as $template) {
+                $screenRels = array_merge($screenRels, $template->hotspotTemplateScreenRels);
+            }
+            $duplicatedScreenRels = [];
+            foreach ($duplicatedPrototype->hotspotTemplates as $template) {
+                $duplicatedScreenRels = array_merge($duplicatedScreenRels, $template->hotspotTemplateScreenRels);
+            }
+            $I->assertEquals(count($screenRels), count($duplicatedScreenRels), 'hotspot template-screen rels count should match');
+
+            // check hotspots count
+            $hotspots = [];
+            foreach ($scenario['prototype']->screens as $screen) {
+                $hotspots = array_merge($hotspots, $screen->hotspots);
+            }
+            foreach ($scenario['prototype']->hotspotTemplates as $template) {
+                $hotspots = array_merge($hotspots, $template->hotspots);
+            }
+            $duplicatedHotspots = [];
+            foreach ($duplicatedPrototype->screens as $screen) {
+                $duplicatedHotspots = array_merge($duplicatedHotspots, $screen->hotspots);
+            }
+            foreach ($duplicatedPrototype->hotspotTemplates as $template) {
+                $duplicatedHotspots = array_merge($duplicatedHotspots, $template->hotspots);
+            }
+            $I->assertEquals(count($hotspots), count($duplicatedHotspots), 'hotspots count should match');
+
+            // ensure that hotspot's screenId setting was also updated (if any)
+            foreach ($duplicatedHotspots as $hotspot) {
+                $screenIdSetting = $hotspot->getSetting(Hotspot::SETTING['SCREEN']);
+                if (!empty($screenIdSetting)) {
+                    $I->seeRecord(Screen::class, ['prototypeId' => $duplicatedPrototype->id, 'id' => $screenIdSetting]);
+                }
+            }
+
+            test::clean();
         }
     }
 }

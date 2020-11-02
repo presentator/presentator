@@ -135,6 +135,6 @@ class PrototypesController extends ApiController
             throw new NotFoundHttpException();
         }
 
-        return $prototype->duplicate((string) $request->post('title'));
+        return $prototype->duplicate((string) Yii::$app->request->post('title'));
     }
 }
