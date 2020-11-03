@@ -513,7 +513,7 @@ class PrototypesCest
             [
                 'comment'   => 'authorize as super user and try to duplicate a prototype (no custom title)',
                 'token'     => $superUser->generateAccessToken(),
-                'prototype' => Prototype::findOne(1004),
+                'prototype' => Prototype::findOne(1003),
             ],
         ];
 
@@ -531,9 +531,10 @@ class PrototypesCest
             $I->seeResponseCodeIs(200);
             $I->seeResponseIsJson();
             $I->seeResponseMatchesJsonType([
-                'id'      => 'integer:!=' . $scenario['prototype']->id,
-                'title'   => 'string:=' . (!empty($scenario['title']) ? $scenario['title'] : ($scenario['prototype']->title . ' (copy)')),
-                'screens' => 'array',
+                'id'        => 'integer:!=' . $scenario['prototype']->id,
+                'projectId' => 'integer:=' . $scenario['prototype']->projectId,
+                'title'     => 'string:=' . (!empty($scenario['title']) ? $scenario['title'] : ($scenario['prototype']->title . ' (copy)')),
+                'screens'   => 'array',
             ]);
             $I->seeRecord(Prototype::class, ['id' => $I->grabDataFromResponseByJsonPath('$.id')]);
             $duplicatedPrototype = Prototype::findOne($I->grabDataFromResponseByJsonPath('$.id'));
