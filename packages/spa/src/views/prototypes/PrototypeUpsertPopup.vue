@@ -319,9 +319,8 @@ export default {
                 this.model.title + ' (copy)'
             );
 
-            // user cancelled the modal
             if (title == null || title == "") {
-                return this.close();
+                return; // user closed the prompt modal
             }
 
             this.isProcessing = true;
