@@ -21,6 +21,7 @@ body {
     overflow-y: auto; // fallback
     overflow-y: overlay;
     outline-color: $primaryColor;
+    overflow-anchor: none; // fix chrome scroll to bottom stuck
 }
 
 p {
