@@ -89,18 +89,29 @@
                 </div>
             </template>
             <template v-slot:footer>
-                <button type="button"
+                <!-- <button type="button"
                     class="btn btn-light-border"
                     :class="{'btn-disabled': isProcessing}"
                     @click.prevent="close()"
                 >
                     <span class="txt">{{ $t('Cancel') }}</span>
-                </button>
+                </button> -->
 
                 <span v-if="isUpdate"
-                    class="link-fade link-danger m-l-small"
-                    @click.prevent="deletePrototype(model.id)"
-                >{{ $t('Delete') }}</span>
+                    class="link-fade link-danger m-r-small"
+                    v-tooltip="$t('Delete')"
+                    @click.prevent="deletePrototype()"
+                >
+                    <i class="fe fe-trash"></i>
+                </span>
+
+                <span v-if="isUpdate"
+                    class="link-fade link-hint m-r-small"
+                    v-tooltip="$t('Duplicate')"
+                    @click.prevent="duplicatePrototype()"
+                >
+                    <i class="fe fe-copy"></i>
+                </span>
 
                 <div class="flex-fill-block"></div>
 
@@ -297,6 +308,39 @@ export default {
             // optimistic deletion
             this.$toast(this.$t('Successfully deleteted prototype "{title}".', {title: this.model.title}));
             this.removePrototype(this.model.id);
+        },
+        duplicatePrototype() {
+            if (!this.model.id || this.isProcessing) {
+                return;
+            }
+
+            var title = window.prompt(
+                this.$t('Create a copy of the current prototype with its screens and hotspots.') + '\n\n' + this.$t('Title of your new prototype:'),
+                this.model.title + ' (copy)'
+            );
+
+            // user cancelled the modal
+            if (title == null || title == "") {
+                return this.close();
+            }
+
+            this.isProcessing = true;
+
+            ApiClient.Prototypes.duplicate(this.model.id, {
+                title: title,
+            }).then((response) => {
+                this.$toast(this.$t('Successfully duplicated prototype.'));
+
+                this.close();
+
+                this.addPrototype(response.data);
+
+                this.setActivePrototypeId(response.data.id);
+            }).catch((err) => {
+                this.$errResponseHandler(err);
+            }).finally(() => {
+                this.isProcessing = false;
+            });
         },
     }
 }

@@ -19,7 +19,7 @@
     "dropzone": "^5.7.2",
     "firebase": "^7.24.0",
     "moment": "^2.29.1",
-    "presentator-client": "^2.5.0",
+    "presentator-client": "^2.6.0",
     "vue": "^2.6.12",
     "vue-i18n": "^8.22.1",
     "vue-router": "^3.4.8",
