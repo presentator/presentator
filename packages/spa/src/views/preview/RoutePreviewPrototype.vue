@@ -4,7 +4,7 @@
             :class="{
                 'comments-mode':      isInCommentsMode,
                 'preview-mode':       isInPreviewMode,
-                'preview-mode-hints': isPreviewModeHintsActive,
+                'preview-mode-hints': keepHotspotsVisible || isPreviewModeHintsActive,
             }"
             :style="{
                 'background': activePrototype && activeScreen && activePrototype.isForDesktop ? activeScreen.background : null
@@ -84,6 +84,15 @@
                     >
                         <span class="txt">{{ $t('Comments panel') }}</span>
                     </button>
+
+                    <div v-if="isInPreviewMode && prototypes.length > 0"
+                        class="ctrl-item ctrl-item-circle"
+                        :class="keepHotspotsVisible ? 'ctrl-item-success active bg-light-border' : ''"
+                        v-tooltip.top="$t('Toggle hotspots')"
+                        @click.prevent="toggleKeepHotspotsVisible"
+                    >
+                        <i class="fe fe-target"></i>
+                    </div>
 
                     <div v-if="prototypes.length > 0 && activePrototype.scaleFactor != 0"
                         class="ctrl-item ctrl-item-circle"

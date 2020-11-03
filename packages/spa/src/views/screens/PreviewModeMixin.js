@@ -9,7 +9,8 @@ export default {
             isPreviewModeHintsActive:  false,
             isLoadingHotspots:         false,
             isLoadingHotspotTemplates: false,
-            fitToScreen:          false,
+            fitToScreen:               false,
+            keepHotspotsVisible:       false,
         }
     },
     computed: {
@@ -26,6 +27,7 @@ export default {
     },
     mounted() {
         this.fitToScreen = this.$route.query.fit == 1;
+        this.keepHotspotsVisible = this.$route.query.hotspots == 1;
     },
     methods: {
         ...mapActions({
@@ -106,6 +108,17 @@ export default {
                 params: Object.assign({}, this.$route.params),
                 query:  Object.assign({}, this.$route.query, {
                     fit: this.fitToScreen ? '1' : '0',
+                }),
+            });
+        },
+        toggleKeepHotspotsVisible() {
+            this.keepHotspotsVisible = !this.keepHotspotsVisible;
+
+            this.$router.replace({
+                name:   this.$route.name,
+                params: Object.assign({}, this.$route.params),
+                query:  Object.assign({}, this.$route.query, {
+                    hotspots: this.keepHotspotsVisible ? '1' : '0',
                 }),
             });
         },
