@@ -206,6 +206,7 @@ class Prototype extends ActiveRecord
                 $hotspotCopy = clone $hotspot;
                 unset($hotspotCopy->id);
                 $hotspotCopy->isNewRecord = true;
+                $hotspotCopy->setSettings($settings);
                 if (!empty($screensMap[$hotspot->screenId])) {
                     $hotspotCopy->screenId = $screensMap[$hotspot->screenId]->id;
                 }
