@@ -349,5 +349,10 @@
     "Report": "Докладвай",
     "Report this project for spam or abusive content": "Докладвай този проект за спам или злоупотребяващо съдържания.",
     "Additional details": "Допълнителна информация",
-    "Thank you, we will investigate and remove the project if found inappropriate.": "Благодарим ти, ще проучим и премахнем проекта при намерена злоупотреба."
+    "Thank you, we will investigate and remove the project if found inappropriate.": "Благодарим ти, ще проучим и премахнем проекта при намерена злоупотреба.",
+    "Toggle hotspots": "Покажи хотспотовете",
+    "Duplicate": "Дублирай",
+    "Create a copy of the current prototype and its screens and hotspots.": "Създай копие на текущия прототип и неговите екрани и хотспотове.",
+    "Type the title of the new prototype:": "Въведи заглавието на новия прототип:",
+    "Successfully duplicated prototype.": "Прототипът беше дублиран успешно."
 }

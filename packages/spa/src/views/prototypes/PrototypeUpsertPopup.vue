@@ -307,7 +307,7 @@ export default {
             }
 
             var title = window.prompt(
-                this.$t('Create a copy of the current prototype with its screens and hotspots.') + '\n\n' + this.$t('Title of your new prototype:'),
+                this.$t('Create a copy of the current prototype and its screens and hotspots.') + '\n\n' + this.$t('Type the title of the new prototype:'),
                 this.model.title + ' (copy)'
             );
 

@@ -13,6 +13,8 @@ return [
                 'en-US',
                 'bg-BG',
                 'de-DE',
+                'fr-FR',
+                'it-IT',
                 'nl-NL',
                 'pt-BR',
             ],

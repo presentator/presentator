@@ -11,6 +11,8 @@ export const supportedLanguages = {
     "en-US": "English",
     "bg-BG": "Български",
     "de-DE": "Deutsch",
+    "fr-FR": "Français",
+    "it-IT": "Italiano",
     "nl-NL": "Nederlands",
     "pt-BR": "Português",
 };
