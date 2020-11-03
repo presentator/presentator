@@ -89,16 +89,8 @@
                 </div>
             </template>
             <template v-slot:footer>
-                <!-- <button type="button"
-                    class="btn btn-light-border"
-                    :class="{'btn-disabled': isProcessing}"
-                    @click.prevent="close()"
-                >
-                    <span class="txt">{{ $t('Cancel') }}</span>
-                </button> -->
-
                 <span v-if="isUpdate"
-                    class="link-fade link-danger m-r-small"
+                    class="link-fade link-hint m-r-small"
                     v-tooltip="$t('Delete')"
                     @click.prevent="deletePrototype()"
                 >
