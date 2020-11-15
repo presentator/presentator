@@ -22,16 +22,20 @@
                 transform $baseAnimationSpeed;
     transform: translateX(-25%);
     @include user-select(none);
+    &.nav-disabled {
+        @include pointer-events(none);
+        background: rgba($overlayColor, 0.1);
+        transform: translateX(-100%);
+    }
     &.nav-right {
         left: auto;
         padding-left: 0;
         right: -($size / 2);
         padding-right: ($size / 2) - 10;
         transform: translateX(25%);
-    }
-    &.nav-disabled {
-        @include pointer-events(none);
-        background: rgba($overlayColor, 0.1);
+        &.nav-disabled {
+            transform: translateX(100%);
+        }
     }
     &:hover {
         transform: translateX(0px);
@@ -276,8 +280,10 @@
         background: $borderColor;
         border-radius: 10px;
         @include shadowize;
-        .preview-nav {
-            transform: translateX(0px);
+        @media screen and (min-width: 1200px) {
+            .preview-nav {
+                transform: translateX(0px);
+            }
         }
     }
     &.desktop {
