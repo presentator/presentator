@@ -9,6 +9,7 @@ const SIZES_LIST = {
     '324x394':   {'label': 'Apple Watch (324x394)', 'width': 324, 'height': 394},
     '412x824':   {'label': 'Pixel 3 (412x824)', 'width': 412, 'height': 824},
     '360x740':   {'label': 'Samsung Galaxy S9 (360x740)', 'width': 360, 'height': 740},
+    '540x720':   {'label': 'Surface Duo (540x720)', 'width': 540, 'height': 720},
     'other':     {'label': 'Other device', 'width': 0, 'height': 0},
 };
 
