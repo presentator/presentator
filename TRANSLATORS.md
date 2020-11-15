@@ -27,6 +27,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - *(v1, v2)* Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - *(v1)* Steven Mazelerat ([smaze](https://www.transifex.com/user/profile/smaze/))
 - *(v1, v2)* Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
+- *(v2)* Quentin Haensler ([qhaensler](https://www.transifex.com/user/profile/qhaensler/))
 - *(v2)* Bilel Jegham ([BilelJegham](https://www.transifex.com/user/profile/BilelJegham/))
 - *(v2)* Félix Péault ([flayks](https://www.transifex.com/user/profile/flayks/))
 - *(v2)* Maïtané ([https://www.maiwann.net](https://www.maiwann.net))
