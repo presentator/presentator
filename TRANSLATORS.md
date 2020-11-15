@@ -23,16 +23,24 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 ### French
 
-- *(v1)* Ben Cousin ([Bewod](https://www.transifex.com/user/profile/Bewod/))
-- *(v1)* Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
+- *(v1, v2)* Ben Cousin ([Bewod](https://www.transifex.com/user/profile/Bewod/))
+- *(v1, v2)* Quentin Fouré ([Kant1F](https://www.transifex.com/user/profile/Kant1F/))
 - *(v1)* Steven Mazelerat ([smaze](https://www.transifex.com/user/profile/smaze/))
-- *(v1)* Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
+- *(v1, v2)* Mehdi Achour ([mac_hour](https://www.transifex.com/user/profile/mac_hour/))
+- *(v2)* Bilel Jegham ([BilelJegham](https://www.transifex.com/user/profile/BilelJegham/))
+- *(v2)* Félix Péault ([flayks](https://www.transifex.com/user/profile/flayks/))
+- *(v2)* Maïtané ([https://www.maiwann.net](https://www.maiwann.net))
 
 
 ### German
 
 - *(v1, v2)* Dave ([https://mdxdave.de](https://mdxdave.de))
 - *(v2)* Lennart Fries ([https://pringuin.de](https://pringuin.de/))
+
+
+### Italian
+
+- *(v2)* Paolo Baglioni ([baglio](https://www.transifex.com/user/profile/baglio/))
 
 
 ### Polish
