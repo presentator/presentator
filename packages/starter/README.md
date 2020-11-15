@@ -7,7 +7,8 @@ It wraps all required components for a Presentator installation in a single pack
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Updates](#updates)
+- [Update](#update)
+- [Backup & Restore](#backup-restore)
 
 > **This repository is READ-ONLY.**
 > **Report issues and send pull requests in the [main Presentator repository](https://github.com/presentator/presentator/issues).**
@@ -175,8 +176,26 @@ For example, if you want to store your files on AWS S3:
 For other adapters and more options, go to https://github.com/creocoder/yii2-flysystem.
 
 
-## Updates
+## Update
 
 To update your Presentator application to the latest available version, just run `composer update` while in the project root directory.
 
 > For a finer control, check the packages version constraint in the `require` section of `/path/to/starter/composer.json`.
+
+
+## Backup & Restore
+
+To backup your Presentator application:
+
+1. Export your Presentator database via the DBMS cli tools (eg. `mysqldump`, `pg_dump`) or via Adminer/phpMyAdmin/etc.
+
+2. Backup the app `config/` folder and the uploaded users content (usually `web/storage/`).
+
+
+To restore your Presentator application you can apply the following steps for an old or new installation:
+
+1. Import your Presentator database via the DBMS cli tools (eg. `mysqldump`, `pg_dump`) or via Adminer/phpMyAdmin/etc.
+
+2. Return the previously backuped `config/` and uploaded users content to their original location.
+
+3. Run `php /path/to/starter/yii migrate up` to ensure that the latest app database changes are applied.
