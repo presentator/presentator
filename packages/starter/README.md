@@ -48,8 +48,8 @@ It wraps all required components for a Presentator installation in a single pack
 
 - [Composer](https://getcomposer.org/)
 
-## Installation
 
+## Installation
 
 1. Install through Composer:
 
