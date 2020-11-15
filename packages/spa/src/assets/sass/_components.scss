@@ -486,6 +486,10 @@
             font-family: $iconFont;
         }
     }
+    .label.language-code {
+        width: 48px;
+        text-align: center;
+    }
     .dropdown {
         display: block;
         top: auto;
