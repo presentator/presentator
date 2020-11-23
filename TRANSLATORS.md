@@ -31,6 +31,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - *(v2)* Bilel Jegham ([BilelJegham](https://www.transifex.com/user/profile/BilelJegham/))
 - *(v2)* Félix Péault ([flayks](https://www.transifex.com/user/profile/flayks/))
 - *(v2)* Maïtané ([https://www.maiwann.net](https://www.maiwann.net))
+- *(v2)* Decentraliser ([decentraliser](https://github.com/decentraliser))
 
 
 ### German
