@@ -12,5 +12,6 @@ settings:
 modules:
     config:
         Yii2:
-            configFile: 'config/codeception.php'
-            cleanup:    false
+            configFile:  'config/codeception.php'
+            cleanup:     false
+            transaction: false
