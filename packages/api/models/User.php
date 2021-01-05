@@ -6,10 +6,7 @@ use yii\db\Expression;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 use presentator\api\behaviors\FileStorageBehavior;
-use Lcobucci\JWT\Builder as JWTBuilder;
-use Lcobucci\JWT\Parser as JWTParser;
-use Lcobucci\JWT\ValidationData;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
+use presentator\api\base\JWT;
 
 /**
  * User AR model
@@ -263,19 +260,12 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         try {
-            $parsedToken = (new JWTParser())->parse((string) $token);
+            // find user's secret
+            $payload = JWT::unsafeDecode($token);
+            $user    = !empty($payload->userId) ? static::findById($payload->userId) : null;
+            $secret  = ($user ? $user->getAuthKey() : '') . Yii::$app->params['accessTokenSecret'];
 
-            $data = new ValidationData();
-            $data->setIssuer('presentator_api');
-
-            $user   = static::findById($parsedToken->getClaim('userId'));
-            $secret = ($user ? $user->getAuthKey() : '') . Yii::$app->params['accessTokenSecret'];
-
-            if (
-                $user &&                                    // active user exist
-                $parsedToken->validate($data) &&            // validate claims (issuer, expiration, etc.)
-                $parsedToken->verify(new Sha256(), $secret) // verify signature
-            ) {
+            if ($user && JWT::isValid($token, $secret)) {
                 return $user;
             }
         } catch (\Exception | \Throwable $e) {
@@ -403,12 +393,12 @@ class User extends ActiveRecord implements IdentityInterface
         $duration = ArrayHelper::getValue(Yii::$app->params, 'activationTokenDuration', 3600);
         $secret   = $this->getAuthKey() . Yii::$app->params['activationTokenSecret'];
 
-        return (string) (new JWTBuilder())->setIssuer('presentator_api')   // Configures the issuer (iss claim)
-            ->setIssuedAt(time())
-            ->setExpiration(time() + $duration)
-            ->set('userId', $this->id)
-            ->sign(new Sha256(), $secret)
-            ->getToken();
+        return JWT::encode([
+            "iss"    => "presentator_api",
+            "iat"    => time(),
+            "exp"    => (time() + $duration),
+            "userId" => $this->id,
+        ], $secret);
     }
 
     /**
@@ -420,22 +410,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function activateByActivationToken(string $token): ?User
     {
-        $token = (new JWTParser())->parse($token);
-
-        $data = new ValidationData();
-        $data->setIssuer('presentator_api');
-
+        // find user's secret
+        $payload = JWT::unsafeDecode($token);
         $user = static::findOne([
-            'id'     => $token->getClaim('userId'),
+            'id'     => $payload->userId,
             'status' => static::STATUS['INACTIVE'],
         ]);
         $secret = ($user ? $user->getAuthKey() : '') . Yii::$app->params['activationTokenSecret'];
 
         if (
-            $user &&                                 // active user exist
-            $token->validate($data) &&               // validate claims (issuer, expiration, etc.)
-            $token->verify(new Sha256(), $secret) && // verify signature
-            $user->activate()                        // successful activation
+            $user &&                         // active user exist
+            JWT::isValid($token, $secret) && // valid jwt token
+            $user->activate()                // successful activation
         ) {
             return $user;
         }
@@ -454,13 +440,13 @@ class User extends ActiveRecord implements IdentityInterface
         $duration = ArrayHelper::getValue(Yii::$app->params, 'emailChangeTokenDuration', 3600);
         $secret   = $this->getAuthKey() . Yii::$app->params['emailChangeTokenSecret'];
 
-        return (string) (new JWTBuilder())->setIssuer('presentator_api')   // Configures the issuer (iss claim)
-            ->setIssuedAt(time())
-            ->setExpiration(time() + $duration)
-            ->set('userId', $this->id)
-            ->set('newEmail', $newEmail)
-            ->sign(new Sha256(), $secret)
-            ->getToken();
+        return JWT::encode([
+            "iss"      => "presentator_api",
+            "iat"      => time(),
+            "exp"      => (time() + $duration),
+            "userId"   => $this->id,
+            "newEmail" => $newEmail,
+        ], $secret);
     }
 
     /**
@@ -473,20 +459,13 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function changeEmailByEmailChangeToken(string $token): ?User
     {
-        $token = (new JWTParser())->parse($token);
+        // find user's secret
+        $payload = JWT::unsafeDecode($token);
+        $user    = !empty($payload->userId) ? static::findById($payload->userId) : null;
+        $secret  = ($user ? $user->getAuthKey() : '') . Yii::$app->params['emailChangeTokenSecret'];
 
-        $data = new ValidationData();
-        $data->setIssuer('presentator_api');
-
-        $user   = static::findById($token->getClaim('userId'));
-        $secret = ($user ? $user->getAuthKey() : '') . Yii::$app->params['emailChangeTokenSecret'];
-
-        if (
-            $user &&                              // active user exist
-            $token->validate($data) &&            // validate claims (issuer, expiration, etc.)
-            $token->verify(new Sha256(), $secret) // verify signature
-        ) {
-            $user->email = $token->getClaim('newEmail');
+        if ($user && JWT::isValid($token, $secret)) {
+            $user->email = $payload->newEmail;
 
             if ($user->save()) {
                 return $user;
@@ -506,12 +485,12 @@ class User extends ActiveRecord implements IdentityInterface
         $duration = ArrayHelper::getValue(Yii::$app->params, 'accessTokenDuration', 3600);
         $secret   = $this->getAuthKey() . Yii::$app->params['accessTokenSecret'];
 
-        return (string) (new JWTBuilder())->setIssuer('presentator_api')   // Configures the issuer (iss claim)
-            ->setIssuedAt(time())
-            ->setExpiration(time() + $duration)
-            ->set('userId', $this->id)
-            ->sign(new Sha256(), $secret)
-            ->getToken();
+        return JWT::encode([
+            "iss"      => "presentator_api",
+            "iat"      => time(),
+            "exp"      => (time() + $duration),
+            "userId"   => $this->id,
+        ], $secret);
     }
 
     /**

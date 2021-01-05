@@ -3,10 +3,7 @@ namespace presentator\api\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use Lcobucci\JWT\Builder as JWTBuilder;
-use Lcobucci\JWT\Parser as JWTParser;
-use Lcobucci\JWT\ValidationData;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
+use presentator\api\base\JWT;
 
 /**
  * ProjectLink AR model
@@ -311,12 +308,14 @@ class ProjectLink extends ActiveRecord
         $duration = ArrayHelper::getValue(Yii::$app->params, 'previewTokenDuration', 3600);
         $secret   = $this->getPreviewTokenSecret();;
 
-        return (string) (new JWTBuilder())->setIssuer('presentator_api')
-            ->setIssuedAt(time())
-            ->setExpiration(time() + $duration)
-            ->set('slug', $this->slug)
-            ->sign(new Sha256(), $secret)
-            ->getToken();
+        $payload = [
+            "iss" => "presentator_api",
+            "iat" => time(),
+            "exp" => (time() + $duration),
+            "slug" => $this->slug,
+        ];
+
+        return JWT::encode($payload, $secret);
     }
 
     /**
@@ -328,18 +327,11 @@ class ProjectLink extends ActiveRecord
     public static function findByPreviewToken(string $token): ?ProjectLink
     {
         try {
-            $parsedToken = (new JWTParser())->parse((string) $token);
+            // fetch the preview link
+            $payload = JWT::unsafeDecode($token);
+            $link = !empty($payload->slug) ? static::findBySlug($payload->slug) : null;
 
-            $data = new ValidationData();
-            $data->setIssuer('presentator_api');
-
-            $link = static::findBySlug($parsedToken->getClaim('slug'));
-
-            if (
-                $link &&                                                           // link with the provided slug exist
-                $parsedToken->validate($data) &&                                   // validate claims (issuer, expiration, etc.)
-                $parsedToken->verify(new Sha256(), $link->getPreviewTokenSecret()) // verify signature
-            ) {
+            if ($link && JWT::isValid($token, $link->getPreviewTokenSecret())) {
                 return $link;
             }
         } catch (\Exception | \Throwable $e) {
