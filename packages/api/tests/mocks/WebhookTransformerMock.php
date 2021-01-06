@@ -11,9 +11,9 @@ use presentator\api\base\WebhookTransformer;
  */
 class WebhookTransformerMock extends WebhookTransformer
 {
-    public String $testUrl = 'test_url';
+    public $testUrl = 'test_url';
 
-    public array $testData = ['test_key' => 'test_value'];
+    public $testData = ['test_key' => 'test_value'];
 
     /**
      * @inheritdoc
