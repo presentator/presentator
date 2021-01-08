@@ -42,12 +42,12 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
 USER www-data
 
 # download and extract the latest presentator-starter archive
-RUN curl https://github.com/presentator/presentator-starter/archive/v2.8.1.tar.gz -L -o presentator.tar.gz \
+RUN curl https://github.com/presentator/presentator-starter/archive/v2.8.2.tar.gz -L -o presentator.tar.gz \
     && tar -xvf presentator.tar.gz --strip 1 \
     && rm presentator.tar.gz
 
 # require specific app dependency version
-RUN composer require presentator/api:2.8.1 presentator/spa:2.8.1 -d /var/www/html --no-update --no-suggest --no-scripts
+RUN composer require presentator/api:2.8.2 presentator/spa:2.8.2 -d /var/www/html --no-update --no-suggest --no-scripts
 
 # install and initialize the application
 RUN composer install -d /var/www/html --no-interaction --no-dev --optimize-autoloader
