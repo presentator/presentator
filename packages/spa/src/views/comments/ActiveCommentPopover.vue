@@ -240,8 +240,10 @@ export default {
             markAsRead:          'notifications/markAsRead',
         }),
 
-        resetForm() {
-            this.message = '';
+        initForm(clearMessage = false) {
+            if (clearMessage) {
+                this.message = '';
+            }
 
             if (this.$refs.messageBtn) {
                 this.$refs.messageBtn.blur();
@@ -252,7 +254,7 @@ export default {
 
             this.replies = [];
 
-            this.resetForm();
+            this.initForm();
 
             this.loadReplies();
 
@@ -437,7 +439,7 @@ export default {
             request.then((response) => {
                 ClientStorage.setItem(AppConfig.get('VUE_APP_PREVIEW_COMMENT_FROM_STORAGE_KEY'), this.from);
 
-                this.resetForm();
+                this.initForm(true);
 
                 this.$toast(this.$t('Successfully added new comment.'));
 
