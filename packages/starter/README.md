@@ -7,6 +7,9 @@ It wraps all required components for a Presentator installation in a single pack
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+    - [Additional console commands](#additional-console-commands-you-may-find-useful)
+    - [OAuth2 login](#allow-3rd-party-authentication-oauth2)
+    - [Different storage mechanism](#different-storage-mechanism)
 - [Update](#update)
 - [Backup & Restore](#backup-restore)
 
@@ -62,7 +65,7 @@ It wraps all required components for a Presentator installation in a single pack
 
 2. Setup a vhost/server address (eg. https://your-presentator.com/) and point it to `/path/to/starter/web/`.
 
-    > By default a generic `.htaccess` file will be created for you after initialization. If you are using nginx, you could check the following [sample configuration](https://github.com/presentator/presentator/issues/120#issuecomment-539844456).
+    > By default a generic `.htaccess` file will be created for you after initialization. If you are using Nginx, you could check the following [sample configuration](https://github.com/presentator/presentator/issues/120#issuecomment-539844456).
 
 3. Create a new database (with `utf8mb4_unicode_ci` collation).
 
@@ -112,6 +115,14 @@ For example, if you want to allow your users to login with their Facebook accoun
 
     > Make sure for **Valid OAuth Redirect URIs** to set the same url as `authClientRedirectUri` from your `params-local.php` (by default it should be something like https://your-presentator.com/#/auth-callback).
 
+    > **NB!** Some clients may not support hash/fragment URIs (aka. `/#/`). In this case, define your redirect uri without the hash (eg. https://your-presentator.com/auth-callback) and add a redirect/rewrite rule to your Nginx/Apache configuration that should prepend `/#/` to the request path address.
+    > Here is a generic Nginx redirect rule:
+    > ```nginx
+    > location ~ ^/(?!(index\.html|#|api|storage|spa-resources|assets)).+ {
+    >     rewrite ^\/(.*)$ /#/$1 redirect;
+    > }
+    > ```
+
 2. Register the Facebook auth client in your `base-local.php`:
 
     ```php
@@ -129,6 +140,7 @@ For example, if you want to allow your users to login with their Facebook accoun
         ],
     ]
     ```
+
 
 #### Different storage mechanism
 

@@ -29,7 +29,7 @@ You can join them in supporting Presentator development by visiting our [Support
 ## Backers via PayPal (one time)
 - Doan Industries, Inc.- $100.00 USD
 - [Marian Brchan](http://marianbrchan.com) - $75.00 USD
-- [Tony Barganski](https://groov.it) - €41.00 EUR
+- Tony Barganski - €41.00 EUR
 - Militsa Dimitrova - €25.00 EUR
 - Jeroen Verhoeckx - €20.00 EUR
 - Jérémie Kornobis - €15.00 EUR
