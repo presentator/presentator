@@ -377,9 +377,9 @@ export default {
 
             var deleteMsg = '';
             if (comment.isPrimary) {
-                deleteMsg = this.$t('Do you really want to deleted the selected comment and all its replies?');
+                deleteMsg = this.$t('Do you really want to delete the selected comment and all its replies?');
             } else {
-                deleteMsg = this.$t('Do you really want to deleted the selected comment?');
+                deleteMsg = this.$t('Do you really want to delete the selected comment?');
             }
 
             if (!window.confirm(deleteMsg)) {
