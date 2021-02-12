@@ -254,7 +254,7 @@
     "Click and drag to create a hotspot\n(hold \"{shortcut}\" to snap)": "Premi e trascina per creare un hotspot\n(mantieni premuto \"{shortcut}\" per l'agganciamento)",
     "Screen preview": "Anteprima schermata",
     "Uploaded {date}": "Caricato il {date}",
-    "Unread comments": "Commenti non letti",
+    "1 Unread comment | {count} Unread comments": "1 Commento non letto | {count} Commenti non letti",
     "Do you really want to delete screen \"{title}\"?": "Sei sicuro di voler eliminare la schermata \"{title}\"?",
     "Successfully deleted screen \"{title}\".": "Schermata \"{title}\" eliminata con successo.",
     "Alignment": "Allineamento",

@@ -254,7 +254,7 @@
     "Click and drag to create a hotspot\n(hold \"{shortcut}\" to snap)": "Cliquer et glisser pour créer une zone\n(ou maintenez \"{shortcut}\")",
     "Screen preview": "Prévisualisation de l'écran",
     "Uploaded {date}": "Mis en ligne le {date}",
-    "Unread comments": "Commentaire non lus",
+    "1 Unread comment | {count} Unread comments": "1 Commentaire non lu | {count} Commentaires non lus",
     "Do you really want to delete screen \"{title}\"?": "Voulez-vous vraiment supprimer l'écran \"{title}\" ?",
     "Successfully deleted screen \"{title}\".": "L'écran \"{title}\" a été supprimé avec succès.",
     "Alignment": "Alignement",

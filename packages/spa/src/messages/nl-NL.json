@@ -254,7 +254,7 @@
     "Click and drag to create a hotspot\n(hold \"{shortcut}\" to snap)": "Klik en sleep om een hotspot te maken\n(hou \"{shortcut}\" ingedrukt om automatisch uit te lijnen)",
     "Screen preview": "Schermvoorbeeld",
     "Uploaded {date}": "Geüpload op {date}",
-    "Unread comments": "Ongelezen opmerkingen",
+    "1 Unread comment | {count} Unread comments": "1 Ongelezen opmerking | {count} Ongelezen opmerkingen",
     "Do you really want to delete screen \"{title}\"?": "Weet je zeker dat je het scherm \"{title}\" wilt verplaatsen?",
     "Successfully deleted screen \"{title}\".": "Scherm \"{title}\" succesvol verwijderd.",
     "Alignment": "Uitlijning",
