@@ -136,7 +136,7 @@ export default {
                     this.appendComments(commentsData);
                 }
 
-                // load next portion of hotspots (if there are more)
+                // load next portion of comments (if there are more)
                 if (totalPages > currentPage) {
                     this.loadComments(prototypeId, page + 1, forPreview);
                 }
