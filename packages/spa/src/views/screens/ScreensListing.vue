@@ -244,7 +244,8 @@ export default {
             ApiClient.ScreenComments.getList(page, 100, {
                 'envelope':            true,
                 'search[prototypeId]': this.activePrototype.id,
-                'search[replyTo]':     0, // only primary
+                'search[status]':      'pending',
+                'search[replyTo]':     0, // primary
             }).finally(() => {
                 this.isLoadingComments = false;
             }).then((response) => {
