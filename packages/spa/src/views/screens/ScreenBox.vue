@@ -64,12 +64,15 @@
 
             <div class="meta">
                 <div class="meta-item">{{ $t('Uploaded {date}', {date: screen.createdAtFromNow}) }}</div>
-                <div v-if="screenUnreadComments.length"
-                    class="meta-item txt-danger"
-                    :title="$t('Unread comments')"
+
+                <div
+                    v-if="screenComments.length"
+                    class="meta-item"
+                    :class="{'txt-danger': screenUnreadComments.length > 0 }"
+                    v-tooltip="screenUnreadComments.length > 0 ? $tc('1 Unread comment | {count} Unread comments', screenUnreadComments.length) : ''"
                 >
                     <i class="fe fe-message-circle"></i>
-                    <span class="txt">{{ screenUnreadComments.length }}</span>
+                    <span class="txt">{{ screenComments.length }}</span>
                 </div>
             </div>
         </div>
@@ -99,9 +102,13 @@ export default {
     },
     computed: {
         ...mapGetters({
+            getCommentsForScreen:       'comments/getCommentsForScreen',
             getUnreadCommentsForScreen: 'notifications/getUnreadCommentsForScreen',
         }),
 
+        screenComments() {
+            return this.getCommentsForScreen(this.screen.id);
+        },
         screenUnreadComments() {
             return this.getUnreadCommentsForScreen(this.screen.id);
         },

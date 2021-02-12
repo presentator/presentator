@@ -106,6 +106,7 @@ const SCREENS_PER_PAGE = 200;
 
 const defaultData = {
     isLoadingScreens: false,
+    isLoadingComments: false,
     searchTerm:       '',
     currentPage:      1,
     totalScreens:     0,
@@ -156,11 +157,13 @@ export default {
                 (!oldVal || newVal.id != oldVal.id)
             ) {
                 this.loadScreens();
+                this.loadComments();
             }
         },
     },
     beforeMount() {
         this.loadScreens();
+        this.loadComments();
     },
     methods: {
         ...mapActions({
@@ -171,6 +174,8 @@ export default {
             selectScreen:       'screens/selectScreen',
             selectAllScreens:   'screens/selectAllScreens',
             deselectAllScreens: 'screens/deselectAllScreens',
+            setComments:        'comments/setComments',
+            appendComments:     'comments/appendComments',
         }),
 
         resetFilters() {
@@ -227,6 +232,42 @@ export default {
                 this.isLoadingScreens = false;
             });
         },
+        loadComments(page = 1) {
+            if (!this.activePrototype) {
+                return;
+            }
+
+            this.isLoadingComments = true;
+
+            ApiClient.enableAutoCancellation(false);
+
+            ApiClient.ScreenComments.getList(page, 100, {
+                'envelope':            true,
+                'search[prototypeId]': this.activePrototype.id,
+                'search[replyTo]':     0, // only primary
+            }).finally(() => {
+                this.isLoadingComments = false;
+            }).then((response) => {
+                let commentsData = CommonHelper.getNestedVal(response, 'data.response', []);
+                let currentPage  = CommonHelper.getNestedVal(response, 'data.headers.x-pagination-current-page', 1);
+                let totalPages   = CommonHelper.getNestedVal(response, 'data.headers.x-pagination-page-count', 1);
+
+                if (page == 1) {
+                    this.setComments(commentsData);
+                } else {
+                    this.appendComments(commentsData);
+                }
+
+                // load next portion of comments (if there are more)
+                if (totalPages > currentPage) {
+                    this.loadComments(page + 1);
+                }
+            }).catch((err) => {
+                this.$errResponseHandler(err);
+            });
+        },
+
+
         onScreenDelete(screenId) {
             this.removeScreen(screenId);
 
