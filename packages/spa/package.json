@@ -15,21 +15,21 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/messages/**/*.json' --output './i18n-report.json'"
   },
   "dependencies": {
-    "core-js": "^2.6.11",
-    "dropzone": "^5.7.2",
+    "core-js": "^2.6.12",
+    "dropzone": "^5.7.6",
     "firebase": "^7.24.0",
     "moment": "^2.29.1",
-    "presentator-client": "^2.6.0",
+    "presentator-client": "^2.6.1",
     "vue": "^2.6.12",
-    "vue-i18n": "^8.22.1",
-    "vue-router": "^3.4.9",
+    "vue-i18n": "^8.22.4",
+    "vue-router": "^3.5.1",
     "vuedraggable": "^2.24.3",
-    "vuex": "^3.5.1"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "babel-eslint": "^10.1.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
