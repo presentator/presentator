@@ -32,6 +32,7 @@ You can join them in supporting Presentator development by visiting our [Support
 - Tony Barganski - €41.00 EUR
 - Militsa Dimitrova - €25.00 EUR
 - Jeroen Verhoeckx - €20.00 EUR
+- Maurits van Wijland - €20.00 EUR
 - Jérémie Kornobis - €15.00 EUR
 - Stan Vladimirov - €10.00 EUR
 - Aleksandar Perisic -  €5.00 EUR
