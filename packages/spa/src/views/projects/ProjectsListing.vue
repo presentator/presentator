@@ -65,7 +65,7 @@
             ></project-box>
         </div>
 
-        <hr v-show="pinnedProjects.length && unpinnedProjects.length" class="m-b-base">
+        <hr v-show="pinnedProjects.length && unpinnedProjects.length" class="dark m-b-base">
 
         <div class="boxes-list projects-list unpinned-projects">
             <project-box
