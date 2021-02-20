@@ -15,6 +15,7 @@ export default class Project extends BaseModel {
 
         this.title          = !CommonHelper.isEmpty(data.title)          ? data.title          : '';
         this.archived       = !CommonHelper.isEmpty(data.archived)       ? data.archived << 0  : 0;
+        this.pinned         = !CommonHelper.isEmpty(data.pinned)         ? data.pinned << 0    : 0;
         this.featuredScreen = !CommonHelper.isEmpty(data.featuredScreen) ? data.featuredScreen : {};
     }
 
@@ -29,11 +30,20 @@ export default class Project extends BaseModel {
     }
 
     /**
-     * Checks whether the current model is a super user/admin.
+     * Checks whether the project is archived.
      *
      * @return {Boolean}
      */
     get isArchived() {
         return this.archived ? true : false;
+    }
+
+    /**
+     * Checks whether the project is pinned.
+     *
+     * @return {Boolean}
+     */
+    get isPinned() {
+        return this.pinned ? true : false;
     }
 }

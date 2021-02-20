@@ -22,6 +22,11 @@ class ProjectSearch extends ApiSearch
     public $archived;
 
     /**
+     * @var boolean
+     */
+    public $pinned;
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
@@ -29,7 +34,7 @@ class ProjectSearch extends ApiSearch
         $rules = parent::rules();
 
         $rules[] = ['title', 'string', 'max' => 255];
-        $rules[] = ['archived', 'boolean'];
+        $rules[] = [['archived', 'pinned'], 'boolean'];
 
         return $rules;
     }
@@ -48,6 +53,7 @@ class ProjectSearch extends ApiSearch
         ]);
 
         // set up sorting
+        $dataProvider->sort->enableMultiSort = true;
         $dataProvider->sort->defaultOrder = ['createdAt' => SORT_DESC];
 
         // load the search form data and validate
@@ -58,6 +64,7 @@ class ProjectSearch extends ApiSearch
         // adjust the query by adding the filters
         $query->andFilterWhere(['like', Project::tableName() . '.title', $this->title]);
         $query->andFilterWhere([Project::tableName() . '.archived' => $this->archived]);
+        $query->andFilterWhere([Project::tableName() . '.pinned' => $this->pinned]);
         $this->bindDateRangesToQuery(Project::tableName());
 
         return $dataProvider;

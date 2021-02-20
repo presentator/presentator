@@ -10,6 +10,7 @@ use yii\db\Expression;
  * @property integer $id
  * @property string  $title
  * @property integer $archived
+ * @property integer $pinned
  * @property string  $createdAt
  * @property string  $updatedAt
  *

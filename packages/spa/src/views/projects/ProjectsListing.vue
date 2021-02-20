@@ -55,8 +55,21 @@
             }) }}
         </h5>
 
-        <div class="boxes-list projects-list">
-            <project-box v-for="project in projects"
+        <div class="boxes-list projects-list pinned-projects">
+            <project-box
+                v-for="project in pinnedProjects"
+                :key="project.id"
+                :project="project"
+                @projectUpdate="onProjectUpdate"
+                @projectDelete="onProjectDelete"
+            ></project-box>
+        </div>
+
+        <hr v-show="pinnedProjects.length && unpinnedProjects.length" class="m-b-base">
+
+        <div class="boxes-list projects-list unpinned-projects">
+            <project-box
+                v-for="project in unpinnedProjects"
                 :key="project.id"
                 :project="project"
                 @projectUpdate="onProjectUpdate"
@@ -143,6 +156,12 @@ export default {
 
             return this.$t('Search for active projects');
         },
+        pinnedProjects() {
+            return this.projects.filter((project) => project.isPinned);
+        },
+        unpinnedProjects() {
+            return this.projects.filter((project) => !project.isPinned);
+        },
     },
     beforeMount() {
         this.loadProjects();
@@ -197,7 +216,7 @@ export default {
                 'envelope':         true,
                 'search[archived]': (this.withFilterBar ? this.archived : defaultData.archived),
                 'search[title]':    (this.withFilterBar ? this.searchTerm : defaultData.searchTerm),
-                'sort':             '-createdAt',
+                'sort':             '-pinned,-createdAt',
             }).then((response) => {
                 var projects  = Project.createInstances(CommonHelper.getNestedVal(response, 'data.response', []));
                 this.projects = this.projects.concat(projects);
@@ -217,6 +236,16 @@ export default {
         onProjectUpdate(project) {
             if (this.archived != project.isArchived) {
                 this.onProjectDelete(project.id);
+            } else if (project.isPinned) {
+                // scroll to the pinned element
+                this.$nextTick(() => {
+                    let projectElem = document.querySelector('[data-id="' + project.id + '"]');
+                    if (projectElem) {
+                        projectElem.scrollIntoView({
+                            block: 'nearest',
+                        });
+                    }
+                });
             }
         },
         onProjectDelete(projectId) {

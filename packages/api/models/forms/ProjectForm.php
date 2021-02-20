@@ -23,6 +23,11 @@ class ProjectForm extends ApiForm
     public $archived = false;
 
     /**
+     * @var boolean
+     */
+    public $pinned = false;
+
+    /**
      * @var User
      */
     protected $user;
@@ -57,6 +62,7 @@ class ProjectForm extends ApiForm
 
         $labels['title']    = Yii::t('app', 'Title');
         $labels['archived'] = Yii::t('app', 'Archived');
+        $labels['pinned']   = Yii::t('app', 'Pinned');
 
         return $labels;
     }
@@ -69,7 +75,7 @@ class ProjectForm extends ApiForm
         return [
             ['title', 'required'],
             ['title', 'string', 'max' => 255],
-            ['archived', 'boolean'],
+            [['archived', 'pinned'], 'boolean'],
         ];
     }
 
@@ -97,6 +103,7 @@ class ProjectForm extends ApiForm
         $this->project  = $project;
         $this->title    = $project->title;
         $this->archived = $project->archived ? true : false;
+        $this->pinned   = $project->pinned ? true : false;
     }
 
     /**
@@ -123,6 +130,7 @@ class ProjectForm extends ApiForm
 
                 $project->title    = $this->title;
                 $project->archived = $this->archived;
+                $project->pinned   = !$this->archived && $this->pinned ? true : false;
 
                 if ($project->save()) {
                     $project->linkOnce('users', $user);

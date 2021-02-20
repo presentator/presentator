@@ -1,5 +1,6 @@
 <template>
     <div class="box box-card"
+        :data-id="project.id"
         @mouseleave="$refs.projectDropdown ? $refs.projectDropdown.hide() : true"
     >
         <figure class="box-thumb">
@@ -32,6 +33,16 @@
                             <span class="txt">{{ $t('Delete') }}</span>
                         </div>
                     </toggler>
+                </div>
+
+                <div
+                    v-if="!project.isArchived"
+                    class="box-ctrl handle top-left"
+                    :class="{'txt-warning': project.isPinned }"
+                    v-tooltip="project.isPinned ? $t('Unstar project') : $t('Star project')"
+                    @click.prevent="updatePinnedState(!project.isPinned)"
+                >
+                    <i class="fe fe-star"></i>
                 </div>
             </div>
         </figure>
@@ -85,7 +96,7 @@ export default {
             }
 
             ApiClient.Projects.update(this.project.id, {
-                archived: archive ? 1 : 0
+                archived: archive ? 1 : 0,
             }).then((response) => {
                 this.project.load(response.data)
 
@@ -95,6 +106,18 @@ export default {
             }).catch((err) => {
                 this.$errResponseHandler(err);
             });
+        },
+        updatePinnedState(pin) {
+            let isPinned = pin ? 1 : 0;
+
+            // actual update
+            ApiClient.Projects.update(this.project.id, {
+                pinned: isPinned,
+            });
+
+            // optimistic update
+            this.project.pinned = isPinned;
+            this.$emit('projectUpdate', this.project);
         },
         deleteProject() {
             if (!window.confirm(this.$t('Do you really want to delete project "{title}"?', {title: this.project.title}))) {
