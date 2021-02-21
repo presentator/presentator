@@ -100,8 +100,16 @@ class ProjectsCest
                 'expected' => [1001],
             ],
             [
+                'params'   => ['search[pinned]' => '1'],
+                'expected' => [1001],
+            ],
+            [
                 'params'   => ['sort' => '-title'],
                 'expected' => [1002, 1001]
+            ],
+            [
+                'params'   => ['sort' => '-pinned,-createdAt'],
+                'expected' => [1001, 1002]
             ],
         ], function ($scenarioIndex, $scenarioData) use ($I) {
             $I->seeResponseMatchesJsonType([
@@ -125,12 +133,20 @@ class ProjectsCest
                 'expected' => Project::find()->where(['archived' => 1])->orderBy(['createdAt' => SORT_DESC])->all(),
             ],
             [
+                'params'   => ['search[pinned]' => 1],
+                'expected' => Project::find()->where(['pinned' => 1])->orderBy(['createdAt' => SORT_DESC])->all(),
+            ],
+            [
                 'params'   => ['search[title]' => '1'],
                 'expected' => Project::find()->where(['like', 'title', '1'])->orderBy(['createdAt' => SORT_DESC])->all(),
             ],
             [
                 'params'   => ['sort' => '-title'],
                 'expected' => Project::find()->orderBy(['title' => SORT_DESC])->all(),
+            ],
+            [
+                'params'   => ['sort' => '-pinned,-createdAt'],
+                'expected' => Project::find()->orderBy(['pinned' => SORT_DESC, 'createdAt' => SORT_DESC])->all(),
             ],
         ], function ($scenarioIndex, $scenarioData) use ($I) {
             $I->seeResponseMatchesJsonType([
@@ -184,18 +200,62 @@ class ProjectsCest
 
         $user = User::findOne(1004);
 
-        $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
-        $I->sendPOST('/projects', [
-            'title'    => 'create_test',
-            'archived' => true,
-        ]);
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseMatchesJsonType([
-            'title'          => 'string:=create_test',
-            'archived'       => 'integer:=1',
-            'featuredScreen' => 'array',
-        ]);
-        $I->seeRecord(UserProjectRel::class, ['userId' => $user->id, 'projectId' => $I->grabDataFromResponseByJsonPath('$.id')]);
+        $testScenarios = [
+            [
+                'comment' => 'create project with defaults',
+                'data'    => [
+                    'title' => 'update_test',
+                ],
+                'expected' => [
+                    'title'    => 'update_test',
+                    'archived' => 0,
+                    'pinned'   => 0,
+                ],
+            ],
+            [
+                'comment' => 'create pinned project',
+                'data'    => [
+                    'title'  => 'update_test2',
+                    'pinned' => 1,
+                ],
+                'expected' => [
+                    'title'    => 'update_test2',
+                    'archived' => 0,
+                    'pinned'   => 1,
+                ],
+            ],
+            [
+                'comment' => 'create archived project',
+                'data'    => [
+                    'title'    => 'update_test3',
+                    'archived' => 1,
+                    'pinned'   => 1, // should be ignored when archived is set
+                ],
+                'expected' => [
+                    'title'    => 'update_test3',
+                    'archived' => 1,
+                    'pinned'   => 0,
+                ],
+            ],
+        ];
+
+        foreach ($testScenarios as $scenario) {
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
+            $I->sendPOST('/projects', $scenario['data']);
+            $I->seeResponseCodeIs(200);
+            $I->seeResponseMatchesJsonType([
+                'id'             => 'integer',
+                'title'          => 'string',
+                'archived'       => 'integer',
+                'pinned'         => 'integer',
+                'featuredScreen' => 'array',
+            ]);
+            $I->seeResponseContainsJson($scenario['expected']);
+            $I->seeRecord(UserProjectRel::class, [
+                'userId' => $user->id,
+                'projectId' => $I->grabDataFromResponseByJsonPath('$.id'),
+            ]);
+        }
     }
 
     /* `ProjectsController::actionUpdate()`
@@ -256,8 +316,12 @@ class ProjectsCest
                 'token'     => $regularUser->generateAccessToken(),
                 'projectId' => 1003,
                 'data'      => [
+                    'title' => 'update_test',
+                ],
+                'expected' => [
                     'title'    => 'update_test',
                     'archived' => 0,
+                    'pinned'   => 0,
                 ],
             ],
             [
@@ -266,6 +330,40 @@ class ProjectsCest
                 'projectId' => 1005,
                 'data'      => [
                     'title' => 'update_test2',
+                ],
+                'expected' => [
+                    'title'    => 'update_test2',
+                    'archived' => 1,
+                    'pinned'   => 0,
+                ],
+            ],
+            [
+                'comment'   => 'archive a project',
+                'token'     => $superUser->generateAccessToken(),
+                'projectId' => 1001,
+                'data'      => [
+                    'title'    => 'update_test3',
+                    'archived' => 1,
+                    'pinned'   => 1, // should be ignored when archived is set
+                ],
+                'expected' => [
+                    'title'    => 'update_test3',
+                    'archived' => 1,
+                    'pinned'   => 0,
+                ],
+            ],
+            [
+                'comment'   => 'pin a project',
+                'token'     => $superUser->generateAccessToken(),
+                'projectId' => 1004,
+                'data'      => [
+                    'title'    => 'update_test4',
+                    'pinned'   => 1,
+                ],
+                'expected' => [
+                    'title'    => 'update_test4',
+                    'archived' => 0,
+                    'pinned'   => 1,
                 ],
             ],
         ];
@@ -278,9 +376,10 @@ class ProjectsCest
                 'id'             => ('integer:=' . $scenario['projectId']),
                 'title'          => 'string',
                 'archived'       => 'integer',
+                'pinned'         => 'integer',
                 'featuredScreen' => 'array',
             ]);
-            $I->seeResponseContainsJson($scenario['data']);
+            $I->seeResponseContainsJson($scenario['expected']);
         }
     }
 
