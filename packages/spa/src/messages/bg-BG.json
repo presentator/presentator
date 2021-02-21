@@ -192,6 +192,8 @@
     "Successfully created project link.": "Линкът бе създаден успешно.",
     "Successfully updated project link.": "Линкът бе обновен успешно.",
     "Created {date}": "Създаден {date}",
+    "Unstar project": "Разкачи от списъка",
+    "Star project": "Закачи най-отгоре",
     "Archived": "Архивиран",
     "Archive": "Архивирай",
     "Unarchive": "Разархивирай",
