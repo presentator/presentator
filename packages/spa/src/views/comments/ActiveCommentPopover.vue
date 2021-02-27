@@ -441,8 +441,6 @@ export default {
 
                 this.initForm(true);
 
-                this.$toast(this.$t('Successfully added new comment.'));
-
                 var comment = replyTo ? new ScreenComment() : this.lastActiveComment;
 
                 comment.load(response.data);
