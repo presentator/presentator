@@ -7,6 +7,7 @@ namespace presentator\api\models;
  * @property integer $id
  * @property integer $userId
  * @property integer $projectId
+ * @property integer $pinned
  * @property string  $createdAt
  * @property string  $updatedAt
  *

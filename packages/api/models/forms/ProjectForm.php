@@ -103,7 +103,12 @@ class ProjectForm extends ApiForm
         $this->project  = $project;
         $this->title    = $project->title;
         $this->archived = $project->archived ? true : false;
-        $this->pinned   = $project->pinned ? true : false;
+
+        // set user pinned state
+        $this->pinned = false;
+        if ($this->getUser()) {
+            $this->pinned = $project->isPinnedBy($this->getUser());
+        }
     }
 
     /**
@@ -130,10 +135,11 @@ class ProjectForm extends ApiForm
 
                 $project->title    = $this->title;
                 $project->archived = $this->archived;
-                $project->pinned   = !$this->archived && $this->pinned ? true : false;
 
                 if ($project->save()) {
                     $project->linkOnce('users', $user);
+
+                    $user->pinProject($project, $this->pinned);
 
                     $transaction->commit();
 

@@ -695,6 +695,35 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Updates the pin state of an owned project.
+     *
+     * @param  Project $project
+     * @param  boolean [$pinState]
+     * @return boolean
+     */
+    public function pinProject(Project $project, $pinState = true): bool
+    {
+        $rel = UserProjectRel::find()
+            ->where([
+                'userId'    => $this->id,
+                'projectId' => $project->id,
+            ])
+            ->one();
+
+        if (!$rel) {
+            return false;
+        }
+
+        if ($rel->pinned == $pinState) {
+            return true; // no changes
+        }
+
+        $rel->pinned = $pinState;
+
+        return $rel->save();
+    }
+
+    /**
      * Returns the user's full name.
      *
      * @return string

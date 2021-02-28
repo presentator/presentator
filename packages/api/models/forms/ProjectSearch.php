@@ -3,6 +3,7 @@ namespace presentator\api\models\forms;
 
 use presentator\api\data\ActiveDataProvider;
 use presentator\api\models\Project;
+use presentator\api\models\UserProjectRel;
 
 /**
  * Search class for the Project model.
@@ -45,7 +46,9 @@ class ProjectSearch extends ApiSearch
      */
     public function search(array $params = []): ActiveDataProvider
     {
-        $query = $this->getQuery()->with('featuredScreen');
+        $query = $this->getQuery()
+            ->with(['featuredScreen', 'userProjectRels'])
+            ->orderBy([UserProjectRel::tableName() . '.pinned' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query'  => $query,
@@ -53,7 +56,6 @@ class ProjectSearch extends ApiSearch
         ]);
 
         // set up sorting
-        $dataProvider->sort->enableMultiSort = true;
         $dataProvider->sort->defaultOrder = ['createdAt' => SORT_DESC];
 
         // load the search form data and validate
@@ -64,7 +66,7 @@ class ProjectSearch extends ApiSearch
         // adjust the query by adding the filters
         $query->andFilterWhere(['like', Project::tableName() . '.title', $this->title]);
         $query->andFilterWhere([Project::tableName() . '.archived' => $this->archived]);
-        $query->andFilterWhere([Project::tableName() . '.pinned' => $this->pinned]);
+        $query->andFilterWhere([UserProjectRel::tableName() . '.pinned' => $this->pinned]);
         $this->bindDateRangesToQuery(Project::tableName());
 
         return $dataProvider;

@@ -608,7 +608,7 @@ class UsersCest
         $I->seeUnauthorizedResponse();
         $I->dontSeeEmailIsSent();
 
-        $user = User::findOne(1003);
+        $user = User::findOne(1002);
         $I->amGoingTo('authorize');
         $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
 
@@ -636,7 +636,7 @@ class UsersCest
     {
         $I->wantTo('Successfully submit a feedback');
 
-        $user = User::findOne(1003);
+        $user = User::findOne(1002);
         $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
         $I->sendPOST('/users/feedback', [
             'message' => 'test',
@@ -670,7 +670,7 @@ class UsersCest
     {
         $I->wantTo('Successfully refresh a user token');
 
-        $user = User::findOne(1003);
+        $user = User::findOne(1002);
         $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
         $I->sendPOST('/users/refresh');
         $I->seeResponseCodeIs(200);

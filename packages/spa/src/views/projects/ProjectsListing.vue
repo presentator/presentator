@@ -157,9 +157,17 @@ export default {
             return this.$t('Search for active projects');
         },
         pinnedProjects() {
+            if (this.archived) {
+                return []; // don't show pinned projects for the archived listing
+            }
+
             return this.projects.filter((project) => project.isPinned);
         },
         unpinnedProjects() {
+            if (this.archived) {
+                return this.projects; // show all projects for the archived listing
+            }
+
             return this.projects.filter((project) => !project.isPinned);
         },
     },
@@ -216,7 +224,7 @@ export default {
                 'envelope':         true,
                 'search[archived]': (this.withFilterBar ? this.archived : defaultData.archived),
                 'search[title]':    (this.withFilterBar ? this.searchTerm : defaultData.searchTerm),
-                'sort':             '-pinned,-createdAt',
+                'sort':             '-createdAt',
             }).then((response) => {
                 var projects  = Project.createInstances(CommonHelper.getNestedVal(response, 'data.response', []));
                 this.projects = this.projects.concat(projects);

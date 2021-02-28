@@ -78,7 +78,7 @@ class ProjectsCest
         $I->wantTo('Successfully list projects');
 
         $regularUser = User::findOne(1002);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('authorize as regular user');
         $I->haveHttpHeader('Authorization', 'Bearer ' . $regularUser->generateAccessToken());
@@ -100,19 +100,20 @@ class ProjectsCest
                 'expected' => [1001],
             ],
             [
-                'params'   => ['search[pinned]' => '1'],
+                'params'   => ['search[pinned]' => 1],
                 'expected' => [1001],
             ],
             [
                 'params'   => ['sort' => '-title'],
-                'expected' => [1002, 1001]
+                'expected' => [1001, 1002],
             ],
             [
-                'params'   => ['sort' => '-pinned,-createdAt'],
-                'expected' => [1001, 1002]
+                'params'   => ['sort' => 'createdAt'],
+                'expected' => [1001, 1002],
             ],
         ], function ($scenarioIndex, $scenarioData) use ($I) {
             $I->seeResponseMatchesJsonType([
+                'pinned'         => 'integer',
                 'featuredScreen' => 'array',
             ]);
         });
@@ -122,34 +123,31 @@ class ProjectsCest
         $I->sendAndCheckDataProviderResponses('/projects', [
             [
                 'params'   => [],
-                'expected' => Project::find()->orderBy(['createdAt' => SORT_DESC])->all(),
+                'expected' => [1002, 1001, 1005, 1004, 1003],
             ],
             [
                 'params'   => ['per-page' => 1, 'page' => 2],
-                'expected' => Project::find()->orderBy(['createdAt' => SORT_DESC])->limit(1)->offset(1)->all(),
+                'expected' => [1001],
             ],
             [
                 'params'   => ['search[archived]' => 1],
-                'expected' => Project::find()->where(['archived' => 1])->orderBy(['createdAt' => SORT_DESC])->all(),
+                'expected' => [1002, 1005],
             ],
             [
                 'params'   => ['search[pinned]' => 1],
-                'expected' => Project::find()->where(['pinned' => 1])->orderBy(['createdAt' => SORT_DESC])->all(),
+                'expected' => [1002],
             ],
             [
                 'params'   => ['search[title]' => '1'],
-                'expected' => Project::find()->where(['like', 'title', '1'])->orderBy(['createdAt' => SORT_DESC])->all(),
+                'expected' => [1001],
             ],
             [
                 'params'   => ['sort' => '-title'],
-                'expected' => Project::find()->orderBy(['title' => SORT_DESC])->all(),
-            ],
-            [
-                'params'   => ['sort' => '-pinned,-createdAt'],
-                'expected' => Project::find()->orderBy(['pinned' => SORT_DESC, 'createdAt' => SORT_DESC])->all(),
+                'expected' => [1002, 1005, 1004, 1003, 1001],
             ],
         ], function ($scenarioIndex, $scenarioData) use ($I) {
             $I->seeResponseMatchesJsonType([
+                'pinned'         => 'integer',
                 'featuredScreen' => 'array',
             ]);
         });
@@ -177,6 +175,7 @@ class ProjectsCest
         $I->sendPOST('/projects', [
             'title'    => '',
             'archived' => 'invalid',
+            'pinned'   => 'invalid',
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
@@ -185,6 +184,7 @@ class ProjectsCest
             'errors'  => [
                 'title'    => 'string',
                 'archived' => 'string',
+                'pinned'   => 'string',
             ],
         ]);
     }
@@ -204,10 +204,10 @@ class ProjectsCest
             [
                 'comment' => 'create project with defaults',
                 'data'    => [
-                    'title' => 'update_test',
+                    'title' => 'create_test',
                 ],
                 'expected' => [
-                    'title'    => 'update_test',
+                    'title'    => 'create_test',
                     'archived' => 0,
                     'pinned'   => 0,
                 ],
@@ -215,11 +215,11 @@ class ProjectsCest
             [
                 'comment' => 'create pinned project',
                 'data'    => [
-                    'title'  => 'update_test2',
+                    'title'  => 'create_test2',
                     'pinned' => 1,
                 ],
                 'expected' => [
-                    'title'    => 'update_test2',
+                    'title'    => 'create_test2',
                     'archived' => 0,
                     'pinned'   => 1,
                 ],
@@ -227,14 +227,25 @@ class ProjectsCest
             [
                 'comment' => 'create archived project',
                 'data'    => [
-                    'title'    => 'update_test3',
+                    'title'    => 'create_test3',
                     'archived' => 1,
-                    'pinned'   => 1, // should be ignored when archived is set
                 ],
                 'expected' => [
-                    'title'    => 'update_test3',
+                    'title'    => 'create_test3',
                     'archived' => 1,
-                    'pinned'   => 0,
+                ],
+            ],
+            [
+                'comment' => 'create pinned and archived project',
+                'data'    => [
+                    'title'    => 'create_test4',
+                    'pinned'   => 1,
+                    'archived' => 1,
+                ],
+                'expected' => [
+                    'title'    => 'create_test4',
+                    'archived' => 1,
+                    'pinned'   => 1,
                 ],
             ],
         ];
@@ -252,7 +263,7 @@ class ProjectsCest
             ]);
             $I->seeResponseContainsJson($scenario['expected']);
             $I->seeRecord(UserProjectRel::class, [
-                'userId' => $user->id,
+                'userId'    => $user->id,
                 'projectId' => $I->grabDataFromResponseByJsonPath('$.id'),
             ]);
         }
@@ -270,7 +281,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully update project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendPUT('/projects/1001');
@@ -286,6 +297,7 @@ class ProjectsCest
         $I->sendPUT('/projects/1001', [
             'title'    => '',
             'archived' => 'invalid',
+            'pinned'   => 'invalid',
         ]);
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
@@ -294,6 +306,7 @@ class ProjectsCest
             'errors'  => [
                 'title'    => 'string',
                 'archived' => 'string',
+                'pinned'   => 'string',
             ],
         ]);
     }
@@ -308,7 +321,7 @@ class ProjectsCest
         $I->wantTo('Successfully update project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
@@ -340,16 +353,15 @@ class ProjectsCest
             [
                 'comment'   => 'archive a project',
                 'token'     => $superUser->generateAccessToken(),
-                'projectId' => 1001,
+                'projectId' => 1002,
                 'data'      => [
                     'title'    => 'update_test3',
                     'archived' => 1,
-                    'pinned'   => 1, // should be ignored when archived is set
                 ],
                 'expected' => [
                     'title'    => 'update_test3',
                     'archived' => 1,
-                    'pinned'   => 0,
+                    'pinned'   => 1,
                 ],
             ],
             [
@@ -395,7 +407,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully view project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendGET('/projects/1001');
@@ -422,7 +434,7 @@ class ProjectsCest
         $I->wantTo('Successfully view project');
 
         $regularUser  = User::findOne(1004);
-        $superUser    = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser    = User::findOne(1003);
 
         $testScenarios = [
             [
@@ -462,7 +474,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully delete project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendDELETE('/projects/1001');
@@ -489,7 +501,7 @@ class ProjectsCest
         $I->wantTo('Successfully delete project');
 
         $regularUser  = User::findOne(1004);
-        $superUser    = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser    = User::findOne(1003);
 
         $testScenarios = [
             [
@@ -525,7 +537,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully list project collaborators');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendGET('/projects/1001/collaborators');
@@ -552,7 +564,7 @@ class ProjectsCest
         $I->wantTo('Successfully list project collaborators');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
@@ -610,7 +622,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully search for new project admins');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendGET('/projects/1001/users/search', ['search' => 'test...']);
@@ -638,7 +650,7 @@ class ProjectsCest
 
         $project     = Project::findOne(1001);
         $regularUser = $project->getUsers()->andWhere(['type' => User::TYPE['REGULAR']])->one();
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
@@ -735,7 +747,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully list project admins');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendGET('/projects/1001/users');
@@ -762,14 +774,14 @@ class ProjectsCest
         $I->wantTo('Successfully list project admins');
 
         $regularUser = User::findOne(1002);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
                 'comment'   => 'authorize as regular user and list users of an owned project',
                 'token'     => $regularUser->generateAccessToken(),
                 'projectId' => 1002,
-                'expected'  => [1002, 1005],
+                'expected'  => [1002, 1003],
             ],
             [
                 'comment'   => 'authorize as super user and list users of any project',
@@ -826,7 +838,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully link user to project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendPOST('/projects/1001/users/1004');
@@ -860,32 +872,32 @@ class ProjectsCest
         $I->wantTo('Successfully link user to project');
 
         $regularUser = User::findOne(1002);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
                 'comment'     => 'authorize as regular user and link already linked user to owned project',
                 'token'       => $regularUser->generateAccessToken(),
                 'projectId'   => 1002,
-                'userId'      => 1005,
+                'userId'      => 1003,
                 'expectEmail' => false,
             ],
             [
                 'comment'     => 'authorize as regular user and link another user to owned project',
                 'token'       => $regularUser->generateAccessToken(),
                 'projectId'   => 1002,
-                'userId'      => 1003,
+                'userId'      => 1005,
                 'expectEmail' => true,
             ],
             [
-                'comment'     => 'authorize as regular user and link already linked user to a project',
+                'comment'     => 'authorize as super user and link already linked user to a project',
                 'token'       => $superUser->generateAccessToken(),
                 'projectId'   => 1001,
                 'userId'      => 1002,
                 'expectEmail' => false,
             ],
             [
-                'comment'     => 'authorize as regular user and link another user to a project',
+                'comment'     => 'authorize as super user and link another user to a project',
                 'token'       => $superUser->generateAccessToken(),
                 'projectId'   => 1001,
                 'userId'      => 1003,
@@ -919,7 +931,7 @@ class ProjectsCest
         $I->wantTo('Unsuccessfully unlink a user from project');
 
         $regularUser = User::findOne(1004);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $I->amGoingTo('try accessing the action unauthorized');
         $I->sendDELETE('/projects/1005/users/1003');
@@ -956,21 +968,21 @@ class ProjectsCest
         $I->wantTo('Successfully unlink a user from project');
 
         $regularUser = User::findOne(1002);
-        $superUser   = User::findOne(['status' => User::STATUS['ACTIVE'], 'type' => User::TYPE['SUPER']]);
+        $superUser   = User::findOne(1003);
 
         $testScenarios = [
             [
                 'comment'     => 'authorize as regular user and unlink unlinked user from owned project',
                 'token'       => $regularUser->generateAccessToken(),
                 'projectId'   => 1002,
-                'userId'      => 1003,
+                'userId'      => 1005,
                 'expectEmail' => false,
             ],
             [
                 'comment'     => 'authorize as regular user and unlink linked user from owned project',
                 'token'       => $regularUser->generateAccessToken(),
                 'projectId'   => 1002,
-                'userId'      => 1005,
+                'userId'      => 1003,
                 'expectEmail' => true,
             ],
             [

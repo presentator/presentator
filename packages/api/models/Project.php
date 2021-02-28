@@ -10,7 +10,6 @@ use yii\db\Expression;
  * @property integer $id
  * @property string  $title
  * @property integer $archived
- * @property integer $pinned
  * @property string  $createdAt
  * @property string  $updatedAt
  *
@@ -104,6 +103,26 @@ class Project extends ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // return the pinned state for the current authenticated user (if any)
+        $fields['pinned'] = function ($model, $field) {
+            $isPinned = false;
+            if (Yii::$app->user && Yii::$app->user->identity) {
+                $isPinned = $model->isPinnedBy(Yii::$app->user->identity);
+            }
+
+            return $isPinned ? 1 : 0; // note: return int for consistency with the archived prop
+        };
+
+        return $fields;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function extraFields()
     {
         $extraFields = parent::extraFields();
@@ -124,6 +143,22 @@ class Project extends ActiveRecord
         };
 
         return $extraFields;
+    }
+
+    /**
+     * Checks if the project is pinned by the specified user.
+     *
+     * @param  User $user
+     * @return boolean
+     */
+    public function isPinnedBy(User $user): bool {
+        foreach ($this->userProjectRels as $rel) {
+            if ($rel->userId == $user->id) {
+                return $rel->pinned;
+            }
+        }
+
+        return false;
     }
 
     /**

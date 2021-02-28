@@ -14,12 +14,17 @@ trait UserQueryTrait
     {
         $query = Project::find();
 
-        if (!$this->isSuperUser()) {
-            $query->joinWith('userProjectRels', false)
-                ->andWhere([
+        $query->joinWith(['userProjectRels' => function (ActiveQuery $q) {
+            if ($this->isSuperUser()) { // soft bind (for the pinned state)
+                $q->andOnCondition([
                     UserProjectRel::tableName() . '.userId' => $this->id,
                 ]);
-        }
+            } else { // access check
+                $q->andWhere([
+                    UserProjectRel::tableName() . '.userId' => $this->id,
+                ]);
+            }
+        }], false);
 
         return $query;
     }
