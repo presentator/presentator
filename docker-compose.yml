@@ -9,13 +9,13 @@ services:
     env_file:
       - ./compose/db/env
     ports:
-      - 3306:3306
+      - 127.0.0.1:3306:3306
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8082:8080
+      - 127.0.0.1:8082:8080
 
   api:
     build:
@@ -24,20 +24,20 @@ services:
       - ./packages/api:/var/www/html
       - ./compose/api/data/apache/logs/:/var/log/apache2
     ports:
-      - 8081:80
+      - 127.0.0.1:8081:80
 
   spa:
-    image: node:10
+    image: node:14
     restart: always
     working_dir: /spa
     command: tail -f /dev/null # keep container running
     volumes:
       - ./packages/spa:/spa
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
 
   jsclient:
-    image: node:10
+    image: node:14
     restart: always
     working_dir: /js-client
     command: tail -f /dev/null # keep container running
