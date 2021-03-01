@@ -27,7 +27,7 @@ services:
       - 127.0.0.1:8081:80
 
   spa:
-    image: node:14
+    image: node:10
     restart: always
     working_dir: /spa
     command: tail -f /dev/null # keep container running
@@ -37,7 +37,7 @@ services:
       - 127.0.0.1:8080:8080
 
   jsclient:
-    image: node:14
+    image: node:10
     restart: always
     working_dir: /js-client
     command: tail -f /dev/null # keep container running
