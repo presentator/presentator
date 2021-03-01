@@ -58,7 +58,7 @@
         <div class="boxes-list projects-list pinned-projects">
             <project-box
                 v-for="project in pinnedProjects"
-                :key="project.id"
+                :key="project.id + '_pinned'"
                 :project="project"
                 @projectUpdate="onProjectUpdate"
                 @projectDelete="onProjectDelete"
@@ -70,7 +70,7 @@
         <div class="boxes-list projects-list unpinned-projects">
             <project-box
                 v-for="project in unpinnedProjects"
-                :key="project.id"
+                :key="project.id + '_unpinned'"
                 :project="project"
                 @projectUpdate="onProjectUpdate"
                 @projectDelete="onProjectDelete"
@@ -157,18 +157,18 @@ export default {
             return this.$t('Search for active projects');
         },
         pinnedProjects() {
-            if (this.archived) {
+            if (this.archived == 1) {
                 return []; // don't show pinned projects for the archived listing
             }
 
-            return this.projects.filter((project) => project.isPinned);
+            return this.projects.filter((project) => !project.isArchived && project.isPinned);
         },
         unpinnedProjects() {
-            if (this.archived) {
+            if (this.archived == 1) {
                 return this.projects; // show all projects for the archived listing
             }
 
-            return this.projects.filter((project) => !project.isPinned);
+            return this.projects.filter((project) => project.isArchived || !project.isPinned);
         },
     },
     beforeMount() {
