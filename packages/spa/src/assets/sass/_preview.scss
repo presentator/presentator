@@ -301,7 +301,8 @@
         .screen-wrapper {
             overflow: hidden;
         }
-        .new-active-screen {
+        .new-active-screen,
+        .fixed-screen-overflow-wrapper {
             // used to prevent flickering during js screens rendering
             // in combination with 0.1s new active screen animation delay
             opacity: 0;
@@ -310,7 +311,7 @@
             .old-active-screen {
                 animation: fadeOut $screenAnimationSpeed forwards;
             }
-            .new-active-screen {
+            .new-active-screen, .fixed-screen-overflow-wrapper {
                 animation: fadeIn ($screenAnimationSpeed - 0.1s) 0.1s forwards;
             }
         }
@@ -318,7 +319,7 @@
             .old-active-screen {
                 animation: fadeOut $screenAnimationSpeed forwards;
             }
-            .new-active-screen {
+            .new-active-screen, .fixed-screen-overflow-wrapper {
                 animation: screenSlideLeft ($screenAnimationSpeed - 0.1s) 0.1s forwards;
             }
         }
@@ -326,7 +327,7 @@
             .old-active-screen {
                 animation: fadeOut $screenAnimationSpeed forwards;
             }
-            .new-active-screen {
+            .new-active-screen, .fixed-screen-overflow-wrapper {
                 animation: screenSlideRight ($screenAnimationSpeed - 0.1s) 0.1s forwards;
             }
         }
@@ -334,7 +335,7 @@
             .old-active-screen {
                 animation: fadeOut $screenAnimationSpeed forwards;
             }
-            .new-active-screen {
+            .new-active-screen, .fixed-screen-overflow-wrapper {
                 animation: screenSlideTop ($screenAnimationSpeed - 0.1s) 0.1s forwards;
             }
         }
@@ -342,7 +343,7 @@
             .old-active-screen {
                 animation: fadeOut $screenAnimationSpeed forwards;
             }
-            .new-active-screen {
+            .new-active-screen, .fixed-screen-overflow-wrapper {
                 animation: screenSlideBottom ($screenAnimationSpeed - 0.1s) 0.1s forwards;
             }
         }

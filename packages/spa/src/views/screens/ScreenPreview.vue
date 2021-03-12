@@ -38,8 +38,8 @@
             }"
             @scroll.capture.passive="fixedOverlayReposition"
         >
-            <!-- fixed screen footer -->
-            <div v-if="interactions && activeScreen.fixedHeader > 0 && !inTransition"
+            <!-- fixed screen header -->
+            <div v-if="interactions && activeScreen.fixedHeader > 0"
                 class="fixed-screen-header"
                 :style="{
                     'height':     (activeScreen.fixedHeader * scaleFactor) + 'px',
@@ -167,7 +167,7 @@
             </div>
 
             <!-- fixed screen footer -->
-            <div v-if="interactions && activeScreen.fixedFooter > 0 && !inTransition"
+            <div v-if="interactions && activeScreen.fixedFooter > 0"
                 class="fixed-screen-footer"
                 :style="{
                     'height':     (activeScreen.fixedFooter * scaleFactor) + 'px',
