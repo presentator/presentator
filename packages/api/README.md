@@ -146,7 +146,3 @@ The project makes use of the following conventions:
 - *(DB)* Table columns must be in camelCase format (eg. `passwordResetToken`)
 - *(DB)* Each database change must be applied via Yii migrations.
 - *(DB)* Whenever is possible add named foreign keys and indexes in the following format `fk_{FROM_TABLE}_to_{TO_TABLE}` and `idx_{TABLE}_{COLUMN(S)}` (eg. `fk_ProjectLink_to_Project`, `idx_ProjectLink_slug`)
-
-#### DB schema
-
-![erd](https://i.imgur.com/yjMo9RO.png)
