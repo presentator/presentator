@@ -363,6 +363,14 @@ export default {
                     }, SCREENS_ANIMATION_SPEED);
                 }
 
+                // reset screen scroll position
+                if (this.$refs.activeScreenWrapper) {
+                    this.$refs.activeScreenWrapper.scrollTo({
+                        'top':      0,
+                        'behavior': 'auto',
+                    });
+                }
+
                 this.$emit('afterActiveScreenChange', this.oldActiveScreenId, this.activeScreenId);
             }, this.activeTransition !== 'none' ? 100 : 0);
         },
