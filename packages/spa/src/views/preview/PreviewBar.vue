@@ -167,6 +167,8 @@ export default {
         show() {
             this.isActive = true;
 
+            document.body.classList.remove('hide-distractions');
+
             ClientStorage.setItem(AppConfig.get('VUE_APP_PREVIEW_BAR_VISIBLITY_STORAGE_KEY'), true);
 
             this.responsiveHideMore();
@@ -175,6 +177,8 @@ export default {
         },
         hide() {
             this.isActive = false;
+
+            document.body.classList.add('hide-distractions');
 
             ClientStorage.setItem(AppConfig.get('VUE_APP_PREVIEW_BAR_VISIBLITY_STORAGE_KEY'), false);
 

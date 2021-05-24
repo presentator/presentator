@@ -403,6 +403,8 @@ export default {
             if (this.$refs.activeScreenWrapper) {
                 this.$refs.activeScreenWrapper.focus();
             }
+
+            document.body.classList.toggle('has-hotspots', this.activeScreenHotspots.length > 0);
         },
         goToPrevScreen() {
             if (this.orderedScreens[this.activeScreenOrderedIndex - 1]) {
