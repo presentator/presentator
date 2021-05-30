@@ -22,7 +22,7 @@
                 transform $baseAnimationSpeed;
     transform: translateX(-25%);
     @include user-select(none);
-    .hide-distractions.has-hotspots &,
+    .hide-distractions.has-hotspots .preview-mode &,
     &.nav-disabled {
         @include pointer-events(none);
         background: rgba($overlayColor, 0.1);
@@ -34,7 +34,7 @@
         right: -($size / 2);
         padding-right: ($size / 2) - 10;
         transform: translateX(25%);
-        .hide-distractions.has-hotspots &,
+        .hide-distractions.has-hotspots .preview-mode &,
         &.nav-disabled {
             transform: translateX(100%);
         }
@@ -285,7 +285,7 @@
         @media screen and (min-width: 1200px) {
             .preview-nav {
                 transform: translateX(0px);
-                .hide-distractions.has-hotspots & {
+                .hide-distractions.has-hotspots .preview-mode & {
                     opacity: 0;
                 }
             }
