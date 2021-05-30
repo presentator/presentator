@@ -23,7 +23,8 @@
         "creocoder/yii2-flysystem": "^0.9.0",
         "intervention/image":       "^2.4.2",
         "google/apiclient":         "^2.0",
-        "firebase/php-jwt":         "^5.2"
+        "firebase/php-jwt":         "^5.2",
+        "league/flysystem-aws-s3-v3": "^1.0"
     },
     "require-dev": {
         "codeception/aspect-mock":    "^3.0",
