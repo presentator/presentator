@@ -408,6 +408,7 @@ export default class CommonHelper {
                 height:  0,
             });
 
+            img.crossOrigin = 'Anonymous';
             img.src = imageUrl;
         });
     }
