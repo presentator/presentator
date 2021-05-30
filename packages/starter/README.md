@@ -167,16 +167,18 @@ For example, if you want to store your files on AWS S3:
     ```php
     'components' => [
         'fs' => new \yii\helpers\ReplaceArrayValue([
-            'class'  => 'creocoder\flysystem\AwsS3Filesystem',
-            'key'    => 'YOUR_KEY',
-            'secret' => 'YOUR_SECRET',
-            'bucket' => 'YOUR_BUCKET',
-            'region' => 'YOUR_REGION',
+            'class'   => 'creocoder\flysystem\AwsS3Filesystem',
+            'key'     => 'YOUR_KEY',
+            'secret'  => 'YOUR_SECRET',
+            'bucket'  => 'YOUR_BUCKET',
+            'region'  => 'YOUR_REGION',
+            'options' => [
+                'ACL' => 'public-read',
+            ],
             // other parameters:
             // 'version'  => 'latest',
             // 'baseUrl'  => 'YOUR_BASE_URL',
             // 'prefix'   => 'YOUR_PREFIX',
-            // 'options'  => [],
             // 'endpoint' => 'http://your-url'
         ]),
         ...
