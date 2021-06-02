@@ -14,7 +14,7 @@ import CommonHelper from '@/utils/CommonHelper';
 export default {
     install(Vue, options = {}) {
         const scale = function (el, scaleFactor) {
-            if (!el.src || el.tagName != 'IMG') {
+            if (el.tagName != 'IMG' || !el.src || !el.getAttribute('src')) {
                 return;
             }
 
