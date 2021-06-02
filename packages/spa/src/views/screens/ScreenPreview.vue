@@ -49,6 +49,7 @@
                 <div class="fixed-screen-overflow-wrapper">
                     <div class="fixed-screen-content-wrapper">
                         <img class="fixed-screen"
+                            crossorigin="anonymous"
                             :src="activeScreen.getImage()"
                             :alt="activeScreen.title"
                             v-scale="scaleFactor"
@@ -77,6 +78,7 @@
                 :class="{'position-static': overlayScreen && isOverlayScreenFixed}"
             >
                 <img class="screen old-active-screen"
+                    crossorigin="anonymous"
                     :src="oldActiveScreen ? oldActiveScreen.getImage() : ''"
                     :alt="oldActiveScreen ? oldActiveScreen.title : ''"
                     :style="{
@@ -124,6 +126,7 @@
                         }"
                     >
                         <img class="screen overlay-screen"
+                            crossorigin="anonymous"
                             :src="overlayScreen.getImage()"
                             :alt="overlayScreen.title"
                             v-scale="scaleFactor"
@@ -177,6 +180,7 @@
                 <div class="fixed-screen-overflow-wrapper">
                     <div class="fixed-screen-content-wrapper">
                         <img class="fixed-screen"
+                            crossorigin="anonymous"
                             :src="activeScreen.getImage()"
                             :alt="activeScreen.title"
                             v-scale="scaleFactor"
