@@ -85,7 +85,7 @@
                         <i class="fe fe-arrow-left"></i>
                     </router-link>
 
-                    <div v-if="$refs.screensPanel"
+                    <div v-if="activeScreen && $refs.screensPanel"
                         class="ctrl-item ctrl-item-screens"
                         :class="{'active': $refs.screensPanel.isActive}"
                         v-tooltip.top="$t($refs.screensPanel.isActive ? 'Hide screens panel' : 'Show screens panel')"
