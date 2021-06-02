@@ -188,9 +188,8 @@ class ProjectLink extends ActiveRecord
     public function generateSlug($minLength = 8)
     {
         $alphabet = [
-            ['abcdefghijklmnopqrstuvwxyz', 3], // min 3 chars
-            ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 3], // min 3 chars
-            ['123456789', 2],                  // min 1 char
+            ['abcdefghijklmnopqrstuvwxyz', 6], // min 6 chars
+            ['123456789', 2],                  // min 2 char
         ];
 
         // generate random slug
