@@ -54,7 +54,7 @@ return [
                     'class'      => 'yii\rest\UrlRule',
                     'controller' => 'users',
                     'patterns' => [
-                        'GET,HEAD auth-clients'       => 'list-auth-methods',
+                        'GET,HEAD auth-methods'       => 'list-auth-methods',
                         'GET,HEAD auth-clients'       => 'list-auth-clients',
                         'POST     auth-clients'       => 'authorize-auth-client',
                         'POST login'                  => 'login',
