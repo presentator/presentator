@@ -85,15 +85,15 @@
                         <i class="fe fe-arrow-left"></i>
                     </router-link>
 
-                    <div v-if="activeScreen && $refs.screensPanel"
+                    <div v-if="activeScreen"
                         class="ctrl-item ctrl-item-screens"
-                        :class="{'active': $refs.screensPanel.isActive}"
-                        v-tooltip.top="$t($refs.screensPanel.isActive ? 'Hide screens panel' : 'Show screens panel')"
-                        @click.prevent="$refs.screensPanel.toggle()"
+                        :class="{'active': $refs.screensPanel && $refs.screensPanel.isActive}"
+                        v-tooltip.top="$t($refs.screensPanel && $refs.screensPanel.isActive ? 'Hide screens panel' : 'Show screens panel')"
+                        @click.prevent="$refs.screensPanel && $refs.screensPanel.toggle()"
                     >
                         <span class="txt screen-title">{{ activeScreen.title }}</span>
                         <span class="txt counter m-l-5">({{ $t('{current} of {total}', {current: activeScreenOrderedIndex + 1, total: screens.length}) }})</span>
-                        <i class="m-l-5 fe" :class="$refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
+                        <i class="m-l-5 fe" :class="$refs.screensPanel && $refs.screensPanel.isActive ? 'fe-chevron-up' : 'fe-chevron-down'"></i>
                     </div>
                 </div>
                 <div class="nav nav-center">
