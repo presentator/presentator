@@ -20,12 +20,12 @@
 
                 <div class="flex-fill-block"></div>
 
-                <small class="link-fade txt-dark-border" @click.prevent="deleteUser()">
+                <small v-if="!isLoading" class="link-fade" @click.prevent="deleteUser()">
                     {{ $t('Delete account') }}
                 </small>
             </header>
 
-            <div v-if="isLoadingUser || !user.id" class="block txt-center txt-hint">
+            <div v-if="isLoading || !user.id" class="block txt-center txt-hint">
                 <span class="loader loader-lg loader-blend"></span>
             </div>
 
@@ -44,7 +44,7 @@
                 <div class="tabs-content">
                     <!-- Profile tab -->
                     <div class="tab-item" :class="{'active': activeTab === 'profile'}">
-                        <profile-form class="container-wrapper m-l-0" :user="user"></profile-form>
+                        <profile-form class="container-wrapper m-l-0" :user="user" :changeEmail="authMethods.emailPassword"></profile-form>
                     </div>
 
                     <!-- Email notifications tab -->
@@ -53,7 +53,7 @@
                     </div>
 
                     <!-- Security tab -->
-                    <div class="tab-item" :class="{'active': activeTab === 'security'}">
+                    <div v-if="authMethods.emailPassword" class="tab-item" :class="{'active': activeTab === 'security'}">
                         <security-form class="container-wrapper m-l-0" :user="user"></security-form>
                     </div>
                 </div>
@@ -96,12 +96,18 @@ export default {
             },
             isLoadingUser: false,
             user: new User,
+            authMethods: {},
+            isLoadingAuthMethods: false,
         }
     },
     computed: {
         ...mapState({
             loggedUser: state => state.user.user,
         }),
+
+        isLoading: function () {
+            return this.isLoadingUser || this.isLoadingAuthMethods;
+        },
     },
     watch: {
         '$route.params.userId': function (newVal, oldVal) {
@@ -115,12 +121,14 @@ export default {
             this.$setDocumentTitle(() => this.$t('Account settings'));
         }
 
-        this.loadUser(this.$route.params.userId);
-
-        var queryTab = CommonHelper.getNestedVal(this.$route, 'query.tab');
+        let queryTab = CommonHelper.getNestedVal(this.$route, 'query.tab');
         if (this.tabsList[queryTab]) {
             this.changeTab(queryTab);
         }
+
+        this.loadAuthMethods();
+
+        this.loadUser(this.$route.params.userId);
     },
     methods: {
         changeTab(tab) {
@@ -130,6 +138,29 @@ export default {
                 name:   this.$route.name,
                 params: Object.assign({}, this.$route.params),
                 query:  Object.assign({}, this.$route.query, {tab: this.activeTab}),
+            });
+        },
+        loadAuthMethods() {
+            if (this.isLoadingAuthMethods) {
+                return;
+            }
+
+            this.isLoadingAuthMethods = true;
+
+            ApiClient.Users.getAuthMethods().then((response) => {
+                this.authMethods = response.data || { emailPassword: true, clients: [] };
+
+                if (!this.authMethods.emailPassword) {
+                    delete this.tabsList.security;
+
+                    if (this.activeTab === 'security') {
+                        this.changeTab(Object.keys(this.tabsList)[0]);
+                    }
+                }
+            }).catch((err) => {
+                // silence errors...
+            }).finally(() => {
+                this.isLoadingAuthMethods = false;
             });
         },
         loadUser(id) {

@@ -163,7 +163,13 @@
         justify-content: center;
         align-items: center;
         .auth-client {
-            margin: 5px 8px;
+            margin: 0 8px;
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
         }
     }
 

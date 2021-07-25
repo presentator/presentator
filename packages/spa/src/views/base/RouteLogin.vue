@@ -23,7 +23,7 @@
 
                     <email-password-form v-if="authMethods.emailPassword"></email-password-form>
 
-                    <div v-if="authMethods.emailPassword && authMethods.clients.length" class="block txt-center m-t-base">
+                    <div v-if="authMethods.emailPassword && authMethods.clients.length" class="block txt-center m-t-base m-b-10">
                         {{$t('Or sign in via:')}}
                     </div>
 

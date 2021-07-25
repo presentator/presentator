@@ -1,38 +1,41 @@
 <template>
     <form @submit.prevent="saveChanges()">
-        <div v-if="!loggedUser.isSuperUser" class="row">
-            <div class="col-lg-6">
-                <form-field class="required" name="oldPassword">
-                    <label for="security_old_password">{{ $t('Current password') }}</label>
-                    <input type="password" v-model="oldPassword" id="security_old_password" required>
-                </form-field>
-            </div>
-            <div class="col-lg-6"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <form-field class="required" name="newPassword">
-                    <label for="security_new_password">{{ $t('New password') }}</label>
-                    <input type="password" v-model="newPassword" id="security_new_password" required>
-                </form-field>
-            </div>
-            <div class="col-lg-6">
-                <form-field class="required" name="newPasswordConfirm">
-                    <label for="security_new_password_confirm">{{ $t('Confirm new password') }}</label>
-                    <input type="password" v-model="newPasswordConfirm" id="security_new_password_confirm" required>
-                </form-field>
-            </div>
-        </div>
-
-        <div class="flex-block">
-            <button class="btn btn-primary btn-cons-lg btn-loader" :class="{'btn-loader-active': isProcessing}">
-                <span class="txt">{{ $t('Save changes') }}</span>
+        <div v-if="!loggedUser.isSuperUser" class="block">
+            <button
+                type="button"
+                class="btn btn-primary btn-cons-lg btn-loader"
+                :class="{'btn-loader-active': isProcessing}"
+                @click.prevent="requestPasswordReset()"
+            >
+                <span class="txt">{{ $t('Request password reset') }}</span>
             </button>
-            <router-link :to="{name: 'home'}" class="link-hint m-l-small" v-show="!isProcessing">
-                <span class="txt">{{ $t('Cancel') }}</span>
-            </router-link>
         </div>
+
+        <template v-else>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form-field class="required" name="newPassword">
+                        <label for="security_new_password">{{ $t('New password') }}</label>
+                        <input type="password" v-model="newPassword" id="security_new_password" required>
+                    </form-field>
+                </div>
+                <div class="col-lg-6">
+                    <form-field class="required" name="newPasswordConfirm">
+                        <label for="security_new_password_confirm">{{ $t('Confirm new password') }}</label>
+                        <input type="password" v-model="newPasswordConfirm" id="security_new_password_confirm" required>
+                    </form-field>
+                </div>
+            </div>
+
+            <div class="flex-block">
+                <button class="btn btn-primary btn-cons-lg btn-loader" :class="{'btn-loader-active': isProcessing}">
+                    <span class="txt">{{ $t('Save changes') }}</span>
+                </button>
+                <router-link :to="{name: 'home'}" class="link-hint m-l-small" v-show="!isProcessing">
+                    <span class="txt">{{ $t('Cancel') }}</span>
+                </router-link>
+            </div>
+        </template>
     </form>
 </template>
 
@@ -52,7 +55,6 @@ export default {
     },
     data() {
         return {
-            oldPassword:        '',
             newPassword:        '',
             newPasswordConfirm: '',
             isProcessing:       false,
@@ -68,7 +70,6 @@ export default {
     },
     methods: {
         reset() {
-            this.oldPassword        = '';
             this.newPassword        = '';
             this.newPasswordConfirm = '';
         },
@@ -80,7 +81,6 @@ export default {
             this.isProcessing = true;
 
             ApiClient.Users.update(this.user.id, {
-                oldPassword:        (!this.user.isSuperUser ? this.oldPassword : ''),
                 newPassword:        this.newPassword,
                 newPasswordConfirm: this.newPasswordConfirm,
             }).then((response) => {
@@ -112,6 +112,21 @@ export default {
                 this.newPassword
             ).then((response) => {
                 this.$loginByResponse(response, false);
+            }).finally(() => {
+                this.isProcessing = false;
+            });
+        },
+        requestPasswordReset() {
+            if (this.isProcessing) {
+                return;
+            }
+
+            this.isProcessing = true;
+
+            ApiClient.Users.requestPasswordReset(this.user.email).then((response) => {
+                this.$toast(this.$t('We sent a recovery link to your email address:') + ' ' + this.user.email);
+            }).catch((err) => {
+                this.$errResponseHandler(err);
             }).finally(() => {
                 this.isProcessing = false;
             });

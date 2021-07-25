@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div v-if="changeEmail" class="row">
                 <div class="col-lg-6">
                     <form-field v-if="loggedUser.isSuperUser" name="email">
                         <label for="user_email">{{ $t('Email') }}</label>
@@ -106,6 +106,10 @@ export default {
         user: {
             type:     User,
             required: true,
+        },
+        changeEmail: {
+            type:    Boolean,
+            default: true,
         },
     },
     components: {

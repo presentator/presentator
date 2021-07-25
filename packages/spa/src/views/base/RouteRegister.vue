@@ -67,7 +67,7 @@
                         </div>
                     </form>
 
-                    <div v-if="authMethods.emailPassword && authMethods.clients.length" class="block txt-center m-t-base">
+                    <div v-if="authMethods.emailPassword && authMethods.clients.length" class="block txt-center m-t-base m-b-10">
                         {{$t('Or sign up via:')}}
                     </div>
 

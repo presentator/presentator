@@ -152,6 +152,10 @@ class UsersController extends ApiController
      */
     public function actionLogin()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $model = new LoginForm();
 
         $model->load(Yii::$app->request->post());
@@ -171,6 +175,10 @@ class UsersController extends ApiController
      */
     public function actionRegister()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $model = new UserCreateForm(['scenario' => UserCreateForm::SCENARIO_REGULAR]);
 
         $model->load(Yii::$app->request->post());
@@ -216,6 +224,10 @@ class UsersController extends ApiController
      */
     public function actionRequestPasswordReset()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $model = new UserPasswordResetRequestForm();
 
         $model->load(Yii::$app->request->post());
@@ -236,6 +248,10 @@ class UsersController extends ApiController
      */
     public function actionConfirmPasswordReset()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $model = new UserPasswordResetForm();
 
         $model->load(Yii::$app->request->post());
@@ -254,6 +270,10 @@ class UsersController extends ApiController
      */
     public function actionRequestEmailChange()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $model = new UserEmailChangeRequestForm(Yii::$app->user->identity);
 
         $model->load(Yii::$app->request->post());
@@ -274,6 +294,10 @@ class UsersController extends ApiController
      */
     public function actionConfirmEmailChange()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         try {
             $token = CastHelper::toString(Yii::$app->request->post('token'));
             $user  = User::changeEmailByEmailChangeToken($token);
@@ -366,6 +390,10 @@ class UsersController extends ApiController
      */
     public function actionCreate()
     {
+        if (empty(Yii::$app->params['emailPasswordAuth'])) {
+            return $this->sendErrorResponse([], Yii::t('app', 'Email/Password authorization is disabled.'));
+        }
+
         $user = Yii::$app->user->identity;
         if (!$user->isSuperUser()) {
             throw new ForbiddenHttpException('You are not allowed to create user accounts.');
