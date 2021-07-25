@@ -83,7 +83,7 @@ export default {
             ApiClient.Users.getAuthMethods().then((response) => {
                 this.authMethods = response.data || { emailPassword: true, clients: [] };
             }).catch((err) => {
-                // silence errors...
+                this.$errResponseHandler(err);
             }).finally(() => {
                 this.isLoadingAuthMethods = false;
             });

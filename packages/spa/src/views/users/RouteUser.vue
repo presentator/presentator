@@ -158,7 +158,7 @@ export default {
                     }
                 }
             }).catch((err) => {
-                // silence errors...
+                this.$errResponseHandler(err);
             }).finally(() => {
                 this.isLoadingAuthMethods = false;
             });
