@@ -34,14 +34,99 @@ class UsersCest
         ]);
     }
 
-    /* `UsersController::actionAuthClientsList()`
+    /* `UsersController::actionListAuthMethods()`
     --------------------------------------------------------------- */
     /**
-     * `UsersController::actionAuthClientsList()` test.
+     * `UsersController::actionListAuthMethods()` test.
      *
      * @param FunctionalTester $I
      */
-    public function authClientsList(FunctionalTester $I)
+    public function listAuthMethods(FunctionalTester $I)
+    {
+        $I->wantTo('list all configured auth methods and clients');
+
+        // mock registered auth clients data
+        Yii::$app->set('authClientCollection', [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class'        => 'yii\authclient\clients\Google',
+                    'clientId'     => 'test_id',
+                    'clientSecret' => 'test_secret',
+                ],
+                'facebook' => [
+                    'class'        => 'yii\authclient\clients\Facebook',
+                    'clientId'     => 'test_id',
+                    'clientSecret' => '', // emulate missing configuration
+                ],
+            ],
+        ]);
+
+        $I->amGoingTo('try with the default emailPasswordAuth parameter value');
+        $I->sendGET('/users/auth-methods');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'emailPassword' => 'boolean',
+            'clients' => [[
+                'name'    => 'string',
+                'title'   => 'string',
+                'state'   => 'string',
+                'authUrl' => 'string:url',
+            ]],
+        ]);
+        $I->seeResponseContainsJson([
+            'emailPassword' => true,
+            'clients' => [
+                'name'  => 'google',
+                'title' => 'Google',
+            ],
+        ]);
+        $I->dontSeeResponseContainsJson([
+            'clients' => [
+                'name'  => 'facebook',
+                'title' => 'Facebook',
+            ],
+        ]);
+
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try with custom emailPasswordAuth parameter value');
+        $I->sendGET('/users/auth-methods');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'emailPassword' => 'boolean',
+            'clients' => [[
+                'name'    => 'string',
+                'title'   => 'string',
+                'state'   => 'string',
+                'authUrl' => 'string:url',
+            ]],
+        ]);
+        $I->seeResponseContainsJson([
+            'emailPassword' => false,
+            'clients' => [
+                'name'  => 'google',
+                'title' => 'Google',
+            ],
+        ]);
+        $I->dontSeeResponseContainsJson([
+            'clients' => [
+                'name'  => 'facebook',
+                'title' => 'Facebook',
+            ],
+        ]);
+        Yii::$app->params['emailPasswordAuth'] = true;
+    }
+
+    /* `UsersController::actionListAuthClients()`
+    --------------------------------------------------------------- */
+    /**
+     * `UsersController::actionListAuthClients()` test.
+     *
+     * @param FunctionalTester $I
+     */
+    public function listAuthClients(FunctionalTester $I)
     {
         $I->wantTo('list all configured auth clients');
 
@@ -196,6 +281,18 @@ class UsersCest
             'errors'  => 'array'
         ]);
         $I->seeResponseContains('"errors":{}');
+
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try to login with disabled email password login');
+        $I->sendPOST('/users/login', ['email' => 'test2@example.com', 'password' => '123456']);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
@@ -255,6 +352,27 @@ class UsersCest
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.status');
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.type');
         $I->dontSeeEmailIsSent();
+
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try to register a new user with disabled Email/Password authorization');
+        $I->sendPOST('/users/register', [
+            'email'               => 'create_test@example.com',
+            'password'            => '123456',
+            'passwordConfirm'     => '123456',
+            'firstName'           => 'Test',
+            'lastName'            => 'Testerov',
+            'notifyOnEachComment' => false,
+            'notifyOnMention'     => true,
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        $I->dontSeeEmailIsSent();
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
@@ -367,6 +485,20 @@ class UsersCest
             ],
         ]);
         $I->dontSeeEmailIsSent();
+
+        $user = User::findOne(1003);
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try with registered valid user email with expired or missing password reset token BUT with disabled Email/Password authorization');
+        $I->sendPOST('/users/request-password-reset', ['email' => $user->email]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        $I->dontSeeEmailIsSent();
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
@@ -451,6 +583,23 @@ class UsersCest
             ],
         ]);
         $I->dontSeeResponseJsonMatchesJsonPath('$.errors.token');
+
+        $user = User::findOne(1002);
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try confirming a valid password reset request with disabled Email/Password authorization');
+        $I->sendPOST('/users/confirm-password-reset', [
+            'token'           => $user->passwordResetToken,
+            'password'        => '123456',
+            'passwordConfirm' => '123456',
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
@@ -515,6 +664,21 @@ class UsersCest
             ],
         ]);
         $I->dontSeeEmailIsSent();
+
+        $user = User::findOne(1003);
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try with valid new email but with disabled Email/Password authorization');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $user->generateAccessToken());
+        $I->sendPOST('/users/request-email-change', ['newEmail' => 'new_email@example.com']);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        $I->dontSeeEmailIsSent();
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
@@ -570,6 +734,22 @@ class UsersCest
                 'token' => 'string',
             ],
         ]);
+
+
+        $user = User::findOne(['email' => 'test3@example.com']);
+        Yii::$app->params['emailPasswordAuth'] = false;
+        $I->amGoingTo('try with valid email change token but with disabled Email/Password authorization');
+        $I->sendPOST('/users/confirm-email-change', [
+            'token' => $user->generateEmailChangeToken('new_email@example.com'),
+        ]);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'message' => 'string',
+            'errors'  => 'array'
+        ]);
+        $I->seeResponseContains('"errors":{}');
+        Yii::$app->params['emailPasswordAuth'] = true;
     }
 
     /**
