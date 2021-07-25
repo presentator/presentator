@@ -10,7 +10,13 @@
             <div class="panel auth-panel">
                 <h3 class="panel-title">{{ $t('Sign up') }}</h3>
 
-                <div v-if="registerSuccess" class="panel-content">
+                <div v-if="isLoadingAuthMethods" class="panel-content">
+                    <div class="block txt-center txt-hint">
+                        <span class="loader"></span>
+                    </div>
+                </div>
+
+                <div v-else-if="registerSuccess" class="panel-content">
                     <div class="alert alert-transp-primary txt-center">
                         <p>
                             {{ $t('Check your email to finish signing up.') }}<br>
@@ -21,7 +27,7 @@
                 </div>
 
                 <div v-else class="panel-content">
-                    <form class="register-form disabled" @submit.prevent="onSubmit">
+                    <form v-if="authMethods.emailPassword" class="register-form" @submit.prevent="onSubmit">
                         <form-field class="form-group-lg" name="email">
                             <div class="input-group">
                                 <label for="sign_up_email" class="input-addon p-r-0">
@@ -61,15 +67,17 @@
                         </div>
                     </form>
 
-                    <div class="clearfix m-b-base"></div>
+                    <div v-if="authMethods.emailPassword && authMethods.clients.length" class="block txt-center m-t-base">
+                        {{$t('Or sign up via:')}}
+                    </div>
 
-                    <auth-clients-bar :heading="$t('Or sign up via:')"></auth-clients-bar>
+                    <auth-clients-bar :clients="authMethods.clients"></auth-clients-bar>
                 </div>
             </div>
 
             <div class="clearfix m-b-base"></div>
 
-            <div class="auth-meta">
+            <div v-if="!isLoadingAuthMethods && authMethods.emailPassword" class="auth-meta">
                 <router-link :to="{name: 'login'}">
                     {{ $t('Already have an account?') }}
                     <strong>{{ $t('Sign in.') }}</strong>
@@ -98,15 +106,18 @@ export default {
     },
     data() {
         return {
-            email:           '',
-            password:        '',
-            passwordConfirm: '',
-            isProcessing:    false,
-            registerSuccess: false,
+            email:                '',
+            password:             '',
+            passwordConfirm:      '',
+            isProcessing:         false,
+            registerSuccess:      false,
+            authMethods:          {},
+            isLoadingAuthMethods: false,
         }
     },
     beforeMount() {
         this.$setDocumentTitle(() => this.$t('Sign up'));
+        this.loadAuthMethods();
     },
     methods: {
         onSubmit() {
@@ -128,6 +139,21 @@ export default {
                 this.$errResponseHandler(err);
             }).finally(() => {
                 this.isProcessing = false;
+            });
+        },
+        loadAuthMethods() {
+            if (this.isLoadingAuthMethods) {
+                return;
+            }
+
+            this.isLoadingAuthMethods = true;
+
+            ApiClient.Users.getAuthMethods().then((response) => {
+                this.authMethods = response.data || { emailPassword: true, clients: [] };
+            }).catch((err) => {
+                // silence errors...
+            }).finally(() => {
+                this.isLoadingAuthMethods = false;
             });
         },
     },

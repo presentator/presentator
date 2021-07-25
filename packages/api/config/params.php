@@ -39,9 +39,10 @@ return [
     // support email address (also used for receiving users feedback)
     'supportEmail' => 'support@example.com',
 
-    // disables the default email password login and relies only
-    // on the registered oauth2 clients for authorization
-    'disableEmailPasswordLogin' => false,
+    // Whether to enable the default email password auth flow (default to `true`)
+    // If set to `false`, the application will rely only on the
+    // registered oauth2 clients for authorization
+    'emailPasswordAuth' => true,
 
     // list of email address domains that are allowed to register (eg. `['example.com', 'test.com']`)
     // or in other words - only emails from domains that are listed here could register
@@ -61,8 +62,8 @@ return [
     // (should be auto populated in `params-local.php` on application init)
     'storageKeysSalt' => '',
 
-    // user password reset token duration time in seconds (default to 1 hour)
-    'passwordResetTokenDuration' => 3600,
+    // user password reset token duration time in seconds (default to 15 minutes)
+    'passwordResetTokenDuration' => 900,
 
     // user access token duration time in seconds (default to 2 weeks)
     'accessTokenDuration' => 1209600,

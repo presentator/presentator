@@ -56,8 +56,8 @@ class UsersController extends ApiController
     public function actionListAuthMethods()
     {
         $result = [
-            'email_password' => Yii::$app->params['disableEmailPasswordLogin'],
-            'oauth2' => [],
+            'emailPassword' => Yii::$app->params['emailPasswordAuth'],
+            'clients' => [],
         ];
 
         $clients = AuthClientAuthorizationForm::getConfiguredAuthClients();
@@ -75,7 +75,7 @@ class UsersController extends ApiController
             // disable state param validations since we are not using sessions
             $client->validateAuthState = false;
 
-            $result['oauth2'][] = [
+            $result['clients'][] = [
                 'name'    => $key,
                 'title'   => Inflector::humanize($key),
                 'state'   => $state,

@@ -69,110 +69,101 @@
         }
     }
 
-    .auth-clients-bar {
-        @extend %block;
+    .auth-client {
+        $circleSize: 55px;
+        $iconSize: 23px;
+        display: inline-block;
+        vertical-align: middle;
+        width: $circleSize;
+        height: $circleSize;
+        border-radius: $circleSize;
+        line-height: $circleSize - 2;
+        border: 1px solid $borderColor;
         text-align: center;
-        .heading {
-            @extend %block;
-            text-align: center;
-            margin: 0;
+        cursor: pointer;
+        outline: 0;
+        text-decoration: none;
+        transition: background $baseAnimationSpeed,
+                    box-shadow $baseAnimationSpeed;
+        @include shadowize;
+        @include v-align-helper;
+
+        // states
+        &:hover,
+        &:focus,
+        &:active {
+            background: $lightBorderColor;
+            @include shadowize(0px 0px 0px 1px $borderColor);
         }
-        .auth-client {
-            $circleSize: 55px;
-            $iconSize: 23px;
+        &:active {
+            transition-duration: 0.1s;
+            background: $borderColor;
+        }
+
+        // client icons
+        &:after {
+            content: "\e991";
             display: inline-block;
             vertical-align: middle;
-            width: $circleSize;
-            height: $circleSize;
-            border-radius: $circleSize;
-            line-height: $circleSize - 2;
-            border: 1px solid $borderColor;
-            text-align: center;
-            cursor: pointer;
-            outline: 0;
-            text-decoration: none;
-            transition: background $baseAnimationSpeed,
-                        box-shadow $baseAnimationSpeed;
-            @include shadowize;
-            @include v-align-helper;
-
-            // states
-            &:hover,
-            &:focus,
-            &:active {
-                background: $lightBorderColor;
-                @include shadowize(0px 0px 0px 1px $borderColor);
-            }
-            &:active {
-                transition-duration: 0.1s;
-                background: $borderColor;
-            }
-
-            // client icons
+            font-family: $iconFont;
+            width: $iconSize;
+            height: $iconSize;
+            font-size: 20px;
+            color: $lightTxtColor;
+            line-height: $iconSize;
+            background-repeat: none;
+            background-position: center;
+            background-size: 100%;
+        }
+        &.google:after {
+            content: "";
+            background-image: url('#{$imagesPath}/google-logo.svg');
+        }
+        &.facebook:after {
+            content: "";
+            background-image: url('#{$imagesPath}/facebook-logo.svg');
+        }
+        &.twitter:after {
+            content: "";
+            background-image: url('#{$imagesPath}/twitter-logo.svg');
+        }
+        &.dribbble:after {
+            content: "";
+            background-image: url('#{$imagesPath}/dribbble-logo.svg');
+        }
+        &.github:after {
+            content: "";
+            background-image: url('#{$imagesPath}/github-logo.svg');
+        }
+        &.gitlab:after {
+            content: "";
+            background-image: url('#{$imagesPath}/gitlab-logo.svg');
+        }
+        &.gitea:after {
+            content: "";
+            background-image: url('#{$imagesPath}/gitea-logo.svg');
+        }
+        &.nextcloud:after {
+            content: "";
+            background-image: url('#{$imagesPath}/nextcloud-logo.svg');
+        }
+        &.dummy {
+            border-color: $lightBorderColor;
+            background: $lightBorderColor;
+            @include pointer-events(none);
             &:after {
-                content: "\e991";
-                display: inline-block;
-                vertical-align: middle;
-                font-family: $iconFont;
-                width: $iconSize;
-                height: $iconSize;
-                font-size: 20px;
-                color: $lightTxtColor;
-                line-height: $iconSize;
-                background-repeat: none;
-                background-position: center;
-                background-size: 100%;
-            }
-            &.google:after {
                 content: "";
-                background-image: url('#{$imagesPath}/google-logo.svg');
-            }
-            &.facebook:after {
-                content: "";
-                background-image: url('#{$imagesPath}/facebook-logo.svg');
-            }
-            &.twitter:after {
-                content: "";
-                background-image: url('#{$imagesPath}/twitter-logo.svg');
-            }
-            &.dribbble:after {
-                content: "";
-                background-image: url('#{$imagesPath}/dribbble-logo.svg');
-            }
-            &.github:after {
-                content: "";
-                background-image: url('#{$imagesPath}/github-logo.svg');
-            }
-            &.gitlab:after {
-                content: "";
-                background-image: url('#{$imagesPath}/gitlab-logo.svg');
-            }
-            &.gitea:after {
-                content: "";
-                background-image: url('#{$imagesPath}/gitea-logo.svg');
-            }
-            &.nextcloud:after {
-                content: "";
-                background-image: url('#{$imagesPath}/nextcloud-logo.svg');
-            }
-            &.dummy {
-                border-color: $lightBorderColor;
-                background: $lightBorderColor;
-                @include pointer-events(none);
-                &:after {
-                    content: "";
-                    display: none;
-                }
+                display: none;
             }
         }
-        .auth-clients-list {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            .auth-client {
-                margin: 10px 8px 0;
-            }
+    }
+    .auth-clients-list {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        .auth-client {
+            margin: 5px 8px;
         }
     }
 
