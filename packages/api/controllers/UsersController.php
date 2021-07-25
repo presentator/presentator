@@ -34,6 +34,7 @@ class UsersController extends ApiController
 
         $behaviors['authenticator']['except'] = [
             'options',
+            'list-auth-methods',
             'list-auth-clients',
             'authorize-auth-client',
             'login',
@@ -48,7 +49,48 @@ class UsersController extends ApiController
     }
 
     /**
+     * Returns array list with the application configured auth methods and clients.
+     *
+     * @return array
+     */
+    public function actionListAuthMethods()
+    {
+        $result = [
+            'email_password' => Yii::$app->params['disableEmailPasswordLogin'],
+            'oauth2' => [],
+        ];
+
+        $clients = AuthClientAuthorizationForm::getConfiguredAuthClients();
+
+        // provide a state key that the consumer could use for manual request verification
+        $state = md5(Yii::$app->security->generateRandomString(10));
+
+        // additional clients auth url query parameters
+        $authParams = array_filter([
+            'state'        => $state,
+            'redirect_uri' => Yii::$app->params['authClientRedirectUri'],
+        ]);
+
+        foreach ($clients as $key => $client) {
+            // disable state param validations since we are not using sessions
+            $client->validateAuthState = false;
+
+            $result['oauth2'][] = [
+                'name'    => $key,
+                'title'   => Inflector::humanize($key),
+                'state'   => $state,
+                'authUrl' => $client->buildAuthUrl($authParams),
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns array list with the application configured auth clients.
+     *
+     * @deprecated This action will be removed in 2.12.0!
+     *             Please use `actionListAuthMethods` instead.
      *
      * @return array
      */

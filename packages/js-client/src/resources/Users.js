@@ -8,10 +8,22 @@ export default class Users extends BaseResource {
      * @param  {Object} [queryParams]
      * @return {Promise}
      */
+    getAuthMethods(queryParams = {}) {
+        return this.$http({
+            'method': 'get',
+            'url': '/users/auth-methods',
+            'params': queryParams,
+        });
+    }
+
+    /**
+     * @param  {Object} [queryParams]
+     * @return {Promise}
+     */
     getAuthClients(queryParams = {}) {
         return this.$http({
             'method': 'get',
-            'url':    '/users/auth-clients',
+            'url': '/users/auth-clients',
             'params': queryParams,
         });
     }
@@ -26,14 +38,14 @@ export default class Users extends BaseResource {
     authorizeAuthClient(client, code, bodyParams = {}, queryParams = {}) {
         bodyParams = Object.assign({
             'client': client,
-            'code':   code,
+            'code': code,
         }, bodyParams);
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/auth-clients',
+            'url': '/users/auth-clients',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -45,9 +57,9 @@ export default class Users extends BaseResource {
     register(bodyParams = {}, queryParams = {}) {
         return this.$http({
             'method': 'post',
-            'url':    '/users/register',
+            'url': '/users/register',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -64,9 +76,9 @@ export default class Users extends BaseResource {
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/activate',
+            'url': '/users/activate',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -79,15 +91,15 @@ export default class Users extends BaseResource {
      */
     login(email, password, bodyParams = {}, queryParams = {}) {
         bodyParams = Object.assign({
-            'email':    email,
+            'email': email,
             'password': password,
         }, bodyParams);
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/login',
+            'url': '/users/login',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -104,9 +116,9 @@ export default class Users extends BaseResource {
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/request-password-reset',
+            'url': '/users/request-password-reset',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -126,16 +138,16 @@ export default class Users extends BaseResource {
         queryParams = {}
     ) {
         bodyParams = Object.assign({
-            'token':           passwordResetToken,
-            'password':        password,
+            'token': passwordResetToken,
+            'password': password,
             'passwordConfirm': passwordConfirm,
         }, bodyParams);
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/confirm-password-reset',
+            'url': '/users/confirm-password-reset',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -152,9 +164,9 @@ export default class Users extends BaseResource {
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/request-email-change',
+            'url': '/users/request-email-change',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -171,9 +183,9 @@ export default class Users extends BaseResource {
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/confirm-email-change',
+            'url': '/users/confirm-email-change',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -190,9 +202,9 @@ export default class Users extends BaseResource {
 
         return this.$http({
             'method': 'post',
-            'url':    '/users/feedback',
+            'url': '/users/feedback',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -204,9 +216,9 @@ export default class Users extends BaseResource {
     refresh(bodyParams = {}, queryParams = {}) {
         return this.$http({
             'method': 'post',
-            'url':    '/users/refresh',
+            'url': '/users/refresh',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -218,13 +230,13 @@ export default class Users extends BaseResource {
      */
     getList(page = 1, perPage = 20, queryParams = {}) {
         queryParams = Object.assign({
-            'page':     page,
+            'page': page,
             'per-page': perPage,
         }, queryParams);
 
         return this.$http({
             'method': 'get',
-            'url':    '/users',
+            'url': '/users',
             'params': queryParams,
         });
     }
@@ -236,9 +248,9 @@ export default class Users extends BaseResource {
      */
     getOne(id, queryParams = {}) {
         return this.$http({
-            'method':  'get',
-            'url':     '/users/' + encodeURIComponent(id),
-            'params':  queryParams
+            'method': 'get',
+            'url': '/users/' + encodeURIComponent(id),
+            'params': queryParams
         });
     }
 
@@ -250,9 +262,9 @@ export default class Users extends BaseResource {
     create(bodyParams = {}, queryParams = {}) {
         return this.$http({
             'method': 'post',
-            'url':    '/users',
+            'url': '/users',
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -265,9 +277,9 @@ export default class Users extends BaseResource {
     update(id, bodyParams = {}, queryParams = {}) {
         return this.$http({
             'method': 'put',
-            'url':    '/users/' + encodeURIComponent(id),
+            'url': '/users/' + encodeURIComponent(id),
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 
@@ -280,9 +292,9 @@ export default class Users extends BaseResource {
     delete(id, bodyParams = {}, queryParams = {}) {
         return this.$http({
             'method': 'delete',
-            'url':    '/users/' + encodeURIComponent(id),
+            'url': '/users/' + encodeURIComponent(id),
             'params': queryParams,
-            'data':   bodyParams,
+            'data': bodyParams,
         });
     }
 }

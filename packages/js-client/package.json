@@ -1,6 +1,6 @@
 {
   "name": "presentator-client",
-  "version": "2.6.1",
+  "version": "2.7.1",
   "description": "Presentator v2 API JavaScript Client",
   "main": "dist/client.min.js",
   "keywords": [
@@ -27,12 +27,12 @@
     "axios": "^0.21.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/preset-env": "^7.12.16",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
     "axios-mock-adapter": "^1.19.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "chai": "^4.3.0",
+    "chai": "^4.3.4",
     "mocha": "^6.2.3",
     "mocha-webpack": "^2.0.0-beta.0",
     "webpack": "^4.46.0",

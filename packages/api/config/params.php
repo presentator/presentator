@@ -39,6 +39,10 @@ return [
     // support email address (also used for receiving users feedback)
     'supportEmail' => 'support@example.com',
 
+    // disables the default email password login and relies only
+    // on the registered oauth2 clients for authorization
+    'disableEmailPasswordLogin' => false,
+
     // list of email address domains that are allowed to register (eg. `['example.com', 'test.com']`)
     // or in other words - only emails from domains that are listed here could register
     // (leave empty to skip the filter)
