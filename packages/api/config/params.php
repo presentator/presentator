@@ -62,8 +62,8 @@ return [
     // (should be auto populated in `params-local.php` on application init)
     'storageKeysSalt' => '',
 
-    // user password reset token duration time in seconds (default to 1 hour)
-    'passwordResetTokenDuration' => 3600,
+    // user password reset token duration time in seconds (default to 30 minutes)
+    'passwordResetTokenDuration' => 1800,
 
     // user access token duration time in seconds (default to 2 weeks)
     'accessTokenDuration' => 1209600,
