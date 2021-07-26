@@ -139,7 +139,7 @@ class AuthClientAuthorizationForm extends ApiForm
                     ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 3], // min 3 chars
                     ['0123456789', 3],                 // min 3 chars
                 ];
-                $password = Yii::$app->security->generateRandomString(12, $alphabet);
+                $password = Yii::$app->security->generateRandomString(15, $alphabet);
 
                 $createForm = new UserCreateForm([
                     'scenario'        => UserCreateForm::SCENARIO_SUPER,
@@ -156,9 +156,11 @@ class AuthClientAuthorizationForm extends ApiForm
                     throw new \Exception('Unable to persist user create form.');
                 }
 
-                // notify the user that his/her account was created
-                // automatically with the generated temp password
-                $user->sendAuthClientRegisterEmail($password);
+                if (!empty(Yii::$app->params['emailPasswordAuth'])) {
+                    // notify the user that his/her account was created
+                    // automatically with the generated temp password
+                    $user->sendAuthClientRegisterEmail($password);
+                }
             }
 
             // link the user with an auth model so that it can be directly returned on the next authorization
