@@ -9,6 +9,8 @@ Figma plugin to export design frames directly to Presentator.
 - [Development](#development)
 
 
+> **OAUTH2 is not supported. The users can authenticate only via email and password ([#178](https://github.com/presentator/presentator/issues/178)).**
+
 > **This repository is READ-ONLY.**
 > **Report issues and send pull requests in the [main Presentator repository](https://github.com/presentator/presentator/issues).**
 
