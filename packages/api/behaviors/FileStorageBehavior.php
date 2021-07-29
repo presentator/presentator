@@ -163,8 +163,12 @@ class FileStorageBehavior extends Behavior
             $this->owner->{$this->filePathAttribute} = $filePathPrefix . '/' . $filename;
 
             return $result && $this->owner->save();
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e->getMessage());
+
+            if (YII_ENV_DEV) {
+                throw $e; // rethrow
+            }
         }
 
         return false;
@@ -194,8 +198,12 @@ class FileStorageBehavior extends Behavior
             }
 
             return true;
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e->getMessage());
+
+            if (YII_ENV_DEV) {
+                throw $e; // rethrow
+            }
         }
 
         return false;
@@ -236,8 +244,12 @@ class FileStorageBehavior extends Behavior
                     return true;
                 }
             }
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e->getMessage());
+
+            if (YII_ENV_DEV) {
+                throw $e; // rethrow
+            }
         }
 
         return false;
@@ -309,8 +321,12 @@ class FileStorageBehavior extends Behavior
         $fileContent = null;
         try {
             $fileContent = Yii::$app->fs->read($this->owner->{$this->filePathAttribute});
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e->getMessage());
+
+            if (YII_ENV_DEV) {
+                throw $e; // rethrow
+            }
         }
 
         // original file is missing or is not readable
@@ -335,8 +351,13 @@ class FileStorageBehavior extends Behavior
 
             try {
                 $image = $imageManager->make($fileContent);
-            } catch (\Exception | \Throwable $e) {
+            } catch (\Throwable $e) {
                 Yii::error($e->getMessage() . '(most likely unable to create an image object due to memory limitations)');
+
+                if (YII_ENV_DEV) {
+                    throw $e; // rethrow
+                }
+
                 continue;
             }
 
@@ -347,30 +368,36 @@ class FileStorageBehavior extends Behavior
             $smartResize = $this->thumbs[$thumbKey]['smartResize'] ?? true;
 
             // resize image
-            if ($smartResize) {
-                if (!$width) {
-                    throw new InvalidConfigException($thumbKey . ': the width thumb property is required when smartResize is enabled.');
-                }
-
-                $image->fit($width, $height, null, 'top');
-            } else {
-                if (!$width && !$height) {
-                    throw new InvalidConfigException($thumbKey . ': either width or height thumb property must be set.');
-                }
-
-                $image->resize($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
-
             try {
+                if ($smartResize) {
+                    if (!$width) {
+                        throw new InvalidConfigException($thumbKey . ': the width thumb property is required when smartResize is enabled.');
+                    }
+
+                    $image->fit($width, $height, null, 'top');
+                } else {
+                    if (!$width && !$height) {
+                        throw new InvalidConfigException($thumbKey . ': either width or height thumb property must be set.');
+                    }
+
+                    $image->resize($width, $height, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+
                 // store thumb
                 Yii::$app->fs->put($thumbFilePath, $image->encode(null, $quality));
 
                 $sucessCounter++;
-            } catch (\Exception | \Throwable $e) {
+            } catch (\Throwable $e) {
                 Yii::error($e->getMessage());
+
+                if (YII_ENV_DEV) {
+                    throw $e; // rethrow
+                }
+
+                continue;
             }
         }
 
@@ -400,8 +427,12 @@ class FileStorageBehavior extends Behavior
                     Yii::$app->fs->delete($thumbFilePath);
 
                     $successCounter++;
-                } catch (\Exception | \Throwable $e) {
+                } catch (\Throwable $e) {
                     Yii::error($e->getMessage());
+
+                    if (YII_ENV_DEV) {
+                        throw $e; // rethrow
+                    }
                 }
             }
         }
