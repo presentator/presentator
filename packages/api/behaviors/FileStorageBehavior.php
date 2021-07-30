@@ -246,10 +246,6 @@ class FileStorageBehavior extends Behavior
             }
         } catch (\Throwable $e) {
             Yii::error($e->getMessage());
-
-            if (YII_ENV_DEV) {
-                throw $e; // rethrow
-            }
         }
 
         return false;
