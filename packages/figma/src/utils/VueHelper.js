@@ -1,5 +1,5 @@
-import Vue           from 'vue';
-import types         from '@/utils/types';
+import Vue from 'vue';
+import types from '@/utils/types';
 import clientStorage from '@/utils/ClientStorage';
 
 /**
@@ -18,7 +18,7 @@ export default {
             }
 
             const responseStatus = (err.response && err.response.status) ? err.response.status : 200;
-            const errMessage     = (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err.message;
+            const errMessage = (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err.message;
 
             if (responseStatus == 401 || responseStatus == 403) {
                 this.$logout();
@@ -44,9 +44,9 @@ export default {
          * Registers a new global notification/alert.
          *
          * @param {String} message   Notification message
-         * @param {Number} [timeout] Auto close timeout in ms (defaults to 4000 ms)
+         * @param {Number} [timeout] Auto close timeout in ms (defaults to 3500 ms)
          */
-        Vue.prototype.$notify = function(message, timeout = 4000) {
+        Vue.prototype.$notify = function(message, timeout = 3500) {
             parent.postMessage({
                 pluginMessage: {
                     type: types.MESSAGE_NOTIFY,
@@ -78,7 +78,7 @@ export default {
                 pluginMessage: {
                     type: types.MESSAGE_RESIZE_UI,
                     data: {
-                        width:  width,
+                        width: width,
                         height: height,
                     },
                 },
@@ -97,7 +97,7 @@ export default {
             return new Promise(function(resolve, reject) {
                 let forceTimeoutId = null;
 
-                let handler = function (event) {
+                let handler = function(event) {
                     let message = event.data.pluginMessage || {};
 
                     if (
@@ -147,7 +147,7 @@ export default {
             return new Promise(function(resolve, reject) {
                 let forceTimeoutId = null;
 
-                let handler = function (event) {
+                let handler = function(event) {
                     let message = event.data.pluginMessage || {};
 
                     if (
