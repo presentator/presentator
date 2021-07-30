@@ -12,10 +12,11 @@
                     v-tooltip.top="screen.title"
                     @click.prevent="setActiveScreenId(screen.id)"
                 >
-                    <img v-if="screen.getImage('small')"
+                    <img v-if="screen.getImage('small') && !brokenThumbs[screen.id]"
                         :src="screen.getImage('small')"
                         :alt="screen.title"
                         class="img"
+                        @error="$set(brokenThumbs, screen.id, true)"
                     >
                     <i v-else class="fe fe-image img"></i>
                 </figure>
@@ -32,6 +33,7 @@ export default {
     data() {
         return {
             isActive: false,
+            brokenThumbs: {},
         }
     },
     computed: {
