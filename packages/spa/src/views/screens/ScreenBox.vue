@@ -11,10 +11,11 @@
                 <span v-if="isReplacing" class="loader loader-blend"></span>
 
                 <template v-else>
-                    <img v-if="screen.getImage('medium')"
+                    <img v-if="screen.getImage('medium') && !brokenThumb"
                         :src="screen.getImage('medium')"
                         :alt="screen.title"
                         class="img"
+                        @error="brokenThumb = true"
                     >
                     <i v-else class="fe fe-image img"></i>
                 </template>
@@ -97,6 +98,7 @@ export default {
     },
     data() {
         return {
+            brokenThumb: false,
             isReplaceHandleClickable: false,
         }
     },

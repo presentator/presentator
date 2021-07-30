@@ -5,10 +5,11 @@
     >
         <figure class="box-thumb">
             <div class="crop-wrapper">
-                <img v-if="project.getFeaturedScreen('medium')"
+                <img v-if="project.getFeaturedScreen('medium') && !brokenThumb"
                     :src="project.getFeaturedScreen('medium')"
                     alt="Featured screen"
                     class="img"
+                    @error="brokenThumb = true"
                 >
                 <i v-else class="fe fe-image img"></i>
             </div>
@@ -81,6 +82,11 @@ export default {
             type:     Project,
             required: true,
         },
+    },
+    data() {
+        return {
+            brokenThumb: false,
+        }
     },
     methods: {
         updateArchivedState(archive) {
