@@ -414,7 +414,8 @@
     .box {
         margin-bottom: $baseSpacing;
         &:not(.sortable-ghost) {
-            animation: stepInTop $prolongedAnimationSpeed;
+            opacity: 0;
+            animation: stepInTop $prolongedAnimationSpeed forwards;
         }
     }
     &.sort-started {
