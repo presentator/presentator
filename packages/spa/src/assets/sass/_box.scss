@@ -141,6 +141,7 @@
                 display: inline-block;
                 vertical-align: top;
                 border-radius: 0;
+                backface-visibility: hidden;
             }
         }
         i.img {
@@ -414,8 +415,7 @@
     .box {
         margin-bottom: $baseSpacing;
         &:not(.sortable-ghost) {
-            opacity: 0;
-            animation: stepInTop $prolongedAnimationSpeed forwards;
+            animation: stepInTop $prolongedAnimationSpeed;
         }
     }
     &.sort-started {
