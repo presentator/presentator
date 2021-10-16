@@ -49,7 +49,25 @@ export default class BaseModel {
     }
 
     /**
-     * Returns human readable string for the `createdAt` datetime string value.
+     * Returns full local datetime string from the `createdAt` prop.
+     *
+     * @return {String}
+     */
+    get createdAtLocal() {
+        return CommonHelper.utcToLocal(this.createdAt);
+    }
+
+    /**
+     * Returns full local datetime string from the `updatedAt` prop.
+     *
+     * @return {String}
+     */
+    get updatedAtLocal() {
+        return CommonHelper.utcToLocal(this.updatedAt);
+    }
+
+    /**
+     * Returns human readable string from the `createdAt` prop.
      *
      * @return {String}
      */
@@ -58,7 +76,7 @@ export default class BaseModel {
     }
 
     /**
-     * Returns human readable string for the `updatedAt` datetime string value.
+     * Returns human readable string from the `updatedAt` prop.
      *
      * @return {String}
      */

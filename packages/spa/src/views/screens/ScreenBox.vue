@@ -64,7 +64,9 @@
             >{{ screen.title }}</div>
 
             <div class="meta">
-                <div class="meta-item">{{ $t('Uploaded {date}', {date: screen.createdAtFromNow}) }}</div>
+                <div class="meta-item" :title="screen.createdAtLocal">
+                    {{ $t('Uploaded {date}', {date: screen.createdAtFromNow}) }}
+                </div>
 
                 <div
                     v-if="screenComments.length"

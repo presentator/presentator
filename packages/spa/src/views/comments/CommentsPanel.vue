@@ -30,28 +30,32 @@
                 </div>
 
                 <div v-else class="cards-list">
-                    <div
-                        v-for="(comment, i) in activeScreenComments"
-                        v-if="!comment.isNew && (!comment.isResolved || showResolvedComments)"
-                        class="card comment-card"
-                        :class="{
-                            'active': activeCommentId == comment.id,
-                            'card-danger': isCommentUnread(comment.id)
-                        }"
-                        @click.prevent="setActiveCommentId(comment.id)"
-                    >
-                        <figure class="icon">
-                            <span class="txt txt-hint">{{ totalActiveScreenComments-i }}</span>
-                            <i v-if="comment.isResolved" class="fe fe-check txt-success"></i>
-                        </figure>
-                        <div class="content">
-                            <div class="meta">
-                                <div class="meta-item">{{ comment.user ? comment.user.identifier : comment.from }}</div>
-                                <div class="meta-item">{{ comment.createdAtFromNow }}</div>
+                    <template v-for="(comment, i) in activeScreenComments">
+                        <div
+                            :key="comment.id + i"
+                            v-if="!comment.isNew && (!comment.isResolved || showResolvedComments)"
+                            class="card comment-card"
+                            :class="{
+                                'active': activeCommentId == comment.id,
+                                'card-danger': isCommentUnread(comment.id)
+                            }"
+                            @click.prevent="setActiveCommentId(comment.id)"
+                        >
+                            <figure class="icon">
+                                <span class="txt txt-hint">{{ totalActiveScreenComments-i }}</span>
+                                <i v-if="comment.isResolved" class="fe fe-check txt-success"></i>
+                            </figure>
+                            <div class="content">
+                                <div class="meta">
+                                    <div class="meta-item">{{ comment.user ? comment.user.identifier : comment.from }}</div>
+                                    <div class="meta-item" :title="comment.createdAtLocal">
+                                        {{ comment.createdAtFromNow }}
+                                    </div>
+                                </div>
+                                <div class="title txt-default">{{ comment.message }}</div>
                             </div>
-                            <div class="title txt-default">{{ comment.message }}</div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </aside>

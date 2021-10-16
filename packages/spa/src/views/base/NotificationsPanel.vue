@@ -61,7 +61,9 @@
                         <div class="content">
                             <small class="content-header">
                                 <span class="name">{{ comment.user ? comment.user.identifier : comment.from}}</span>
-                                <span class="date txt-hint">{{ comment.createdAtFromNow }}</span>
+                                <span class="date txt-hint" :title="comment.createdAtLocal">
+                                    {{ comment.createdAtFromNow }}
+                                </span>
                             </small>
                             <div class="message">{{ comment.message }}</div>
                             <div v-if="comment.metaData" class="meta">

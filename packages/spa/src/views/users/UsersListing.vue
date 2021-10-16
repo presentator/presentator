@@ -46,8 +46,8 @@
                         <span v-if="user.isSuperUser" class="label label-transp-warning">{{ $t('Super user') }}</span>
                         <span v-else class="label label-light-border">{{ $t('Regular user') }}</span>
                     </td>
-                    <td>{{ user.createdAtFromNow }}</td>
-                    <td>{{ user.updatedAtFromNow }}</td>
+                    <td :title="user.createdAtLocal">{{ user.createdAtFromNow }}</td>
+                    <td :title="user.updatedAtLocal">{{ user.updatedAtFromNow }}</td>
                     <td class="min-width txt-right">
                         <router-link :to="{name: 'user', params: {userId: user.id}}" class="btn btn-sm btn-cons-sm btn-transp-primary">
                             <i class="fe fe-edit"></i>

@@ -62,7 +62,9 @@
             >{{ project.title }}</div>
 
             <div class="meta">
-                <div class="meta-item">{{ $t('Created {date}', {date: project.createdAtFromNow}) }}</div>
+                <div class="meta-item" :title="project.createdAtLocal">
+                    {{ $t('Created {date}', {date: project.createdAtFromNow}) }}
+                </div>
                 <div v-if="project.isArchived" class="meta-item">
                     <span class="label label-transp-warning">{{ $t('Archived') }}</span>
                 </div>

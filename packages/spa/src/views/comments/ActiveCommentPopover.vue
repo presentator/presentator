@@ -37,7 +37,9 @@
                     <div class="content">
                         <small class="content-header">
                             <span class="name">{{ comment.user ? comment.user.identifier : comment.from}}</span>
-                            <span class="date txt-hint">{{ comment.createdAtFromNow }}</span>
+                            <span class="date txt-hint" :title="comment.createdAtLocal">
+                                {{ comment.createdAtFromNow }}
+                            </span>
                         </small>
                         <div class="message">{{ comment.message }}</div>
                     </div>
@@ -483,8 +485,6 @@ export default {
 
             request.then((response) => {
                 this.lastActiveComment.load(response.data);
-
-                this.$toast(this.$t('Successfully updated comment state.'));
 
                 if (this.lastActiveComment.isResolved) {
                     this.close();
