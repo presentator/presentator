@@ -21,8 +21,8 @@ You can join them in supporting Presentator development by visiting our [Support
 - [Ura Design](https://ura.design/) (inactive)
 
 #### Backer ($1+)
-- [Michael Antonicelli](https://www.patreon.com/user/creators?u=42709986)
 - [Bruno Sersocima](https://www.patreon.com/user/creators?u=40134475)
+- [Michael Antonicelli](https://www.patreon.com/user/creators?u=42709986) (inactive)
 - [Jess Schreib](https://www.facebook.com/JanyalaIllustrations/) (inactive)
 
 
