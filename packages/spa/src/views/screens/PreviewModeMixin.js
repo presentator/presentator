@@ -1,7 +1,9 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
-import ApiClient    from '@/utils/ApiClient';
-import CommonHelper from '@/utils/CommonHelper';
-import Hotspot      from '@/models/Hotspot';
+import ApiClient     from '@/utils/ApiClient';
+import CommonHelper  from '@/utils/CommonHelper';
+import AppConfig     from '@/utils/AppConfig';
+import ClientStorage from '@/utils/ClientStorage';
+import Hotspot       from '@/models/Hotspot';
 
 export default {
     data() {
@@ -25,9 +27,25 @@ export default {
             getHotspotsForScreen: 'hotspots/getHotspotsForScreen',
         }),
     },
+    watch: {
+        fitToScreen: function (newVal) {
+            ClientStorage.setItem(
+                AppConfig.get('VUE_APP_TOGGLE_FIT_TO_SCREEN_STORAGE_KEY'),
+                newVal
+            );
+        }
+    },
     mounted() {
-        this.fitToScreen = this.$route.query.fit == 1;
         this.keepHotspotsVisible = this.$route.query.hotspots == 1;
+
+        if (typeof this.$route.query.fit !== 'undefined') {
+            this.fitToScreen = this.$route.query.fit == 1;
+        } else {
+            this.fitToScreen = ClientStorage.getItem(
+                AppConfig.get('VUE_APP_TOGGLE_FIT_TO_SCREEN_STORAGE_KEY'),
+                false
+            );
+        }
     },
     methods: {
         ...mapActions({
