@@ -1,4 +1,5 @@
 <?php
+
 use yii\db\Migration;
 
 /**
@@ -65,7 +66,7 @@ class m190417_133209_init extends Migration
         $this->createTable('{{%Project}}', [
             'id'        => $this->primaryKey(),
             'title'     => $this->string()->notNull()->defaultValue(''),
-            'archived'  => $this->boolean()->defaultValue(0),
+            'archived'  => $this->boolean()->defaultValue(false),
             'createdAt' => $this->datetime(),
             'updatedAt' => $this->datetime(),
         ], $tableOptions);
@@ -101,8 +102,8 @@ class m190417_133209_init extends Migration
             'projectId'      => $this->integer()->notNull(),
             'slug'           => $this->string(50)->notNull(),
             'passwordHash'   => $this->string(),
-            'allowComments'  => $this->integer()->defaultValue(1),
-            'allowGuideline' => $this->boolean()->defaultValue(1),
+            'allowComments'  => $this->boolean()->defaultValue(true),
+            'allowGuideline' => $this->boolean()->defaultValue(true),
             'createdAt'      => $this->datetime(),
             'updatedAt'      => $this->datetime(),
         ], $tableOptions);
@@ -157,8 +158,8 @@ class m190417_133209_init extends Migration
             'id'              => $this->primaryKey(),
             'userId'          => $this->integer()->notNull(),
             'screenCommentId' => $this->integer()->notNull(),
-            'isRead'          => $this->boolean()->defaultValue(0)->comment('Indicates whether the user has read the related screen comment.'),
-            'isProcessed'     => $this->boolean()->defaultValue(0)->comment('Indicates whether a notification email was sent to the user.'),
+            'isRead'          => $this->boolean()->defaultValue(false)->comment('Indicates whether the user has read the related screen comment.'),
+            'isProcessed'     => $this->boolean()->defaultValue(false)->comment('Indicates whether a notification email was sent to the user.'),
             'createdAt'       => $this->datetime(),
             'updatedAt'       => $this->datetime(),
         ], $tableOptions);

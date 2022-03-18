@@ -94,6 +94,14 @@ class ProjectLink extends ActiveRecord
             return $model->isPasswordProtected();
         };
 
+        $fields['allowGuideline'] = function ($model, $field) {
+            return $model->$field ? 1 : 0; // normalize mysql and postgre bool type
+        };
+
+        $fields['allowComments'] = function ($model, $field) {
+            return $model->$field ? 1 : 0; // normalize mysql and postgre bool type
+        };
+
         return $fields;
     }
 
@@ -118,7 +126,8 @@ class ProjectLink extends ActiveRecord
      *
      * @return boolean
      */
-    public function isPasswordProtected() {
+    public function isPasswordProtected()
+    {
         return !empty($this->passwordHash);
     }
 
@@ -171,7 +180,7 @@ class ProjectLink extends ActiveRecord
             $transaction->commit();
 
             return true;
-        } catch(\Exception | \Throwable $e) {
+        } catch (\Exception | \Throwable $e) {
             $transaction->rollBack();
 
             Yii::error($e->getMessage());
@@ -243,9 +252,9 @@ class ProjectLink extends ActiveRecord
 
         foreach ($receivers as $receiver) {
             $result &= Yii::$app->mailer->compose('project_link_share', [
-                    'projectLink' => $this,
-                    'message'     => $message,
-                ])
+                'projectLink' => $this,
+                'message'     => $message,
+            ])
                 ->setFrom([Yii::$app->params['noreplyEmail'] => 'Presentator'])
                 ->setTo($receiver)
                 ->setSubject('Presentator - ' . Yii::t('mail', '{projectTitle} preview', ['projectTitle' => $this->project->title]))

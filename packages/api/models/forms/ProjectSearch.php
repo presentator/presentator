@@ -4,6 +4,7 @@ namespace presentator\api\models\forms;
 use presentator\api\data\ActiveDataProvider;
 use presentator\api\models\Project;
 use presentator\api\models\UserProjectRel;
+use yii\db\Expression;
 
 /**
  * Search class for the Project model.
@@ -48,7 +49,9 @@ class ProjectSearch extends ApiSearch
     {
         $query = $this->getQuery()
             ->with(['featuredScreen', 'userProjectRels'])
-            ->orderBy([UserProjectRel::tableName() . '.pinned' => SORT_DESC]);
+            ->orderBy([
+                new Expression('COALESCE(' . UserProjectRel::tableName() . '.pinned, FALSE) DESC'),
+            ]);
 
         $dataProvider = new ActiveDataProvider([
             'query'  => $query,

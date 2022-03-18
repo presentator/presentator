@@ -18,7 +18,7 @@ class m210228_161640_move_pinned_to_user_project_rel extends Migration
         $this->addColumn(
             '{{%UserProjectRel}}',
             'pinned',
-            $this->boolean()->defaultValue(0)->after("projectId")
+            $this->boolean()->defaultValue(false)->after("projectId")
         );
 
         foreach (Project::find()->with('userProjectRels')->each() as $project) {
@@ -46,7 +46,7 @@ class m210228_161640_move_pinned_to_user_project_rel extends Migration
         $this->addColumn(
             '{{%Project}}',
             'pinned',
-            $this->boolean()->defaultValue(0)->after("archived")
+            $this->boolean()->defaultValue(false)->after("archived")
         );
     }
 }

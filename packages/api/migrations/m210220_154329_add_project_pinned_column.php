@@ -17,7 +17,7 @@ class m210220_154329_add_project_pinned_column extends Migration
         $this->addColumn(
             '{{%Project}}',
             'pinned',
-            $this->boolean()->defaultValue(0)->after("archived")
+            $this->boolean()->defaultValue(false)->after("archived")
         );
     }
 

@@ -107,6 +107,10 @@ class Project extends ActiveRecord
     {
         $fields = parent::fields();
 
+        $fields['archived'] = function ($model, $field) {
+            return $model->$field ? 1 : 0; // normalize mysql and postgre bool type
+        };
+
         // return the pinned state for the current authenticated user (if any)
         $fields['pinned'] = function ($model, $field) {
             $isPinned = false;
@@ -151,7 +155,8 @@ class Project extends ActiveRecord
      * @param  User $user
      * @return boolean
      */
-    public function isPinnedBy(User $user): bool {
+    public function isPinnedBy(User $user): bool
+    {
         foreach ($this->userProjectRels as $rel) {
             if ($rel->userId == $user->id) {
                 return $rel->pinned;
@@ -202,17 +207,19 @@ class Project extends ActiveRecord
      */
     public function findAllCollaborators(): array
     {
+        $connection = static::getDb();
+
         // fetch screen commentators
         $result = ScreenComment::find()
             ->select([
                 'email' => ScreenComment::tableName() . '.from',
             ])
             // add dummy user fields
-            // they are populate later if a user with the selected email exist
-            ->addSelect(new Expression('NULL as id'))
-            ->addSelect(new Expression('NULL as firstName'))
-            ->addSelect(new Expression('NULL as lastName'))
-            ->addSelect(new Expression('NULL as avatar'))
+            // they are populated later if a user with the selected email exist
+            ->addSelect(new Expression('NULL as ' . $connection->quoteColumnName('id')))
+            ->addSelect(new Expression('NULL as ' . $connection->quoteColumnName('firstName')))
+            ->addSelect(new Expression('NULL as ' . $connection->quoteColumnName('lastName')))
+            ->addSelect(new Expression('NULL as ' . $connection->quoteColumnName('avatar')))
             ->innerJoinWith('screen.prototype', false)
             ->andWhere([
                 Prototype::tableName() . '.projectId' => $this->id,

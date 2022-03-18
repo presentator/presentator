@@ -30,4 +30,18 @@ class UserProjectRel extends ActiveRecord
     {
         return $this->hasOne(Project::class, ['id' => 'projectId']);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        $fields['pinned'] = function ($model, $field) {
+            return $model->$field ? 1 : 0; // normalize mysql and postgre bool type
+        };
+
+        return $fields;
+    }
 }

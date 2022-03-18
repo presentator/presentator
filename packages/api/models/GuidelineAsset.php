@@ -2,7 +2,6 @@
 namespace presentator\api\models;
 
 use Yii;
-use yii\web\UploadedFile;
 use yii2tech\ar\position\PositionBehavior;
 use presentator\api\behaviors\FileStorageBehavior;
 

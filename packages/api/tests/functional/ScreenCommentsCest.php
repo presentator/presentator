@@ -1,4 +1,5 @@
 <?php
+
 namespace presentator\api\tests\functional;
 
 use presentator\api\tests\FunctionalTester;
@@ -587,7 +588,7 @@ class ScreenCommentsCest
             $I->dontSeeRecord(UserScreenCommentRel::class, [
                 'userId'          => $scenario['user']->id,
                 'screenCommentId' => $scenario['commentId'],
-                'isRead'          => 0,
+                'isRead'          => false,
             ]);
         }
     }

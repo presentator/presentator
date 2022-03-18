@@ -1,4 +1,5 @@
 <?php
+
 namespace presentator\api\tests\functional;
 
 use Yii;
@@ -398,7 +399,7 @@ class PreviewsCest
         Yii::$app->params['previewTokenDuration'] = $previewTokenDuration;
 
         $I->amGoingTo('try to list guideline assets from a project link that has disabled them');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowGuideline' => 0])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowGuideline' => false])->generatePreviewToken());
         $I->sendGET('/previews/assets');
         $I->seeNotFoundResponse();
     }
@@ -412,7 +413,7 @@ class PreviewsCest
     {
         $I->wantTo('Successfully list project link guideline assets');
 
-        $projectLink = ProjectLink::findOne(['allowGuideline' => 1]);
+        $projectLink = ProjectLink::findOne(['allowGuideline' => true]);
 
         $I->haveHttpHeader('X-Preview-Token', $projectLink->generatePreviewToken());
         $I->sendGET('/previews/assets', [
@@ -452,14 +453,14 @@ class PreviewsCest
         $previewTokenDuration = Yii::$app->params['previewTokenDuration'];
         Yii::$app->params['previewTokenDuration'] = -1000;
         $I->amGoingTo('try accessing the action with expired preview token');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 1])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => true])->generatePreviewToken());
         $I->sendGET('/previews/screen-comments');
         $I->seeUnauthorizedResponse();
         // revert changes
         Yii::$app->params['previewTokenDuration'] = $previewTokenDuration;
 
         $I->amGoingTo('try to list screen comments from a project link that has disabled them');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 0])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => false])->generatePreviewToken());
         $I->sendGET('/previews/screen-comments');
         $I->seeNotFoundResponse();
     }
@@ -503,7 +504,8 @@ class PreviewsCest
                     'params'   => ['sort' => '-createdAt'],
                     'expected' => [1003, 1002, 1001],
                 ],
-            ], function ($scenarioIndex, $scenarioData) use ($I) {
+            ],
+            function ($scenarioIndex, $scenarioData) use ($I) {
                 if (!empty($scenarioData['expected'])) {
                     $I->seeResponseMatchesJsonType([
                         'id'       => 'integer',
@@ -535,19 +537,19 @@ class PreviewsCest
         $previewTokenDuration = Yii::$app->params['previewTokenDuration'];
         Yii::$app->params['previewTokenDuration'] = -1000;
         $I->amGoingTo('try accessing the action with expired preview token');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 1])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => true])->generatePreviewToken());
         $I->sendPOST('/previews/screen-comments');
         $I->seeUnauthorizedResponse();
         // revert changes
         Yii::$app->params['previewTokenDuration'] = $previewTokenDuration;
 
         $I->amGoingTo('try to create a screen comment to a project link that has disabled them');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 0])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => false])->generatePreviewToken());
         $I->sendPOST('/previews/screen-comments');
         $I->seeNotFoundResponse();
 
         $I->amGoingTo('try to create a screen comment with invalid form data');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 1])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => true])->generatePreviewToken());
         $I->sendPOST('/previews/screen-comments', [
             'screenId' => 1007,
             'from'     => 'test2@example.com',
@@ -613,7 +615,7 @@ class PreviewsCest
                 $I->seeRecord(UserScreenCommentRel::class, [
                     'userId'          => $user->id,
                     'screenCommentId' => $commentId,
-                    'isRead'          => 0,
+                    'isRead'          => false,
                 ]);
             }
         }
@@ -638,7 +640,7 @@ class PreviewsCest
         $previewTokenDuration = Yii::$app->params['previewTokenDuration'];
         Yii::$app->params['previewTokenDuration'] = -1000;
         $I->amGoingTo('try accessing the action with expired preview token');
-        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => 1])->generatePreviewToken());
+        $I->haveHttpHeader('X-Preview-Token', ProjectLink::findOne(['allowComments' => true])->generatePreviewToken());
         $I->sendPUT('/previews/screen-comments/1001');
         $I->seeUnauthorizedResponse();
         // revert changes

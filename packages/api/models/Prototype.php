@@ -2,7 +2,6 @@
 namespace presentator\api\models;
 
 use Yii;
-use yii\helpers\Inflector;
 
 /**
  * Prototype AR model
@@ -221,7 +220,7 @@ class Prototype extends ActiveRecord
             $transaction->commit();
 
             return $prototypeCopy;
-        } catch(\Exception | \Throwable $e) {
+        } catch (\Exception | \Throwable $e) {
             $transaction->rollBack();
             Yii::error($e->getMessage());
 
