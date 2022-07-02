@@ -13,6 +13,7 @@ export const supportedLanguages = {
     "de-DE": "Deutsch",
     "fr-FR": "Français",
     "it-IT": "Italiano",
+    "ja-JP": "日本",
     "nl-NL": "Nederlands",
     "pt-BR": "Português",
 };

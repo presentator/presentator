@@ -15,6 +15,7 @@ return [
                 'de-DE',
                 'fr-FR',
                 'it-IT',
+                'ja-JP',
                 'nl-NL',
                 'pt-BR',
             ],

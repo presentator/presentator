@@ -45,6 +45,11 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 - *(v2)* Paolo Baglioni ([baglio](https://www.transifex.com/user/profile/baglio/))
 
 
+### Japanese
+
+- *(v2)* [4ioskd](https://www.transifex.com/user/profile/4ioskd/)
+
+
 ### Polish
 
 - *(v1)* Bizley ([http://bizley.pl](http://bizley.pl))
