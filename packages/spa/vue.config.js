@@ -2,6 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
     lintOnSave: false,
+    publicPath: "./",
     assetsDir: 'spa-resources',
     productionSourceMap: false,
     configureWebpack: {

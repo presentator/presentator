@@ -2,7 +2,7 @@
     <footer class="app-footer">
         <div class="info">
             <a :href="$getAppConfig('VUE_APP_RELEASES_URL')" class="info-item" target="_blank" rel="noopener">
-                <span class="txt">Presentator v2.14.0</span>
+                <span class="txt">Presentator v2.15.0</span>
             </a>
 
             <a :href="$getAppConfig('VUE_APP_REPO_URL')" class="info-item" target="_blank" rel="noopener">

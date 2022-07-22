@@ -18,9 +18,9 @@
     "core-js": "^2.6.12",
     "dropzone": "^5.9.3",
     "firebase": "^7.24.0",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "presentator-client": "^2.7.1",
-    "vue": "^2.7.0",
+    "vue": "^2.7.8",
     "vue-i18n": "^8.27.2",
     "vue-router": "^3.5.4",
     "vuedraggable": "^2.24.3",
@@ -36,7 +36,7 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^7.3.1",
     "vue-cli-plugin-i18n": "^0.6.1",
-    "vue-template-compiler": "^2.7.0"
+    "vue-template-compiler": "^2.7.8"
   },
   "eslintConfig": {
     "root": true,

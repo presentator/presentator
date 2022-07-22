@@ -38,6 +38,7 @@ Check our [Transifex page](https://www.transifex.com/presentatorio/web-platflorm
 
 - *(v1, v2)* Dave ([https://mdxdave.de](https://mdxdave.de))
 - *(v2)* Lennart Fries ([https://pringuin.de](https://pringuin.de/))
+- *(v2)* Marc Thürmer ([MarcThu](https://www.transifex.com/user/profile/MarcThu/))
 
 
 ### Italian
