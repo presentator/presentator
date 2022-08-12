@@ -32,7 +32,7 @@
                 <div v-else class="cards-list">
                     <template v-for="(comment, i) in activeScreenComments">
                         <div
-                            :key="comment.id + i"
+                            :key="'cp_' + comment.id + i"
                             v-if="!comment.isNew && (!comment.isResolved || showResolvedComments)"
                             class="card comment-card"
                             :class="{

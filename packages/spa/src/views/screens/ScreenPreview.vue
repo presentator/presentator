@@ -383,7 +383,19 @@ export default {
                 return;
             }
 
-            // set scale factor
+            this.updateScaleFactor();
+            this.closeOverlayScreen();
+            this.refreshActiveScreenWrapperAlignment();
+            this.refreshDocumentTitle();
+
+            // refocus screen wrapper
+            if (this.$refs.activeScreenWrapper) {
+                this.$refs.activeScreenWrapper.focus();
+            }
+
+            document.body.classList.toggle('has-hotspots', this.activeScreenHotspots.length > 0);
+        },
+        updateScaleFactor() {
             if (!this.fitToScreen && this.activePrototype.scaleFactor != 0) { // fixed scale
                 this.setScaleFactor(this.activePrototype.scaleFactor);
             } else { // auto scale
@@ -398,17 +410,6 @@ export default {
                     }
                 });
             }
-
-            this.closeOverlayScreen();
-            this.refreshActiveScreenWrapperAlignment();
-            this.refreshDocumentTitle();
-
-            // refocus screen wrapper
-            if (this.$refs.activeScreenWrapper) {
-                this.$refs.activeScreenWrapper.focus();
-            }
-
-            document.body.classList.toggle('has-hotspots', this.activeScreenHotspots.length > 0);
         },
         goToPrevScreen() {
             if (this.orderedScreens[this.activeScreenOrderedIndex - 1]) {
@@ -588,7 +589,8 @@ export default {
                 this.closeOverlayScreen();
             }
         },
-        onResize(e) {
+        onResize() {
+            this.updateScaleFactor();
             this.refreshActiveScreenWrapperAlignment();
         }
     },
