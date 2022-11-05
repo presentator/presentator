@@ -12,7 +12,7 @@ You can join them in supporting Presentator development by visiting our [Support
 `none`
 
 #### Sponsor ($25+)
-`none`
+- [Steve Kraft (Hintergrundbewegung Medien & Entertainment)](https://hintergrundbewegung.de/)
 
 #### Generous Backer ($5+)
 - [gondon](https://www.patreon.com/gondon/creators)
