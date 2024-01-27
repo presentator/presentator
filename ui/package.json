@@ -1,0 +1,29 @@
+{
+    "name": "presentator",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "format": "npx prettier ./src --write",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 110,
+        "bracketSameLine": true,
+        "svelteBracketNewLine": true
+    },
+    "dependencies": {
+        "pocketbase": "^0.21.0"
+    },
+    "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^3.0.0",
+        "luxon": "^3.4.4",
+        "prettier-plugin-svelte": "^3.1.2",
+        "sass": "^1.69.5",
+        "svelte": "^4.0.0",
+        "svelte-spa-router": "^4.0.0",
+        "vite": "^5.0.5"
+    }
+}

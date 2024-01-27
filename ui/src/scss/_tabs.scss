@@ -1,0 +1,77 @@
+.tabs-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: var(--btnHeight);
+    .tab-item,
+    .tab-item .ctrls,
+    .tab-item .ctrls .ctrl-item {
+        display: inline-flex;
+        vertical-align: top;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    .ctrls {
+        margin-left: 10px;
+        margin-right: -8px;
+        opacity: 0.5;
+        transition:
+            transform var(--baseAnimationSpeed),
+            opacity var(--baseAnimationSpeed),
+            visibility var(--baseAnimationSpeed);
+        &:hover,
+        &:active,
+        &:focus-within,
+        &.active {
+            opacity: 1;
+        }
+    }
+    .tab-item,
+    .ctrl-item {
+        outline: 0;
+        cursor: pointer;
+        text-decoration: none;
+        user-select: none;
+    }
+    .tab-item {
+        gap: 10px;
+        padding: 5px 15px;
+        align-self: stretch;
+        border-radius: var(--baseRadius);
+        font-size: var(--baseFontSize);
+        color: var(--txtHintColor);
+        transition:
+            color var(--baseAnimationSpeed),
+            background var(--baseAnimationSpeed);
+        &:hover,
+        &:focus-within,
+        &:active,
+        &.active {
+            color: var(--txtBaseColor);
+            background: var(--baseAlt2Color);
+        }
+        &.active {
+            transition-duration: var(--activeAnimationSpeed);
+            background: var(--baseAlt1Color);
+        }
+    }
+    .ctrl-item {
+        position: relative;
+        padding: 0px 5px;
+        min-height: 30px;
+        border-radius: var(--baseRadius);
+        transition:
+            color var(--baseAnimationSpeed),
+            background var(--baseAnimationSpeed);
+        &:hover,
+        &:focus-within {
+            background: var(--baseAlt2Color);
+        }
+        &:active,
+        &.active {
+            background: var(--baseAlt3Color);
+        }
+    }
+}

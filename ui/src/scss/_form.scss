@@ -1,0 +1,1138 @@
+@use "sass:math";
+
+button {
+    outline: 0;
+    border: 0;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+.btn {
+    --btnGap: 8px;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 5px 20px;
+    column-gap: var(--btnGap);
+    user-select: none;
+    min-height: var(--btnHeight);
+    min-width: 0;
+    max-width: 100%;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1;
+    font-weight: bold;
+    color: #fff;
+    font-size: var(--baseFontSize);
+    font-family: var(--baseFontFamily);
+    border-radius: var(--btnRadius);
+    background: none;
+    transition: color var(--baseAnimationSpeed);
+
+    .toggler-container {
+        user-select: text;
+        margin-left: calc(-1 * var(--btnGap));
+    }
+
+    // background layer
+    &:before {
+        content: "";
+        border-radius: inherit;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        user-select: none;
+        background: var(--secondaryColor);
+        transition:
+            filter var(--baseAnimationSpeed),
+            opacity var(--baseAnimationSpeed),
+            transform var(--baseAnimationSpeed),
+            background var(--baseAnimationSpeed);
+    }
+
+    // hover/active states
+    &:hover,
+    &:focus-visible {
+        &:before {
+            opacity: 0.94;
+        }
+    }
+    &:active {
+        z-index: 999;
+        &:before {
+            opacity: 0.87;
+            transition-duration: var(--activeAnimationSpeed);
+        }
+    }
+    &:focus-within,
+    &.active {
+        z-index: 999;
+        &:before {
+            opacity: 1;
+        }
+    }
+
+    $variationsMap: (
+        "hint": var(--txtHintColor),
+        "primary": var(--primaryColor),
+        "success": var(--successColor),
+        "danger": var(--dangerColor),
+        "warning": var(--warningColor),
+    );
+
+    // primary styles
+    @each $name, $color in $variationsMap {
+        &.btn-#{$name} {
+            &:before {
+                background: $color;
+            }
+            &:hover,
+            &:focus-visible {
+                &:before {
+                    opacity: 0.9;
+                }
+            }
+            &:has(.dropdown.active),
+            &:active {
+                &:before {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    // secondary/bordered styles
+    &.btn-outline {
+        border: 2px solid currentColor;
+        background: #fff;
+    }
+
+    @mixin btnOpacity($base: 1, $hover: 1, $active: 1) {
+        &:before {
+            opacity: $base;
+        }
+        &:focus-visible,
+        &:hover {
+            &:before {
+                opacity: $hover;
+            }
+        }
+        &:has(.dropdown.active),
+        &.active,
+        &:active {
+            &:before {
+                opacity: $active;
+            }
+        }
+    }
+
+    &.btn-semitransparent,
+    &.btn-transparent,
+    &.btn-outline {
+        box-shadow: none;
+        color: var(--txtBaseColor);
+        @include btnOpacity(0, 0.3, 0.45);
+        &:before {
+            background: var(--baseAlt3Color);
+        }
+        @each $name, $color in $variationsMap {
+            &.btn-#{$name} {
+                color: $color;
+                @include btnOpacity(0, 0.13, 0.2);
+                &:before {
+                    background: $color;
+                }
+            }
+        }
+        &.btn-hint {
+            color: var(--txtHintColor);
+            &:focus-visible,
+            &:hover,
+            &:active,
+            &:has(.dropdown.active),
+            &.active {
+                color: var(--txtBaseColor);
+            }
+        }
+    }
+    &.btn-semitransparent {
+        @include btnOpacity(0.35, 0.5, 0.7);
+        @each $name, $color in $variationsMap {
+            &.btn-#{$name} {
+                @include btnOpacity(0.13, 0.2, 0.25);
+            }
+        }
+    }
+
+    // disabled state
+    &.btn-disabled,
+    &[disabled] {
+        box-shadow: none;
+        cursor: default;
+        background: var(--baseAlt1Color);
+        color: var(--txtDisabledColor) !important;
+        &:before {
+            display: none;
+        }
+        &.btn-transparent {
+            background: none;
+        }
+        &.btn-outline {
+            border-color: var(--baseAlt2Color);
+        }
+    }
+
+    // sizes
+    &.btn-expanded {
+        min-width: 140px;
+    }
+    &.btn-expanded-sm {
+        min-width: 90px;
+    }
+    &.btn-expanded-lg {
+        min-width: 170px;
+    }
+    &.btn-lg {
+        --btnGap: 10px;
+        @include lgFontSize();
+        min-height: var(--lgBtnHeight);
+        padding-left: 30px;
+        padding-right: 30px;
+        &.btn-expanded {
+            min-width: 240px;
+        }
+        &.btn-expanded-sm {
+            min-width: 160px;
+        }
+        &.btn-expanded-lg {
+            min-width: 300px;
+        }
+    }
+    &.btn-sm,
+    &.btn-xs {
+        --btnGap: 5px;
+        @include smFontSize();
+        min-height: var(--smBtnHeight);
+        padding-left: 12px;
+        padding-right: 12px;
+        &.btn-expanded {
+            min-width: 100px;
+        }
+        &.btn-expanded-sm {
+            min-width: 80px;
+        }
+        &.btn-expanded-lg {
+            min-width: 130px;
+        }
+    }
+    &.btn-xs {
+        @include xsFontSize();
+        padding-left: 9px;
+        padding-right: 9px;
+        min-height: var(--xsBtnHeight);
+    }
+    &.btn-block {
+        display: flex;
+        width: 100%;
+    }
+
+    // pill
+    &.btn-pill {
+        border-radius: 30px;
+    }
+
+    // circle
+    &.btn-circle {
+        --btnGap: 5px;
+        --iconIncrease: 5px;
+        border-radius: 50%;
+        padding: 0;
+        min-width: var(--btnHeight);
+        i {
+            text-align: center;
+            &:before {
+                margin: 0;
+                display: block;
+            }
+        }
+        &.btn-lg {
+            min-width: var(--lgBtnHeight);
+        }
+        &.btn-sm {
+            min-width: var(--smBtnHeight);
+        }
+        &.btn-xs {
+            min-width: var(--xsBtnHeight);
+        }
+    }
+
+    // loading
+    &.btn-loading {
+        --loaderSize: 20px;
+
+        cursor: default;
+        pointer-events: none;
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        &:after {
+            @extend %loaderIcon;
+            content: "";
+            position: absolute;
+            display: inline-block;
+            vertical-align: top;
+            left: 50%;
+            top: 50%;
+            width: var(--loaderSize);
+            height: var(--loaderSize);
+            line-height: var(--loaderSize);
+            font-size: var(--loaderSize);
+            background: currentColor;
+            color: inherit;
+            text-align: center;
+            font-weight: normal;
+            margin-left: (calc(var(--loaderSize) * -0.5));
+            margin-top: (calc(var(--loaderSize) * -0.5));
+            font-family: var(--iconFontFamily);
+            animation:
+                loaderShow var(--baseAnimationSpeed),
+                rotate 1s var(--baseAnimationSpeed) infinite linear;
+        }
+        & > * {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        &.btn-xs {
+            --loaderSize: 16px;
+        }
+        &.btn-sm {
+            --loaderSize: 18px;
+        }
+        &.btn-lg {
+            --loaderSize: 24px;
+        }
+    }
+
+    // interact
+    &.btn-prev,
+    &.btn-next {
+        i {
+            transition: transform var(--baseAnimationSpeed);
+        }
+        &:hover,
+        &:focus-within {
+            i {
+                transform: translateX(3px);
+            }
+        }
+    }
+    &.btn-prev {
+        &:hover,
+        &:focus-within {
+            i {
+                transform: translateX(-3px);
+            }
+        }
+    }
+}
+
+.btn {
+    &:has(.meta) {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .meta {
+        display: inline-flex;
+        vertical-align: top;
+        align-self: stretch;
+        margin-left: 10px;
+        margin-right: -5px;
+        gap: 5px;
+        max-height: 90%;
+        flex-shrink: 0;
+    }
+    .meta-item {
+        flex-shrink: 0;
+        display: inline-flex;
+        vertical-align: top;
+        align-items: center;
+        position: relative;
+        padding: 0px 5px;
+        border-radius: var(--baseRadius);
+        transition:
+            color var(--baseAnimationSpeed),
+            background var(--baseAnimationSpeed);
+        > i {
+            --iconIncrease: 2px;
+        }
+        &:hover,
+        &:focus-within,
+        &:active,
+        &.active {
+            background: rgba(var(--overlayRGBColor), 0.1);
+        }
+        .toggler-container {
+            margin: 0;
+        }
+    }
+    &.btn-lg {
+        &:has(.meta) {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .meta {
+            margin-right: -8px;
+        }
+    }
+}
+
+.btns-group {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+    > .btn {
+        border-radius: 0;
+        &:first-child {
+            border-left: 0;
+            border-top-left-radius: var(--baseRadius);
+            border-bottom-left-radius: var(--baseRadius);
+        }
+        &:last-child {
+            border-top-right-radius: var(--baseRadius);
+            border-bottom-right-radius: var(--baseRadius);
+        }
+    }
+    &.btns-group-block {
+        width: 100%;
+        > .btn {
+            padding-left: 0;
+            padding-right: 0;
+            flex-grow: 1;
+            flex-basis: 0;
+        }
+    }
+}
+
+%input {
+    @extend %block;
+    position: relative;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    background: none;
+    padding: 5px 12px;
+    line-height: 20px;
+    height: auto;
+    min-width: 0; // firefox flexbox grow fix
+    min-height: var(--btnHeight);
+    background: var(--inputColor);
+    color: var(--txtBaseColor);
+    font-size: var(--baseFontSize);
+    font-family: var(--baseFontFamily);
+    font-weight: normal;
+    border-radius: var(--baseRadius);
+    overflow: auto; /* fallback */
+    overflow: overlay;
+    align-self: stretch;
+    transition:
+        color var(--baseAnimationSpeed),
+        background var(--baseAnimationSpeed),
+        box-shadow var(--baseAnimationSpeed),
+        border-radius var(--baseAnimationSpeed);
+    &::placeholder {
+        color: var(--txtHintColor);
+    }
+    &.active,
+    &:focus,
+    &:focus-visible,
+    &:focus-within {
+        z-index: 1;
+        outline: 0;
+        box-shadow: 0px 0px 0px 2px var(--inputFocusColor);
+        @include scrollbar();
+    }
+    &[readonly],
+    &.readonly {
+        cursor: default;
+        color: var(--txtHintColor);
+    }
+    &[disabled],
+    &.disabled {
+        cursor: default;
+        color: var(--txtDisabledColor);
+    }
+    &.txt-mono {
+        line-height: var(--smLineHeight);
+    }
+}
+
+input,
+select,
+textarea {
+    @extend %input;
+}
+input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: var(--txtBaseColor);
+}
+input[type="file"] {
+    padding: 10px;
+}
+input[type="color"] {
+    padding: 8px 10px;
+    -webkit-appearance: none;
+    &::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+    &::-webkit-color-swatch {
+        border: none;
+        border-radius: var(--baseRadius);
+    }
+}
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+    height: auto;
+    display: inline;
+}
+textarea {
+    height: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    min-height: 80px;
+    resize: vertical;
+}
+select {
+    padding-left: 10px;
+}
+
+.form-field {
+    @extend %block;
+    min-width: 0; // flex child ellipsis workaround
+    position: relative;
+    text-align: left;
+    margin: 0 0 var(--baseSpacing);
+    > label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: top;
+        gap: 7px;
+        width: auto;
+        margin: 0 0 8px;
+    }
+    .field-group {
+        @extend %input;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+        padding-top: 0;
+        padding-bottom: 0;
+        height: auto;
+        min-height: var(--btnHeight);
+        color: var(--txtHintColor);
+        overflow: visible;
+        .addon {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        %input {
+            box-shadow: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        &:focus-within {
+            color: var(--txtBaseColor);
+        }
+    }
+
+    // sizes
+    &.form-field-sm {
+        label {
+            @include smFontSize();
+        }
+        %input {
+            @include smFontSize();
+            line-height: var(--smLineHeight);
+            min-height: var(--smBtnHeight);
+        }
+        .field-group {
+            line-height: var(--smLineHeight);
+        }
+    }
+    &.form-field-lg {
+        $hSpacing: 15px;
+        gap: $hSpacing;
+        .field-group {
+            gap: $hSpacing - 3px;
+        }
+        %input {
+            @include lgFontSize();
+            padding-left: $hSpacing;
+            padding-right: $hSpacing;
+            min-height: var(--lgBtnHeight);
+            %input {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+    &.form-field-auto {
+        width: auto;
+        flex-shrink: 0;
+    }
+
+    // checkbox/radio
+    --toggleWidth: 21px;
+    --toggleHeight: 21px;
+    --togglePadding: 10px;
+    input[type="checkbox"],
+    input[type="radio"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        ~ label {
+            display: inline-flex;
+            vertical-align: top;
+            align-items: center;
+            gap: 5px;
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+            min-height: var(--toggleHeight);
+            line-height: var(--toggleHeight);
+            padding-left: calc(var(--toggleWidth) + var(--togglePadding));
+            &:empty {
+                padding-left: var(--toggleWidth);
+            }
+            &:before,
+            &:after {
+                position: absolute;
+                left: 0;
+                top: 0;
+                content: "";
+                width: var(--toggleWidth);
+                height: var(--toggleHeight);
+            }
+            &:before {
+                background: var(--baseAlt3Color);
+                border-radius: 5px;
+                transition:
+                    border var(--baseAnimationSpeed),
+                    background var(--baseAnimationSpeed),
+                    box-shadow var(--baseAnimationSpeed),
+                    transform var(--baseAnimationSpeed);
+            }
+            &:after {
+                $vCheckSize: 9px;
+                $hCheckSize: 5px;
+                height: $vCheckSize;
+                width: $hCheckSize;
+                left: calc((var(--toggleWidth) * 0.5) - #{math.div($hCheckSize, 2)});
+                top: calc((var(--toggleHeight) * 0.5) - #{math.div($vCheckSize, 2) + 1px});
+                border: solid #fff;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+                transition:
+                    opacity var(--activeAnimationSpeed),
+                    visibility var(--activeAnimationSpeed),
+                    transform var(--activeAnimationSpeed);
+                @include hide();
+            }
+        }
+        &[type="radio"] ~ label {
+            &:before {
+                border-radius: 50%;
+            }
+        }
+        &:hover,
+        &:focus-visible {
+            ~ label {
+                &:before {
+                    box-shadow: 0px 0px 0px 3px var(--baseAlt1Color);
+                }
+            }
+            &:checked ~ label {
+                &:before {
+                    box-shadow: 0px 0px 0px 3px var(--successAltColor);
+                }
+            }
+            &:active ~ label {
+                &:before {
+                    transform: scale(1.05);
+                }
+            }
+        }
+        &:disabled ~ label {
+            cursor: default;
+            color: var(--txtDisabledColor);
+            &:before {
+                box-shadow: none;
+                opacity: 0.8;
+            }
+        }
+        &:checked ~ label {
+            &:before {
+                background: var(--successColor);
+                border-color: var(--successColor);
+            }
+            &:after {
+                @include show();
+            }
+        }
+    }
+    &.form-field-sm {
+        --toggleWidth: 19px;
+        --toggleHeight: 19px;
+        --togglePadding: 8px;
+    }
+
+    // toggle
+    &.form-field-toggle {
+        --toggleWidth: 35px;
+        --toggleHeight: 22px;
+        input ~ label {
+            &:before {
+                border-radius: 30px;
+            }
+            &:after {
+                $offset: 4px;
+                border: 0;
+                margin: 0;
+                left: $offset;
+                top: $offset;
+                width: calc(var(--toggleHeight) - #{2 * $offset});
+                height: calc(var(--toggleHeight) - #{2 * $offset});
+                background: #fff;
+                transform: scale(1);
+                border-radius: 50%;
+                @include show();
+            }
+        }
+        input:checked ~ label {
+            &:after {
+                transform: translateX(calc(var(--toggleWidth) - var(--toggleHeight)));
+            }
+        }
+        &.form-field-sm {
+            --toggleWidth: 28px;
+            --toggleHeight: 19px;
+            line-height: var(--toggleHeight);
+        }
+    }
+
+    // radio group
+    .radio-group {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: 5px;
+        background: var(--baseAlt1Color);
+        border-radius: var(--baseRadius);
+        min-height: var(--btnHeight);
+        padding: 3px;
+        .group-item {
+            position: relative;
+            flex: 1;
+            label {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                gap: 10px;
+                padding: 2px;
+                width: 100%;
+                height: 100%;
+                border-radius: var(--baseRadius);
+                transition:
+                    color var(--baseAnimationSpeed),
+                    background var(--baseAnimationSpeed),
+                    box-shadow var(--baseAnimationSpeed);
+                &:before,
+                &:after {
+                    display: none;
+                    content: none;
+                }
+                &:hover,
+                &:active,
+                &:focus-visible {
+                    background: var(--baseAlt2Color);
+                }
+                &:active {
+                    background: var(--baseAlt3Color);
+                    transition-duration: var(--activeAnimationSpeed);
+                }
+            }
+            input:checked ~ label {
+                background: #fff;
+                @include shadowize();
+            }
+        }
+    }
+    &.form-field-sm .radio-group {
+        min-height: var(--smBtnHeight);
+    }
+    &.form-field-lg .radio-group {
+        min-height: var(--lgBtnHeight);
+    }
+
+    // hints
+    .help-block {
+        @extend .content;
+        margin-top: 8px;
+        @include smFontSize();
+        line-height: var(--smLineHeight);
+        color: var(--txtHintColor);
+        word-break: break-word;
+        pre {
+            white-space: pre-wrap;
+        }
+    }
+    .help-block-error {
+        color: var(--dangerColor);
+    }
+
+    // states
+    &.error {
+        %input {
+            background: var(--inputErrorColor);
+            &:focus,
+            &:focus-within {
+                box-shadow: 0px 0px 0px 2px var(--dangerColor);
+                %input {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+    &.required {
+        > label:after {
+            content: "*";
+            color: var(--dangerColor);
+            font-size: var(--xsFontSize);
+            line-height: 1;
+            margin-top: -4px;
+            margin-left: -3px;
+        }
+    }
+}
+
+// select field
+.select {
+    position: relative;
+    display: block;
+    outline: 0;
+    min-width: 0;
+    .option {
+        user-select: none;
+        column-gap: 5px;
+        .icon {
+            min-width: 20px;
+            text-align: center;
+            line-height: inherit;
+            i {
+                vertical-align: middle;
+                line-height: inherit;
+            }
+        }
+    }
+
+    // selected
+    .txt-placeholder {
+        color: var(--txtHintColor);
+    }
+    .selected-container {
+        @extend %input;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        align-items: center;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-right: 35px !important;
+        user-select: none;
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        &:after {
+            @extend %arrowDown;
+            $size: 18px;
+            content: "";
+            display: inline-block;
+            vertical-align: top;
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            width: $size;
+            height: $size;
+            margin-top: -($size * 0.5);
+            align-self: flex-end;
+            background: var(--txtHintColor);
+            transition:
+                color var(--baseAnimationSpeed),
+                transform var(--baseAnimationSpeed);
+        }
+        &.active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            &:after {
+                color: var(--txtBaseColor);
+                transform: rotate(180deg);
+            }
+        }
+        .option {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            max-width: 100%;
+            user-select: text;
+        }
+        .clear {
+            flex-shrink: 0;
+            padding: 0;
+            margin-left: auto;
+            cursor: pointer;
+            color: var(--txtHintColor);
+            transition: color var(--baseAnimationSpeed);
+            i {
+                display: inline-block;
+                vertical-align: top;
+            }
+            &:hover,
+            &:focus-visible,
+            &:active {
+                color: var(--txtBaseColor);
+            }
+        }
+    }
+    &.multiple .selected-container {
+        display: flex;
+        align-items: center;
+        padding-left: 9px;
+        row-gap: 5px;
+        column-gap: 5px;
+        .txt-placeholder {
+            margin-left: 5px;
+        }
+        .option {
+            display: inline-flex;
+            width: auto;
+            padding: 4px 8px;
+            line-height: 1;
+            border-radius: var(--baseRadius);
+            background: #fff;
+            .clear {
+                margin-left: 2px;
+                margin-right: -3px;
+            }
+        }
+    }
+    &:not(.multiple) .selected-container {
+        .label {
+            margin-left: -2px;
+        }
+        .option .txt {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+            line-height: 1;
+        }
+    }
+    &:not(.disabled) .selected-container:hover {
+        cursor: pointer;
+    }
+    &.readonly,
+    &.disabled {
+        color: var(--txtHintColor);
+        pointer-events: none;
+        .txt-placeholder {
+            color: inherit;
+        }
+        .selected-container {
+            color: inherit;
+            .link-hint {
+                pointer-events: auto;
+            }
+            *:not(.link-hint) {
+                color: inherit !important;
+            }
+            &:after,
+            .clear {
+                display: none;
+            }
+            &:hover {
+                cursor: inherit;
+            }
+        }
+    }
+    &.disabled {
+        color: var(--txtDisabledColor);
+    }
+
+    // dropdown
+    .txt-missing {
+        @extend %block;
+        color: var(--txtHintColor);
+        padding: 5px 12px;
+        margin: 0;
+    }
+    .options-dropdown {
+        max-height: none;
+        border: 0;
+        overflow: auto;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-top: 2px;
+        @include shadowize(0 0 0 2px var(--inputFocusColor));
+        .form-field.options-search {
+            margin: 0px 0 5px;
+            padding: 0 0 2px;
+            color: var(--txtHintColor);
+            box-shadow: none;
+            border-bottom: 1px solid var(--baseAlt2Color);
+            .field-group {
+                border-radius: 0;
+                padding: 0 0 0 10px;
+                margin: 0;
+                background: none;
+                column-gap: 0;
+                border: 0;
+                box-shadow: none;
+                color: inherit;
+            }
+            input {
+                border: 0;
+                padding-left: 9px;
+                padding-right: 9px;
+                background: none;
+                box-shadow: none;
+            }
+        }
+        .options-list {
+            overflow: auto;
+            max-height: 240px;
+            width: auto;
+            margin-left: 0;
+            margin-right: -5px;
+            padding-right: 5px;
+        }
+    }
+    .options-list:not(:empty) ~ [slot="afterOptions"]:not(:empty) {
+        margin: 5px -5px -5px;
+        .btn-block {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: var(--baseRadius);
+            border-bottom-right-radius: var(--baseRadius);
+        }
+    }
+
+    // with label
+    label ~ & {
+        &.multiple .selected-container {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 10px;
+        }
+    }
+
+    // block/full-width options style
+    &.block-options {
+        &.multiple .selected-container {
+            .option {
+                width: 100%;
+                @include shadowize();
+            }
+        }
+    }
+
+    &.upside {
+        .selected-container.active {
+            border-radius: 0 0 var(--baseRadius) var(--baseRadius);
+        }
+        .options-dropdown {
+            border-radius: var(--baseRadius) var(--baseRadius) 0 0;
+            margin-bottom: 2px;
+        }
+    }
+
+    &.duo-columns-dropdown {
+        .options-list {
+            margin: 0;
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            .option {
+                flex-basis: 0;
+                flex-grow: 1;
+                min-width: 40%;
+            }
+        }
+    }
+
+    .form-field-sm & .options-dropdown {
+        margin: 0;
+        .dropdown-item {
+            @include smFontSize();
+            padding: 5px 7px;
+        }
+        i {
+            font-size: 1.13em;
+        }
+    }
+
+    .form-field .field-group & {
+        width: 100%;
+        min-height: inherit;
+        .selected-container {
+            min-height: inherit;
+        }
+    }
+}
+
+.screens-select .dropdown {
+    .options-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 5px;
+        max-height: 145px;
+    }
+    .dropdown-item {
+        aspect-ratio: 1;
+        width: 17.5%;
+        height: auto;
+        padding: 0 !important;
+        margin: 0;
+        .thumb {
+            --thumbSize: 100%;
+        }
+        &.selected {
+            .thumb {
+                box-shadow: 0px 0px 0px 2px var(--successColor);
+            }
+        }
+    }
+}

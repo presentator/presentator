@@ -1,0 +1,31 @@
+.screen-settings {
+    @extend %block;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    padding: var(--smSpacing);
+    margin-bottom: 5px;
+    width: var(--smWrapperWidth);
+    max-width: 97vw;
+    cursor: default;
+    text-align: left;
+    background: #fff;
+    color: var(--txtBaseColor);
+    border-radius: var(--baseRadius);
+    @include shadowize();
+}
+
+.btn-screen-settings {
+    > i {
+        transition: transform var(--baseAnimationSpeed);
+    }
+    &.active {
+        > i {
+            transform: rotate(-25deg);
+        }
+        &.btn-loading > .toggler-container {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}

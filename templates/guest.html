@@ -1,0 +1,23 @@
+{{define "body"}}
+    <p>Hello,</p>
+    <p>{{.UserIdentifier}} added a new comment to project {{.Project.Get "title"}}:</p>
+    <div class="section">
+        <table>
+            <tr>
+                <td>
+                    <img class="thumb" src='{{.AppUrl}}/api/files/screens/{{.Screen.Get "id"}}/{{.Screen.Get "file"}}?thumb=100x100t' width="40" height="40" alt="Screen thumb">
+                </td>
+                <td style="padding: 5px 10px">{{.Screen.Get "title"}}</td>
+            </tr>
+        </table>
+        <p>{{.Comment.Get "message"}}</p>
+    </div>
+
+    {{if .ActionUrl}}
+        <p style="text-align: center">
+            <a class="btn" href="{{.ActionUrl}}" target="_blank" rel="noopener">View comment</a>
+        </p>
+    {{end}}
+
+    <p>If you think that this email is a mistake, feel free to reply and we'll investigate it.</p>
+{{end}}

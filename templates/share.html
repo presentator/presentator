@@ -1,0 +1,14 @@
+{{define "body"}}
+    <p>Hello,</p>
+    <p>You are invited to review the design for project {{.Project.Get "title"}}.</p>
+
+    {{if .Message}}
+        <div class="section">
+            <p class="break-spaces">{{.Message}}</p>
+        </div>
+    {{end}}
+
+    <p style="text-align: center">
+        <a class="btn" href="{{.PreviewUrl}}" target="_blank" rel="noopener">View design</a>
+    </p>
+{{end}}

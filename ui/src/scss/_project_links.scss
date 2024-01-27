@@ -1,0 +1,40 @@
+.project-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    gap: var(--xsSpacing);
+    .content {
+        flex-grow: 1;
+        width: auto;
+    }
+    .meta {
+        display: flex;
+        width: 100%;
+        gap: 5px;
+        margin: 10px 0 0;
+    }
+    .ctrls {
+        display: inline-flex;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-right: -5px;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+}
+
+.project-links-list {
+    @extend %block;
+    .project-link {
+        padding-bottom: var(--smSpacing);
+        border-bottom: var(--smSpacing);
+        margin-bottom: var(--smSpacing);
+        border-bottom: 1px solid var(--baseAlt1Color);
+        &:last-child {
+            border-bottom: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+}

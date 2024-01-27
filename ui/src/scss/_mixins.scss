@@ -1,0 +1,103 @@
+@mixin hide() {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@mixin show() {
+    opacity: 1;
+    visibility: visible;
+}
+
+@mixin shadowize($value...) {
+    box-shadow:
+        0px 2px 8px 0px var(--shadowColor),
+        $value;
+}
+
+@mixin xsFontSize($important: false) {
+    --iconIncrease: 1px;
+    @if $important {
+        font-size: var(--xsFontSize) !important;
+    } @else {
+        font-size: var(--xsFontSize);
+    }
+}
+
+@mixin smFontSize($important: false) {
+    --iconIncrease: 2px;
+    @if $important {
+        font-size: var(--smFontSize) !important;
+    } @else {
+        font-size: var(--smFontSize);
+    }
+}
+
+@mixin lgFontSize($important: false) {
+    --iconIncrease: 5px;
+    @if $important {
+        font-size: var(--lgFontSize) !important;
+    } @else {
+        font-size: var(--lgFontSize);
+    }
+}
+
+@mixin xlFontSize($important: false) {
+    --iconIncrease: 5px;
+    @if $important {
+        font-size: var(--xlFontSize) !important;
+    } @else {
+        font-size: var(--xlFontSize);
+    }
+}
+
+@mixin scrollbar(
+    $width: var(--scrollbarWidth),
+    $thumbColor: var(--scrollbarThumbColor),
+    $thumbActiveColor: var(--scrollbarThumbActiveColor),
+    $trackColor: var(--scrollbarTrackColor),
+    $trackRadius: var(--scrollbarTrackRadius),
+    $scrollBehavior: smooth
+) {
+    $elem: if(&, "&", "");
+
+    @media screen and (min-width: 550px) {
+        // chrome scrollbar styles
+        #{$elem}::-webkit-scrollbar {
+            width: $width;
+            height: $width;
+            border-radius: $trackRadius;
+            background: transparent;
+        }
+        #{$elem}::-webkit-scrollbar-track {
+            background: $trackColor;
+            border-radius: $trackRadius;
+        }
+        #{$elem}::-webkit-scrollbar-thumb {
+            background-color: $thumbColor;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            &:hover,
+            &:active {
+                background-color: $thumbActiveColor;
+            }
+        }
+
+        @if & {
+            // firefox scrollbar
+            scrollbar-color: $thumbColor $trackColor;
+            scrollbar-width: thin;
+            scroll-behavior: $scrollBehavior;
+        } @else {
+            html {
+                // firefox scrollbar
+                scrollbar-color: $thumbColor $trackColor;
+                scrollbar-width: thin;
+                scroll-behavior: $scrollBehavior;
+            }
+            * {
+                scrollbar-width: inherit;
+            }
+        }
+    }
+}

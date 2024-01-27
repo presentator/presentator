@@ -1,0 +1,135 @@
+:root {
+    --baseFontFamily: "Inter", sans-serif, emoji;
+    --monospaceFontFamily: monospace, emoji;
+    --iconFontFamily: "iconoir";
+
+    --txtBaseColor: #3f445a;
+    --txtHintColor: #7e869b;
+    --txtDisabledColor: #c6c9dc;
+
+    --baseColor: #f5f7fb;
+    --baseAlt1Color: #e8edf4;
+    --baseAlt2Color: #dee5ed;
+    --baseAlt3Color: #cad5e2;
+
+    --inputColor: var(--baseAlt2Color);
+    --inputFocusColor: var(--baseAlt3Color);
+    --inputErrorColor: #f6dfe3;
+
+    --primaryRGB: 79, 76, 246;
+    --primaryColor: rgb(var(--primaryRGB));
+
+    --primaryAltRGB: 197, 197, 251;
+    --primaryAltColor: rgb(var(--primaryAltRGB));
+
+    --secondaryRGB: 37, 39, 45;
+    --secondaryColor: rgb(var(--secondaryRGB));
+
+    --secondaryAltRGB: 50, 54, 67;
+    --secondaryAltColor: rgb(var(--secondaryAltRGB));
+
+    --successRGB: 61, 199, 124;
+    --successColor: rgb(var(--successRGB));
+
+    --successAltRGB: 180, 233, 204;
+    --successAltColor: rgb(var(--successAltRGB));
+
+    --dangerRGB: 195, 55, 81;
+    --dangerColor: rgb(var(--dangerRGB));
+
+    --dangerAltRGB: 236, 187, 196;
+    --dangerAltColor: rgb(var(--dangerAltRGB));
+
+    --warningRGB: 232, 131, 74;
+    --warningColor: rgb(var(--warningRGB));
+
+    --warningAltRGB: 247, 212, 192;
+    --warningAltColor: rgb(var(--warningAltRGB));
+
+    --modeAccent: var(--primaryColor);
+
+    // scrollbar
+    --scrollbarWidth: 8px;
+    --scrollbarThumbColor: rgba(53, 71, 104, 0.3);
+    --scrollbarThumbActiveColor: rgba(53, 71, 104, 0.45);
+    --scrollbarTrackColor: transparent;
+    --scrollbarTrackRadius: var(--baseRadius);
+
+    --overlayRGBColor: 63, 68, 90;
+    --overlayColor: rgba(var(--overlayRGBColor), 0.4);
+    --tooltipColor: rgba(20, 22, 30, 0.85);
+    --shadowColor: rgba(0, 0, 0, 0.12);
+
+    --iconIncrease: 3px;
+    --baseFontSize: 14px;
+    --xsFontSize: 12px;
+    --smFontSize: 13px;
+    --lgFontSize: 15px;
+    --xlFontSize: 16px;
+
+    --baseLineHeight: 22px;
+    --xsLineHeight: 15px;
+    --smLineHeight: 17px;
+    --lgLineHeight: 24px;
+
+    --btnHeight: 42px;
+    --xsBtnHeight: 23px;
+    --smBtnHeight: 33px;
+    --lgBtnHeight: 52px;
+
+    --baseSpacing: 35px;
+    --xsSpacing: 15px;
+    --smSpacing: 24px;
+    --lgSpacing: 50px;
+    --xlSpacing: 60px;
+
+    --wrapperWidth: 850px;
+    --smWrapperWidth: 470px;
+    --lgWrapperWidth: 1200px;
+
+    --appSidebarWidth: 75px;
+    --screenSidePanelWidth: 350px;
+    --controlsBarHeight: 65px;
+
+    --baseAnimationSpeed: 150ms;
+    --activeAnimationSpeed: 70ms;
+    --entranceAnimationSpeed: 250ms;
+    --screenTransitionDuration: 300ms;
+
+    --smRadius: 5px;
+    --baseRadius: 10px;
+    --lgRadius: 15px;
+    --btnRadius: 10px;
+
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color
+    accent-color: var(--primaryColor);
+}
+
+// Maps
+// ----
+$colorsMap: (
+    "mode-accent": var(--modeAccent),
+    "primary": var(--primaryColor),
+    "primary-alt": var(--primaryAltColor),
+    "secondary": var(--secondaryColor),
+    "secondary-alt": var(--secondaryAltColor),
+    "success": var(--successColor),
+    "success-alt": var(--successAltColor),
+    "danger": var(--dangerColor),
+    "danger-alt": var(--dangerAltColor),
+    "warning": var(--warningColor),
+    "warning-alt": var(--warningAltColor),
+);
+$sidesMap: (
+    "t": "top",
+    "r": "right",
+    "b": "bottom",
+    "l": "left",
+);
+$sizesMap: (
+    "base": var(--baseSpacing),
+    "xs": var(--xsSpacing),
+    "sm": var(--smSpacing),
+    "lg": var(--lgSpacing),
+    "xl": var(--xlSpacing),
+);

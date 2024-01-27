@@ -1,0 +1,10 @@
+{{define "body"}}
+    <p>Hello,</p>
+    <p>
+        You have been given access to project {{.Project.Get "title"}}.
+    </p>
+    <p>Click on the button below to explore it and start collaborating with your teammates.</p>
+    <p style="text-align: center">
+        <a class="btn" href="{{.ActionUrl}}" target="_blank" rel="noopener">Explore project</a>
+    </p>
+{{end}}

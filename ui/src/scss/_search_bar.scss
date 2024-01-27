@@ -1,0 +1,13 @@
+.search-bar {
+    z-index: 2;
+    &.form-field %input {
+        background: var(--baseAlt1Color);
+    }
+    input {
+        font-size: var(--baseFontSize);
+    }
+    .field-group .select {
+        width: auto;
+        flex-shrink: 0;
+    }
+}

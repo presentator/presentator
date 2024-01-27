@@ -1,0 +1,10 @@
+/node_modules/
+/.vscode/
+.DS_Store
+temp_router/
+
+# exclude local env files
+.env.local
+.env.*.local
+
+*.todo

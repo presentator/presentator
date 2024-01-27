@@ -1,0 +1,21 @@
+.screens-bar {
+    --scrollbarThumbColor: rgba(255, 255, 255, 0.2);
+    --scrollbarThumbActiveColor: rgba(255, 255, 255, 0.3);
+
+    display: flex;
+    width: 100%;
+    flex-shrink: 0;
+    align-items: center;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: var(--xsSpacing);
+    padding: var(--xsSpacing);
+    background: var(--secondaryAltColor);
+    scrollbar-gutter: stable;
+    scroll-behavior: auto !important; // prevents smooth alignment scroll
+    @include shadowize();
+    .thumb {
+        --thumbSize: 85px;
+    }
+}

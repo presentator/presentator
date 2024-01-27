@@ -1,0 +1,15 @@
+{{define "body"}}
+    <p>Hello,</p>
+    <p>The following report violation was submitted:</p>
+    <div class="section">
+        <p>
+            <strong>Project:</strong> {{.Project.Get "title"}}
+        </p>
+        <p>
+            <strong>Preview:</strong> <a href="{{.PreviewUrl}}" target="_blank" rel="noopener">{{.PreviewUrl}}</a>
+        </p>
+        {{if .Message}}
+            <p class="break-spaces"><strong>Details:</strong><br/>{{.Message}}</p>
+        {{end}}
+    </div>
+{{end}}

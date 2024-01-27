@@ -1,0 +1,19 @@
+.popover {
+    position: relative;
+    z-index: 99;
+    width: 400px;
+    max-width: 100%;
+    max-height: 100vh;
+    background: #fff;
+    overflow: auto;
+    border-radius: var(--baseRadius);
+    @include shadowize();
+    &.resizing {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+.popover-container {
+    position: absolute;
+    max-width: 100%;
+}

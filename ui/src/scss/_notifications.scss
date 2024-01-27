@@ -1,0 +1,49 @@
+.notifications-dropdown {
+    width: 420px;
+    max-height: 80vh;
+    color: var(--txtBaseColor);
+    font-size: 1rem;
+    padding: 0;
+    font-weight: normal;
+    text-align: center;
+    .ctrls {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-right: -5px;
+        margin-left: auto;
+    }
+
+    @media (max-width: 500px) {
+        right: -70px;
+        max-width: 96vw;
+    }
+}
+
+.notifications-list {
+    border-radius: inherit;
+    .list-item {
+        cursor: pointer;
+        padding: var(--xsSpacing) var(--smSpacing);
+        border-top: 1px solid var(--baseAlt1Color);
+        margin: 0;
+        transition: background var(--baseAnimationSpeed);
+        word-break: break-word;
+        &.handle {
+            cursor: pointer;
+            user-select: none;
+            &:hover,
+            &:focus-visible {
+                background: var(--baseAlt1Color);
+            }
+            &:active {
+                background: var(--baseAlt2Color);
+                transition-duration: var(--activeAnimationSpeed);
+            }
+        }
+        &:last-child {
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+    }
+}

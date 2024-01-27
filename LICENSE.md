@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-Copyright (c) 2017 - 2022, Gani Georgiev
+Copyright (c) 2017 - present, Gani Georgiev
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

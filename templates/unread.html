@@ -1,0 +1,34 @@
+{{define "body"}}
+    <p>Hello,</p>
+    <p>You have {{len .Unreads}} new {{ if eq (len .Unreads) 1 }}comment{{ else }}comments{{ end }}.</p>
+
+    {{range $i, $e := .Unreads}}
+        {{if lt $i 3}}
+            <div class="section">
+                <table>
+                    <tr>
+                        <td>
+                            <img class="thumb" src='{{$.AppUrl}}/api/files/screens/{{.Screen.Get "id"}}/{{.Screen.Get "file"}}?thumb=100x100t' width="40" height="40" alt="Screen thumb">
+                        </td>
+                        <td style="padding: 5px 10px">
+                            {{.Screen.Get "title"}}
+                            <br>
+                            <small>{{.Author}}</small>
+                        </td>
+                    </tr>
+                </table>
+                <p>{{.Comment.Get "message"}}</p>
+            </div>
+        {{end}}
+    {{end}}
+
+    {{if gt (len .Unreads) 3 }}
+        <p style="text-align: center">
+            <small>({{sub (len .Unreads) 3}} more)</small>
+        </p>
+    {{end}}
+
+    <p style="text-align: center">
+        <a class="btn" href="{{.ActionUrl}}" target="_blank" rel="noopener">View comments</a>
+    </p>
+{{end}}

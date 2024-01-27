@@ -1,0 +1,162 @@
+.hotspot {
+    --bgRGB: var(--successRGB);
+    --resizeHandle: 14px;
+    --minSize: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 2;
+    left: 0px;
+    top: 10px;
+    text-align: center;
+    align-items: center;
+    color: rgb(var(--bgRGB));
+    min-height: var(--minSize);
+    min-width: var(--minSize);
+    width: 0;
+    height: 0;
+    outline: 0;
+    cursor: pointer;
+    background: rgba(var(--bgRGB), 0.2);
+    border: 2px solid rgb(var(--bgRGB));
+    border-radius: var(--baseRadius);
+    transition:
+        border var(--baseAnimationSpeed),
+        opacity var(--baseAnimationSpeed),
+        background var(--baseAnimationSpeed);
+
+    .resize-handle {
+        position: absolute;
+        display: block;
+        right: 3px;
+        bottom: 3px;
+        cursor: pointer;
+        border: calc(var(--resizeHandle) * 0.5) solid transparent;
+        border-right: calc(var(--resizeHandle) * 0.5) solid rgb(var(--bgRGB));
+        border-bottom: calc(var(--resizeHandle) * 0.5) solid rgb(var(--bgRGB));
+        border-radius: 4px;
+        transition: transform var(--baseAnimationSpeed);
+        transform: scale(0);
+        transform-origin: bottom right;
+        &.dragging {
+            transform: scale(1.1);
+        }
+    }
+
+    // types
+    &.template {
+        border-style: dashed;
+    }
+    &.preview {
+        --bgRGB: var(--primaryRGB);
+    }
+    &.type-note {
+        --resizeHandle: 8px;
+        --bgRGB: var(--primaryRGB);
+        container-type: size;
+        cursor: default;
+        box-shadow: 0px 0px 0px 5px rgba(var(--bgRGB), 0.15);
+        &:before {
+            content: "?";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: top;
+            width: var(--minSize);
+            height: var(--minSize);
+            background: var(--baseRadius);
+            line-height: 1;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background: rgb(var(--bgRGB));
+            border-radius: calc(var(--baseRadius) - 4px);
+        }
+        .resize-handle {
+            filter: brightness(1.5);
+            border-radius: 3px;
+        }
+        @container (max-width: 45px) and (max-height: 45px) {
+            &:before {
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+    }
+
+    // states
+    &:hover,
+    &:focus-visible {
+        background: rgba(var(--bgRGB), 0.3);
+        .resize-handle {
+            transform: scale(1);
+            &:hover,
+            &:active,
+            &.dragging {
+                transform: scale(1.1);
+            }
+        }
+    }
+    &.active {
+        --bgRGB: var(--warningRGB);
+    }
+
+    // preview mode
+    .screen-preview-mode-preview & {
+        opacity: 0;
+
+        // prevent activating the annotations tooltip when hidden
+        &.type-note {
+            visibility: hidden;
+        }
+    }
+    .screen-preview-mode-preview .hints &:not(.type-note),
+    .screen-preview-mode-preview .annotations &.type-note {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .child-dragging &:not(.dragging):not(.active):not(:has(.dragging)) {
+        opacity: 0.5;
+    }
+}
+
+.hotspot-type-select {
+    %input {
+        font-weight: bold;
+        background: none;
+        box-shadow: 0 0 0 2px var(--baseAlt3Color);
+    }
+}
+
+.hotspots-popover {
+    max-height: 100%;
+    overflow: visible;
+    padding: var(--smSpacing);
+    .selected-container .option i {
+        font-size: 1.13em;
+    }
+    hr {
+        margin: var(--smSpacing) 0;
+    }
+}
+
+.templates-dropdown {
+    min-width: 300px;
+    max-width: 100%;
+    .dropdown-item {
+        cursor: default;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: 1px solid var(--baseAlt1Color);
+        &:last-child {
+            border-bottom: 0;
+        }
+        &:hover,
+        &:focus-visible,
+        &:active {
+            background: none;
+        }
+    }
+}

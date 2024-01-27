@@ -1,0 +1,16 @@
+.bulk-bar {
+    position: fixed;
+    z-index: 99;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--xsSpacing);
+    padding: 10px 15px;
+    left: 50%;
+    bottom: var(--smSpacing);
+    min-width: var(--smWrapperWidth);
+    max-width: 100%;
+    transform: translateX(-50%);
+    background: #fff;
+    border-radius: 30px;
+    @include shadowize();
+}
