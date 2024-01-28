@@ -161,17 +161,14 @@ The command will create automatically a snapshot/backup of your `pb_data` (_you 
 If you use Presentator v2 and want to upgrade to v3, please follow the instructions in [presentator/v2tov3migrate](https://github.com/presentator/v2tov3migrate).
 
 
-## Customizing and extending
-
-
-#### Extending
+## Extending
 
 Because Presentator is based on PocketBase, it can be extended in a similar manner using Go or JS.
 
 > [!WARNING]
 > Keep in mind that PocketBase in still in active development and there is no backward guarantee before reaching v1.
 
-##### Extend with JS
+#### Extend with JS
 
 To extend with JS, it is enough to create `pb_hooks/*.pb.js` file(s) next to your executable and restart the application.
 
@@ -187,7 +184,7 @@ onRecordAfterCreateRequest((e) => {
 ```
 For more details about the available hooks and methods, please refer to [PocketBase - Extend with JS](https://pocketbase.io/docs/js-overview/).
 
-##### Extend with Go
+#### Extend with Go
 
 Presentator is also distributed as regular Go package allowing you to extend it with custom functionality using the exposed Go APIs.
 
