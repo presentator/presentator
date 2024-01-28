@@ -34,7 +34,8 @@ It can be used directly via the free hosted service at [app.presentator.io](http
    ```
 
 3. Navigate to `http://127.0.0.1:8090/_/` to access the super admin dashboard (PocketBase).
-The first time when you access `/_/` it will prompt you to create a super-admin account in order to configure various application settings like SMTP, files storage, OAuth2, etc. (see [Configurations](#configurations))._
+
+    The first time when you access `/_/` it will prompt you to create a super-admin account in order to configure various application settings like SMTP, files storage, OAuth2, etc. (see [Configurations](#configurations)).
 
 And that's it. By default your settings and db data will be stored in the `pb_data` directory next to the executable.
 
