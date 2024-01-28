@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/presentator.io/presentator.io/actions/workflows/release.yaml" target="_blank" rel="noopener"><img src="https://github.com/presentator.io/presentator.io/actions/workflows/release.yaml/badge.svg" alt="build" /></a>
-    <a href="https://github.com/presentator.io/presentator.io/releases" target="_blank" rel="noopener"><img src="https://img.shields.io/github/release/presentator.io/presentator.io.svg" alt="Latest releases" /></a>
+    <a href="https://github.com/presentator/presentator/actions/workflows/release.yaml" target="_blank" rel="noopener"><img src="https://github.com/presentator/presentator/actions/workflows/release.yaml/badge.svg" alt="build" /></a>
+    <a href="https://github.com/presentator/presentator/releases" target="_blank" rel="noopener"><img src="https://img.shields.io/github/release/presentator/presentator.svg" alt="Latest releases" /></a>
     <a href="https://pkg.go.dev/github.com/presentator/presentator" target="_blank" rel="noopener"><img src="https://godoc.org/github.com/presentator/presentator?status.svg" alt="Go package documentation" /></a>
 </p>
 
