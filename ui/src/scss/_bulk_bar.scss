@@ -2,15 +2,25 @@
     position: fixed;
     z-index: 99;
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--xsSpacing);
     padding: 10px 15px;
     left: 50%;
     bottom: var(--smSpacing);
-    min-width: var(--smWrapperWidth);
-    max-width: 100%;
+    width: var(--smWrapperWidth);
+    max-width: 97%;
     transform: translateX(-50%);
     background: #fff;
     border-radius: 30px;
     @include shadowize();
+    @media (max-width: 420px) {
+        padding: 15px;
+        border-radius: var(--baseRadius);
+        .info {
+            width: 100%;
+            flex-grow: 1;
+            text-align: center;
+        }
+    }
 }
