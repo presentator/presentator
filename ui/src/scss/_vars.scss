@@ -103,6 +103,14 @@
 
     // https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color
     accent-color: var(--primaryColor);
+
+    // slightly reduce the default spacings on smaller screens
+    @media (max-width: 700px) {
+        --baseSpacing: 30px;
+        --smSpacing: 20px;
+        --lgSpacing: 45px;
+        --xlSpacing: 55px;
+    }
 }
 
 // Maps

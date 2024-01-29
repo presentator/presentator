@@ -332,7 +332,7 @@
                                 : $mode == modes.comments
                                   ? 'sub-danger'
                                   : 'sub-secondary-alt'}"
-                            title="Unread comments">{$activeScreenUnresolvedPrimaryComments.length}</sub
+                            title="Unresolved comments">{$activeScreenUnresolvedPrimaryComments.length}</sub
                         >
                     {/if}
                 </button>

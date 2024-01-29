@@ -65,6 +65,8 @@
         try {
             let items = await pb.collection("screens").getFullList({
                 filter: `prototype="${$activePrototype.id}"`,
+                expand: 'comments(screen)',
+                fields: '*,expand.comments(screen).id,expand.comments(screen).replyTo,expand.comments(screen).resolved',
                 sort: "created",
             });
 
@@ -285,6 +287,10 @@
             {@const totalUnreadComments = $notifications?.filter(
                 (n) => n.expand?.comment?.screen == screen.id,
             ).length}
+            {@const totalUnreadAndUnresolvedPrimaryComments = $notifications?.filter(
+                (n) => !n.expand?.comment?.replyTo && !n.expand?.comment?.resolved && n.expand?.comment?.screen == screen.id,
+            ).length}
+            {@const totalUnresolvedPrimaryComments = totalUnreadAndUnresolvedPrimaryComments + (screen.expand?.["comments(screen)"]?.filter((c) => !c.replyTo && !c.resolved)?.length || 0)}
             <div
                 class="card screen-card"
                 class:selected={selectedScreens[screen.id]}
@@ -391,10 +397,17 @@
                     <InlineTitleEdit tag="h5" class="title" collection="screens" bind:model={screen} />
 
                     <div class="meta">
-                        {#if totalUnreadComments}
-                            <div class="meta-item txt-warning" use:tooltip={"Unread comments"}>
+                        {#if totalUnresolvedPrimaryComments}
+                            <div
+                                class="meta-item"
+                                class:txt-warning={totalUnreadComments > 0}
+                                use:tooltip={
+                                    (totalUnresolvedPrimaryComments + " unresolved") +
+                                    (totalUnreadComments ? ("\n" + totalUnreadComments + " unread") : "")
+                                }
+                            >
                                 <i class="iconoir-message-text" />
-                                <span class="txt">{totalUnreadComments}</span>
+                                <span class="txt">{totalUnresolvedPrimaryComments}</span>
                             </div>
                         {/if}
 
