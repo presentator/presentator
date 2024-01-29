@@ -6,6 +6,8 @@
 
 - Fixed the responsive styles of the screens bulk selection bar.
 
+- Fixed the UI options check whether hotspots url are allowed.
+
 
 ## v3.0.0
 

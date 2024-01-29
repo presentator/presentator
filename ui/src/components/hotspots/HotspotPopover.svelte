@@ -50,7 +50,7 @@
     let typeOptions = baseTypeOptions;
     let oldType = "";
 
-    $: if ($options?.allowHotspotPopover) {
+    $: if ($options?.allowHotspotsUrl) {
         typeOptions = allTypeOptions;
     } else {
         typeOptions = baseTypeOptions;
