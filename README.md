@@ -64,7 +64,7 @@ Presentator supports various OAuth2 providers - Google, Microsoft, Facebook, Git
 OAuth2 providers can be enabled from your _PocketBase Admin UI > Settings > Auth providers_ page (`http://127.0.0.1:8090/_/#/settings/auth-providers`).
 
 > [!NOTE]
-> By default Presentator users are required to have an email so providers that doesn't return an email will fail to authenticate.
+> By default Presentator users are required to have an email so providers that don't return an email will fail to authenticate.
 
 #### Increase allowed screens upload size
 
