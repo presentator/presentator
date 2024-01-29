@@ -20,7 +20,7 @@ func TestOptions(t *testing.T) {
 			ExpectedStatus:  200,
 			ExpectedContent: []string{
 				`"links":{}`,
-				`"appName":"Acme"`,
+				`"appName":"Presentator"`,
 				`"appUrl":"http://localhost:8090"`,
 				`"termsUrl":""`,
 				`"allowHotspotsUrl":false`,
@@ -37,7 +37,7 @@ func TestOptions(t *testing.T) {
 			ExpectedStatus:  200,
 			ExpectedContent: []string{
 				`"links":{}`,
-				`"appName":"Acme"`,
+				`"appName":"Presentator"`,
 				`"appUrl":"http://localhost:8090"`,
 				`"termsUrl":""`,
 				`"allowHotspotsUrl":false`,
@@ -54,7 +54,7 @@ func TestOptions(t *testing.T) {
 			ExpectedStatus: 200,
 			ExpectedContent: []string{
 				`"links":{}`,
-				`"appName":"Acme"`,
+				`"appName":"Presentator"`,
 				`"appUrl":"http://localhost:8090"`,
 				`"termsUrl":""`,
 				`"allowHotspotsUrl":false`,

@@ -31,11 +31,6 @@ func createNotifications(app core.App, comment *models.Record) error {
 
 	users := project.ExpandedAll("users")
 	for _, user := range users {
-		// the user has disabled email notifications
-		if !user.GetBool("allowEmailNotifications") {
-			continue
-		}
-
 		// skip if the author of the comment
 		if comment.GetString("user") == user.Id {
 			continue
@@ -62,6 +57,8 @@ func createNotifications(app core.App, comment *models.Record) error {
 		record := models.NewRecord(notificationsCollection)
 		record.Set("user", user.Id)
 		record.Set("comment", comment.Id)
+		// mark as processed to prevent sending email notification
+		record.Set("processed", !user.GetBool("allowEmailNotifications"))
 
 		if err := app.Dao().SaveRecord(record); err != nil {
 			errs = append(errs, err)

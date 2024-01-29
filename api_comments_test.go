@@ -312,7 +312,7 @@ func TestCommentsCreate(t *testing.T) {
 				`"guestEmail":"test_guest@example.com"`,
 			},
 			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
-				checkNotifications(t, app, "new_created", "test1", "test2")
+				checkNotifications(t, app, "new_created", "test1", "test2") // mixed allowEmailNotifications checks
 			},
 			ExpectedEvents: map[string]int{
 				"OnModelAfterCreate":          3, // notifications
