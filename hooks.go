@@ -48,7 +48,7 @@ func bindAppHooks(app core.App) {
 		// serves static files from the /ui/dist directory
 		e.Router.GET(
 			"/*",
-			apis.StaticDirectoryHandler(ui.DistDirFS, true),
+			apis.StaticDirectoryHandler(ui.DistDirFS, false),
 			uiCacheControl(),
 			middleware.Gzip(),
 		)
