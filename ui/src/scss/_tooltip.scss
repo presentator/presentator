@@ -6,12 +6,12 @@
     display: inline-block;
     vertical-align: top;
     max-width: 280px;
-    padding: 3px 7px;
+    padding: 4px 7px;
     color: #fff;
     text-align: center;
     font-family: var(--baseFontFamily);
     font-size: var(--xsFontSize);
-    line-height: var(--smLineHeight);
+    line-height: var(--xsLineHeight);
     border-radius: var(--baseRadius);
     background: var(--tooltipColor);
     pointer-events: none;
@@ -26,7 +26,19 @@
     word-break: break-word;
     @include hide();
 
-    // styles
+    // sub/help text
+    &:after {
+        content: attr(data-sub);
+        display: block;
+        line-height: 1.5em;
+        font-size: 0.85em;
+        opacity: 0.7;
+        // spacing workaround as :emtpy doesn't work with :after
+        margin-top: 2px;
+        margin-bottom: -2px;
+    }
+
+    // variants
     &.code {
         font-family: monospace;
         white-space: pre-wrap;

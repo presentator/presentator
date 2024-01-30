@@ -312,7 +312,10 @@
                 </div>
             {/if}
 
-            <div class="meta-item" use:tooltip={"Created " + utils.relativeDate(project.created)}>
+            <div class="meta-item" use:tooltip={{
+                text: "Created " + utils.relativeDate(project.created),
+                sub: utils.formatToLocalDate(project.created),
+            }}>
                 <div class="iconoir-calendar" />
             </div>
         </div>

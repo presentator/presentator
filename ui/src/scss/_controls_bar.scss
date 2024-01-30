@@ -33,7 +33,7 @@
     }
     .screen-title-trim {
         max-width: 250px;
-        line-height: normal;
+        line-height: 15px; // vertical misalign workaround
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

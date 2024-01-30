@@ -42,7 +42,7 @@
     let transitionScreenPreview;
     let debounceTimeouts = {};
     let updateScaleTimeout;
-    let tooltipText = "";
+    let tooltipOptions = undefined;
     let hints = false;
     let hintsTimeout = false;
     let isMainLoading = true;
@@ -63,11 +63,11 @@
     }
 
     $: if ($mode == modes.hotspots && !$selectedHotspot && !$isHotspotDragging) {
-        tooltipText = `Click and drag to create hotspot\n(hold "Alt" to snap)`;
+        tooltipOptions = {position: "follow", text: "Click and drag to create hotspot", sub: 'Hold "Alt" to snap'};
     } else if ($mode == modes.comments && !$selectedComment) {
-        tooltipText = "Click to leave a comment";
+        tooltipOptions = {position: "follow", text: "Click to leave a comment"};
     } else {
-        tooltipText = "";
+        tooltipOptions = undefined;
     }
 
     $: isProjectOwner = $loggedUser?.id && $activeProject?.expand?.users?.find((u) => u.id == $loggedUser.id);
@@ -262,7 +262,7 @@
                     class="screen-preview-img-wrapper active-screen-preview-wrapper"
                     class:loading={isMainLoading}
                 >
-                    <div class="tooltip-wrapper" use:tooltip={{ position: "follow", text: tooltipText }}>
+                    <div class="tooltip-wrapper" use:tooltip={tooltipOptions}>
                         <LazyImg
                             bind:isLoading={isMainLoading}
                             class="screen-preview-img"

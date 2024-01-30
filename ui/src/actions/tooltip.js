@@ -12,6 +12,7 @@
 // ```html
 // <span use:tooltip={{
 //     text:        "My tooltip",
+//     sub:         "Some additional helper text",
 //     position:    "top-left",
 //     class:       "...",
 //     delay:       300,
@@ -62,6 +63,11 @@ function refreshTooltip(node, data, mouseEvent = null) {
 
     // set tooltip content
     tooltip.textContent = data.text;
+    if (data.sub) {
+        tooltip.dataset.sub = data.sub;
+    } else {
+        delete tooltip.dataset.sub;
+    }
 
     // reset tooltip styling
     tooltip.className = defaultTooltipClass + " active";

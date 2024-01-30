@@ -2,6 +2,8 @@
 
 - Added unresolved primary comments counter on the screens listing.
 
+- Added the full screen and project creation date as a helper sub text in the date tooltip.
+
 - Fixed not receiving unread notifications in the UI if the user has disabled their email notifications.
 
 - Fixed the responsive styles of the screens bulk selection bar.

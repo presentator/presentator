@@ -292,7 +292,7 @@
                         class="btn btn-circle {$mode == modes.preview
                             ? 'btn-primary btn-transparent'
                             : 'btn-hint btn-transparent txt-hint'}"
-                        use:tooltip={{ position: "top", text: "Preview mode\n(P)" }}
+                        use:tooltip={{ position: "top", text: "Preview mode", sub: "P" }}
                         on:click|preventDefault={() => changeMode(modes.preview)}
                     >
                         <i class="iconoir-play" />
@@ -304,10 +304,7 @@
                                 ? 'btn-danger btn-transparent'
                                 : 'btn-hint btn-transparent txt-hint'}"
                             class:btn-loading={$isLoadingComments}
-                            use:tooltip={{
-                                position: "top",
-                                text: "Comments mode\n(C)",
-                            }}
+                            use:tooltip={{ position: "top", text: "Comments mode", sub: "C" }}
                             on:click|preventDefault={() => changeMode(modes.comments)}
                         >
                             <i class="iconoir-message-text" />
