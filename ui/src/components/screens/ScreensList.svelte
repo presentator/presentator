@@ -374,6 +374,7 @@
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-circle btn-transparent"
+                                        on:mousedown|preventDefault|stopPropagation
                                         on:click|preventDefault|stopPropagation
                                     >
                                         <i class="iconoir-more-horiz" />
