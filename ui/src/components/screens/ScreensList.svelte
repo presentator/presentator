@@ -373,11 +373,11 @@
                                 <div class="ctrl ctrl-top-right">
                                     <button
                                         type="button"
-                                        class="btn btn-sm btn-circle btn-transparent"
+                                        class="btn btn-sm btn-circle btn-transparent fade"
                                         on:mousedown|preventDefault|stopPropagation
                                         on:click|preventDefault|stopPropagation
                                     >
-                                        <i class="iconoir-more-horiz" />
+                                        <i class="iconoir-more-vert" />
                                         <Toggler class="dropdown dropdown-sm">
                                             <div
                                                 class="dropdown-item link-danger closable"
