@@ -10,6 +10,8 @@
 
 - Fixed the UI options check whether hotspots url are allowed.
 
+- Fixed Go module name to correspond to the correct v3 tag.
+
 
 ## v3.0.0
 

@@ -9,7 +9,7 @@ import (
 	"github.com/pocketbase/pocketbase/plugins/ghupdate"
 	"github.com/pocketbase/pocketbase/plugins/jsvm"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-	"github.com/presentator/presentator"
+	"github.com/presentator/presentator/v3"
 )
 
 func main() {

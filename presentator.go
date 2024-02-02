@@ -1,7 +1,7 @@
 package presentator
 
 import (
-	_ "github.com/presentator/presentator/migrations"
+	_ "github.com/presentator/presentator/v3/migrations"
 
 	"github.com/pocketbase/pocketbase"
 )

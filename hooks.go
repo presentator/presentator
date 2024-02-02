@@ -21,7 +21,7 @@ import (
 	"github.com/pocketbase/pocketbase/tools/routine"
 	"github.com/pocketbase/pocketbase/tools/security"
 	"github.com/pocketbase/pocketbase/tools/types"
-	"github.com/presentator/presentator/ui"
+	"github.com/presentator/presentator/v3/ui"
 	"github.com/spf13/cast"
 )
 

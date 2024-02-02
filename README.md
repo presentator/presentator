@@ -200,7 +200,7 @@ Presentator is also distributed as regular Go package allowing you to extend it 
         "log"
 
         "github.com/pocketbase/pocketbase/core"
-        "github.com/presentator/presentator"
+        "github.com/presentator/presentator/v3"
     )
 
     func main() {
