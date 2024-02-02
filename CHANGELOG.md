@@ -1,8 +1,8 @@
-## (WIP) v3.1.0
+## v3.1.0
 
 - Added unresolved primary comments counter on the screens listing.
 
-- Added the full screen and project creation date as a helper sub text in the date tooltip.
+- Added the full creation date for screens and projects as a helper sub text in the date tooltip.
 
 - Fixed not receiving unread notifications in the UI if the user has disabled their email notifications.
 
