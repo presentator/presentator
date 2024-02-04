@@ -5,15 +5,8 @@
     export let providers = [];
 
     let missingImages = {};
-    let isAuthenticating = false;
 
     async function oauth2(providerName) {
-        if (isAuthenticating) {
-            return;
-        }
-
-        isAuthenticating = true;
-
         try {
             await pb.collection("users").authWithOAuth2({
                 provider: providerName,
@@ -28,8 +21,6 @@
                 pb.error(err);
             }
         }
-
-        isAuthenticating = false;
     }
 </script>
 
@@ -38,7 +29,6 @@
         <button
             type="button"
             class="auth-provider"
-            class:disabled={isAuthenticating}
             use:tooltip={provider.displayName}
             on:click={() => oauth2(provider.name)}
         >
@@ -86,7 +76,9 @@
         background: #fff;
         border-radius: 100px;
         border: 2px solid var(--baseAlt3Color);
-        transition: background var(--baseAnimationSpeed), border var(--baseAnimationSpeed);
+        transition:
+            background var(--baseAnimationSpeed),
+            border var(--baseAnimationSpeed);
         img {
             width: auto;
             height: auto;
@@ -100,10 +92,6 @@
         }
         &:active {
             background: var(--baseAlt2Color);
-        }
-        &.disabled {
-            opacity: 0.5;
-            pointer-events: none;
         }
     }
 </style>
