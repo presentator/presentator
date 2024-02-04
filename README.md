@@ -63,6 +63,8 @@ This could be done from your _PocketBase Admin UI > Settings > Files storage_ pa
 Presentator supports various OAuth2 providers - Google, Microsoft, Facebook, GitHub, Gitlab, etc.
 OAuth2 providers can be enabled from your _PocketBase Admin UI > Settings > Auth providers_ page (`http://127.0.0.1:8090/_/#/settings/auth-providers`).
 
+For OAuth2 redirect url/callback you must use `https://yourdomain.com/api/oauth2-redirect`.
+
 > [!NOTE]
 > By default Presentator users are required to have an email so providers that don't return an email will fail to authenticate.
 
