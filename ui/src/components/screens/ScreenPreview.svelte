@@ -63,9 +63,13 @@
     }
 
     $: if ($mode == modes.hotspots && !$selectedHotspot && !$isHotspotDragging) {
-        tooltipOptions = {position: "follow", text: "Click and drag to create hotspot", sub: 'Hold "Alt" to snap'};
+        tooltipOptions = {
+            position: "follow",
+            text: "Click and drag to create hotspot",
+            sub: 'Hold "Alt" to snap',
+        };
     } else if ($mode == modes.comments && !$selectedComment) {
-        tooltipOptions = {position: "follow", text: "Click to leave a comment"};
+        tooltipOptions = { position: "follow", text: "Click to leave a comment" };
     } else {
         tooltipOptions = undefined;
     }
@@ -238,21 +242,23 @@
                         style:margin-top="-{$activeScreen.fixedHeader * $activeScale}px"
                     >
                         <div class="fixed-screen-overflow">
-                            <LazyImg
-                                class="screen-preview-img"
-                                src={pb.files.getUrl($activeScreen, $activeScreen.file)}
-                                alt={$activeScreen.title}
-                                draggable={false}
-                                loaderClass="hidden"
-                                fetchpriority="high"
-                                scale={$activePrototype.scale}
-                                on:click={showHints}
-                            />
-
-                            <div class="hotspots">
-                                {#each $activeScreenHotspots as hotspot ("header_" + hotspot.id)}
-                                    <Hotspot preview {hotspot} />
-                                {/each}
+                            <div class="fixed-screen-hotspots-wrapper">
+                                <LazyImg
+                                    class="screen-preview-img"
+                                    src={pb.files.getUrl($activeScreen, $activeScreen.file)}
+                                    alt={$activeScreen.title}
+                                    draggable={false}
+                                    loaderClass="hidden"
+                                    fetchpriority="high"
+                                    scale={$activePrototype.scale}
+                                    on:click={showHints}
+                                >
+                                    <div class="hotspots">
+                                        {#each $activeScreenHotspots as hotspot ("header_" + hotspot.id)}
+                                            <Hotspot preview {hotspot} />
+                                        {/each}
+                                    </div>
+                                </LazyImg>
                             </div>
                         </div>
                     </div>
@@ -319,22 +325,24 @@
                         style:margin-top="-{$activeScreen.fixedFooter * $activeScale}px"
                     >
                         <div class="fixed-screen-overflow">
-                            <LazyImg
-                                class="screen-preview-img"
-                                src={pb.files.getUrl($activeScreen, $activeScreen.file)}
-                                alt={$activeScreen.title}
-                                draggable={false}
-                                loading="eager"
-                                loaderClass="hidden"
-                                fetchpriority="high"
-                                scale={$activePrototype.scale}
-                                on:click={showHints}
-                            />
-
-                            <div class="hotspots">
-                                {#each $activeScreenHotspots as hotspot ("footer_" + hotspot.id)}
-                                    <Hotspot preview {hotspot} />
-                                {/each}
+                            <div class="fixed-screen-hotspots-wrapper">
+                                <LazyImg
+                                    class="screen-preview-img"
+                                    src={pb.files.getUrl($activeScreen, $activeScreen.file)}
+                                    alt={$activeScreen.title}
+                                    draggable={false}
+                                    loading="eager"
+                                    loaderClass="hidden"
+                                    fetchpriority="high"
+                                    scale={$activePrototype.scale}
+                                    on:click={showHints}
+                                >
+                                    <div class="hotspots">
+                                        {#each $activeScreenHotspots as hotspot ("footer_" + hotspot.id)}
+                                            <Hotspot preview {hotspot} />
+                                        {/each}
+                                    </div>
+                                </LazyImg>
                             </div>
                         </div>
                     </div>
