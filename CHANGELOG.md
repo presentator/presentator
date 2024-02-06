@@ -1,3 +1,8 @@
+## (WIP) v3.1.1
+
+- Fixed the fixed header/footer hotspots position.
+
+
 ## v3.1.0
 
 - Added unresolved primary comments counter on the screens listing.
