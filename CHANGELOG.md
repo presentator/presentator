@@ -2,6 +2,8 @@
 
 - Fixed the fixed header/footer hotspots position.
 
+- Updated email sign-off text.
+
 
 ## v3.1.0
 
