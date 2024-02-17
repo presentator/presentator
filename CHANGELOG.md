@@ -1,8 +1,10 @@
-## (WIP) v3.1.1
+## v3.1.1
 
 - Fixed the fixed header/footer hotspots position.
 
 - Updated email sign-off text.
+
+- Updated Go dependencies.
 
 
 ## v3.1.0
