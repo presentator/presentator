@@ -50,7 +50,7 @@
                 setTimeout(() => {
                     $isCommentDeleting = false;
                 }, 0);
-            }
+            },
         );
     }
 

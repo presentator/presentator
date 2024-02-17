@@ -2,6 +2,8 @@
 
 - Fixed the fixed header/footer hotspots position.
 
+- Fixed user identifier not visible after marking a comment as "Resolved".
+
 - Updated email sign-off text.
 
 - Updated Go dependencies.

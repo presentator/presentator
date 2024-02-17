@@ -189,9 +189,9 @@
         isSaving = true;
 
         try {
-            const comment = await pb.collection("comments").update(primaryComment.id, {
-                resolved: state,
-            });
+            const comment = await pb
+                .collection("comments")
+                .update(primaryComment.id, { resolved: state }, { expand: "user" });
 
             isSaving = false;
 
