@@ -1,6 +1,6 @@
 <script>
     import pb from "@/pb";
-    import { addProject, projects, isLoadingProjects, resetProjectsStore } from "@/stores/projects";
+    import { projects, isLoadingProjects, resetProjectsStore } from "@/stores/projects";
     import ProjectUpsertPanel from "@/components/projects/ProjectUpsertPanel.svelte";
     import ProjectCard from "@/components/projects/ProjectCard.svelte";
 
@@ -40,39 +40,25 @@
 
         $isLoadingProjects = true;
 
-        let loadFilter = `project.archived=${archived}`;
+        let loadFilter = `archived=${archived}`;
         if (search) {
-            loadFilter += pb.filter("&&project.title~{:title}", { title: search });
+            loadFilter += pb.filter("&&title~{:title}", { title: search });
         }
 
-        // @todo change to fetch from project once back relations are introduced
         return pb
-            .collection("projectUserPreferences")
+            .collection("projects")
             .getList(page, perPage, {
-                sort: "-favorite,-lastVisited,-project.created",
+                sort: "-projectUserPreferences_via_project.favorite,-projectUserPreferences_via_project.lastVisited,-created",
                 filter: loadFilter,
                 skipTotal: 1,
-                expand: "project.prototypes_via_project.screens_via_prototype",
+                expand: "prototypes_via_project.screens_via_prototype",
                 requestKey: "projects_list",
             })
             .then((result) => {
                 currentPage = result.page;
                 lastFetched = result.items.length;
 
-                for (const item of result.items) {
-                    // remap the preferences as project expand
-                    const project = item.expand?.project;
-                    if (!project) {
-                        console.warn("missing project for preference", item.id);
-                        continue;
-                    }
-                    delete item.expand;
-                    project.expand = project.expand || {};
-                    project.expand.projectUserPreferences_via_project = [item];
-
-                    addProject(project);
-                }
-
+                $projects = result.items;
                 $isLoadingProjects = false;
             })
             .catch((err) => {
