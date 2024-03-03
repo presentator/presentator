@@ -1,3 +1,10 @@
+## v3.2.0
+
+- Updated to the latest PocketBase v0.22.2
+
+- Updated the projects listing to make use of the new back-relation support to avoid the extra request call when wisting projects.
+
+
 ## v3.1.1
 
 - Fixed the fixed header/footer hotspots position.
