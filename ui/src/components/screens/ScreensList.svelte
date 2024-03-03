@@ -44,11 +44,11 @@
         clearSelected();
 
         // break long rendering tasks into smaller ones
-        yieldMax = 15;
+        yieldMax = 50;
         await loadScreens();
         while (yieldMax < $screens.length) {
             await utils.yieldToMain();
-            yieldMax += 10;
+            yieldMax += 15;
         }
         yieldMax = 0;
     }
