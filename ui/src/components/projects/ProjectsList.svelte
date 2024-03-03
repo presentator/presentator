@@ -42,26 +42,36 @@
 
         $isLoadingProjects = true;
 
-        let loadFilter = `archived=${archived}`;
+        let loadFilter = `project.archived=${archived}`;
         if (search) {
-            loadFilter += pb.filter("&&title~{:title}", { title: search });
+            loadFilter += pb.filter("&&project.title~{:title}", { title: search });
         }
 
         return pb
-            .collection("projects")
+            .collection("projectUserPreferences")
             .getList(page, perPage, {
-                sort: "-projectUserPreferences_via_project.favorite,-projectUserPreferences_via_project.lastVisited,-created",
+                sort: "-favorite,-lastVisited,-project.created",
                 filter: loadFilter,
                 skipTotal: 1,
-                expand: "prototypes_via_project.screens_via_prototype,projectUserPreferences_via_project",
+                expand: "project.prototypes_via_project.screens_via_prototype",
                 requestKey: "projects_list",
             })
             .then((result) => {
                 currentPage = result.page;
                 lastFetched = result.items.length;
 
-                for (let item of result.items) {
-                    addProject(item);
+                for (const item of result.items) {
+                    // remap the preferences as project expand
+                    const project = item.expand?.project;
+                    if (!project) {
+                        console.warn("missing project for preference", item.id);
+                        continue;
+                    }
+                    delete item.expand;
+                    project.expand = project.expand || {};
+                    project.expand["projectUserPreferences_via_project"] = [item];
+
+                    addProject(project);
                 }
 
                 $isLoadingProjects = false;
