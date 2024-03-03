@@ -65,8 +65,8 @@
         try {
             let items = await pb.collection("screens").getFullList({
                 filter: `prototype="${$activePrototype.id}"`,
-                expand: 'comments(screen)',
-                fields: '*,expand.comments(screen).id,expand.comments(screen).replyTo,expand.comments(screen).resolved',
+                expand: "comments_via_screen",
+                fields: "*,expand.comments_via_screen.id,expand.comments_via_screen.replyTo,expand.comments_via_screen.resolved",
                 sort: "created",
             });
 
@@ -288,9 +288,14 @@
                 (n) => n.expand?.comment?.screen == screen.id,
             ).length}
             {@const totalUnreadAndUnresolvedPrimaryComments = $notifications?.filter(
-                (n) => !n.expand?.comment?.replyTo && !n.expand?.comment?.resolved && n.expand?.comment?.screen == screen.id,
+                (n) =>
+                    !n.expand?.comment?.replyTo &&
+                    !n.expand?.comment?.resolved &&
+                    n.expand?.comment?.screen == screen.id,
             ).length}
-            {@const totalUnresolvedPrimaryComments = totalUnreadAndUnresolvedPrimaryComments + (screen.expand?.["comments(screen)"]?.filter((c) => !c.replyTo && !c.resolved)?.length || 0)}
+            {@const totalUnresolvedPrimaryComments =
+                totalUnreadAndUnresolvedPrimaryComments +
+                (screen.expand?.comments_via_screen?.filter((c) => !c.replyTo && !c.resolved)?.length || 0)}
             <div
                 class="card screen-card"
                 class:selected={selectedScreens[screen.id]}
@@ -402,20 +407,22 @@
                             <div
                                 class="meta-item"
                                 class:txt-warning={totalUnreadComments > 0}
-                                use:tooltip={
-                                    (totalUnresolvedPrimaryComments + " unresolved") +
-                                    (totalUnreadComments ? ("\n" + totalUnreadComments + " unread") : "")
-                                }
+                                use:tooltip={totalUnresolvedPrimaryComments +
+                                    " unresolved" +
+                                    (totalUnreadComments ? "\n" + totalUnreadComments + " unread" : "")}
                             >
                                 <i class="iconoir-message-text" />
                                 <span class="txt">{totalUnresolvedPrimaryComments}</span>
                             </div>
                         {/if}
 
-                        <div class="meta-item" use:tooltip={{
-                            text: "Created " + utils.relativeDate(screen.created),
-                            sub: utils.formatToLocalDate(screen.created),
-                        }}>
+                        <div
+                            class="meta-item"
+                            use:tooltip={{
+                                text: "Created " + utils.relativeDate(screen.created),
+                                sub: utils.formatToLocalDate(screen.created),
+                            }}
+                        >
                             <div class="iconoir-calendar" />
                         </div>
                     </div>

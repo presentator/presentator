@@ -25,12 +25,10 @@
 
     $: hasResetableFilters = search || archived;
 
-    $: favoriteProjects = $projects.filter(
-        (p) => p.expand?.["projectUserPreferences(project)"]?.[0].favorite
-    );
+    $: favoriteProjects = $projects.filter((p) => p.expand?.projectUserPreferences_via_project?.[0].favorite);
 
     $: nonFavoriteProjects = $projects.filter(
-        (p) => !p.expand?.["projectUserPreferences(project)"]?.[0].favorite
+        (p) => !p.expand?.projectUserPreferences_via_project?.[0].favorite,
     );
 
     resetList();
@@ -54,7 +52,7 @@
                 sort: "-favorite,-lastVisited,-project.created",
                 filter: loadFilter,
                 skipTotal: 1,
-                expand: "project.prototypes(project).screens(prototype)",
+                expand: "project.prototypes_via_project.screens_via_prototype",
                 requestKey: "projects_list",
             })
             .then((result) => {
@@ -70,7 +68,7 @@
                     }
                     delete item.expand;
                     project.expand = project.expand || {};
-                    project.expand["projectUserPreferences(project)"] = [item];
+                    project.expand.projectUserPreferences_via_project = [item];
 
                     addProject(project);
                 }
@@ -166,7 +164,11 @@
     {/if}
 
     {#if !$isLoadingProjects && hasResetableFilters}
-        <button type="button" class="btn btn-transparent btn-hint btn-expanded entrance-top" on:click={resetFilters}>
+        <button
+            type="button"
+            class="btn btn-transparent btn-hint btn-expanded entrance-top"
+            on:click={resetFilters}
+        >
             Reset filters
         </button>
     {/if}

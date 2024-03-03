@@ -26,7 +26,7 @@
 
         // extract the last 3 prototypes
         const lastPrototypes =
-            project?.expand?.["prototypes(project)"]
+            project?.expand?.prototypes_via_project
                 ?.sort(function (a, b) {
                     if (a.created < b.created) {
                         return -1;
@@ -43,12 +43,12 @@
 
             // try to locate the first screen from the ordered list
             if (p.screensOrder?.[0]) {
-                screen = p.expand?.["screens(prototype)"]?.find((screen) => screen.id == p.screensOrder?.[0]);
+                screen = p.expand?.screens_via_prototype?.find((screen) => screen.id == p.screensOrder?.[0]);
             }
 
             // fallback to the first screen in the expands list
             if (!screen) {
-                screen = p.expand?.["screens(prototype)"]?.[0];
+                screen = p.expand?.screens_via_prototype?.[0];
             }
 
             if (screen) {
@@ -222,22 +222,22 @@
                 goToProject(project);
             }}
         >
-            {#if project.expand?.["projectUserPreferences(project)"]?.[0]}
+            {#if project.expand?.projectUserPreferences_via_project?.[0]}
                 <div class="ctrl ctrl-top-left">
                     <button
                         type="button"
                         class="btn btn-sm btn-circle btn-transparent"
-                        class:fade={!project.expand["projectUserPreferences(project)"][0].favorite}
-                        use:tooltip={project.expand["projectUserPreferences(project)"][0].favorite
+                        class:fade={!project.expand.projectUserPreferences_via_project[0].favorite}
+                        use:tooltip={project.expand.projectUserPreferences_via_project[0].favorite
                             ? "Remove from favorites"
                             : "Add to favorites"}
                         on:click|stopPropagation={(e) => {
-                            favoriteToggle(project.expand["projectUserPreferences(project)"][0]);
+                            favoriteToggle(project.expand.projectUserPreferences_via_project[0]);
                             project = project;
                             e.target?.closest("button")?.blur(); // remove btn focus
                         }}
                     >
-                        {#if project.expand["projectUserPreferences(project)"][0].favorite}
+                        {#if project.expand.projectUserPreferences_via_project[0].favorite}
                             <i class="iconoir-star-solid txt-warning" />
                         {:else}
                             <i class="iconoir-star" />
@@ -256,11 +256,11 @@
                         <div
                             class="dropdown-item"
                             on:click={() => {
-                                watchToggle(project.expand["projectUserPreferences(project)"][0]);
+                                watchToggle(project.expand.projectUserPreferences_via_project[0]);
                                 project = project;
                             }}
                         >
-                            {#if project.expand["projectUserPreferences(project)"][0].watch}
+                            {#if project.expand.projectUserPreferences_via_project[0].watch}
                                 <i class="iconoir-eye" />
                                 <span class="txt">Unwatch</span>
                             {:else}
@@ -312,10 +312,13 @@
                 </div>
             {/if}
 
-            <div class="meta-item" use:tooltip={{
-                text: "Created " + utils.relativeDate(project.created),
-                sub: utils.formatToLocalDate(project.created),
-            }}>
+            <div
+                class="meta-item"
+                use:tooltip={{
+                    text: "Created " + utils.relativeDate(project.created),
+                    sub: utils.formatToLocalDate(project.created),
+                }}
+            >
                 <div class="iconoir-calendar" />
             </div>
         </div>

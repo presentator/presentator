@@ -598,6 +598,7 @@ export default class utils {
      * @return {Array<Object>}
      */
     static sortItemsByIds(items, ids) {
+        items = items || [];
         ids = ids || [];
 
         const orderedItems = [];

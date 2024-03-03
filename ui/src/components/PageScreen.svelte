@@ -125,7 +125,7 @@
             loadHotspots(prototypeId);
 
             const prototype = await pb.collection("prototypes").getOne(prototypeId, {
-                expand: "project.users,screens(prototype)",
+                expand: "project.users,screens_via_prototype",
             });
 
             addPrototype(prototype, true);
@@ -133,7 +133,7 @@
             addProject(prototype.expand.project, true);
 
             $activeScreen = screenId;
-            $screens = utils.sortItemsByIds(prototype.expand["screens(prototype)"], prototype.screensOrder);
+            $screens = utils.sortItemsByIds(prototype.expand.screens_via_prototype, prototype.screensOrder);
 
             // note: the comments should be loaded after the screens
             // to avoid races and complicated state checks

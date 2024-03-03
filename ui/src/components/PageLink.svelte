@@ -37,7 +37,7 @@
 
         try {
             const options = {
-                expand: "project.users,project.prototypes(project)",
+                expand: "project.users,project.prototypes_via_project",
             };
 
             if (
@@ -73,7 +73,7 @@
 
             addProject(link.expand?.project);
 
-            $prototypes = link.expand?.project?.expand?.["prototypes(project)"] || [];
+            $prototypes = link.expand?.project?.expand?.prototypes_via_project || [];
             if (!!$prototypes.find((p) => p.id == params.groups.prototypeId)) {
                 $activePrototype = params.groups.prototypeId;
             } else {
