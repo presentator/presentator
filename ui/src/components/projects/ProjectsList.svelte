@@ -1,6 +1,6 @@
 <script>
     import pb from "@/pb";
-    import { projects, isLoadingProjects, resetProjectsStore } from "@/stores/projects";
+    import { addProject, projects, isLoadingProjects, resetProjectsStore } from "@/stores/projects";
     import ProjectUpsertPanel from "@/components/projects/ProjectUpsertPanel.svelte";
     import ProjectCard from "@/components/projects/ProjectCard.svelte";
 
@@ -25,10 +25,12 @@
 
     $: hasResetableFilters = search || archived;
 
-    $: favoriteProjects = $projects.filter((p) => p.expand?.projectUserPreferences_via_project?.[0].favorite);
+    $: favoriteProjects = $projects.filter(
+        (p) => p.expand?.projectUserPreferences_via_project?.[0]?.favorite,
+    );
 
     $: nonFavoriteProjects = $projects.filter(
-        (p) => !p.expand?.projectUserPreferences_via_project?.[0].favorite,
+        (p) => !p.expand?.projectUserPreferences_via_project?.[0]?.favorite,
     );
 
     resetList();
@@ -51,14 +53,17 @@
                 sort: "-projectUserPreferences_via_project.favorite,-projectUserPreferences_via_project.lastVisited,-created",
                 filter: loadFilter,
                 skipTotal: 1,
-                expand: "prototypes_via_project.screens_via_prototype",
+                expand: "prototypes_via_project.screens_via_prototype,projectUserPreferences_via_project",
                 requestKey: "projects_list",
             })
             .then((result) => {
                 currentPage = result.page;
                 lastFetched = result.items.length;
 
-                $projects = result.items;
+                for (let item of result.items) {
+                    addProject(item);
+                }
+
                 $isLoadingProjects = false;
             })
             .catch((err) => {
