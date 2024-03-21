@@ -1,5 +1,7 @@
 ## v3.2.1
 
+- Removed the login/register panel sliding animation.
+
 - Update to the latest PocketBase v0.22.5.
 
 

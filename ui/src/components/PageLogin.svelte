@@ -1,6 +1,5 @@
 <script>
     import { link } from "svelte-spa-router";
-    import { slide } from "svelte/transition";
     import pb from "@/pb";
     import tooltip from "@/actions/tooltip";
     import Layout from "@/components/base/Layout.svelte";
@@ -80,7 +79,7 @@
             {#if isLoadingAuthMethods}
                 <span class="loader" />
             {:else}
-                <div class="panel-content" transition:slide={{ duration: 300 }}>
+                <div class="panel-content">
                     {#if hasPasswordAuth}
                         <Field class="form-field form-field-lg" name="identity" let:uniqueId>
                             <div class="field-group">
