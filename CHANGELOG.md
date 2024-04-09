@@ -1,3 +1,12 @@
+## v3.2.3
+
+- Fixed hotspot popover misalignment when removing a hotspot from a template.
+
+- Allowed changing the relation type of an existing hotspot (aka. screen->template or template->screen).
+
+- Updated npm dependencies.
+
+
 ## v3.2.2
 
 - Update to the latest PocketBase v0.22.8.

@@ -582,6 +582,62 @@ func TestHotspotsUpdate(t *testing.T) {
 				"OnRecordBeforeUpdateRequest": 1,
 			},
 		},
+		{
+			Name:   "auth as user trying to clear both hotspot hotspotTemplate and screen fields",
+			Method: http.MethodPatch,
+			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Body:   strings.NewReader(`{"screen":"", "hotspotTemplate":""}`),
+			RequestHeaders: map[string]string{
+				"Authorization": getAuthToken(t, "users", "test2"),
+			},
+			TestAppFactory:  setupTestApp,
+			ExpectedStatus:  404,
+			ExpectedContent: []string{`"data":{}`},
+		},
+		{
+			Name:   "auth as user trying to clear hotspotTemplate field",
+			Method: http.MethodPatch,
+			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Body:   strings.NewReader(`{"screen":"s0TMdv2nbc4foMi", "hotspotTemplate":""}`),
+			RequestHeaders: map[string]string{
+				"Authorization": getAuthToken(t, "users", "test2"),
+			},
+			TestAppFactory: setupTestApp,
+			ExpectedStatus: 200,
+			ExpectedContent: []string{
+				`"id":"xeyr2230dez2oha"`,
+				`"screen":"s0TMdv2nbc4foMi"`,
+				`"hotspotTemplate":""`,
+			},
+			ExpectedEvents: map[string]int{
+				"OnModelAfterUpdate":          1,
+				"OnModelBeforeUpdate":         1,
+				"OnRecordAfterUpdateRequest":  1,
+				"OnRecordBeforeUpdateRequest": 1,
+			},
+		},
+		{
+			Name:   "auth as user trying to clear screen field",
+			Method: http.MethodPatch,
+			Url:    "/api/collections/hotspots/records/divglr2yoivqtr1",
+			Body:   strings.NewReader(`{"screen":"", "hotspotTemplate":"26m5by6c8w4kfk2"}`),
+			RequestHeaders: map[string]string{
+				"Authorization": getAuthToken(t, "users", "test2"),
+			},
+			TestAppFactory: setupTestApp,
+			ExpectedStatus: 200,
+			ExpectedContent: []string{
+				`"id":"divglr2yoivqtr1"`,
+				`"screen":""`,
+				`"hotspotTemplate":"26m5by6c8w4kfk2"`,
+			},
+			ExpectedEvents: map[string]int{
+				"OnModelAfterUpdate":          1,
+				"OnModelBeforeUpdate":         1,
+				"OnRecordAfterUpdateRequest":  1,
+				"OnRecordBeforeUpdateRequest": 1,
+			},
+		},
 	}
 
 	for _, scenario := range scenarios {

@@ -1,26 +1,26 @@
 <script>
-    import { createEventDispatcher, tick } from "svelte";
-    import { slide } from "svelte/transition";
-    import pb from "@/pb";
-    import { confirm } from "@/stores/confirmation";
-    import { setErrors } from "@/stores/errors";
-    import { activeScreen } from "@/stores/screens";
-    import { activePrototype } from "@/stores/prototypes";
-    import {
-        selectedHotspot,
-        isHotspotDragging,
-        addHotspot,
-        removeUnsavedHotspots,
-        hotspotTypes,
-    } from "@/stores/hotspots";
-    import { options } from "@/stores/app";
-    import { templates, addTemplate } from "@/stores/templates";
     import tooltip from "@/actions/tooltip";
-    import Popover from "@/components/base/Popover.svelte";
     import Field from "@/components/base/Field.svelte";
     import ObjectSelect from "@/components/base/ObjectSelect.svelte";
+    import Popover from "@/components/base/Popover.svelte";
     import ScreenField from "@/components/hotspots/ScreenField.svelte";
     import TransitionField from "@/components/hotspots/TransitionField.svelte";
+    import pb from "@/pb";
+    import { options } from "@/stores/app";
+    import { confirm } from "@/stores/confirmation";
+    import { setErrors } from "@/stores/errors";
+    import {
+        addHotspot,
+        hotspotTypes,
+        isHotspotDragging,
+        removeUnsavedHotspots,
+        selectedHotspot,
+    } from "@/stores/hotspots";
+    import { activePrototype } from "@/stores/prototypes";
+    import { activeScreen } from "@/stores/screens";
+    import { addTemplate, templates } from "@/stores/templates";
+    import { createEventDispatcher, tick } from "svelte";
+    import { slide } from "svelte/transition";
     import OverlayPositionField from "./OverlayPositionField.svelte";
 
     const dispatch = createEventDispatcher();
@@ -110,6 +110,10 @@
         oldType = "";
 
         if ($selectedHotspot) {
+            // ensure that the hotspot is visible even when its relation is based on the hotspot template
+            if (!$selectedHotspot.screen && $activeScreen?.id) {
+                $selectedHotspot.screen = $activeScreen.id;
+            }
             $selectedHotspot.settings = $selectedHotspot.settings || {};
             originalHotspot = cloneSelectedHotspot();
             onTypeChange();

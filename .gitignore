@@ -1,5 +1,6 @@
 /pb_data/
 test_pb_data/logs.*
+test_pb_data/types.d.ts
 
 /.vscode/
 .idea
