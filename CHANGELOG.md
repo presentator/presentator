@@ -1,3 +1,8 @@
+## v3.2.4
+
+- Update to the latest PocketBase v0.22.12.
+
+
 ## v3.2.3
 
 - Fixed hotspot popover misalignment when removing a hotspot from a template.
