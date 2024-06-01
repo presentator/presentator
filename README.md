@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://presentator.io.io" target="_blank" rel="noopener">
+    <a href="https://presentator.io" target="_blank" rel="noopener">
         <img src="https://i.imgur.com/BwBsr6B.png" alt="Presentator - open source design feedback and collaboration platform" />
     </a>
 </p>
