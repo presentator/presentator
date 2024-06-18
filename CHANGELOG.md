@@ -1,3 +1,8 @@
+## v3.2.5
+
+- Update to the latest [PocketBase v0.22.14 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.14) (**it comes with a security fix related to the OAuth2 email autolinking**).
+
+
 ## v3.2.4
 
 - Update to the latest PocketBase v0.22.12.
