@@ -1,11 +1,11 @@
 ## v3.2.5
 
-- Update to the latest [PocketBase v0.22.14 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.14) (**it comes with a security fix related to the OAuth2 email autolinking**).
+- Updated to the latest [PocketBase v0.22.14 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.14) (**it comes with a security fix related to the OAuth2 email autolinking**).
 
 
 ## v3.2.4
 
-- Update to the latest PocketBase v0.22.12.
+- Updated to the latest PocketBase v0.22.12.
 
 
 ## v3.2.3
@@ -26,7 +26,7 @@
 
 - Removed the login/register panel sliding animation.
 
-- Update to the latest PocketBase v0.22.5.
+- Updated to the latest PocketBase v0.22.5.
 
 
 ## v3.2.0
