@@ -1,3 +1,8 @@
+## v3.2.6
+
+- Updated to the latest [PocketBase v0.22.16 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.16).
+
+
 ## v3.2.5
 
 - Updated to the latest [PocketBase v0.22.14 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.14) (**it comes with a security fix related to the OAuth2 email autolinking**).
