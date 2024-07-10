@@ -8,7 +8,7 @@ require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
-	github.com/pocketbase/pocketbase v0.22.16
+	github.com/pocketbase/pocketbase v0.22.17
 	github.com/spf13/cast v1.6.0
 	golang.org/x/sync v0.7.0
 )
