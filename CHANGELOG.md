@@ -1,3 +1,8 @@
+## v3.2.9
+
+- Removed `async` from the OAuth2 handler to prevent Safari blocking the OAuth2 window.
+
+
 ## v3.2.8
 
 - Updated to the latest [PocketBase v0.22.18 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.18).

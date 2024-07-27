@@ -6,21 +6,22 @@
 
     let missingImages = {};
 
-    async function oauth2(providerName) {
-        try {
-            await pb.collection("users").authWithOAuth2({
+    function oauth2(providerName) {
+        pb.collection("users")
+            .authWithOAuth2({
                 provider: providerName,
                 createData: {
                     allowEmailNotifications: true,
                 },
+            })
+            .then(() => {
+                pb.replaceWithRemembered();
+            })
+            .catch((err) => {
+                if (!err.isAbort) {
+                    pb.error(err);
+                }
             });
-
-            pb.replaceWithRemembered();
-        } catch (err) {
-            if (!err.isAbort) {
-                pb.error(err);
-            }
-        }
     }
 </script>
 
