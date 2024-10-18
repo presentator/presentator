@@ -191,7 +191,7 @@ For more details about the available hooks and methods, please refer to [PocketB
 
 Presentator is also distributed as regular Go package allowing you to extend it with custom functionality using the exposed Go APIs.
 
-0. [Install Go 1.21+](https://go.dev/doc/install)
+0. [Install Go 1.22+](https://go.dev/doc/install)
 
 1. Create a new project directory with `myapp/main.go` file inside it. Here is one minimal `main.go` file with a hook that will print in the console the comment message after its creation:
 

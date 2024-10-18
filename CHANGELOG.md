@@ -1,3 +1,10 @@
+## v3.2.10
+
+- Fixed typo in the success registration alert.
+
+- Updated to the latest [PocketBase v0.22.22 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.18).
+
+
 ## v3.2.9
 
 - Removed `async` from the OAuth2 handler to prevent Safari blocking the OAuth2 window.

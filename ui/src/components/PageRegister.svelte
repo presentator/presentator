@@ -99,7 +99,7 @@
                 <div class="alert m-0">
                     <div class="content txt-center">
                         <p>
-                            Go check your email for verify your account:
+                            Go check your email to verify your account:
                             <br />
                             <strong>{email}</strong>
                         </p>
