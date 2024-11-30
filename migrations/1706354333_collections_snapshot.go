@@ -951,13 +951,13 @@ func init() {
 						"type": "bool"
 					},
 					{
-						"autogeneratePattern": "users[0-9]{6}",
+						"autogeneratePattern": "[a-z0-9]{9}",
 						"hidden": false,
 						"id": "text4166911607",
-						"max": 150,
-						"min": 3,
+						"max": 15,
+						"min": 5,
 						"name": "username",
-						"pattern": "^[\\w][\\w\\.\\-]*$",
+						"pattern": "^[a-z0-9]+$",
 						"presentable": false,
 						"primaryKey": false,
 						"required": true,

@@ -1,3 +1,8 @@
+## v3.3.1
+
+- Added default OAuth2 avatar and display name fields mapping.
+
+
 ## v3.3.0
 
 - Enabled realtime updates for the project screens listing.

@@ -132,6 +132,7 @@ func bindAppHooks(app core.App) {
 		Priority: 9999, // execute as later as possible
 	})
 
+	// @todo consider removing since v0.23.0 has autogenerate pattern support
 	// overwrite user submitted username with random generated "slug"
 	// ---------------------------------------------------------------
 	app.OnRecordCreateRequest("links").BindFunc(func(e *core.RecordRequestEvent) error {
