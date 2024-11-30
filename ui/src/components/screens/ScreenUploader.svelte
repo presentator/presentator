@@ -22,7 +22,7 @@
         isUploading = true;
 
         const promises = [];
-        let orderedIds = [];
+        let uploadedOrderedIds = [];
 
         for (let i = 0; i < filesList.length; i++) {
             const file = filesList.item(i);
@@ -43,7 +43,7 @@
 
             promises.push(pb.collection("screens").create(data, { requestKey: null }));
 
-            orderedIds.push(id);
+            uploadedOrderedIds.push(id);
         }
 
         const failed = [];
@@ -61,17 +61,17 @@
                 }
             }
 
-            // update orderedIds with only the successfully uploaded ones
-            orderedIds = orderedIds.filter((id) => !!uploaded[id]);
+            // update uploadedOrderedIds with only the successfully uploaded ones
+            uploadedOrderedIds = uploadedOrderedIds.filter((id) => !!uploaded[id]);
 
             const prototype = await pb.collection("prototypes").update(
                 $activePrototype.id,
                 {
-                    "screensOrder+": orderedIds,
+                    screensOrder: $activePrototype.screensOrder.concat(uploadedOrderedIds),
                 },
                 {
                     $autoCancel: false,
-                }
+                },
             );
             addPrototype(prototype);
 

@@ -3,9 +3,8 @@ package presentator
 import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
-	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/models"
+	"github.com/pocketbase/pocketbase/tools/router"
 )
 
 // transitions is list of all supported overlay transition values.
@@ -36,7 +35,7 @@ type SettingsValidator interface {
 	Validate(app core.App) error
 }
 
-func filterAndValidateHotspotSettings(app core.App, record *models.Record) error {
+func filterAndValidateHotspotSettings(app core.App, record *core.Record) error {
 	const baseMessage = "Invalid hotspot settings."
 
 	var settings SettingsValidator
@@ -53,25 +52,25 @@ func filterAndValidateHotspotSettings(app core.App, record *models.Record) error
 	case "next":
 		settings = &settingsNext{}
 	case "url":
-		settings = &settingsUrl{}
+		settings = &settingsURL{}
 	case "scroll":
 		settings = &settingsScroll{}
 	case "note":
 		settings = &settingsNote{}
 	default:
-		return apis.NewBadRequestError(baseMessage, map[string]validation.Error{
+		return router.NewBadRequestError(baseMessage, map[string]validation.Error{
 			"type": validation.NewError("invalid_type", "Invalid hotspot type."),
 		})
 	}
 
 	if err := record.UnmarshalJSONField("settings", settings); err != nil {
-		return apis.NewBadRequestError(baseMessage, map[string]validation.Error{
+		return router.NewBadRequestError(baseMessage, map[string]validation.Error{
 			"settings": validation.NewError("invalid_settings_data", "Invalid hotspot settings data."),
 		})
 	}
 
 	if err := settings.Validate(app); err != nil {
-		return apis.NewBadRequestError(baseMessage, map[string]any{
+		return router.NewBadRequestError(baseMessage, map[string]any{
 			"settings": err,
 		})
 	}
@@ -89,7 +88,7 @@ func checkScreen(app core.App) validation.RuleFunc {
 			return nil // nothing to check
 		}
 
-		if _, err := app.Dao().FindRecordById("screens", v); err != nil {
+		if _, err := app.FindRecordById("screens", v); err != nil {
 			return validation.NewError("invalid_screen", "Invalid or missing screen.")
 		}
 
@@ -179,15 +178,15 @@ func (s *settingsPrev) Validate(app core.App) error {
 
 // -------------------------------------------------------------------
 
-var _ SettingsValidator = (*settingsUrl)(nil)
+var _ SettingsValidator = (*settingsURL)(nil)
 
-type settingsUrl struct {
-	Url string `json:"url"`
+type settingsURL struct {
+	URL string `json:"url"`
 }
 
-func (s *settingsUrl) Validate(app core.App) error {
+func (s *settingsURL) Validate(app core.App) error {
 	return validation.ValidateStruct(s,
-		validation.Field(&s.Url, validation.Required, is.URL),
+		validation.Field(&s.URL, validation.Required, is.URL),
 	)
 }
 

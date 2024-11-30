@@ -19,71 +19,89 @@ func TestPrototypesList(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/prototypes/records",
+			URL:             "/api/collections/prototypes/records",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				`"totalItems":2`,
 				`"id":"acovztxr3nfnz8e"`,
 				`"id":"rt8ee28zl1lbcr4"`,
 			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       2,
+			},
 		},
 		{
 			Name:   "auth as link with restricted prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				`"totalItems":1`,
 				`"id":"i7nda4y5rggo2eg"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       1,
 			},
 		},
 		{
 			Name:   "auth as user with no prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				`"totalItems":4`,
 				`"id":"acovztxr3nfnz8e"`,
 				`"id":"lrnr817ydrfdj80"`,
 				`"id":"rt8ee28zl1lbcr4"`,
 				`"id":"urks33262s5eanb"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       4,
 			},
 		},
 	}
@@ -100,79 +118,95 @@ func TestPrototypesView(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with prototype from different project",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with non-listed restricted prototype",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/bmtlodhqgt1h8og",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/bmtlodhqgt1h8og",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with listed restricted prototype",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/i7nda4y5rggo2eg",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/i7nda4y5rggo2eg",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"i7nda4y5rggo2eg"`},
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"acovztxr3nfnz8e"`},
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodGet,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"acovztxr3nfnz8e"`},
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 	}
 
@@ -188,81 +222,107 @@ func TestPrototypesCreate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPost,
-			Url:             "/api/collections/prototypes/records",
+			URL:             "/api/collections/prototypes/records",
 			Body:            strings.NewReader(`{"project":"t45bjlayvsx2yj0","title":"new"}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPost,
-			Url:    "/api/collections/prototypes/records",
+			URL:    "/api/collections/prototypes/records",
 			Body:   strings.NewReader(`{"project":"t45bjlayvsx2yj0","title":"new"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodPost,
-			Url:    "/api/collections/prototypes/records",
+			URL:    "/api/collections/prototypes/records",
 			Body:   strings.NewReader(`{"title":"new","project":"t45bjlayvsx2yj0"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodPost,
-			Url:    "/api/collections/prototypes/records",
+			URL:    "/api/collections/prototypes/records",
 			Body:   strings.NewReader(`{"title":"new","project":"t45bjlayvsx2yj0"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"title":"new"`},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user with invalid or empty data",
 			Method: http.MethodPost,
-			Url:    "/api/collections/prototypes/records",
+			URL:    "/api/collections/prototypes/records",
 			Body:   strings.NewReader(`{"title":"","project":""}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 400,
 			ExpectedContent: []string{
-				`"data":{`,
-				`"title":{`,
-				`"project":{`,
+				`"data":{}`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+				// no validation because it fails the API rule
 			},
 		},
 		{
 			Name:   "auth as user owner with screens from different prototype",
 			Method: http.MethodPost,
-			Url:    "/api/collections/prototypes/records",
+			URL:    "/api/collections/prototypes/records",
 			Body:   strings.NewReader(`{"title":"new","project":"t45bjlayvsx2yj0","screensOrder":["s0l1ZFK0UAIhghd"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 	}
 
@@ -278,42 +338,45 @@ func TestPrototypesUpdate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPatch,
-			Url:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:            strings.NewReader(`{"title":"update"}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"title":"update"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"title":"update"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"title":"updated"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -323,30 +386,38 @@ func TestPrototypesUpdate(t *testing.T) {
 				`"title":"updated"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user owner trying to change the project",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"project":"kk69rwtejro96iz","title":"updated"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner trying to reset screensOrder",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"screensOrder":[]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -356,30 +427,38 @@ func TestPrototypesUpdate(t *testing.T) {
 				`"screensOrder":[]`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user owner trying to use screens from different prototype",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"screensOrder":["s0l1ZFK0UAIhghd"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner trying to reset the title",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			Body:   strings.NewReader(`{"title":""}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -387,6 +466,16 @@ func TestPrototypesUpdate(t *testing.T) {
 			ExpectedContent: []string{
 				`"data":{`,
 				`"title":{`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                        0,
+				"OnRecordUpdateRequest":    1,
+				"OnModelUpdate":            1,
+				"OnModelValidate":          1,
+				"OnModelAfterUpdateError":  1,
+				"OnRecordUpdate":           1,
+				"OnRecordValidate":         1,
+				"OnRecordAfterUpdateError": 1,
 			},
 		},
 	}
@@ -403,47 +492,54 @@ func TestPrototypesDelete(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodDelete,
-			Url:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			URL:             "/api/collections/prototypes/records/acovztxr3nfnz8e",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link for the prototype project",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/prototypes/records/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
 			ExpectedEvents: map[string]int{
-				"OnRecordAfterDeleteRequest":  1,
-				"OnRecordBeforeDeleteRequest": 1,
-				"OnModelAfterDelete":          15,
-				"OnModelBeforeDelete":         15,
+				"*":                          0,
+				"OnRecordDeleteRequest":      1,
+				"OnModelDelete":              15,
+				"OnModelDeleteExecute":       15,
+				"OnModelAfterDeleteSuccess":  15,
+				"OnRecordDelete":             15,
+				"OnRecordDeleteExecute":      15,
+				"OnRecordAfterDeleteSuccess": 15,
 			},
 		},
 	}
@@ -460,38 +556,41 @@ func TestPrototypesDuplicate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPost,
-			Url:             "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
+			URL:             "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  401,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link for the prototype project",
 			Method: http.MethodPost,
-			Url:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodPost,
-			Url:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodPost,
-			Url:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
-			RequestHeaders: map[string]string{
+			URL:    "/api/pr/duplicate-prototype/acovztxr3nfnz8e",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
@@ -510,24 +609,36 @@ func TestPrototypesDuplicate(t *testing.T) {
 				`"screensOrder":["s02UKpYUSnYnh91","s0j0DfwURJenCpn","s01mGezNqrHL9uC"]`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelBeforeCreate": 10,
-				"OnModelAfterCreate":  10,
-				"OnModelBeforeUpdate": 1,
-				"OnModelAfterUpdate":  1,
+				"*":                          0,
+				"OnModelValidate":            8, // screens are stored without validations
+				"OnModelCreate":              10,
+				"OnModelCreateExecute":       10,
+				"OnModelAfterCreateSuccess":  10,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           8,
+				"OnRecordCreate":             10,
+				"OnRecordCreateExecute":      10,
+				"OnRecordAfterCreateSuccess": 10,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
 				fsys, err := app.NewFilesystem()
 				if err != nil {
 					t.Fatalf("Failed to intialize the test app filesystem: %v", err)
 				}
 				defer fsys.Close()
 
-				original, err := app.Dao().FindRecordById("prototypes", "acovztxr3nfnz8e")
+				original, err := app.FindRecordById("prototypes", "acovztxr3nfnz8e")
 				if err != nil {
 					t.Fatalf("Failed to fetch original prototype: %v", err)
 				}
 
-				duplicated, err := app.Dao().FindFirstRecordByData("prototypes", "title", "Prototype 1 (copy)")
+				duplicated, err := app.FindFirstRecordByData("prototypes", "title", "Prototype 1 (copy)")
 				if err != nil {
 					t.Fatalf("Failed to fetch duplicated prototype: %v", err)
 				}
@@ -540,7 +651,7 @@ func TestPrototypesDuplicate(t *testing.T) {
 
 				// check duplicated screens
 				// ---------------------------------------------------
-				duplicatedScreens, err := app.Dao().FindRecordsByExpr("screens", dbx.HashExp{"prototype": duplicated.Id})
+				duplicatedScreens, err := app.FindAllRecords("screens", dbx.HashExp{"prototype": duplicated.Id})
 				if err != nil {
 					t.Fatalf("Failed to fetch duplicated screens: %v", err)
 				}
@@ -567,12 +678,12 @@ func TestPrototypesDuplicate(t *testing.T) {
 				}
 				// check duplicated hotspot templates
 				// ---------------------------------------------------
-				originalTemplates, err := app.Dao().FindRecordsByExpr("hotspotTemplates", dbx.HashExp{"prototype": original.Id})
+				originalTemplates, err := app.FindAllRecords("hotspotTemplates", dbx.HashExp{"prototype": original.Id})
 				if err != nil {
 					t.Fatalf("Failed to fetch original hotspot templates: %v", err)
 				}
 
-				duplicatedTemplates, err := app.Dao().FindRecordsByExpr("hotspotTemplates", dbx.HashExp{"prototype": duplicated.Id})
+				duplicatedTemplates, err := app.FindAllRecords("hotspotTemplates", dbx.HashExp{"prototype": duplicated.Id})
 				if err != nil {
 					t.Fatalf("Failed to fetch duplicated hotspot templates: %v", err)
 				}
@@ -604,7 +715,7 @@ func TestPrototypesDuplicate(t *testing.T) {
 
 				// check duplicated hotspots
 				// ---------------------------------------------------
-				originalHotspots, err := app.Dao().FindRecordsByExpr("hotspots", dbx.Or(
+				originalHotspots, err := app.FindAllRecords("hotspots", dbx.Or(
 					dbx.HashExp{"screen": list.ToInterfaceSlice(originalScreensOrder)},
 					dbx.HashExp{"hotspotTemplate": list.ToInterfaceSlice(originalTemplateIds)},
 				))
@@ -612,7 +723,7 @@ func TestPrototypesDuplicate(t *testing.T) {
 					t.Fatalf("Failed to fetch original hotspots: %v", err)
 				}
 
-				duplicatedHotspots, err := app.Dao().FindRecordsByExpr("hotspots", dbx.Or(
+				duplicatedHotspots, err := app.FindAllRecords("hotspots", dbx.Or(
 					dbx.HashExp{"screen": list.ToInterfaceSlice(duplicatedScreensOrder)},
 					dbx.HashExp{"hotspotTemplate": list.ToInterfaceSlice(duplicatedTemplateIds)},
 				))

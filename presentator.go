@@ -9,8 +9,8 @@ import (
 // @todo remove after adding support for custom Admin UI settings fields.
 const (
 	OptionFooterLinks      string = "pr_footerLinks"
-	OptionTermsUrl         string = "pr_termsUrl"
-	OptionAllowHotspotsUrl string = "pr_allowHotspotsUrl"
+	OptionTermsURL         string = "pr_termsURL"
+	OptionAllowHotspotsURL string = "pr_allowHotspotsURL"
 )
 
 type Presentator struct {
@@ -21,7 +21,7 @@ func New() *Presentator {
 	pr := &Presentator{pocketbase.New()}
 
 	// default options
-	pr.Store().Set(OptionAllowHotspotsUrl, true)
+	pr.Store().Set(OptionAllowHotspotsURL, true)
 
 	bindAppHooks(pr)
 

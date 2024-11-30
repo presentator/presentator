@@ -9,25 +9,31 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/list"
 	"github.com/pocketbase/pocketbase/tools/mailer"
 )
 
 // newShareForm creates new link share form.
-func newShareForm(app core.App, project *models.Record, link *models.Record) *ShareForm {
+func newShareForm(
+	app core.App,
+	project *core.Record,
+	link *core.Record,
+	initiator *core.Record, // (optional) could be nil
+) *ShareForm {
 	return &ShareForm{
-		app:     app,
-		project: project,
-		link:    link,
+		app:       app,
+		project:   project,
+		link:      link,
+		initiator: initiator,
 	}
 }
 
 // ShareForm handles a single link share submission.
 type ShareForm struct {
-	app     core.App
-	project *models.Record
-	link    *models.Record
+	app       core.App
+	project   *core.Record
+	link      *core.Record
+	initiator *core.Record
 
 	Message string   `form:"message" json:"message"`
 	Emails  []string `form:"emails" json:"emails"`
@@ -54,17 +60,19 @@ func (form *ShareForm) Submit() error {
 		return err
 	}
 
-	previewUrl := strings.TrimRight(form.app.Settings().Meta.AppUrl, "/") + "/#/" +form.link.Username()
+	previewURL := strings.TrimRight(form.app.Settings().Meta.AppURL, "/") + "/#/" + form.link.GetString("username")
 
 	data := struct {
 		*baseMailData
-		Project    *models.Record
-		PreviewUrl string
+		Project    *core.Record
+		Initiator  *core.Record
+		PreviewURL string
 		Message    string
 	}{
 		baseMailData: newBaseMailData(form.app),
 		Project:      form.project,
-		PreviewUrl:   previewUrl,
+		Initiator:    form.initiator,
+		PreviewURL:   previewURL,
 		Message:      form.Message,
 	}
 

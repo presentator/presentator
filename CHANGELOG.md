@@ -1,8 +1,20 @@
-## v3.2.10
+## v3.3.0
 
-- Fixed typo in the success registration alert.
+- Enabled realtime updates for the project screens listing.
 
-- Updated to the latest [PocketBase v0.22.22 release](https://github.com/pocketbase/pocketbase/releases/tag/v0.22.18).
+- Updated the project share and invite emails to include information about the user that initiated the request.
+
+- Redirect to the homepage when trying to access deleted project.
+
+- Disabled autocomplete for the registration form to avoid conflicts with the fields of other forms.
+
+- Upgraded to PocketBase v0.23 which comes with [many changes](https://github.com/pocketbase/pocketbase/blob/master/CHANGELOG.md), but probably the most interesting ones for Presentator administrators would be:
+    - One-time password (OTP) auth
+    - Multi-factor authentication (MFA)
+    - builtin rate limiter
+    _Note that the auth settings (including OAuth2, tokens duration, email templates, etc.) are now moved under the `users` and `_superusers` auth collection options._
+
+- Updated npm and Go dependencies.
 
 
 ## v3.2.9

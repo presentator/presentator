@@ -8,7 +8,7 @@
                 <table>
                     <tr>
                         <td>
-                            <img class="thumb" src='{{$.AppUrl}}/api/files/screens/{{.Screen.Get "id"}}/{{.Screen.Get "file"}}?thumb=100x100t' width="40" height="40" alt="Screen thumb">
+                            <img class="thumb" src='{{$.AppURL}}/api/files/screens/{{.Screen.Get "id"}}/{{.Screen.Get "file"}}?thumb=100x100t' width="40" height="40" alt="Screen thumb">
                         </td>
                         <td style="padding: 5px 10px">
                             {{.Screen.Get "title"}}
@@ -29,6 +29,6 @@
     {{end}}
 
     <p style="text-align: center">
-        <a class="btn" href="{{.ActionUrl}}" target="_blank" rel="noopener">View comments</a>
+        <a class="btn" href="{{.ActionURL}}" target="_blank" rel="noopener">View comments</a>
     </p>
 {{end}}

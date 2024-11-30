@@ -15,9 +15,9 @@ func TestReport(t *testing.T) {
 		return strings.NewReader(`{"message": "test"}`)
 	}
 
-	failAfterTestFunc := func(t *testing.T, app *tests.TestApp, res *http.Response) {
-		if app.TestMailer.TotalSend != 0 {
-			t.Fatalf("Expected %d sent emails, got %d", 0, app.TestMailer.TotalSend)
+	failAfterTestFunc := func(t testing.TB, app *tests.TestApp, res *http.Response) {
+		if app.TestMailer.TotalSend() != 0 {
+			t.Fatalf("Expected %d sent emails, got %d", 0, app.TestMailer.TotalSend())
 		}
 	}
 
@@ -25,32 +25,34 @@ func TestReport(t *testing.T) {
 		{
 			Name:            "guest and valid data",
 			Method:          http.MethodPost,
-			Url:             "/api/pr/report",
+			URL:             "/api/pr/report",
 			Body:            validDataFunc(),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  401,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 			AfterTestFunc:   failAfterTestFunc,
 		},
 		{
 			Name:   "user auth and valid data",
 			Method: http.MethodPost,
-			Url:    "/api/pr/report",
+			URL:    "/api/pr/report",
 			Body:   validDataFunc(),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 			AfterTestFunc:   failAfterTestFunc,
 		},
 		{
 			Name:   "link auth and invalid data",
 			Method: http.MethodPost,
-			Url:    "/api/pr/report",
+			URL:    "/api/pr/report",
 			Body:   strings.NewReader(`{"message":"` + strings.Repeat("a", 256) + `"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -58,36 +60,41 @@ func TestReport(t *testing.T) {
 			ExpectedContent: []string{
 				`"data":{"message":{"code":"validation_length_too_long"`,
 			},
-			AfterTestFunc: failAfterTestFunc,
+			ExpectedEvents: map[string]int{"*": 0},
+			AfterTestFunc:  failAfterTestFunc,
 		},
 		{
-			Name:   "link auth and invalid data",
+			Name:   "link auth and valid data",
 			Method: http.MethodPost,
-			Url:    "/api/pr/report",
+			URL:    "/api/pr/report",
 			Body:   validDataFunc(),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
-				if app.TestMailer.TotalSend != 1 {
-					t.Fatalf("Expected %d sent emails, got %d", 1, app.TestMailer.TotalSend)
+			ExpectedEvents: map[string]int{
+				"*":            0,
+				"OnMailerSend": 1,
+			},
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
+				if app.TestMailer.TotalSend() != 1 {
+					t.Fatalf("Expected %d sent emails, got %d", 1, app.TestMailer.TotalSend())
 				}
 
-				if len(app.TestMailer.LastMessage.To) != 1 ||
-					app.TestMailer.LastMessage.To[0].Address != app.Settings().Meta.SenderAddress {
-					t.Fatalf("Expected exactly 1 recipient with email %q, got %v", app.Settings().Meta.SenderAddress, app.TestMailer.LastMessage.To)
+				if len(app.TestMailer.LastMessage().To) != 1 ||
+					app.TestMailer.LastMessage().To[0].Address != app.Settings().Meta.SenderAddress {
+					t.Fatalf("Expected exactly 1 recipient with email %q, got %v", app.Settings().Meta.SenderAddress, app.TestMailer.LastMessage().To)
 				}
 
 				htmlExpectations := []string{
 					"Multiple owners project",
-					strings.TrimRight(app.Settings().Meta.AppUrl, "/") + "/#/test1",
+					strings.TrimRight(app.Settings().Meta.AppURL, "/") + "/#/test1",
 				}
 
 				for _, content := range htmlExpectations {
-					if !strings.Contains(app.TestMailer.LastMessage.HTML, content) {
-						t.Fatalf("Expected to find \n%q\nin\n%s", content, app.TestMailer.LastMessage.HTML)
+					if !strings.Contains(app.TestMailer.LastMessage().HTML, content) {
+						t.Fatalf("Expected to find \n%q\nin\n%s", content, app.TestMailer.LastMessage().HTML)
 					}
 				}
 			},

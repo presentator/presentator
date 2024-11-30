@@ -15,50 +15,63 @@ func TestNotificationsList(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/notifications/records",
+			URL:             "/api/collections/notifications/records",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with no notifications",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with notifications",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				`"totalItems":2`,
 				`"id":"13ricc0qvbpk7aj"`,
 				`"id":"yv8xu4zpoynuin1"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       2,
 			},
 		},
 	}
@@ -75,44 +88,51 @@ func TestNotificationsView(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as non-rel user",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as rel user",
 			Method: http.MethodGet,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"yv8xu4zpoynuin1"`},
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 	}
 
@@ -129,32 +149,35 @@ func TestNotificationsCreate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPost,
-			Url:             "/api/collections/notifications/records",
+			URL:             "/api/collections/notifications/records",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPost,
-			Url:    "/api/collections/notifications/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user",
 			Method: http.MethodPost,
-			Url:    "/api/collections/notifications/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  403,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 	}
 
@@ -170,42 +193,45 @@ func TestNotificationsUpdate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPatch,
-			Url:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:            strings.NewReader(`{"read":true}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:   strings.NewReader(`{"read":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as non-rel user",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:   strings.NewReader(`{"read":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as rel-user",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:   strings.NewReader(`{"read":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -215,35 +241,44 @@ func TestNotificationsUpdate(t *testing.T) {
 				`"read":true`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as rel-user but try to change the user field",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:   strings.NewReader(`{"user":"7rs5wkqeb5gggmn"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as rel-user but try to change the comment field",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			Body:   strings.NewReader(`{"comment":"3l3j15w9qd8ylou"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 	}
 
@@ -259,47 +294,54 @@ func TestNotificationsDelete(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodDelete,
-			Url:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			URL:             "/api/collections/notifications/records/yv8xu4zpoynuin1",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as non-rel user",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as rel user",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/notifications/records/yv8xu4zpoynuin1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
 			ExpectedEvents: map[string]int{
-				"OnModelAfterDelete":          1,
-				"OnModelBeforeDelete":         1,
-				"OnRecordAfterDeleteRequest":  1,
-				"OnRecordBeforeDeleteRequest": 1,
+				"*":                          0,
+				"OnRecordDeleteRequest":      1,
+				"OnModelDelete":              1,
+				"OnModelDeleteExecute":       1,
+				"OnModelAfterDeleteSuccess":  1,
+				"OnRecordDelete":             1,
+				"OnRecordDeleteExecute":      1,
+				"OnRecordAfterDeleteSuccess": 1,
 			},
 		},
 	}

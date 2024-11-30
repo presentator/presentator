@@ -84,7 +84,7 @@
             return;
         }
 
-        utils.loadImage(pb.files.getUrl($activeScreen, $activeScreen.file)).then((data) => {
+        utils.loadImage(pb.files.getURL($activeScreen, $activeScreen.file)).then((data) => {
             if (!data.success || !data.width) {
                 return;
             }
@@ -197,7 +197,7 @@
     onMount(() => {
         // eager load the first couple screens to minimize flickering
         for (let screen of $screens.slice(0, 50)) {
-            utils.loadImage(pb.files.getUrl(screen, screen.file));
+            utils.loadImage(pb.files.getURL(screen, screen.file));
         }
 
         return () => {
@@ -245,7 +245,7 @@
                             <div class="fixed-screen-hotspots-wrapper">
                                 <LazyImg
                                     class="screen-preview-img"
-                                    src={pb.files.getUrl($activeScreen, $activeScreen.file)}
+                                    src={pb.files.getURL($activeScreen, $activeScreen.file)}
                                     alt={$activeScreen.title}
                                     draggable={false}
                                     loaderClass="hidden"
@@ -272,7 +272,7 @@
                         <LazyImg
                             bind:isLoading={isMainLoading}
                             class="screen-preview-img"
-                            src={pb.files.getUrl($activeScreen, $activeScreen.file)}
+                            src={pb.files.getURL($activeScreen, $activeScreen.file)}
                             alt={$activeScreen.title}
                             loading="eager"
                             loaderClass="loader"
@@ -328,7 +328,7 @@
                             <div class="fixed-screen-hotspots-wrapper">
                                 <LazyImg
                                     class="screen-preview-img"
-                                    src={pb.files.getUrl($activeScreen, $activeScreen.file)}
+                                    src={pb.files.getURL($activeScreen, $activeScreen.file)}
                                     alt={$activeScreen.title}
                                     draggable={false}
                                     loading="eager"
@@ -370,7 +370,7 @@
                             <div class="fixed-screen-overflow">
                                 <LazyImg
                                     class="screen-preview-img"
-                                    src={pb.files.getUrl($transitionScreen, $transitionScreen.file)}
+                                    src={pb.files.getURL($transitionScreen, $transitionScreen.file)}
                                     alt={$transitionScreen.title}
                                     draggable={false}
                                     loaderClass="hidden"
@@ -384,7 +384,7 @@
                     <div class="screen-preview-img-wrapper">
                         <LazyImg
                             class="screen-preview-img"
-                            src={pb.files.getUrl($transitionScreen, $transitionScreen.file)}
+                            src={pb.files.getURL($transitionScreen, $transitionScreen.file)}
                             alt={$transitionScreen.title}
                             loading="eager"
                             loaderClass="loader"
@@ -404,7 +404,7 @@
                             <div class="fixed-screen-overflow">
                                 <LazyImg
                                     class="screen-preview-img"
-                                    src={pb.files.getUrl($transitionScreen, $transitionScreen.file)}
+                                    src={pb.files.getURL($transitionScreen, $transitionScreen.file)}
                                     alt={$transitionScreen.title}
                                     loading="eager"
                                     loaderClass="hidden"

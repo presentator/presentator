@@ -42,8 +42,8 @@
 
             if (
                 linkClient.authStore.isValid &&
-                linkClient.authStore.model?.collectionName == "links" &&
-                linkClient.authStore.model?.username == params.groups.linkSlug
+                linkClient.authStore.record?.collectionName == "links" &&
+                linkClient.authStore.record?.username == params.groups.linkSlug
             ) {
                 try {
                     // try direct retrieval since authRefresh is faster
@@ -67,7 +67,7 @@
             }
 
             // replace the default pb store with the one from the link
-            if (!pb.authStore.isValid || !link.expand?.project?.users?.includes(pb.authStore.model?.id)) {
+            if (!pb.authStore.isValid || !link.expand?.project?.users?.includes(pb.authStore.record?.id)) {
                 pb.initStore(params.groups.linkSlug);
             }
 

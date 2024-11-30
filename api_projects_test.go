@@ -17,52 +17,65 @@ func TestProjectsList(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/projects/records",
+			URL:             "/api/collections/projects/records",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with no projects",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with projects",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				`"totalItems":4`,
 				`"id":"776t18b1tmishx2"`,
 				`"id":"kk69rwtejro96iz"`,
 				`"id":"t45bjlayvsx2yj0"`,
 				`"id":"bhzozkkxldbr9ui"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       4,
 			},
 		},
 	}
@@ -79,60 +92,75 @@ func TestProjectsView(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:             "/api/collections/projects/records/t45bjlayvsx2yj0",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link for different project",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records/ddn9jjr12d1kms7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/ddn9jjr12d1kms7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link for the viewed project",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"t45bjlayvsx2yj0"`},
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as user non-owner",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
 			Method: http.MethodGet,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
 			ExpectedContent: []string{`"id":"t45bjlayvsx2yj0"`},
 			ExpectedEvents: map[string]int{
+				"*":                   0,
 				"OnRecordViewRequest": 1,
 				// lastViewed prefs update
-				"OnModelAfterUpdate":  1,
-				"OnModelBeforeUpdate": 1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -149,42 +177,54 @@ func TestProjectsCreate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPost,
-			Url:             "/api/collections/projects/records",
+			URL:             "/api/collections/projects/records",
 			Body:            strings.NewReader(`{"title":"new", "users":["nwl39aj35c02p7l"]}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPost,
-			Url:    "/api/collections/projects/records",
+			URL:    "/api/collections/projects/records",
 			Body:   strings.NewReader(`{"title":"new", "users":["nwl39aj35c02p7l"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user nonexisting in the users list",
 			Method: http.MethodPost,
-			Url:    "/api/collections/projects/records",
+			URL:    "/api/collections/projects/records",
 			Body:   strings.NewReader(`{"title":"new", "users":["nwl39aj35c02p7l"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user existing in the users list",
 			Method: http.MethodPost,
-			Url:    "/api/collections/projects/records",
+			URL:    "/api/collections/projects/records",
 			Body:   strings.NewReader(`{"title":"new", "users":["nwl39aj35c02p7l", "0dwe3z1d444g9mo"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory: setupTestApp,
@@ -195,29 +235,47 @@ func TestProjectsCreate(t *testing.T) {
 				`"users":["nwl39aj35c02p7l","0dwe3z1d444g9mo"]`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          3, // +user preferences
-				"OnModelBeforeCreate":         3,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelCreate":              3, // +user preferences
+				"OnModelValidate":            3,
+				"OnModelCreateExecute":       3,
+				"OnModelAfterCreateSuccess":  3,
+				"OnRecordCreate":             3,
+				"OnRecordValidate":           3,
+				"OnRecordCreateExecute":      3,
+				"OnRecordAfterCreateSuccess": 3,
+				"OnRecordEnrich":             1,
+				"OnMailerSend":               1,
 			},
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
-				if len(app.TestMailer.SentMessages) != 1 || len(app.TestMailer.LastMessage.To) != 1 || app.TestMailer.LastMessage.To[0].Address != "test1@example.com" {
-					t.Fatalf("Expected exactly 1 assigned project email to %s: %v", "test1@example.com", app.TestMailer.LastMessage)
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
+				if app.TestMailer.TotalSend() != 1 || len(app.TestMailer.LastMessage().To) != 1 || app.TestMailer.LastMessage().To[0].Address != "test1@example.com" {
+					t.Fatalf("Expected exactly 1 assigned project email to %s: %v", "test1@example.com", app.TestMailer.LastMessage())
 				}
 			},
 		},
 		{
 			Name:   "auth as user existing in the users list but with invalid data",
 			Method: http.MethodPost,
-			Url:    "/api/collections/projects/records",
+			URL:    "/api/collections/projects/records",
 			Body:   strings.NewReader(`{"title":"", "users":["nwl39aj35c02p7l", "0dwe3z1d444g9mo"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 400,
 			ExpectedContent: []string{
 				`"title":{"code":"validation_required"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                        0,
+				"OnRecordCreateRequest":    1,
+				"OnModelCreate":            1,
+				"OnModelValidate":          1,
+				"OnModelAfterCreateError":  1,
+				"OnRecordCreate":           1,
+				"OnRecordValidate":         1,
+				"OnRecordAfterCreateError": 1,
 			},
 		},
 	}
@@ -234,42 +292,45 @@ func TestProjectsUpdate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPatch,
-			Url:             "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:             "/api/collections/projects/records/t45bjlayvsx2yj0",
 			Body:            strings.NewReader(`{"archived":true}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
 			Body:   strings.NewReader(`{"archived":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as non-owner user",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
 			Body:   strings.NewReader(`{"archived":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as owner user",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
 			Body:   strings.NewReader(`{"archived":true}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			Delay:          100 * time.Millisecond, // short delay for the emails goroutine
@@ -280,23 +341,30 @@ func TestProjectsUpdate(t *testing.T) {
 				`"archived":true`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
-				if total := len(app.TestMailer.SentMessages); total != 0 {
-					t.Fatalf("Expected 0 notification emails, got %d:\n%v", total, app.TestMailer.SentMessages)
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
+				if total := app.TestMailer.TotalSend(); total != 0 {
+					t.Fatalf("Expected 0 notification emails, got %d:\n%v", total, app.TestMailer.Messages())
 				}
 			},
 		},
 		{
 			Name:   "auth as owner user removing one owner and adding another",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
 			Body:   strings.NewReader(`{"users":["nwl39aj35c02p7l","0dwe3z1d444g9mo"]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -307,19 +375,35 @@ func TestProjectsUpdate(t *testing.T) {
 				`"users":["nwl39aj35c02p7l","0dwe3z1d444g9mo"]`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnMailerSend":               2,
+				"OnModelValidate":            2, // + user prefs create
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           2,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 				// because of user prefs
-				"OnModelAfterCreate":  1,
-				"OnModelBeforeCreate": 1,
-				"OnModelAfterDelete":  1,
-				"OnModelBeforeDelete": 1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnModelDelete":              1,
+				"OnModelDeleteExecute":       1,
+				"OnModelAfterDeleteSuccess":  1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordDelete":             1,
+				"OnRecordDeleteExecute":      1,
+				"OnRecordAfterDeleteSuccess": 1,
 			},
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
 				// ensure that the old user pref was removed
-				oldUserPref, _ := app.Dao().FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
+				oldUserPref, _ := app.FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
 					"project": "t45bjlayvsx2yj0",
 					"user":    "7rs5wkqeb5gggmn",
 				})
@@ -328,7 +412,7 @@ func TestProjectsUpdate(t *testing.T) {
 				}
 
 				// ensure that the new user pref was created
-				_, newUserPrefErr := app.Dao().FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
+				_, newUserPrefErr := app.FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
 					"project": "t45bjlayvsx2yj0",
 					"user":    "0dwe3z1d444g9mo",
 				})
@@ -336,12 +420,12 @@ func TestProjectsUpdate(t *testing.T) {
 					t.Fatal("Expected the new project user preference to be created, got nil", newUserPrefErr)
 				}
 
-				if total := len(app.TestMailer.SentMessages); total != 2 {
+				if total := app.TestMailer.TotalSend(); total != 2 {
 					t.Fatalf("Expected %d notification emails, got %d", 2, total)
 				}
 
 				var hasAssignedEmail bool
-				for _, m := range app.TestMailer.SentMessages {
+				for _, m := range app.TestMailer.Messages() {
 					if m.To[0].Address == "test4@example.com" &&
 						strings.Contains(m.Subject, "project access granted") {
 						hasAssignedEmail = true
@@ -353,7 +437,7 @@ func TestProjectsUpdate(t *testing.T) {
 				}
 
 				var hasUnassignedEmail bool
-				for _, m := range app.TestMailer.SentMessages {
+				for _, m := range app.TestMailer.Messages() {
 					if m.To[0].Address == "test2@example.com" &&
 						strings.Contains(m.Subject, "project access removed") {
 						hasUnassignedEmail = true
@@ -379,57 +463,64 @@ func TestProjectsDelete(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodDelete,
-			Url:             "/api/collections/projects/records/t45bjlayvsx2yj0",
+			URL:             "/api/collections/projects/records/t45bjlayvsx2yj0",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as non-owner user",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as owner user",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/projects/records/t45bjlayvsx2yj0",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/projects/records/t45bjlayvsx2yj0",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			Delay:          100 * time.Millisecond, // short delay for the emails goroutine
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
 			ExpectedEvents: map[string]int{
-				"OnRecordAfterDeleteRequest":  1,
-				"OnRecordBeforeDeleteRequest": 1,
+				"*":                     0,
+				"OnRecordDeleteRequest": 1,
 				// include cascade deleted rels
-				"OnModelAfterDelete":  24,
-				"OnModelBeforeDelete": 24,
+				"OnModelDelete":              24,
+				"OnModelDeleteExecute":       24,
+				"OnModelAfterDeleteSuccess":  24,
+				"OnRecordDelete":             24,
+				"OnRecordDeleteExecute":      24,
+				"OnRecordAfterDeleteSuccess": 24,
 			},
-			AfterTestFunc: func(t *testing.T, app *tests.TestApp, res *http.Response) {
-				if total := len(app.TestMailer.SentMessages); total != 0 {
-					t.Fatalf("Expected 0 notification emails, got %d:\n%v", total, app.TestMailer.SentMessages)
+			AfterTestFunc: func(t testing.TB, app *tests.TestApp, res *http.Response) {
+				if total := app.TestMailer.TotalSend(); total != 0 {
+					t.Fatalf("Expected 0 notification emails, got %d:\n%v", total, app.TestMailer.TotalSend())
 				}
 
 				// check if the project was actually deleted
-				p, _ := app.Dao().FindRecordById("projects", "t45bjlayvsx2yj0")
+				p, _ := app.FindRecordById("projects", "t45bjlayvsx2yj0")
 				if p != nil {
 					t.Fatalf("Expected project %q to be deleted", p.Id)
 				}

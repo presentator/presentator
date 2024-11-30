@@ -105,17 +105,17 @@ class AppAuthStore extends LocalAuthStore {
     constructor(storageKey = "pr_user_auth") {
         super(storageKey);
 
-        this.save(this.token, this.model);
+        this.save(this.token, this.record);
     }
 
     /**
      * @inheritdoc
      */
-    save(token, model) {
-        super.save(token, model);
+    save(token, record) {
+        super.save(token, record);
 
-        if (model && model.collectionName == "users") {
-            setLoggedUser(model);
+        if (record && record.collectionName == "users") {
+            setLoggedUser(record);
         }
     }
 
@@ -123,7 +123,7 @@ class AppAuthStore extends LocalAuthStore {
      * @inheritdoc
      */
     clear() {
-        if (this.model?.collectionName == "users") {
+        if (this.record?.collectionName == "users") {
             setLoggedUser(null);
         }
 
@@ -138,22 +138,24 @@ pb.initStore();
 // we create a separate temp store to ensure that the authRefresh() is
 // applied on the default pb.authStore even if it is replaced at later stage (eg. in case of a link auth)
 if (pb.authStore.isValid) {
-    const temp = new PocketBase(pb.baseUrl, pb.authStore);
-    temp.collection(temp.authStore.model.collectionName)
+    const temp = new PocketBase(pb.baseURL, pb.authStore);
+    temp.collection(temp.authStore.record.collectionName)
         .authRefresh()
         .catch((err) => {
-            console.warn("Failed to refresh the authenticated model", err);
+            console.warn("Failed to refresh the authenticated record", err);
 
             // clear the store only on invalidated/expired token
             const status = err?.status << 0;
             if (status == 401 || status == 403) {
+                temp.rememberPath();
                 temp.authStore.clear();
+                replace("/login");
             }
         });
 }
 
 export function createLinkClient(storeSuffix) {
-    const client = new PocketBase(pb.baseUrl);
+    const client = new PocketBase(pb.baseURL);
 
     client.initStore(storeSuffix);
 

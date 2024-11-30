@@ -45,7 +45,7 @@ func main() {
 
 	var migrationsDir string
 	if isGoRun() {
-		migrationsDir = filepath.Join(app.DataDir(), "../../migrations")
+		migrationsDir = filepath.Join(app.DataDir(), "../migrations")
 	}
 	app.RootCmd.PersistentFlags().StringVar(
 		&migrationsDir,
@@ -82,8 +82,8 @@ func main() {
 
 	// update app options
 	app.Store().Set(presentator.OptionFooterLinks, arrayLinksToMap(footerLinks))
-	app.Store().Set(presentator.OptionAllowHotspotsUrl, allowHotspotsUrl)
-	app.Store().Set(presentator.OptionTermsUrl, termsUrl)
+	app.Store().Set(presentator.OptionAllowHotspotsURL, allowHotspotsUrl)
+	app.Store().Set(presentator.OptionTermsURL, termsUrl)
 
 	// ---------------------------------------------------------------
 	// Plugins and hooks:

@@ -9,20 +9,18 @@ import (
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/daos"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/list"
 	"github.com/pocketbase/pocketbase/tools/types"
 	"golang.org/x/sync/errgroup"
 )
 
-func createNotifications(app core.App, comment *models.Record) error {
-	notificationsCollection, err := app.Dao().FindCollectionByNameOrId("notifications")
+func createNotifications(app core.App, comment *core.Record) error {
+	notificationsCollection, err := app.FindCollectionByNameOrId("notifications")
 	if err != nil {
 		return err
 	}
 
-	project, err := getProjectWithUsersByComment(app.Dao(), comment)
+	project, err := getProjectWithUsersByComment(app, comment)
 	if err != nil {
 		return err
 	}
@@ -36,7 +34,7 @@ func createNotifications(app core.App, comment *models.Record) error {
 			continue
 		}
 
-		pref, err := app.Dao().FindFirstRecordByFilter("projectUserPreferences", "user={:user} && project={:project}", dbx.Params{
+		pref, err := app.FindFirstRecordByFilter("projectUserPreferences", "user={:user} && project={:project}", dbx.Params{
 			"user":    user.Id,
 			"project": project.Id,
 		})
@@ -49,18 +47,18 @@ func createNotifications(app core.App, comment *models.Record) error {
 		if !pref.GetBool("watch") {
 			// check if mentioned
 			mentions := extractMentions(comment.GetString("message"))
-			if !list.ExistInSlice(user.Username(), mentions) {
+			if !list.ExistInSlice(user.GetString("username"), mentions) {
 				continue
 			}
 		}
 
-		record := models.NewRecord(notificationsCollection)
+		record := core.NewRecord(notificationsCollection)
 		record.Set("user", user.Id)
 		record.Set("comment", comment.Id)
 		// mark as processed to prevent sending email notification
 		record.Set("processed", !user.GetBool("allowEmailNotifications"))
 
-		if err := app.Dao().SaveRecord(record); err != nil {
+		if err := app.Save(record); err != nil {
 			errs = append(errs, err)
 			continue
 		}
@@ -69,14 +67,13 @@ func createNotifications(app core.App, comment *models.Record) error {
 	return errors.Join(errs...)
 }
 
-func getProjectWithUsersByComment(dao *daos.Dao, comment *models.Record) (*models.Record, error) {
-	clone := comment.CleanCopy() // create a copy to avoid modifying the original record
-	if errs := dao.ExpandRecord(clone, []string{"screen.prototype.project.users"}, nil); len(errs) > 0 {
+func getProjectWithUsersByComment(app core.App, comment *core.Record) (*core.Record, error) {
+	model := comment.Fresh() // create a copy to avoid modifying the original record
+	if errs := app.ExpandRecord(model, []string{"screen.prototype.project.users"}, nil); len(errs) > 0 {
 		return nil, fmt.Errorf("failed to expand: %v", errs)
 	}
 
 	// extract the project from the expanded relations
-	model := clone
 	rels := []string{"screen", "prototype", "project"}
 	for _, rel := range rels {
 		model = model.ExpandedOne(rel)
@@ -111,7 +108,7 @@ func extractMentions(message string) []string {
 // -------------------------------------------------------------------
 
 func processUnreadNotifications(app core.App, limit int) error {
-	notifications, err := findUnreadNotifications(app.Dao(), limit)
+	notifications, err := findUnreadNotifications(app, limit)
 	if err != nil {
 		return fmt.Errorf("failed to fetch unread notifications: %w", err)
 	}
@@ -130,7 +127,7 @@ func processUnreadNotifications(app core.App, limit int) error {
 			var errs []error
 			for _, n := range notifications {
 				n.Set("processed", true)
-				if err := app.Dao().SaveRecord(n); err != nil {
+				if err := app.Save(n); err != nil {
 					errs = append(errs, err)
 				}
 			}
@@ -146,13 +143,13 @@ func processUnreadNotifications(app core.App, limit int) error {
 	return nil
 }
 
-func findUnreadNotifications(dao *daos.Dao, limit int) (map[string][]*models.Record, error) {
-	notifications := []*models.Record{}
+func findUnreadNotifications(app core.App, limit int) (map[string][]*core.Record, error) {
+	notifications := []*core.Record{}
 
 	// the notification must be created at least 2 minutes ago
 	minDate := time.Now().Add(-2 * time.Minute).UTC().Format(types.DefaultDateLayout)
 
-	query := dao.RecordQuery("notifications").
+	query := app.RecordQuery("notifications").
 		AndWhere(dbx.NewExp("created <= {:created}", dbx.Params{"created": minDate})).
 		AndWhere(dbx.HashExp{
 			"read":      false,
@@ -165,7 +162,7 @@ func findUnreadNotifications(dao *daos.Dao, limit int) (map[string][]*models.Rec
 		return nil, err
 	}
 
-	result := map[string][]*models.Record{}
+	result := map[string][]*core.Record{}
 
 	for _, n := range notifications {
 		user := n.GetString("user")

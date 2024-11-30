@@ -14,7 +14,7 @@
         mode,
         changeMode,
         fitToScreen,
-        loadModeFromUrl,
+        loadModeFromURL,
         modes,
         getScreenOrder,
         initScreensSubscription,
@@ -67,7 +67,7 @@
     let screenNavWrapper;
     let latestActiveScreenId = params.screenId;
 
-    loadModeFromUrl();
+    loadModeFromURL();
     loadFitToScreen();
 
     load(params.prototypeId, params.screenId);

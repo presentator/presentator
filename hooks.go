@@ -1,21 +1,11 @@
 package presentator
 
 import (
-	"context"
-	"fmt"
 	"net/http"
-	"time"
 
-	"github.com/labstack/echo/v5"
-	"github.com/labstack/echo/v5/middleware"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/forms"
-	"github.com/pocketbase/pocketbase/models"
-	"github.com/pocketbase/pocketbase/tools/auth"
-	"github.com/pocketbase/pocketbase/tools/cron"
-	"github.com/pocketbase/pocketbase/tools/filesystem"
 	"github.com/pocketbase/pocketbase/tools/hook"
 	"github.com/pocketbase/pocketbase/tools/list"
 	"github.com/pocketbase/pocketbase/tools/routine"
@@ -25,175 +15,156 @@ import (
 	"github.com/spf13/cast"
 )
 
-func uiCacheControl() echo.MiddlewareFunc {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			// add default Cache-Control header for all ui resources
-			// (ignoring the root path)
-			if c.Request().URL.Path != "/" {
-				c.Response().Header().Set("Cache-Control", "max-age=1209600, stale-while-revalidate=86400")
-			}
-
-			return next(c)
-		}
-	}
-}
-
 func bindAppHooks(app core.App) {
 	registerSystemEmails(app)
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.Use(middleware.BodyLimit(300000000)) // max ~300MB body
+	// init default cron
+	// -----------------------------------------------------------
+	app.Cron().MustAdd("unread", "*/10 * * * *", func() {
+		if err := processUnreadNotifications(app, 1000); err != nil {
+			app.Logger().Error("Notifications cron failure", "error", err)
+		}
+	})
 
+	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
 		// serves static files from the /ui/dist directory
-		e.Router.GET(
-			"/*",
-			apis.StaticDirectoryHandler(ui.DistDirFS, false),
-			uiCacheControl(),
-			middleware.Gzip(),
-		)
-
-		// init default cron
-		// -----------------------------------------------------------
-		scheduler := cron.New()
-		scheduler.MustAdd("unread", "*/10 * * * *", func() {
-			if err := processUnreadNotifications(app, 1000); err != nil {
-				app.Logger().Error("Notifications cron failure", "error", err)
-			}
-		})
-		scheduler.Start()
+		e.Router.GET("/{path...}", apis.Static(ui.DistDirFS, false)).
+			BindFunc(func(e *core.RequestEvent) error {
+				// add default Cache-Control header for all ui resources // (ignoring the root path)
+				if e.Request.URL.Path != "/" {
+					e.Response.Header().Set("Cache-Control", "max-age=1209600, stale-while-revalidate=86400")
+				}
+				return e.Next()
+			}).
+			Bind(apis.Gzip())
 
 		// custom routes
 		// -----------------------------------------------------------
-		e.Router.GET("/api/pr/options", func(c echo.Context) error {
+		e.Router.GET("/api/pr/options", func(e *core.RequestEvent) error {
 			options := struct {
 				Links            map[string]string `json:"links"`
 				AppName          string            `json:"appName"`
-				AppUrl           string            `json:"appUrl"`
-				TermsUrl         string            `json:"termsUrl"`
-				AllowHotspotsUrl bool              `json:"allowHotspotsUrl"`
+				AppURL           string            `json:"appURL"`
+				TermsURL         string            `json:"termsURL"`
+				AllowHotspotsURL bool              `json:"allowHotspotsURL"`
 			}{
 				Links:            cast.ToStringMapString(app.Store().Get(OptionFooterLinks)),
 				AppName:          app.Settings().Meta.AppName,
-				AppUrl:           app.Settings().Meta.AppUrl,
-				TermsUrl:         cast.ToString(app.Store().Get(OptionTermsUrl)),
-				AllowHotspotsUrl: cast.ToBool(app.Store().Get(OptionAllowHotspotsUrl)),
+				AppURL:           app.Settings().Meta.AppURL,
+				TermsURL:         cast.ToString(app.Store().Get(OptionTermsURL)),
+				AllowHotspotsURL: cast.ToBool(app.Store().Get(OptionAllowHotspotsURL)),
 			}
 
-			return c.JSON(http.StatusOK, options)
-		}, apis.ActivityLogger(app))
+			return e.JSON(http.StatusOK, options)
+		})
 
 		e.Router.POST(
-			"/api/pr/duplicate-prototype/:prototypeId",
-			duplicatePrototype(app),
-			apis.ActivityLogger(app),
-			apis.RequireAdminOrRecordAuth("users"),
-		)
+			"/api/pr/duplicate-prototype/{prototypeId}",
+			duplicatePrototype,
+		).Bind(apis.RequireAuth(core.CollectionNameSuperusers, "users"))
 
-		e.Router.POST("/api/pr/report", func(c echo.Context) error {
-			link, _ := c.Get(apis.ContextAuthRecordKey).(*models.Record)
+		e.Router.POST("/api/pr/report", func(e *core.RequestEvent) error {
+			link := e.Auth
 			if link == nil {
-				return apis.NewNotFoundError("Missing auth link context.", nil)
+				return e.NotFoundError("Missing auth link context.", nil)
 			}
 
-			form := newReportForm(app, link)
+			form := newReportForm(e.App, link)
 
-			if err := c.Bind(form); err != nil {
-				return apis.NewBadRequestError("Failed to read the request data.", err)
+			if err := e.BindBody(form); err != nil {
+				return e.BadRequestError("Failed to read the request data.", err)
 			}
 
 			if err := form.Submit(); err != nil {
-				return apis.NewBadRequestError("Failed to submit the report.", err)
+				return e.BadRequestError("Failed to submit the report.", err)
 			}
 
-			return c.NoContent(http.StatusNoContent)
-		}, apis.ActivityLogger(app), apis.RequireRecordAuth("links"))
+			return e.NoContent(http.StatusNoContent)
+		}).Bind(apis.RequireAuth("links"))
 
-		e.Router.POST("/api/pr/share/:linkId", func(c echo.Context) error {
-			link, err := app.Dao().FindRecordById("links", c.PathParam("linkId"))
+		e.Router.POST("/api/pr/share/{linkId}", func(e *core.RequestEvent) error {
+			link, err := e.App.FindRecordById("links", e.Request.PathValue("linkId"))
 			if err != nil {
-				return apis.NewNotFoundError("Missing or invalid project link.", err)
+				return e.NotFoundError("Missing or invalid project link.", err)
 			}
 
-			project, err := app.Dao().FindRecordById("projects", link.GetString("project"))
+			project, err := e.App.FindRecordById("projects", link.GetString("project"))
 			if err != nil {
-				return apis.NewNotFoundError("Failed to load link project.", err)
+				return e.NotFoundError("Failed to load link project.", err)
 			}
 
-			info := apis.RequestInfo(c)
-			if info.Admin == nil {
-				if ok, err := app.Dao().CanAccessRecord(project, info, project.Collection().ViewRule); !ok {
-					return apis.NewForbiddenError("You are not allowed to share the project link.", err)
+			if !e.HasSuperuserAuth() {
+				info, err := e.RequestInfo()
+				if err != nil {
+					return e.InternalServerError("", err)
+				}
+				if ok, err := e.App.CanAccessRecord(project, info, project.Collection().ViewRule); !ok {
+					return e.ForbiddenError("You are not allowed to share the project link.", err)
 				}
 			}
 
-			form := newShareForm(app, project, link)
+			form := newShareForm(e.App, project, link, e.Auth)
 
-			if err := c.Bind(form); err != nil {
-				return apis.NewBadRequestError("Failed to read the request data.", err)
+			if err := e.BindBody(form); err != nil {
+				return e.BadRequestError("Failed to read the request data.", err)
 			}
 
 			if err := form.Submit(); err != nil {
-				return apis.NewBadRequestError("An error occured during the submission.", err)
+				return e.BadRequestError("An error occured during the submission.", err)
 			}
 
-			return c.NoContent(http.StatusNoContent)
-		}, apis.ActivityLogger(app), apis.RequireAdminOrRecordAuth("users"))
+			return e.NoContent(http.StatusNoContent)
+		}).Bind(apis.RequireAuth(core.CollectionNameSuperusers, "users"))
 
-		return nil
-	})
-
-	// use the OAuth2 profile data to populate the newly created user
-	// ---------------------------------------------------------------
-	app.OnRecordAfterAuthWithOAuth2Request("users").Add(func(e *core.RecordAuthWithOAuth2Event) error {
-		if !e.IsNewRecord {
-			return nil
-		}
-
-		if err := updateAuthRecordWithOAuth2User(app, e.Record, e.OAuth2User); err != nil {
-			app.Logger().Warn("Failed to update user with the OAuth2 profile data", "error", err)
-		}
-
-		return nil
+		return e.Next()
 	})
 
 	// authenticate directly without password for unprotected links
 	// ---------------------------------------------------------------
-	app.OnRecordBeforeAuthWithPasswordRequest("links").Add(func(e *core.RecordAuthWithPasswordEvent) error {
-		if e.Record == nil || e.Record.GetBool("passwordProtect") {
-			return nil
-		}
+	app.OnRecordAuthWithPasswordRequest("links").Bind(&hook.Handler[*core.RecordAuthWithPasswordRequestEvent]{
+		Func: func(e *core.RecordAuthWithPasswordRequestEvent) error {
+			if e.Record == nil || e.Record.GetBool("passwordProtect") {
+				return e.Next()
+			}
 
-		if err := apis.RecordAuthResponse(app, e.HttpContext, e.Record, nil); err != nil {
-			return err
-		}
-
-		return hook.StopPropagation
+			return apis.RecordAuthResponse(e.RequestEvent, e.Record, "", nil)
+		},
+		Priority: 9999, // execute as later as possible
 	})
 
-	// generate random 8 character link "slug"
+	// overwrite user submitted username with random generated "slug"
 	// ---------------------------------------------------------------
-	app.OnRecordBeforeCreateRequest("links").Add(func(e *core.RecordCreateEvent) error {
-		return e.Record.SetUsername(security.RandomStringWithAlphabet(8, "abcdefghijklmnopqrstuvwxyz0123456789"))
+	app.OnRecordCreateRequest("links").BindFunc(func(e *core.RecordRequestEvent) error {
+		e.Record.Set("username", security.RandomStringWithAlphabet(9, "abcdefghijklmnopqrstuvwxyz0123456789"))
+
+		return e.Next()
 	})
 
 	// validate hotspot settings
 	// ---------------------------------------------------------------
-	app.OnRecordBeforeCreateRequest("hotspots").Add(func(e *core.RecordCreateEvent) error {
-		return filterAndValidateHotspotSettings(app, e.Record)
-	})
+	onHotspotsCreateOrUpdate := func(e *core.RecordRequestEvent) error {
+		if err := filterAndValidateHotspotSettings(e.App, e.Record); err != nil {
+			return err
+		}
 
-	app.OnRecordBeforeUpdateRequest("hotspots").Add(func(e *core.RecordUpdateEvent) error {
-		return filterAndValidateHotspotSettings(app, e.Record)
-	})
+		return e.Next()
+	}
+	app.OnRecordCreateRequest("hotspots").BindFunc(onHotspotsCreateOrUpdate)
+	app.OnRecordUpdateRequest("hotspots").BindFunc(onHotspotsCreateOrUpdate)
 
 	// sync project owners list with the preferences collection
 	// ---------------------------------------------------------------
-	app.OnRecordAfterCreateRequest("projects").Add(func(e *core.RecordCreateEvent) error {
-		userIds := e.Record.GetStringSlice("users")
-		authRecord, _ := e.HttpContext.Get(apis.ContextAuthRecordKey).(*models.Record)
+	app.OnRecordCreateRequest("projects").BindFunc(func(e *core.RecordRequestEvent) error {
+		if err := e.Next(); err != nil {
+			return err
+		}
 
-		createDefaultPreferences(app, e.Record, userIds)
+		authRecord := e.Auth
+
+		project := e.Record
+		userIds := project.GetStringSlice("users")
+
+		createDefaultPreferences(e.App, project, userIds)
 
 		// send notifications to all other owners
 		routine.FireAndForget(func() {
@@ -202,8 +173,8 @@ func bindAppHooks(app core.App) {
 					continue // admin or the current auth user
 				}
 
-				if err := sendAddedOwnerEmail(app, e.Record, id); err != nil {
-					app.Logger().Warn("Failed to notify assigned project owner", "project", e.Record.Id, "error", err)
+				if err := sendAddedOwnerEmail(app, project, authRecord, id); err != nil {
+					app.Logger().Warn("Failed to notify assigned project owner", "project", project.Id, "error", err)
 				}
 			}
 		})
@@ -211,21 +182,29 @@ func bindAppHooks(app core.App) {
 		return nil
 	})
 
-	app.OnRecordAfterUpdateRequest("projects").Add(func(e *core.RecordUpdateEvent) error {
-		oldUserIds := e.Record.OriginalCopy().GetStringSlice("users")
-		newUserIds := e.Record.GetStringSlice("users")
+	app.OnRecordUpdateRequest("projects").BindFunc(func(e *core.RecordRequestEvent) error {
+		if err := e.Next(); err != nil {
+			return err
+		}
+
+		authRecord := e.Auth
+
+		project := e.Record
+
+		oldUserIds := project.Original().GetStringSlice("users")
+		newUserIds := project.GetStringSlice("users")
 		newIds := list.SubtractSlice(newUserIds, oldUserIds)
 		removedIds := list.SubtractSlice(oldUserIds, newUserIds)
 
 		if len(newIds) > 0 {
 			// create new users prefs
-			createDefaultPreferences(app, e.Record, newIds)
+			createDefaultPreferences(e.App, project, newIds)
 
 			// notify assigned
 			routine.FireAndForget(func() {
 				for _, id := range newIds {
-					if err := sendAddedOwnerEmail(app, e.Record, id); err != nil {
-						app.Logger().Warn("Failed to notify assigned project owner", "project", e.Record.Id, "error", err)
+					if err := sendAddedOwnerEmail(app, project, authRecord, id); err != nil {
+						app.Logger().Warn("Failed to notify assigned project owner", "project", project.Id, "error", err)
 					}
 				}
 			})
@@ -234,22 +213,22 @@ func bindAppHooks(app core.App) {
 		if len(removedIds) > 0 {
 			// delete removed user prefs
 			for _, id := range removedIds {
-				pref, err := app.Dao().FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
-					"project": e.Record.Id,
+				pref, err := e.App.FindFirstRecordByFilter("projectUserPreferences", "project={:project} && user={:user}", dbx.Params{
+					"project": project.Id,
 					"user":    id,
 				})
 				if err != nil {
-					app.Logger().Warn("Missing user project preference to delete", "error", err, "user", id, "project", e.Record.Id)
-				} else if err := app.Dao().DeleteRecord(pref); err != nil {
-					app.Logger().Error("Failed to delete user project preference", "error", err, "user", id, "project", e.Record.Id)
+					e.App.Logger().Warn("Missing user project preference to delete", "error", err, "user", id, "project", project.Id)
+				} else if err := e.App.Delete(pref); err != nil {
+					e.App.Logger().Error("Failed to delete user project preference", "error", err, "user", id, "project", project.Id)
 				}
 			}
 
 			// notify unassigned
 			routine.FireAndForget(func() {
 				for _, id := range removedIds {
-					if err := sendRemovedOwnerEmail(app, e.Record, id); err != nil {
-						app.Logger().Warn("Failed to notify unassigned project owner", "project", e.Record.Id, "error", err)
+					if err := sendRemovedOwnerEmail(app, project, authRecord, id); err != nil {
+						app.Logger().Warn("Failed to notify unassigned project owner", "project", project.Id, "error", err)
 					}
 				}
 			})
@@ -261,127 +240,129 @@ func bindAppHooks(app core.App) {
 	// update the lastVisited project preference for the current user
 	// on project view and when uploading/replacing screens
 	// ---------------------------------------------------------------
-	app.OnRecordViewRequest("projects").Add(func(e *core.RecordViewEvent) error {
-		authRecord, _ := e.HttpContext.Get(apis.ContextAuthRecordKey).(*models.Record)
-		if authRecord == nil || authRecord.Collection().Name != "users" {
-			return nil
+	app.OnRecordViewRequest("projects").BindFunc(func(e *core.RecordRequestEvent) error {
+		if e.Auth == nil || e.Auth.Collection().Name != "users" {
+			return e.Next()
 		}
 
-		if err := updateLastVisitedPreference(app, authRecord.Id, e.Record.Id); err != nil {
-			app.Logger().Warn(
+		if err := updateLastVisitedPreference(e.App, e.Auth.Id, e.Record.Id); err != nil {
+			e.App.Logger().Warn(
 				"Failed to update lastVisited project preference",
 				"error", err,
 				"project", e.Record.Id,
-				"user", authRecord.Id,
+				"user", e.Auth.Id,
 			)
 		}
 
-		return nil
+		return e.Next()
 	})
 
-	onScreenCreateOrUpdate := func(c echo.Context, screen *models.Record) error {
-		authRecord, _ := c.Get(apis.ContextAuthRecordKey).(*models.Record)
-		if authRecord == nil || authRecord.Collection().Name != "users" {
+	onScreenCreateOrUpdate := func(e *core.RecordRequestEvent) error {
+		if err := e.Next(); err != nil {
+			return err
+		}
+
+		if e.Auth == nil || e.Auth.Collection().Name != "users" {
 			return nil
 		}
 
-		prototype, err := app.Dao().FindRecordById("prototypes", screen.GetString("prototype"))
+		screen := e.Record
+
+		prototype, err := e.App.FindRecordById("prototypes", screen.GetString("prototype"))
 		if err != nil {
-			app.Logger().Warn("Failed to find screen prototype to update its project lastVisited preference and screensOrder", "error", err, "screen", screen.Id, "prototype", screen.GetString("prototype"))
+			e.App.Logger().Warn("Failed to find screen prototype to update its project lastVisited preference and screensOrder", "error", err, "screen", screen.Id, "prototype", screen.GetString("prototype"))
 			return nil
 		}
 
 		// update lastVisited
 		// ---
 		projectId := prototype.GetString("project")
-		if err := updateLastVisitedPreference(app, authRecord.Id, projectId); err != nil {
-			app.Logger().Warn(
+		if err := updateLastVisitedPreference(e.App, e.Auth.Id, projectId); err != nil {
+			e.App.Logger().Warn(
 				"Failed to update lastVisited project preference",
 				"error", err,
 				"project", projectId,
-				"user", authRecord.Id,
+				"user", e.Auth.Id,
 				"screen", screen.Id,
 			)
 		}
 
 		// if not already, remove the screen from the old prototype screensOrder field
 		// ---
-		oldPrototypeId := screen.OriginalCopy().GetString("prototype")
+		oldPrototypeId := screen.Original().GetString("prototype")
 		if oldPrototypeId == "" || oldPrototypeId == prototype.Id {
 			return nil // no prototype change
 		}
 
-		oldPrototype, err := app.Dao().FindRecordById("prototypes", oldPrototypeId)
+		oldPrototype, err := e.App.FindRecordById("prototypes", oldPrototypeId)
 		if err != nil {
-			app.Logger().Warn("Failed to find old screen prototype to update its screensOrder", "error", err, "screen", screen.Id, "prototype", oldPrototypeId)
+			e.App.Logger().Warn("Failed to find old screen prototype to update its screensOrder", "error", err, "screen", screen.Id, "prototype", oldPrototypeId)
 			return nil
 		}
 
 		oldScreenIds := oldPrototype.GetStringSlice("screensOrder")
 		if list.ExistInSlice(screen.Id, oldScreenIds) {
 			oldPrototype.Set("screensOrder", list.SubtractSlice(oldScreenIds, []string{screen.Id}))
-			if err := app.Dao().SaveRecord(oldPrototype); err != nil {
-				app.Logger().Warn(
+			if err := e.App.Save(oldPrototype); err != nil {
+				e.App.Logger().Warn(
 					"Failed to update old prototype's screensOrder",
 					"error", err,
 					"prototype", prototype.Id,
 					"screen", screen.Id,
-					"user", authRecord.Id,
+					"user", e.Auth.Id,
 				)
 			}
 		}
 
 		return nil
 	}
-
-	app.OnRecordAfterCreateRequest("screens").Add(func(e *core.RecordCreateEvent) error {
-		return onScreenCreateOrUpdate(e.HttpContext, e.Record)
-	})
-
-	app.OnRecordAfterUpdateRequest("screens").Add(func(e *core.RecordUpdateEvent) error {
-		return onScreenCreateOrUpdate(e.HttpContext, e.Record)
-	})
+	app.OnRecordCreateRequest("screens").BindFunc(onScreenCreateOrUpdate)
+	app.OnRecordUpdateRequest("screens").BindFunc(onScreenCreateOrUpdate)
 
 	// create collaborators notifications after each new comment
 	// ---------------------------------------------------------------
-	app.OnRecordAfterCreateRequest("comments").Add(func(e *core.RecordCreateEvent) error {
-		if err := createNotifications(app, e.Record); err != nil {
-			app.Logger().Error("Failed to create comment notification", "comment", e.Record.Id, "error", err)
+	app.OnRecordCreateRequest("comments").BindFunc(func(e *core.RecordRequestEvent) error {
+		if err := e.Next(); err != nil {
+			return err
 		}
 
-		if err := sendGuestsEmail(app, e.Record); err != nil {
-			app.Logger().Error("Failed to send emails to all guests", "comment", e.Record.Id, "error", err)
+		if err := createNotifications(e.App, e.Record); err != nil {
+			e.App.Logger().Error("Failed to create comment notification", "comment", e.Record.Id, "error", err)
+		}
+
+		if err := sendGuestsEmail(e.App, e.Record); err != nil {
+			e.App.Logger().Error("Failed to send emails to all guests", "comment", e.Record.Id, "error", err)
 		}
 
 		return nil
 	})
 }
 
-func createDefaultPreferences(app core.App, project *models.Record, userIds []string) {
+func createDefaultPreferences(app core.App, project *core.Record, userIds []string) {
 	if len(userIds) == 0 {
 		return
 	}
 
-	preferencesCollection, err := app.Dao().FindCollectionByNameOrId("projectUserPreferences")
+	preferencesCollection, err := app.FindCollectionByNameOrId("projectUserPreferences")
 	if err != nil {
 		app.Logger().Error("Failed to find preferences collection", "error", err)
 		return
 	}
 
 	for _, id := range userIds {
-		pref := models.NewRecord(preferencesCollection)
+		pref := core.NewRecord(preferencesCollection)
 		pref.Set("project", project.Id)
 		pref.Set("user", id)
 		pref.Set("watch", true)
 		pref.Set("lastVisited", types.NowDateTime())
-		if err := app.Dao().SaveRecord(pref); err != nil {
+		if err := app.Save(pref); err != nil {
 			app.Logger().Error("Failed to save default user project preferences", "error", err, "user", id, "project", project.Id)
 		}
 	}
 }
 
 func updateLastVisitedPreference(app core.App, userId string, projectId string) error {
-	pref, err := app.Dao().FindFirstRecordByFilter("projectUserPreferences", `project = {:project} && user = {:user}`, dbx.Params{
+	pref, err := app.FindFirstRecordByFilter("projectUserPreferences", "project = {:project} && user = {:user}", dbx.Params{
 		"project": projectId,
 		"user":    userId,
 	})
@@ -391,36 +372,5 @@ func updateLastVisitedPreference(app core.App, userId string, projectId string) 
 
 	pref.Set("lastVisited", types.NowDateTime())
 
-	return app.Dao().SaveRecord(pref)
-}
-
-func updateAuthRecordWithOAuth2User(app core.App, record *models.Record, oauth2User *auth.AuthUser) error {
-	var needUpdate bool
-
-	form := forms.NewRecordUpsert(app, record)
-
-	if oauth2User.Name != "" && record.GetString("name") == "" {
-		needUpdate = true
-		form.LoadData(map[string]any{"name": oauth2User.Name})
-	}
-
-	if oauth2User.AvatarUrl != "" && record.GetString("avatar") == "" {
-		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-		defer cancel()
-
-		file, err := filesystem.NewFileFromUrl(ctx, oauth2User.AvatarUrl)
-		if err != nil {
-			return fmt.Errorf("failed to download OAuth2 avatar: %w", err)
-
-		}
-
-		needUpdate = true
-		form.AddFiles("avatar", file)
-	}
-
-	if !needUpdate {
-		return nil
-	}
-
-	return form.Submit()
+	return app.Save(pref)
 }

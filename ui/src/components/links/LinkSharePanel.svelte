@@ -20,7 +20,7 @@
     let message = "";
     let isSubmitting = false;
 
-    $: url = utils.getProjectLinkUrl(link);
+    $: url = utils.getProjectLinkURL(link);
 
     export function show(upsert = null) {
         reset();

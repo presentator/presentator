@@ -25,6 +25,8 @@
         try {
             await pb.collection("users").confirmPasswordReset(params?.token, password, passwordConfirm);
 
+            pb.authStore.clear();
+
             addSuccessToast("You can now login with your new password.", 4000);
 
             replace("/login");

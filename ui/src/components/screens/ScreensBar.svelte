@@ -67,7 +67,7 @@
                 }}
             >
                 <LazyImg
-                    src={pb.files.getUrl(screen, screen.file, { thumb: "100x100" })}
+                    src={pb.files.getURL(screen, screen.file, { thumb: "100x100" })}
                     alt={screen.title}
                 />
             </button>

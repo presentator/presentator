@@ -1,33 +1,31 @@
 <script>
     import { link } from "svelte-spa-router";
     import pb from "@/pb";
-    import tooltip from "@/actions/tooltip";
     import Layout from "@/components/base/Layout.svelte";
     import Logo from "@/components/base/Logo.svelte";
-    import Field from "@/components/base/Field.svelte";
     import SocialAuth from "@/components/base/SocialAuth.svelte";
-    import { addErrorToast, removeAllToasts } from "@/stores/toasts";
+    import OTPForm from "@/components/base/OTPForm.svelte";
+    import PasswordAuthForm from "@/components/base/PasswordAuthForm.svelte";
+    import { removeAllToasts } from "@/stores/toasts";
 
     const pageTitle = "Login";
 
-    let identityLabel = "";
     let authMethods = {};
     let isLoadingAuthMethods = false;
+    let mfaId = null;
     let identity = "";
-    let password = "";
-    let isSubmitting = false;
+    let usedAuthMethods = [];
 
-    $: hasPasswordAuth = authMethods.emailPassword || authMethods.usernamePassword;
+    $: hasOAuth2 = authMethods.oauth2?.enabled && authMethods.oauth2?.providers?.length;
 
-    $: if (authMethods.emailPassword && authMethods.usernamePassword) {
-        identityLabel = "Username or email";
-    } else if (authMethods.emailPassword) {
-        identityLabel = "Email";
-    } else if (authMethods.usernamePassword) {
-        identityLabel = "Username";
-    } else {
-        identityLabel = "";
-    }
+    $: hasOTP = authMethods.otp?.enabled;
+
+    $: hasPasswordAuth = authMethods.password?.enabled;
+
+    $: canShowPasswordAuth = hasPasswordAuth && !usedAuthMethods.includes("passwordAuth");
+
+    // note: currently show the otp only if password auth is disabled or as second auth factor
+    $: canShowOTP = !canShowPasswordAuth && hasOTP && !usedAuthMethods.includes("otp");
 
     loadAuthMethods();
 
@@ -46,24 +44,14 @@
         }
     }
 
-    async function submit() {
-        if (isSubmitting) {
-            return;
-        }
+    function afterAuthSubmit(authMethod, receivedMFAId) {
+        usedAuthMethods.push(authMethod);
+        usedAuthMethods = usedAuthMethods;
 
-        isSubmitting = true;
-
-        try {
-            await pb.collection("users").authWithPassword(identity, password);
-
+        if (!receivedMFAId) {
             removeAllToasts();
-
             pb.replaceWithRemembered();
-        } catch (err) {
-            addErrorToast("Invalid login credentials or unverified user.");
         }
-
-        isSubmitting = false;
     }
 </script>
 
@@ -73,78 +61,46 @@
             <Logo />
         </header>
 
-        <form class="panel txt-center" on:submit|preventDefault={submit}>
+        <div class="panel txt-center">
             <h4 class="m-b-base">{pageTitle}</h4>
 
             {#if isLoadingAuthMethods}
                 <span class="loader" />
             {:else}
                 <div class="panel-content">
-                    {#if hasPasswordAuth}
-                        <Field class="form-field form-field-lg" name="identity" let:uniqueId>
-                            <div class="field-group">
-                                <label
-                                    for={uniqueId}
-                                    class="addon prefix"
-                                    use:tooltip={{ position: "left", text: identityLabel }}
-                                >
-                                    <i class="iconoir-user" />
-                                </label>
-                                <!-- svelte-ignore a11y-autofocus -->
-                                <input
-                                    autofocus
-                                    required
-                                    type="text"
-                                    id={uniqueId}
-                                    placeholder={identityLabel}
-                                    bind:value={identity}
-                                />
-                            </div>
-                        </Field>
-
-                        <Field class="form-field form-field-lg" name="password" let:uniqueId>
-                            <div class="field-group m-b-10">
-                                <label
-                                    for={uniqueId}
-                                    class="addon prefix"
-                                    use:tooltip={{ position: "left", text: "Password" }}
-                                >
-                                    <i class="iconoir-lock" />
-                                </label>
-                                <input
-                                    required
-                                    type="password"
-                                    id={uniqueId}
-                                    placeholder="Password"
-                                    bind:value={password}
-                                />
-                            </div>
-                            <a href="/forgotten-password" class="link-primary txt-sm" use:link>
-                                Forgotten password?
-                            </a>
-                        </Field>
-
-                        <button
-                            type="submit"
-                            class="btn btn-block btn-lg btn-primary btn-next"
-                            class:btn-disabled={isSubmitting}
-                            class:btn-loading={isSubmitting}
-                        >
-                            <span class="txt">Login</span>
-                            <i class="iconoir-arrow-right" />
-                        </button>
+                    {#if canShowPasswordAuth}
+                        <PasswordAuthForm
+                            bind:mfaId
+                            bind:identity
+                            identityFields={authMethods.password.identityFields}
+                            on:submit={(e) => afterAuthSubmit("passwordAuth", e.detail?.mfaId)}
+                        />
                     {/if}
 
-                    {#if authMethods.authProviders.length}
-                        {#if hasPasswordAuth}
+                    {#if canShowOTP}
+                        <OTPForm
+                            bind:mfaId
+                            email={identity.includes("@") ? identity : ""}
+                            on:submit={(e) => afterAuthSubmit("otp", e.detail?.mfaId)}
+                        />
+                    {/if}
+
+                    {#if hasOAuth2 && !usedAuthMethods.includes("oaut2")}
+                        {#if canShowPasswordAuth || canShowOTP}
                             <p class="m-t-base m-b-sm">Or sign in with</p>
+                        {:else}
+                            <p class="m-b-sm">Sign in with</p>
                         {/if}
 
-                        <SocialAuth providers={authMethods.authProviders} />
+                        <SocialAuth
+                            providers={authMethods.oauth2.providers}
+                            bind:mfaId
+                            on:submit={(e) => afterAuthSubmit("oauth2", e.detail?.mfaId)}
+                        />
                     {/if}
                 </div>
             {/if}
-        </form>
+        </div>
 
         <div class="block txt-center m-t-base">
             <a href="/register" class="fade" use:link>

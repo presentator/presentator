@@ -11,14 +11,14 @@
     let url = "";
 
     $: if (file || user) {
-        loadFileUrl();
+        loadFileURL();
     }
 
-    async function loadFileUrl() {
+    async function loadFileURL() {
         if (file) {
             url = await utils.generateThumb(file);
         } else if (user?.avatar) {
-            url = pb.files.getUrl(user, user.avatar, { thumb: "100x100" });
+            url = pb.files.getURL(user, user.avatar, { thumb: "100x100" });
         } else {
             url = "";
         }

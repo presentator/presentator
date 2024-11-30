@@ -15,7 +15,7 @@ export function addErrorToast(message, duration = 4000) {
     return addToast(message, "error", duration);
 }
 
-export function addWarningToast(message, duration = 4000) {
+export function addWarningToast(message, duration = 4500) {
     return addToast(message, "warning", duration);
 }
 

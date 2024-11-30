@@ -1,4 +1,5 @@
 <script>
+    import { onDestroy } from "svelte";
     import { link } from "svelte-spa-router";
     import { fly } from "svelte/transition";
     import { flip } from "svelte/animate";
@@ -14,6 +15,8 @@
         isLoadingScreens,
         removeScreen,
         replaceScreenWithConfirm,
+        unsubscribeScreensFunc,
+        initScreensSubscription,
     } from "@/stores/screens";
     import { notifications } from "@/stores/notifications";
     import Field from "@/components/base/Field.svelte";
@@ -24,15 +27,24 @@
     import InlineTitleEdit from "@/components/base/InlineTitleEdit.svelte";
     import ScreenUploader from "@/components/screens/ScreenUploader.svelte";
 
-    let oldActivePrototypeId;
     let selectedScreens = {};
     let isBulkDeleting = false;
     let isBulkMoving = false;
     let isReordering = false;
     let yieldMax = 0;
+    let oldActivePrototypeId;
+    let oldActivePrototypeScreensOrderHash;
+    let refreshScreensOrderDebounceId;
 
     $: if (oldActivePrototypeId != $activePrototype?.id) {
         reload();
+    }
+
+    $: if (
+        oldActivePrototypeId &&
+        oldActivePrototypeScreensOrderHash != JSON.stringify($activePrototype?.screensOrder)
+    ) {
+        refreshScreensOrder();
     }
 
     $: totalSelected = Object.keys(selectedScreens).length;
@@ -41,6 +53,7 @@
 
     async function reload() {
         oldActivePrototypeId = $activePrototype?.id;
+        oldActivePrototypeScreensOrderHash = JSON.stringify($activePrototype?.screensOrder);
         clearSelected();
 
         // break long rendering tasks into smaller ones
@@ -60,6 +73,8 @@
 
         resetScreensStore();
 
+        initScreensSubscription($activePrototype.id);
+
         $isLoadingScreens = true;
 
         try {
@@ -70,26 +85,7 @@
                 sort: "created",
             });
 
-            // sort the items based on the prototype.screensOrder (if set)
-            // ---
-            const orderedItems = [];
-            for (const id of $activePrototype.screensOrder) {
-                const i = items.findIndex((item) => item.id == id);
-                if (i < 0) {
-                    continue;
-                }
-
-                orderedItems.push(items[i]);
-                items.splice(i, 1);
-            }
-
-            // append any remaining screens
-            for (let item of items) {
-                orderedItems.push(item);
-            }
-            // ---
-
-            $screens = orderedItems;
+            $screens = sortScreens(items, $activePrototype.screensOrder);
 
             $isLoadingScreens = false;
         } catch (err) {
@@ -98,6 +94,50 @@
                 $isLoadingScreens = false;
             }
         }
+    }
+
+    function refreshScreensOrder() {
+        oldActivePrototypeScreensOrderHash = JSON.stringify($activePrototype?.screensOrder);
+
+        clearTimeout(refreshScreensOrderDebounceId);
+        refreshScreensOrderDebounceId = setTimeout(() => {
+            $screens = sortScreens($screens, $activePrototype.screensOrder);
+        }, 200);
+    }
+
+    function sortScreens(screensToSort, screensOrder) {
+        if (!screensOrder?.length || !screensToSort.length) {
+            return screensToSort;
+        }
+
+        let aIndex, bIndex;
+        screensToSort.sort((a, b) => {
+            aIndex = screensOrder.findIndex((id) => id == a.id);
+            bIndex = screensOrder.findIndex((id) => id == b.id);
+
+            // compare by manual prototype sort
+            if (aIndex >= 0 && bIndex >= 0) {
+                if (aIndex < bIndex) {
+                    return -1;
+                }
+                if (aIndex > bIndex) {
+                    return 1;
+                }
+                return 0;
+            }
+
+            // compare by created date
+            if (a.created < b.created) {
+                return -1;
+            }
+            if (a.created > b.created) {
+                return 1;
+            }
+            return 0;
+        });
+
+        // note: screens are sorted in place but return so that we can trigger reactivity update
+        return screensToSort;
     }
 
     function keydownSelectAll(e) {
@@ -112,19 +152,24 @@
 
     async function saveScreensOrder() {
         const ids = $screens.map((s) => s.id);
+        const activeScreensOrderHash = JSON.stringify($activePrototype.screensOrder);
+        const newScreensOrderHash = JSON.stringify(ids);
 
-        if (JSON.stringify($activePrototype.screensOrder) == JSON.stringify(ids)) {
+        if (activeScreensOrderHash == newScreensOrderHash) {
             return; // no change
         }
 
         try {
             isReordering = true;
 
+            // optimistic update
+            clearTimeout(refreshScreensOrderDebounceId);
+            oldActivePrototypeScreensOrderHash = newScreensOrderHash;
+            $activePrototype.screensOrder = ids;
+
             await pb.collection("prototypes").update($activePrototype.id, {
                 screensOrder: ids,
             });
-
-            $activePrototype.screensOrder = ids;
 
             isReordering = false;
         } catch (err) {
@@ -271,6 +316,11 @@
             block: "end",
         });
     }
+
+    onDestroy(() => {
+        clearTimeout(refreshScreensOrderDebounceId);
+        unsubscribeScreensFunc?.();
+    });
 </script>
 
 <svelte:window on:keydown={keydownSelectAll} />
@@ -299,7 +349,7 @@
             <div
                 class="card screen-card"
                 class:selected={selectedScreens[screen.id]}
-                animate:flip={{ duration: 250 }}
+                animate:flip={{ duration: 200, delay: 50 }}
             >
                 <Droppable
                     let:dragover
@@ -338,7 +388,7 @@
                             {:else if screen.file}
                                 <div class="card-img" style:background-color={screen.background}>
                                     <LazyImg
-                                        src={pb.files.getUrl(screen, screen.file, {
+                                        src={pb.files.getURL(screen, screen.file, {
                                             thumb: "450x0",
                                         })}
                                         alt={screen.title}

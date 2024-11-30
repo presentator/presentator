@@ -2,8 +2,10 @@ package presentator
 
 import (
 	"embed"
+	"encoding/xml"
 	"errors"
 	"fmt"
+	gotemplate "html/template"
 	"io/fs"
 	"net/mail"
 	"path"
@@ -11,12 +13,9 @@ import (
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/daos"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/list"
 	"github.com/pocketbase/pocketbase/tools/mailer"
 	"github.com/pocketbase/pocketbase/tools/template"
-	"github.com/spf13/cast"
 )
 
 //go:embed all:templates
@@ -35,132 +34,87 @@ func init() {
 
 	// register some helper template functions
 	templates.AddFuncs(map[string]any{
-		"sub": func (a, b int) int {
-			return a-b
+		"sub": func(a, b int) int {
+			return a - b
 		},
-		"add": func (a, b int) int {
-			return a+b
+		"add": func(a, b int) int {
+			return a + b
 		},
 	})
 }
 
 type baseMailData struct {
 	AppName         string
-	AppUrl          string
-	AppLogoUrl      string
+	AppURL          string
+	AppLogoURL      string
 	AppPrimaryColor string
 }
 
 func newBaseMailData(app core.App) *baseMailData {
-	appUrl := strings.TrimRight(app.Settings().Meta.AppUrl, "/")
+	appURL := strings.TrimRight(app.Settings().Meta.AppURL, "/")
 
 	// @todo consider making it dynamic once custom Admin UI settings fields are added.
-	logoUrl := appUrl + "/images/logo.png"
+	logoURL := appURL + "/images/logo.png"
 	primaryColor := "#4f4cf6"
 
 	return &baseMailData{
 		AppName:         app.Settings().Meta.AppName,
-		AppUrl:          appUrl,
-		AppLogoUrl:      logoUrl,
+		AppURL:          appURL,
+		AppLogoURL:      logoURL,
 		AppPrimaryColor: primaryColor,
 	}
 }
 
 func registerSystemEmails(app core.App) {
-	app.OnMailerBeforeRecordVerificationSend().Add(func(e *core.MailerRecordEvent) error {
-		data := struct {
-			*baseMailData
-			Record    *models.Record
-			ActionUrl string
-		}{
-			baseMailData: newBaseMailData(app),
-			Record:       e.Record,
-			ActionUrl:    strings.TrimRight(app.Settings().Meta.AppUrl, "/") + "/#/confirm-verification/" + cast.ToString(e.Meta["token"]),
+	layoutWrap := func(e *core.MailerRecordEvent) error {
+		body, err := extractBody(e.Message.HTML)
+		if err != nil {
+			return err
 		}
 
-		html, err := templates.LoadFS(
-			templatesFS,
-			"layout.html",
-			"verification.html",
-		).Render(data)
+		data := struct {
+			*baseMailData
+			HTMLContent gotemplate.HTML
+		}{
+			baseMailData: newBaseMailData(app),
+			HTMLContent:  gotemplate.HTML(body),
+		}
+
+		html, err := templates.LoadFS(templatesFS, "layout.html", "system.html").Render(data)
 		if err != nil {
 			return err
 		}
 
 		e.Message.HTML = html
 
-		return nil
-	})
+		return e.Next()
+	}
 
-	app.OnMailerBeforeRecordResetPasswordSend().Add(func(e *core.MailerRecordEvent) error {
-		data := struct {
-			*baseMailData
-			Record    *models.Record
-			ActionUrl string
-		}{
-			baseMailData: newBaseMailData(app),
-			Record:       e.Record,
-			ActionUrl:    strings.TrimRight(app.Settings().Meta.AppUrl, "/") + "/#/confirm-password-reset/" + cast.ToString(e.Meta["token"]),
-		}
-
-		html, err := templates.LoadFS(
-			templatesFS,
-			"layout.html",
-			"password_reset.html",
-		).Render(data)
-		if err != nil {
-			return err
-		}
-
-		e.Message.HTML = html
-
-		return nil
-	})
-
-	app.OnMailerBeforeRecordChangeEmailSend().Add(func(e *core.MailerRecordEvent) error {
-		data := struct {
-			*baseMailData
-			Record    *models.Record
-			ActionUrl string
-			NewEmail  string
-		}{
-			baseMailData: newBaseMailData(app),
-			Record:       e.Record,
-			ActionUrl:    strings.TrimRight(app.Settings().Meta.AppUrl, "/") + "/#/confirm-email-change/" + cast.ToString(e.Meta["token"]),
-			NewEmail:     cast.ToString(e.Meta["newEmail"]),
-		}
-
-		html, err := templates.LoadFS(
-			templatesFS,
-			"layout.html",
-			"email_change.html",
-		).Render(data)
-		if err != nil {
-			return err
-		}
-
-		e.Message.HTML = html
-
-		return nil
-	})
+	app.OnMailerRecordAuthAlertSend("users").BindFunc(layoutWrap)
+	app.OnMailerRecordOTPSend("users").BindFunc(layoutWrap)
+	app.OnMailerRecordVerificationSend("users").BindFunc(layoutWrap)
+	app.OnMailerRecordPasswordResetSend("users").BindFunc(layoutWrap)
+	app.OnMailerRecordEmailChangeSend("users").BindFunc(layoutWrap)
 }
 
-func sendAddedOwnerEmail(app core.App, project *models.Record, userId string) error {
-	user, err := app.Dao().FindRecordById("users", userId)
+func sendAddedOwnerEmail(app core.App, project *core.Record, initiator *core.Record, userId string) error {
+	user, err := app.FindRecordById("users", userId)
 	if err != nil {
 		return err
 	}
 
-	actionUrl := strings.TrimRight(app.Settings().Meta.AppUrl, "/") + path.Join("/#/projects", project.Id, "prototypes")
+	actionURL := strings.TrimRight(app.Settings().Meta.AppURL, "/") + path.Join("/#/projects", project.Id, "prototypes")
 
 	data := struct {
 		*baseMailData
-		Project   *models.Record
-		ActionUrl string
+		Project   *core.Record
+		Initiator *core.Record
+		ActionURL string
 	}{
 		baseMailData: newBaseMailData(app),
 		Project:      project,
-		ActionUrl:    actionUrl,
+		Initiator:    initiator,
+		ActionURL:    actionURL,
 	}
 
 	html, err := templates.LoadFS(
@@ -185,18 +139,20 @@ func sendAddedOwnerEmail(app core.App, project *models.Record, userId string) er
 	return app.NewMailClient().Send(message)
 }
 
-func sendRemovedOwnerEmail(app core.App, project *models.Record, userId string) error {
-	user, err := app.Dao().FindRecordById("users", userId)
+func sendRemovedOwnerEmail(app core.App, project *core.Record, initiator *core.Record, userId string) error {
+	user, err := app.FindRecordById("users", userId)
 	if err != nil {
 		return err
 	}
 
 	data := struct {
 		*baseMailData
-		Project *models.Record
+		Project   *core.Record
+		Initiator *core.Record
 	}{
 		baseMailData: newBaseMailData(app),
 		Project:      project,
+		Initiator:    initiator,
 	}
 
 	html, err := templates.LoadFS(
@@ -221,55 +177,55 @@ func sendRemovedOwnerEmail(app core.App, project *models.Record, userId string) 
 	return app.NewMailClient().Send(message)
 }
 
-func sendUnreadEmail(app core.App, notifications []*models.Record, userId string) error {
+func sendUnreadEmail(app core.App, notifications []*core.Record, userId string) error {
 	total := len(notifications)
 	if total == 0 {
 		return nil
 	}
 
-	user, err := app.Dao().FindRecordById("users", userId)
+	user, err := app.FindRecordById("users", userId)
 	if err != nil {
 		return err
 	}
 
 	type unreadItem struct {
-		Comment *models.Record
-		Screen *models.Record
-		Author string
+		Comment *core.Record
+		Screen  *core.Record
+		Author  string
 	}
 
 	unreads := make([]unreadItem, 0, len(notifications))
 	for _, n := range notifications {
-		comment, err := app.Dao().FindRecordById("comments", n.GetString("comment"))
+		comment, err := app.FindRecordById("comments", n.GetString("comment"))
 		if err != nil {
 			return fmt.Errorf("failed to fetch notification comment %q: %w", n.GetString("comment"), err)
 		}
 
-		screen, err := app.Dao().FindRecordById("screens", comment.GetString("screen"))
+		screen, err := app.FindRecordById("screens", comment.GetString("screen"))
 		if err != nil {
 			return fmt.Errorf("failed to fetch notification screen %q: %w", comment.GetString("screen"), err)
 		}
 
-		author, err := getCommentUserIdentifier(app.Dao(), comment)
+		author, err := getCommentUserIdentifier(app, comment)
 		if err != nil {
 			return err
 		}
 
 		unreads = append(unreads, unreadItem{
 			Comment: comment,
-			Screen: screen,
-			Author: author,
+			Screen:  screen,
+			Author:  author,
 		})
 	}
 
 	data := struct {
 		*baseMailData
-		ActionUrl string
-		Unreads []unreadItem
+		ActionURL string
+		Unreads   []unreadItem
 	}{
 		baseMailData: newBaseMailData(app),
-		ActionUrl:    strings.TrimRight(app.Settings().Meta.AppUrl, "/") +  "/#/projects?notifications=1",
-		Unreads: unreads,
+		ActionURL:    strings.TrimRight(app.Settings().Meta.AppURL, "/") + "/#/projects?notifications=1",
+		Unreads:      unreads,
 	}
 
 	html, err := templates.LoadFS(
@@ -304,13 +260,13 @@ func sendUnreadEmail(app core.App, notifications []*models.Record, userId string
 	return app.NewMailClient().Send(message)
 }
 
-func sendGuestsEmail(app core.App, comment *models.Record) error {
+func sendGuestsEmail(app core.App, comment *core.Record) error {
 	// find guests that participate in the comment thread to notify them
 	primaryId := comment.GetString("replyTo")
 	if primaryId == "" {
 		primaryId = comment.Id
 	}
-	otherGuestComments, err := app.Dao().FindRecordsByFilter("comments", "screen={:screenId} && user='' && guestEmail!={:guestEmail} && (id={:primaryId} || replyTo={:primaryId})", "", 0, 0, dbx.Params{
+	otherGuestComments, err := app.FindRecordsByFilter("comments", "screen={:screenId} && user='' && guestEmail!={:guestEmail} && (id={:primaryId} || replyTo={:primaryId})", "", 0, 0, dbx.Params{
 		"screenId":   comment.GetString("screen"),
 		"primaryId":  primaryId,
 		"guestEmail": comment.GetString("guestEmail"),
@@ -322,7 +278,7 @@ func sendGuestsEmail(app core.App, comment *models.Record) error {
 		email := c.GetString("guestEmail")
 		if email != "" && !list.ExistInSlice(email, guestEmails) {
 			// check if a user and its preference exist
-			guestUser, _ := app.Dao().FindAuthRecordByEmail("users", email)
+			guestUser, _ := app.FindAuthRecordByEmail("users", email)
 			if guestUser == nil || guestUser.GetBool("allowEmailNotifications") {
 				guestEmails = append(guestEmails, email)
 			}
@@ -333,25 +289,25 @@ func sendGuestsEmail(app core.App, comment *models.Record) error {
 		return nil // no guests to notify
 	}
 
-	screen, err := app.Dao().FindRecordById("screens", comment.GetString("screen"))
+	screen, err := app.FindRecordById("screens", comment.GetString("screen"))
 	if err != nil {
 		return fmt.Errorf("failed to fetch comment screen %q: %w", comment.GetString("screen"), err)
 	}
 
-	prototype, err := app.Dao().FindRecordById("prototypes", screen.GetString("prototype"))
+	prototype, err := app.FindRecordById("prototypes", screen.GetString("prototype"))
 	if err != nil {
 		return fmt.Errorf("failed to fetch comment screen prototype %q: %w", comment.GetString("screen"), err)
 	}
 
-	project, err := app.Dao().FindRecordById("projects", prototype.GetString("project"))
+	project, err := app.FindRecordById("projects", prototype.GetString("project"))
 	if err != nil {
 		return fmt.Errorf("failed to fetch comment screen project %q: %w", prototype.GetString("project"), err)
 	}
 
-	var actionUrl string
+	var actionURL string
 
 	// try to find the first related link that allow comments
-	link, _ := app.Dao().FindFirstRecordByFilter(
+	link, _ := app.FindFirstRecordByFilter(
 		"links",
 		"project={:projectId} && allowComments=true && (onlyPrototypes:length=0 || onlyPrototypes.id?={:prototypeId})",
 		dbx.Params{
@@ -360,9 +316,9 @@ func sendGuestsEmail(app core.App, comment *models.Record) error {
 		},
 	)
 	if link != nil {
-		actionUrl = strings.TrimRight(app.Settings().Meta.AppUrl, "/") + path.Join(
+		actionURL = strings.TrimRight(app.Settings().Meta.AppURL, "/") + path.Join(
 			"/#/",
-			link.Username(),
+			link.GetString("username"),
 			"/prototypes/",
 			screen.GetString("prototype"),
 			"/screens/",
@@ -370,21 +326,21 @@ func sendGuestsEmail(app core.App, comment *models.Record) error {
 		) + "?mode=comments&commentId=" + comment.Id
 	}
 
-	userIdentifier, err := getCommentUserIdentifier(app.Dao(), comment)
+	userIdentifier, err := getCommentUserIdentifier(app, comment)
 	if err != nil {
 		return err
 	}
 
 	data := struct {
 		*baseMailData
-		ActionUrl      string
-		Comment        *models.Record
-		Project        *models.Record
-		Screen         *models.Record
+		ActionURL      string
+		Comment        *core.Record
+		Project        *core.Record
+		Screen         *core.Record
 		UserIdentifier string
 	}{
 		baseMailData:   newBaseMailData(app),
-		ActionUrl:      actionUrl,
+		ActionURL:      actionURL,
 		Comment:        comment,
 		Project:        project,
 		Screen:         screen,
@@ -425,22 +381,37 @@ func sendGuestsEmail(app core.App, comment *models.Record) error {
 }
 
 // getCommentUserIdentifier returns the user identifier of the comment author.
-func getCommentUserIdentifier(dao *daos.Dao, comment *models.Record) (string, error) {
+func getCommentUserIdentifier(app core.App, comment *core.Record) (string, error) {
 	var userIdentifier string
 
 	if userId := comment.GetString("user"); userId != "" {
-		user, err := dao.FindRecordById("users", userId)
+		user, err := app.FindRecordById("users", userId)
 		if err != nil {
 			return "", fmt.Errorf("failed to comment user %q: %w", userId, err)
 		}
 
 		userIdentifier = user.GetString("name")
 		if userIdentifier == "" {
-			userIdentifier = user.Username()
+			userIdentifier = user.GetString("username")
 		}
 	} else {
 		userIdentifier = comment.GetString("guestEmail")
 	}
 
 	return userIdentifier, nil
+}
+
+func extractBody(htmlContent string) (string, error) {
+	parsedHTML := struct {
+		Body struct {
+			Content string `xml:",innerxml"`
+		} `xml:"body"`
+	}{}
+
+	err := xml.NewDecoder(strings.NewReader(htmlContent)).Decode(&parsedHTML)
+	if err != nil {
+		return "", err
+	}
+
+	return parsedHTML.Body.Content, nil
 }

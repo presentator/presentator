@@ -1,5 +1,6 @@
 import { writable, derived } from "svelte/store";
 import utils from "@/utils";
+import pb from "@/pb";
 
 export const prototypes = writable([]);
 export const activePrototypeId = writable(""); // @see activePrototype
@@ -61,4 +62,31 @@ export function removePrototype(prototype) {
     activePrototypeId.update((id) => {
         return id == prototype.id ? "" : id;
     });
+}
+
+export let unsubscribePrototypesFunc;
+
+export async function initPrototypesSubscription(projectId) {
+    unsubscribePrototypesFunc?.();
+
+    return pb
+        .collection("prototypes")
+        .subscribe(
+            "*",
+            (e) => {
+                if (e.action === "delete") {
+                    removePrototype(e.record);
+                } else {
+                    addPrototype(e.record);
+                }
+            },
+            { filter: `project="${projectId}"` },
+        )
+        .then((unsubscribe) => {
+            unsubscribePrototypesFunc = unsubscribe;
+            return unsubscribe;
+        })
+        .catch((err) => {
+            console.warn("failed to init prototypes subscription:", err);
+        });
 }

@@ -26,7 +26,7 @@ export const showPreviewHotspots = writable(false);
 export const showPreviewAnnotations = writable(true);
 
 export function resetScreensStore() {
-    loadModeFromUrl();
+    loadModeFromURL();
 
     screens.set([]);
     prevActiveScreenId.set("");
@@ -238,7 +238,7 @@ export function loadFitToScreen() {
 // mode
 // -------------------------------------------------------------------
 
-export function loadModeFromUrl() {
+export function loadModeFromURL() {
     const params = utils.getHashQueryParams();
 
     changeMode(params.mode);

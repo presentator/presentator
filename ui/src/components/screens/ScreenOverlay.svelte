@@ -104,7 +104,7 @@
             >
                 <LazyImg
                     bind:this={img}
-                    src={pb.files.getUrl(screen, screen.file)}
+                    src={pb.files.getURL(screen, screen.file)}
                     alt={screen.title}
                     draggable={false}
                     loading="eager"

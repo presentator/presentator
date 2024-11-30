@@ -35,7 +35,7 @@ It can be used directly via the free hosted service at [app.presentator.io](http
 
 3. Navigate to `http://127.0.0.1:8090/_/` to access the super admin dashboard (PocketBase).
 
-    The first time when you access `/_/` it will prompt you to create a super-admin account in order to configure various application settings like SMTP, files storage, OAuth2, etc. (see [Configurations](#configurations)).
+    The first time when you start the application it will prompt you to create a super-admin account in order to configure various application settings like SMTP, files storage, OAuth2, etc. (see [Configurations](#configurations)).
 
 And that's it. By default your settings and db data will be stored in the `pb_data` directory next to the executable.
 
@@ -48,7 +48,7 @@ Once done with the configurations, you can create a new user from the PocketBase
 
 In order to send emails you'll have to use either a local SMTP server or an external mail service like [Mailjet](https://www.mailjet.com/), [MailerSend](https://www.mailersend.com/), [Brevo](https://www.brevo.com/), [SendGrid](https://sendgrid.com/en-us), [AWS SES](https://aws.amazon.com/ses/), etc.
 
-Once you've decided on a mail service, you could enable the SMTP settings from your _PocketBase Admin UI > Settings > Mail settings_ page (http://localhost:8090/_/#/settings/mail).
+Once you've decided on a mail service, you could enable the SMTP settings from your _PocketBase Dashboard > Settings > Mail settings_ page (http://localhost:8090/_/#/settings/mail).
 
 > Make sure to update also the "Application URL" field located in _Settings > Application_.
 
@@ -56,14 +56,17 @@ Once you've decided on a mail service, you could enable the SMTP settings from y
 
 By default Presentator uses the local filesystem to store uploaded files.
 If you have limited disk space and plan to store a lot of files, you can use an external S3 compatible storage.
-This could be done from your _PocketBase Admin UI > Settings > Files storage_ page (`http://127.0.0.1:8090/_/#/settings/storage`).
+This could be done from your _PocketBase Dashboard > Settings > Files storage_ page (`http://127.0.0.1:8090/_/#/settings/storage`).
 
 #### OAuth2 authentication
 
 Presentator supports various OAuth2 providers - Google, Microsoft, Facebook, GitHub, Gitlab, etc.
-OAuth2 providers can be enabled from your _PocketBase Admin UI > Settings > Auth providers_ page (`http://127.0.0.1:8090/_/#/settings/auth-providers`).
+OAuth2 providers can be enabled from the `users` auth collection options:
+1. Temporary enable the Collections create/edit controls from _PocketBase Dashboard > Settings > Application > "Hide collection create and edit controls"_ toggle (http://127.0.0.1:8090/_/#/settings).
+2. Navigate to _PocketBase Dashboard > Collections > users > "Edit collection" cogwheel_ and click on the "Options" tab to adjust the allowed OAuth2 settings.
+3. Enable back the _"Hide collection create and edit controls"_ toggle from 1) to prevent accidental schema changes.
 
-For OAuth2 redirect url/callback you must use `https://yourdomain.com/api/oauth2-redirect`.
+For the OAuth2 redirect url/callback you must use `https://yourdomain.com/api/oauth2-redirect`.
 
 > [!NOTE]
 > By default Presentator users are required to have an email so providers that don't return an email will fail to authenticate.
@@ -71,9 +74,9 @@ For OAuth2 redirect url/callback you must use `https://yourdomain.com/api/oauth2
 #### Increase allowed screens upload size
 
 By default uploaded screen images are limited to ~7MB max.
-The default should be sufficient for most users but if you need to upload larger screens you can increase the limit from your PocketBase Admin UI:
-1. Temporary enable the Collections create/edit controls from _PocketBase Admin UI > Settings > Application > "Hide collection create and edit controls"_ toggle (http://127.0.0.1:8090/_/#/settings).
-2. Navigate to _PocketBase Admin UI > Collections > screens > "Edit collection" cogwheel_ and click on the `file` field options to update the "Max file size" input.
+The default should be sufficient for most users but if you need to upload larger screens you can increase the limit from your PocketBase Dashboard:
+1. Temporary enable the Collections create/edit controls from _PocketBase Dashboard > Settings > Application > "Hide collection create and edit controls"_ toggle (http://127.0.0.1:8090/_/#/settings).
+2. Navigate to _PocketBase Dashboard > Collections > screens > "Edit collection" cogwheel_ and click on the `file` field options to update the "Max file size" input.
 3. Enable back the _"Hide collection create and edit controls"_ toggle from 1) to prevent accidental schema changes.
 
 #### Custom terms page url
@@ -95,7 +98,7 @@ To specify footer links (ex. privacy policies, contacts, etc.), you can use the 
 ```
 
 > [!NOTE]
-> Support for changing the primary colors, logo, etc. of the Presentator UI will be added in the future once custom PocketBase Admin UI settings are implemented.
+> Support for changing the primary colors, logo, etc. of the Presentator UI will be added in the future once custom PocketBase Dashboard settings are implemented.
 
 
 ## Going to production
@@ -181,8 +184,10 @@ For example, here is a `pb_hooks/main.pb.js` hook that will print in the console
 // pb_hooks/main.pb.js
 /// <reference path="../pb_data/types.d.ts" />
 
-onRecordAfterCreateRequest((e) => {
+onRecordCreateRequest((e) => {
     console.log(e.record.get("message"))
+
+    e.next()
 }, "comments");
 ```
 For more details about the available hooks and methods, please refer to [PocketBase - Extend with JS](https://pocketbase.io/docs/js-overview/).
@@ -191,7 +196,7 @@ For more details about the available hooks and methods, please refer to [PocketB
 
 Presentator is also distributed as regular Go package allowing you to extend it with custom functionality using the exposed Go APIs.
 
-0. [Install Go 1.22+](https://go.dev/doc/install)
+0. [Install Go 1.21+](https://go.dev/doc/install)
 
 1. Create a new project directory with `myapp/main.go` file inside it. Here is one minimal `main.go` file with a hook that will print in the console the comment message after its creation:
 
@@ -209,9 +214,9 @@ Presentator is also distributed as regular Go package allowing you to extend it 
         // see https://pkg.go.dev/github.com/presentator/presentator
         pr := presentator.New()
 
-        pr.OnRecordAfterCreateRequest("comments").Add(func(e *core.RecordCreateEvent) error {
+        pr.OnRecordCreateRequest("comments").BindFunc(func(e *core.RecordRequestEvent) error {
             log.Println(e.Record.GetString("message"))
-            return nil
+            return e.Next()
         })
 
         if err := pr.Start(); err != nil {

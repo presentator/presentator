@@ -7,12 +7,11 @@ import (
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/mailer"
 )
 
 // newReportForm creates new ReportForm request form.
-func newReportForm(app core.App, link *models.Record) *ReportForm {
+func newReportForm(app core.App, link *core.Record) *ReportForm {
 	return &ReportForm{
 		app:  app,
 		link: link,
@@ -22,7 +21,7 @@ func newReportForm(app core.App, link *models.Record) *ReportForm {
 // ReportForm handles a design report submission.
 type ReportForm struct {
 	app  core.App
-	link *models.Record
+	link *core.Record
 
 	Message string `form:"message" json:"message"`
 }
@@ -40,22 +39,22 @@ func (form *ReportForm) Submit() error {
 		return err
 	}
 
-	project, err := form.app.Dao().FindRecordById("projects", form.link.GetString("project"))
+	project, err := form.app.FindRecordById("projects", form.link.GetString("project"))
 	if err != nil {
 		return fmt.Errorf("missing link project: %w", err)
 	}
 
-	previewUrl := strings.TrimRight(form.app.Settings().Meta.AppUrl, "/") + "/#/" + form.link.Username()
+	previewURL := strings.TrimRight(form.app.Settings().Meta.AppURL, "/") + "/#/" + form.link.GetString("username")
 
 	data := struct {
 		*baseMailData
-		Project    *models.Record
-		PreviewUrl string
+		Project    *core.Record
+		PreviewURL string
 		Message    string
 	}{
 		baseMailData: newBaseMailData(form.app),
 		Project:      project,
-		PreviewUrl:   previewUrl,
+		PreviewURL:   previewURL,
 		Message:      form.Message,
 	}
 

@@ -14,7 +14,7 @@
         mode,
         modes,
         changeMode,
-        loadModeFromUrl,
+        loadModeFromURL,
         fitToScreen,
         toggleFitToScreen,
         loadFitToScreen,
@@ -59,7 +59,7 @@
     let lastActiveScreenId = "";
     let lastActivePrototypeId = "";
 
-    loadModeFromUrl();
+    loadModeFromURL();
     loadFitToScreen();
 
     $: if (!link?.allowComments && $mode == modes.comments) {

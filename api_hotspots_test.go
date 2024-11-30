@@ -15,22 +15,24 @@ func TestHotspotsList(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/hotspots/records",
+			URL:             "/api/collections/hotspots/records",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				// screen.prototype.project="t45bjlayvsx2yj0" || hotspotTemplate.prototype.project="t45bjlayvsx2yj0"
 				`"totalItems":4`,
@@ -39,17 +41,21 @@ func TestHotspotsList(t *testing.T) {
 				`"id":"hn2rybm9nlpppta"`,
 				`"id":"xeyr2230dez2oha"`,
 			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       4,
+			},
 		},
 		{
 			Name:   "auth as link with restricted prototypes",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				// screen.prototype="i7nda4y5rggo2eg" || hotspotTemplate.prototype="i7nda4y5rggo2eg"
 				`"totalItems":3`,
@@ -57,29 +63,36 @@ func TestHotspotsList(t *testing.T) {
 				`"id":"4kw6w7fick7pbqe"`,
 				`"id":"t4yqp22lxhjtgg5"`,
 			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       3,
+			},
 		},
 		{
 			Name:   "auth as user with no hotspots",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{`"items":[]`},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with hotspots",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 200,
-			ExpectedEvents: map[string]int{"OnRecordsListRequest": 1},
 			ExpectedContent: []string{
 				// screen.prototype.project.users.username ?= "test1" || hotspotTemplate.prototype.project.users.username ?= "test1"
 				`"totalItems":8`,
@@ -91,6 +104,11 @@ func TestHotspotsList(t *testing.T) {
 				`"id":"9vfl0pmh6yffy63"`,
 				`"id":"qpk8csta069uqdb"`,
 				`"id":"r1fufiv1x4w5qw7"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       8,
 			},
 		},
 	}
@@ -107,40 +125,49 @@ func TestHotspotsView(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodGet,
-			Url:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via screen",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"r1fufiv1x4w5qw7"`, `"hotspotTemplate":""`},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via hotspotTemplate",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"qpk8csta069uqdb"`, `"screen":""`},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes trying to access hotspot from another project",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
@@ -150,94 +177,114 @@ func TestHotspotsView(t *testing.T) {
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via screen",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/divglr2yoivqtr1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/divglr2yoivqtr1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via hotspotTemplate",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via screen",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"nnnqtvmn4k1z7i5"`, `"hotspotTemplate":""`},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via hotspotTemplate",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
-			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"4kw6w7fick7pbqe"`, `"screen":""`},
+			ExpectedStatus:  200,
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as user non-owner via screen",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner via hotstpotTemplate",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner via screen",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"r1fufiv1x4w5qw7"`, `"hotspotTemplate":""`},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 		{
 			Name:   "auth as user owner via hotstpotTemplate",
 			Method: http.MethodGet,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  200,
-			ExpectedEvents:  map[string]int{"OnRecordViewRequest": 1},
 			ExpectedContent: []string{`"id":"xeyr2230dez2oha"`, `"screen":""`},
+			ExpectedEvents: map[string]int{
+				"*":                   0,
+				"OnRecordViewRequest": 1,
+				"OnRecordEnrich":      1,
+			},
 		},
 	}
 
@@ -253,54 +300,70 @@ func TestHotspotsCreate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPost,
-			Url:             "/api/collections/hotspots/records",
+			URL:             "/api/collections/hotspots/records",
 			Body:            strings.NewReader(`{"screen":"s02UKpYUSnYnh91","type":"back","settings":{}}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link with screen from the link project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"screen":"s02UKpYUSnYnh91","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as link with hotspotTemplate from the link project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"hotspotTemplate":"fv1ua344vvpi0rj","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with screen from non-owned project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"screen":"s02UKpYUSnYnh91","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with screen from owned project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"screen":"s02UKpYUSnYnh91","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -310,30 +373,41 @@ func TestHotspotsCreate(t *testing.T) {
 				`"type":"back"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user with hotspotTemplate from non-owned project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"hotspotTemplate":"fv1ua344vvpi0rj","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents: map[string]int{
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
+			},
 		},
 		{
 			Name:   "auth as user with hotspotTemplate from owned project",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"hotspotTemplate":"fv1ua344vvpi0rj","type":"back","settings":{}}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -343,18 +417,25 @@ func TestHotspotsCreate(t *testing.T) {
 				`"type":"back"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user with invalid settings format",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body:   strings.NewReader(`{"hotspotTemplate":"fv1ua344vvpi0rj","type":"back","settings":[1,2,3]}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -363,7 +444,8 @@ func TestHotspotsCreate(t *testing.T) {
 				`"data":{"settings":{"code":"invalid_settings_data"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 	}
@@ -380,126 +462,136 @@ func TestHotspotsUpdate(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodPatch,
-			Url:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:            strings.NewReader(`{"width":100}`),
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via screen",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via hotspotTemplate",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes trying to access hotspot from another project",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via screen",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/divglr2yoivqtr1",
+			URL:    "/api/collections/hotspots/records/divglr2yoivqtr1",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via hotspotTemplate",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via screen",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
+			URL:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via hotspotTemplate",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
+			URL:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner via screen",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner via hotstpotTemplate",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner via screen",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -509,18 +601,25 @@ func TestHotspotsUpdate(t *testing.T) {
 				`"width":100`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user owner via hotstpotTemplate",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"width":100}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -530,42 +629,51 @@ func TestHotspotsUpdate(t *testing.T) {
 				`"width":100`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user trying to change screen with non-owned",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			Body:   strings.NewReader(`{"screen":"s0FSVfANCKVhmKF"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user trying to change hotspotTemplate with non-owned",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"hotspotTemplate":"auo00t8yt285q4a"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user trying to change hotspotTemplate with owned (no matter of the prototype)",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"screen":"s0TMdv2nbc4foMi","hotspotTemplate":"26m5by6c8w4kfk2"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
@@ -576,30 +684,38 @@ func TestHotspotsUpdate(t *testing.T) {
 				`"hotspotTemplate":"26m5by6c8w4kfk2"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user trying to clear both hotspot hotspotTemplate and screen fields",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"screen":"", "hotspotTemplate":""}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user trying to clear hotspotTemplate field",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
 			Body:   strings.NewReader(`{"screen":"s0TMdv2nbc4foMi", "hotspotTemplate":""}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
@@ -610,18 +726,25 @@ func TestHotspotsUpdate(t *testing.T) {
 				`"hotspotTemplate":""`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "auth as user trying to clear screen field",
 			Method: http.MethodPatch,
-			Url:    "/api/collections/hotspots/records/divglr2yoivqtr1",
+			URL:    "/api/collections/hotspots/records/divglr2yoivqtr1",
 			Body:   strings.NewReader(`{"screen":"", "hotspotTemplate":"26m5by6c8w4kfk2"}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test2"),
 			},
 			TestAppFactory: setupTestApp,
@@ -632,10 +755,17 @@ func TestHotspotsUpdate(t *testing.T) {
 				`"hotspotTemplate":"26m5by6c8w4kfk2"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterUpdate":          1,
-				"OnModelBeforeUpdate":         1,
-				"OnRecordAfterUpdateRequest":  1,
-				"OnRecordBeforeUpdateRequest": 1,
+				"*":                          0,
+				"OnRecordUpdateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelUpdate":              1,
+				"OnModelUpdateExecute":       1,
+				"OnModelAfterUpdateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordUpdate":             1,
+				"OnRecordUpdateExecute":      1,
+				"OnRecordAfterUpdateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -652,140 +782,158 @@ func TestHotspotsDelete(t *testing.T) {
 		{
 			Name:            "no auth",
 			Method:          http.MethodDelete,
-			Url:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			URL:             "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via screen",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes via hotspotTemplate",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test2"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with unrestricted prototypes trying to access hotspot from another project",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via screen",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/divglr2yoivqtr1",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/divglr2yoivqtr1",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from non-listed prototype via hotspotTemplate",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/qpk8csta069uqdb",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/qpk8csta069uqdb",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via screen",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/nnnqtvmn4k1z7i5",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link with restricted prototypes trying to access hotspot from listed prototype via hotspotTemplate",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/4kw6w7fick7pbqe",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test3"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner via screen",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner via hotstpotTemplate",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test4"),
 			},
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  404,
 			ExpectedContent: []string{`"data":{}`},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner via screen",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/r1fufiv1x4w5qw7",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
 			ExpectedEvents: map[string]int{
-				"OnModelAfterDelete":          1,
-				"OnModelBeforeDelete":         1,
-				"OnRecordAfterDeleteRequest":  1,
-				"OnRecordBeforeDeleteRequest": 1,
+				"*":                          0,
+				"OnRecordDeleteRequest":      1,
+				"OnModelDelete":              1,
+				"OnModelDeleteExecute":       1,
+				"OnModelAfterDeleteSuccess":  1,
+				"OnRecordDelete":             1,
+				"OnRecordDeleteExecute":      1,
+				"OnRecordAfterDeleteSuccess": 1,
 			},
 		},
 		{
 			Name:   "auth as user owner via hotstpotTemplate",
 			Method: http.MethodDelete,
-			Url:    "/api/collections/hotspots/records/xeyr2230dez2oha",
-			RequestHeaders: map[string]string{
+			URL:    "/api/collections/hotspots/records/xeyr2230dez2oha",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
 			ExpectedStatus: 204,
 			ExpectedEvents: map[string]int{
-				"OnModelAfterDelete":          1,
-				"OnModelBeforeDelete":         1,
-				"OnRecordAfterDeleteRequest":  1,
-				"OnRecordBeforeDeleteRequest": 1,
+				"*":                          0,
+				"OnRecordDeleteRequest":      1,
+				"OnModelDelete":              1,
+				"OnModelDeleteExecute":       1,
+				"OnModelAfterDeleteSuccess":  1,
+				"OnRecordDelete":             1,
+				"OnRecordDeleteExecute":      1,
+				"OnRecordAfterDeleteSuccess": 1,
 			},
 		},
 	}
@@ -802,13 +950,13 @@ func TestHotspotsNoteCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "note",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -817,13 +965,14 @@ func TestHotspotsNoteCreate(t *testing.T) {
 				`"settings":{"note":{"code":"validation_required"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "note",
@@ -831,7 +980,7 @@ func TestHotspotsNoteCreate(t *testing.T) {
 					"note": "` + strings.Repeat("a", 501) + `"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -840,13 +989,14 @@ func TestHotspotsNoteCreate(t *testing.T) {
 				`"settings":{"note":{"code":"validation_length_out_of_range"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "note",
@@ -854,7 +1004,7 @@ func TestHotspotsNoteCreate(t *testing.T) {
 					"note": "` + strings.Repeat("a", 500) + `"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -864,10 +1014,17 @@ func TestHotspotsNoteCreate(t *testing.T) {
 				`"settings":{"note":"aaa`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -884,13 +1041,13 @@ func TestHotspotsScrollCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "scroll",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -901,16 +1058,23 @@ func TestHotspotsScrollCreate(t *testing.T) {
 				`"scrollLeft":0`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "scroll",
@@ -919,7 +1083,7 @@ func TestHotspotsScrollCreate(t *testing.T) {
 					"scrollLeft": -1
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -930,13 +1094,14 @@ func TestHotspotsScrollCreate(t *testing.T) {
 				`"scrollTop":{"code":"validation_min_greater_equal_than_required"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "scroll",
@@ -945,7 +1110,7 @@ func TestHotspotsScrollCreate(t *testing.T) {
 					"scrollLeft": 10
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -956,10 +1121,17 @@ func TestHotspotsScrollCreate(t *testing.T) {
 				`"scrollLeft":10`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -976,13 +1148,13 @@ func TestHotspotsUrlCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "url",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -991,13 +1163,14 @@ func TestHotspotsUrlCreate(t *testing.T) {
 				`"settings":{"url":{"code":"validation_required"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "url",
@@ -1005,7 +1178,7 @@ func TestHotspotsUrlCreate(t *testing.T) {
 					"url": "invalid"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1014,13 +1187,14 @@ func TestHotspotsUrlCreate(t *testing.T) {
 				`"settings":{"url":{"code":"validation_is_url"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "url",
@@ -1028,7 +1202,7 @@ func TestHotspotsUrlCreate(t *testing.T) {
 					"url": "https://example.com"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1038,10 +1212,17 @@ func TestHotspotsUrlCreate(t *testing.T) {
 				`"url":"https://example.com"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -1058,13 +1239,13 @@ func TestHotspotsPrevCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "prev",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1074,16 +1255,23 @@ func TestHotspotsPrevCreate(t *testing.T) {
 				`"settings":{"transition":""}`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "prev",
@@ -1091,7 +1279,7 @@ func TestHotspotsPrevCreate(t *testing.T) {
 					"transition": "invalid"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1100,13 +1288,14 @@ func TestHotspotsPrevCreate(t *testing.T) {
 				`"settings":{"transition":{"code":"validation_in_invalid"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "prev",
@@ -1114,7 +1303,7 @@ func TestHotspotsPrevCreate(t *testing.T) {
 					"transition": "slide-left"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1124,10 +1313,17 @@ func TestHotspotsPrevCreate(t *testing.T) {
 				`"transition":"slide-left"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -1144,13 +1340,13 @@ func TestHotspotsNextCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "next",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1160,16 +1356,23 @@ func TestHotspotsNextCreate(t *testing.T) {
 				`"settings":{"transition":""}`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "next",
@@ -1177,7 +1380,7 @@ func TestHotspotsNextCreate(t *testing.T) {
 					"transition": "invalid"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1186,13 +1389,14 @@ func TestHotspotsNextCreate(t *testing.T) {
 				`"settings":{"transition":{"code":"validation_in_invalid"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "next",
@@ -1200,7 +1404,7 @@ func TestHotspotsNextCreate(t *testing.T) {
 					"transition": "slide-left"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1210,10 +1414,17 @@ func TestHotspotsNextCreate(t *testing.T) {
 				`"transition":"slide-left"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -1230,13 +1441,13 @@ func TestHotspotsBackCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "back",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1246,16 +1457,23 @@ func TestHotspotsBackCreate(t *testing.T) {
 				`"settings":{"transition":""}`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "back",
@@ -1263,7 +1481,7 @@ func TestHotspotsBackCreate(t *testing.T) {
 					"transition": "invalid"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1272,13 +1490,14 @@ func TestHotspotsBackCreate(t *testing.T) {
 				`"settings":{"transition":{"code":"validation_in_invalid"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "back",
@@ -1286,7 +1505,7 @@ func TestHotspotsBackCreate(t *testing.T) {
 					"transition": "slide-left"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1296,10 +1515,17 @@ func TestHotspotsBackCreate(t *testing.T) {
 				`"transition":"slide-left"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -1316,13 +1542,13 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "overlay",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1342,13 +1568,14 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 				`"offsetRight":`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "overlay",
@@ -1364,7 +1591,7 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 					"offsetRight":     -1
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1384,13 +1611,14 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 				`"offsetRight":`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "overlay",
@@ -1406,7 +1634,7 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 					"offsetRight":     100
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1424,10 +1652,17 @@ func TestHotspotsOverlayCreate(t *testing.T) {
 				`"offsetRight":100`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}
@@ -1444,13 +1679,13 @@ func TestHotspotsScreenCreate(t *testing.T) {
 		{
 			Name:   "empty settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "screen",
 				"settings": {}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1463,13 +1698,14 @@ func TestHotspotsScreenCreate(t *testing.T) {
 				`"transition":`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "invalid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "screen",
@@ -1478,7 +1714,7 @@ func TestHotspotsScreenCreate(t *testing.T) {
 					"transition": "invalid"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1489,13 +1725,14 @@ func TestHotspotsScreenCreate(t *testing.T) {
 				`"transition":{"code":"validation_in_invalid"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                     0,
+				"OnRecordCreateRequest": 1,
 			},
 		},
 		{
 			Name:   "valid settings",
 			Method: http.MethodPost,
-			Url:    "/api/collections/hotspots/records",
+			URL:    "/api/collections/hotspots/records",
 			Body: strings.NewReader(`{
 				"screen": "s02UKpYUSnYnh91",
 				"type": "screen",
@@ -1504,7 +1741,7 @@ func TestHotspotsScreenCreate(t *testing.T) {
 					"transition": "slide-bottom"
 				}
 			}`),
-			RequestHeaders: map[string]string{
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -1515,10 +1752,17 @@ func TestHotspotsScreenCreate(t *testing.T) {
 				`"transition":"slide-bottom"`,
 			},
 			ExpectedEvents: map[string]int{
-				"OnModelAfterCreate":          1,
-				"OnModelBeforeCreate":         1,
-				"OnRecordAfterCreateRequest":  1,
-				"OnRecordBeforeCreateRequest": 1,
+				"*":                          0,
+				"OnRecordCreateRequest":      1,
+				"OnModelValidate":            1,
+				"OnModelCreate":              1,
+				"OnModelCreateExecute":       1,
+				"OnModelAfterCreateSuccess":  1,
+				"OnRecordValidate":           1,
+				"OnRecordCreate":             1,
+				"OnRecordCreateExecute":      1,
+				"OnRecordAfterCreateSuccess": 1,
+				"OnRecordEnrich":             1,
 			},
 		},
 	}

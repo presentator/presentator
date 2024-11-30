@@ -24,7 +24,7 @@
 
         project = Object.assign(
             {
-                users: [pb.authStore.model.id],
+                users: [pb.authStore.record.id],
             },
             projectData,
         );

@@ -18,6 +18,15 @@ function createOptions(storageKey = "appOptions") {
     if (rawOptions) {
         try {
             options = JSON.parse(rawOptions) || {};
+
+            // normalize legacy keys
+            options.appURL = options.appURL || options.appUrl || "";
+            options.termsURL = options.termsURL || options.termsUrl || "";
+            options.allowHotspotsURL = options.allowHotspotsURL || options.allowHotspotsUrl || "";
+
+            delete(options.appUrl);
+            delete(options.termsUrl);
+            delete(options.allowHotspotsUrl);
         } catch {}
     }
 

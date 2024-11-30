@@ -24,7 +24,7 @@
     let isSaving = false;
     let initialPasswordProtect = false;
 
-    $: url = utils.getProjectLinkUrl(link);
+    $: url = utils.getProjectLinkURL(link);
 
     $: prototypesList =
         $prototypes.map((item) => {

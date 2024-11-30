@@ -1,7 +1,11 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import pb from "@/pb";
     import tooltip from "@/actions/tooltip";
 
+    const dispatch = createEventDispatcher();
+
+    export let mfaId = null;
     export let providers = [];
 
     let missingImages = {};
@@ -10,15 +14,24 @@
         pb.collection("users")
             .authWithOAuth2({
                 provider: providerName,
+                mfaId: mfaId,
                 createData: {
                     allowEmailNotifications: true,
                 },
             })
             .then(() => {
-                pb.replaceWithRemembered();
+                dispatch("submit", {});
             })
             .catch((err) => {
-                if (!err.isAbort) {
+                if (err.isAbort) {
+                    return;
+                }
+
+                if (err.response?.mfaId) {
+                    mfaId = err.response.mfaId;
+                    addWarningToast("Second authentication factor is required.");
+                    dispatch("submit", { mfaId });
+                } else {
                     pb.error(err);
                 }
             });
@@ -37,7 +50,7 @@
                 <i class="iconoir-fingerprint" />
             {:else}
                 <img
-                    src="{pb.baseUrl}/_/images/oauth2/{provider.name}.svg"
+                    src="{pb.baseURL}/_/images/oauth2/{provider.name}.svg"
                     alt="{provider.displayName} logo"
                     on:error={() => {
                         missingImages[provider.name] = true;

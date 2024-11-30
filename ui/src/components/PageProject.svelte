@@ -1,9 +1,16 @@
 <script>
+    import { onDestroy } from "svelte";
     import { link, replace } from "svelte-spa-router";
     import pb from "@/pb";
     import tooltip from "@/actions/tooltip";
     import { resetProjectsStore, activeProject, isLoadingProjects, addProject } from "@/stores/projects";
-    import { resetPrototypesStore, activePrototype, isLoadingPrototypes } from "@/stores/prototypes";
+    import {
+        resetPrototypesStore,
+        activePrototype,
+        isLoadingPrototypes,
+        initPrototypesSubscription,
+        unsubscribePrototypesFunc,
+    } from "@/stores/prototypes";
     import Layout from "@/components/base/Layout.svelte";
     import InlineTitleEdit from "@/components/base/InlineTitleEdit.svelte";
     import PrototypesList from "@/components/prototypes/PrototypesList.svelte";
@@ -38,6 +45,7 @@
     async function loadProject(projectId) {
         resetProjectsStore();
         resetPrototypesStore();
+        initPrototypesSubscription(projectId);
 
         $isLoadingProjects = true;
 
@@ -50,10 +58,19 @@
         } catch (err) {
             if (!err.isAbort) {
                 $isLoadingProjects = false;
+
                 pb.error(err);
+
+                if (err.status == 404) {
+                    replace(`/`);
+                }
             }
         }
     }
+
+    onDestroy(() => {
+        unsubscribePrototypesFunc?.();
+    });
 </script>
 
 <Layout title={pageTitle}>
@@ -106,7 +123,7 @@
         </div>
     {/if}
 
-    <div class="screens-list-wrapper" class:hidden={isLoading}>
+    <div class="screens-list-wrapper" class:hidden={isLoading || !$activeProject?.id}>
         <PrototypesList projectId={params.projectId} {initialPrototypeId} />
 
         <ScreensList />

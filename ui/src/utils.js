@@ -180,7 +180,7 @@ export default class utils {
     static pushOrReplaceObject(objectsArr, item, key = "id") {
         for (let i = objectsArr.length - 1; i >= 0; i--) {
             if (objectsArr[i][key] == item[key]) {
-                objectsArr[i] = item; // replace
+                objectsArr[i] = item;
                 return;
             }
         }
@@ -697,7 +697,7 @@ export default class utils {
      * @param  {Object} link
      * @return {String}
      */
-    static getProjectLinkUrl(link) {
+    static getProjectLinkURL(link) {
         let path = window.location.pathname.replace(/\/$/, "");
         const pathParts = path.split("/");
         // trim the admin path
@@ -759,18 +759,18 @@ export default class utils {
     /**
      * Returns a promise whith loaded image url dimensions.
      *
-     * @param  {String} imageUrl
+     * @param  {String} imageURL
      * @return {Promise}
      */
-    static loadImage(imageUrl) {
+    static loadImage(imageURL) {
         return new Promise((resolve, reject) => {
             // load from cache
-            if (cachedLoadedImages[imageUrl]) {
+            if (cachedLoadedImages[imageURL]) {
                 return resolve({
                     success: true,
-                    url: imageUrl,
-                    width: cachedLoadedImages[imageUrl].width,
-                    height: cachedLoadedImages[imageUrl].height,
+                    url: imageURL,
+                    width: cachedLoadedImages[imageURL].width,
+                    height: cachedLoadedImages[imageURL].height,
                 });
             }
 
@@ -778,14 +778,14 @@ export default class utils {
 
             // successfully loaded
             img.onload = () => {
-                cachedLoadedImages[imageUrl] = {
+                cachedLoadedImages[imageURL] = {
                     width: img.naturalWidth,
                     height: img.naturalHeight,
                 };
 
                 return resolve({
                     success: true,
-                    url: imageUrl,
+                    url: imageURL,
                     width: img.naturalWidth,
                     height: img.naturalHeight,
                 });
@@ -795,13 +795,13 @@ export default class utils {
             img.onerror = () =>
                 resolve({
                     success: false,
-                    url: imageUrl,
+                    url: imageURL,
                     width: 0,
                     height: 0,
                 });
 
             img.crossOrigin = "Anonymous";
-            img.src = imageUrl;
+            img.src = imageURL;
         });
     }
 

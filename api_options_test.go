@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tests"
 )
 
@@ -13,41 +13,43 @@ func TestOptions(t *testing.T) {
 
 	scenarios := []tests.ApiScenario{
 		{
-			Name:            "guest",
-			Method:          http.MethodGet,
-			Url:             "/api/pr/options",
-			TestAppFactory:  setupTestApp,
-			ExpectedStatus:  200,
+			Name:           "guest",
+			Method:         http.MethodGet,
+			URL:            "/api/pr/options",
+			TestAppFactory: setupTestApp,
+			ExpectedStatus: 200,
 			ExpectedContent: []string{
 				`"links":{}`,
 				`"appName":"Presentator"`,
-				`"appUrl":"http://localhost:8090"`,
-				`"termsUrl":""`,
-				`"allowHotspotsUrl":false`,
+				`"appURL":"http://localhost:8090"`,
+				`"termsURL":""`,
+				`"allowHotspotsURL":false`,
 			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 		{
 			Name:   "user auth",
 			Method: http.MethodGet,
-			Url:    "/api/pr/options",
-			RequestHeaders: map[string]string{
+			URL:    "/api/pr/options",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},
-			TestAppFactory:  setupTestApp,
-			ExpectedStatus:  200,
+			TestAppFactory: setupTestApp,
+			ExpectedStatus: 200,
 			ExpectedContent: []string{
 				`"links":{}`,
 				`"appName":"Presentator"`,
-				`"appUrl":"http://localhost:8090"`,
-				`"termsUrl":""`,
-				`"allowHotspotsUrl":false`,
+				`"appURL":"http://localhost:8090"`,
+				`"termsURL":""`,
+				`"allowHotspotsURL":false`,
 			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 		{
 			Name:   "link auth",
 			Method: http.MethodGet,
-			Url:    "/api/pr/options",
-			RequestHeaders: map[string]string{
+			URL:    "/api/pr/options",
+			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "links", "test1"),
 			},
 			TestAppFactory: setupTestApp,
@@ -55,31 +57,33 @@ func TestOptions(t *testing.T) {
 			ExpectedContent: []string{
 				`"links":{}`,
 				`"appName":"Presentator"`,
-				`"appUrl":"http://localhost:8090"`,
-				`"termsUrl":""`,
-				`"allowHotspotsUrl":false`,
+				`"appURL":"http://localhost:8090"`,
+				`"termsURL":""`,
+				`"allowHotspotsURL":false`,
 			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 		{
-			Name:            "custom store options",
-			Method:          http.MethodGet,
-			Url:             "/api/pr/options",
-			TestAppFactory:  setupTestApp,
-			BeforeTestFunc: func(t *testing.T, app *tests.TestApp, e *echo.Echo) {
+			Name:           "custom store options",
+			Method:         http.MethodGet,
+			URL:            "/api/pr/options",
+			TestAppFactory: setupTestApp,
+			BeforeTestFunc: func(t testing.TB, app *tests.TestApp, e *core.ServeEvent) {
 				app.Settings().Meta.AppName = "test_name"
-				app.Settings().Meta.AppUrl = "test_url/"
-				app.Store().Set(OptionTermsUrl, "test_term/")
-				app.Store().Set(OptionAllowHotspotsUrl, true)
+				app.Settings().Meta.AppURL = "test_url/"
+				app.Store().Set(OptionTermsURL, "test_term/")
+				app.Store().Set(OptionAllowHotspotsURL, true)
 				app.Store().Set(OptionFooterLinks, map[string]string{"abc": "123"})
 			},
-			ExpectedStatus:  200,
+			ExpectedStatus: 200,
 			ExpectedContent: []string{
 				`"links":{"abc":"123"}`,
 				`"appName":"test_name"`,
-				`"appUrl":"test_url/"`,
-				`"termsUrl":"test_term/"`,
-				`"allowHotspotsUrl":true`,
+				`"appURL":"test_url/"`,
+				`"termsURL":"test_term/"`,
+				`"allowHotspotsURL":true`,
 			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 	}
 

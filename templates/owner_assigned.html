@@ -1,10 +1,20 @@
 {{define "body"}}
     <p>Hello,</p>
-    <p>
-        You have been given access to project {{.Project.Get "title"}}.
-    </p>
+
+    {{if or (not .Initiator) .Initiator.IsSuperuser}}
+        <p>
+            You have been granted access to project <strong>{{.Project.Get "title"}}</strong>.
+        </p>
+    {{else}}
+        <p>
+            {{or (.Initiator.Get "name") (.Initiator.Get "username")}}
+            <small>({{.Initiator.Get "email"}})</small>
+            has invited you to project <strong>{{.Project.Get "title"}}</strong>.
+        </p>
+    {{end}}
+
     <p>Click on the button below to explore it and start collaborating with your teammates.</p>
     <p style="text-align: center">
-        <a class="btn" href="{{.ActionUrl}}" target="_blank" rel="noopener">Explore project</a>
+        <a class="btn" href="{{.ActionURL}}" target="_blank" rel="noopener">Explore project</a>
     </p>
 {{end}}

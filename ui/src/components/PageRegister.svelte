@@ -21,7 +21,11 @@
     let showSuccessAlert = false;
     let isUsernameDirty = false;
 
-    $: hasPasswordAuth = authMethods.emailPassword || authMethods.usernamePassword;
+    $: hasMFA = authMethods.mfa?.enabled;
+
+    $: hasPasswordAuth = authMethods.password?.enabled;
+
+    $: hasOAuth2 = authMethods.oauth2?.enabled && authMethods.oauth2?.providers?.length;
 
     $: emailLocalPart = email.split("@")?.[0] || "";
 
@@ -51,7 +55,7 @@
         isSubmitting = true;
 
         try {
-            const user = await pb.collection("users").create({
+            await pb.collection("users").create({
                 email,
                 username,
                 password,
@@ -65,19 +69,7 @@
                 await pb.collection("users").requestVerification(email);
             }
 
-            if (authMethods.onlyVerified) {
-                showSuccessAlert = true;
-            } else {
-                const identity = authMethods.usernamePassword ? user.username : email;
-
-                try {
-                    await pb.collection("users").authWithPassword(identity, password);
-                } catch {
-                    // ignore auth errors (most likely due to changed collection options)
-                }
-
-                replace("/");
-            }
+            showSuccessAlert = true;
         } catch (err) {
             pb.error(err);
         }
@@ -92,7 +84,7 @@
             <Logo />
         </header>
 
-        <form class="panel txt-center" on:submit|preventDefault={submit}>
+        <form class="panel txt-center" on:submit|preventDefault={submit} autocomplete="off">
             <h4 class="m-b-base">{pageTitle}</h4>
 
             {#if showSuccessAlert}
@@ -124,7 +116,7 @@
                                     autofocus
                                     type="email"
                                     id={uniqueId}
-                                    name="email"
+                                    name="register_email"
                                     placeholder="Email"
                                     bind:value={email}
                                 />
@@ -143,7 +135,7 @@
                                 <input
                                     type="text"
                                     id={uniqueId}
-                                    name="username"
+                                    name="register_username"
                                     placeholder="Username"
                                     on:input={() => {
                                         isUsernameDirty = true;
@@ -166,7 +158,7 @@
                                     required
                                     type="password"
                                     id={uniqueId}
-                                    name="password"
+                                    name="register_password"
                                     placeholder="Password"
                                     bind:value={password}
                                 />
@@ -186,8 +178,9 @@
                                     required
                                     type="password"
                                     id={uniqueId}
-                                    name="passwordConfirm"
+                                    name="register_passwordConfirm"
                                     placeholder="Password confirm"
+                                    autocomplete="new-password"
                                     bind:value={passwordConfirm}
                                 />
                             </div>
@@ -204,18 +197,30 @@
                         </button>
                         <p class="m-t-xs m-b-sm txt-sm txt-hint">
                             By registering you agree with our
-                            <a href={$options.termsUrl} target="_blank" rel="noreferrer noopener">
+                            <a href={$options.termsURL} target="_blank" rel="noreferrer noopener">
                                 Terms and Privacy policy
                             </a>
                         </p>
                     {/if}
 
-                    {#if authMethods.authProviders.length}
+                    {#if hasOAuth2}
                         {#if hasPasswordAuth}
                             <p class="m-t-base m-b-sm">Or sign up with</p>
+                        {:else}
+                            <p class="m-b-sm">Sign up with</p>
                         {/if}
 
-                        <SocialAuth providers={authMethods.authProviders} />
+                        <SocialAuth
+                            providers={authMethods.oauth2.providers}
+                            on:submit={(e) => {
+                                if (!e.detail?.mfaId) {
+                                    removeAllToasts();
+                                    pb.replaceWithRemembered();
+                                } else {
+                                    replace("/login");
+                                }
+                            }}
+                        />
                     {/if}
                 </div>
             {/if}

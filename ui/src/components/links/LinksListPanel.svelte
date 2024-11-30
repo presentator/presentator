@@ -99,19 +99,19 @@
             </div>
         {:else}
             {#each links as link (link.id)}
-                {@const linkUrl = utils.getProjectLinkUrl(link)}
+                {@const linkURL = utils.getProjectLinkURL(link)}
                 <div class="project-link">
                     <div class="content">
                         <a
-                            href={linkUrl}
+                            href={linkURL}
                             target="_blank"
                             rel="noopener noreferrer"
                             class="url"
                             use:tooltip={{ position: "top", text: "Open in new tab" }}
                         >
-                            {linkUrl}
+                            {linkURL}
                         </a>
-                        <CopyIcon class="m-l-5" value={linkUrl} />
+                        <CopyIcon class="m-l-5" value={linkURL} />
                         <div class="meta">
                             <span
                                 class="meta-item label-sm label label-{link.allowComments

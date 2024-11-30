@@ -199,7 +199,7 @@
                 {#each featuredScreens as screen (screen.id)}
                     <div class="card-img" style:background-color={screen.background}>
                         <LazyImg
-                            src={pb.files.getUrl(screen, screen.file, {
+                            src={pb.files.getURL(screen, screen.file, {
                                 thumb: "450x0",
                             })}
                             alt={screen.title}

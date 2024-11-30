@@ -212,7 +212,7 @@
             case hotspotTypes.next:
                 return navigateNext();
             case hotspotTypes.url:
-                return navigateUrl();
+                return navigateURL();
             case hotspotTypes.scroll:
                 return navigateScroll();
         }
@@ -245,8 +245,8 @@
         changeScreen(screen);
     }
 
-    function navigateUrl() {
-        if ($options?.allowHotspotsUrl) {
+    function navigateURL() {
+        if ($options?.allowHotspotsURL) {
             window.open(hotspot.settings.url || "#", "_blank", "noopener,noreferrer");
         }
     }
