@@ -28,6 +28,7 @@
         hotspotTypes,
         isHotspotDragging,
     } from "@/stores/hotspots";
+    import { activeScreenNotifications } from "@/stores/notifications";
     import { activeProject } from "@/stores/projects";
     import { loggedUser } from "@/stores/app";
     import tooltip from "@/actions/tooltip";
@@ -308,7 +309,14 @@
                     {:else if $mode == modes.comments}
                         <div class="comment-pins">
                             {#each $activeScreenPrimaryComments as comment, i (comment.id)}
-                                {#if !comment.resolved || $showResolved}
+                                <!-- prettier-ignore -->
+                                {#if (
+                                    !comment.resolved ||
+                                    $showResolved ||
+                                    $selectedComment?.id == comment.id ||
+                                    $selectedComment?.replyTo == comment.id ||
+                                    $activeScreenNotifications.filter((n) => n.expand?.comment?.id == comment.id || n.expand?.comment.replyTo == comment.id).length
+                                )}
                                     <CommentPin disabled={!isProjectOwner} {comment}>
                                         {comment.id ? i + 1 : ""}
                                     </CommentPin>

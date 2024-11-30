@@ -334,6 +334,10 @@
                                   : 'sub-secondary-alt'}"
                             title="Unresolved comments">{$activeScreenUnresolvedPrimaryComments.length}</sub
                         >
+                    {:else if $activeScreenNotifications.length}
+                        <sub class="sub sub-warning" title="Unread resolved comments">
+                            {$activeScreenNotifications.length}
+                        </sub>
                     {/if}
                 </button>
                 <button

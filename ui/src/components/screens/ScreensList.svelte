@@ -337,15 +337,19 @@
             {@const totalUnreadComments = $notifications?.filter(
                 (n) => n.expand?.comment?.screen == screen.id,
             ).length}
-            {@const totalUnreadAndUnresolvedPrimaryComments = $notifications?.filter(
-                (n) =>
-                    !n.expand?.comment?.replyTo &&
-                    !n.expand?.comment?.resolved &&
-                    n.expand?.comment?.screen == screen.id,
-            ).length}
+            {@const unreadAndUnresolvedPrimaryCommentIds = $notifications
+                ?.filter(
+                    (n) =>
+                        !n.expand?.comment?.replyTo &&
+                        !n.expand?.comment?.resolved &&
+                        n.expand?.comment?.screen == screen.id,
+                )
+                .map((n) => n.expand?.comment?.id)}
             {@const totalUnresolvedPrimaryComments =
-                totalUnreadAndUnresolvedPrimaryComments +
-                (screen.expand?.comments_via_screen?.filter((c) => !c.replyTo && !c.resolved)?.length || 0)}
+                unreadAndUnresolvedPrimaryCommentIds.length +
+                (screen.expand?.comments_via_screen?.filter(
+                    (c) => !c.replyTo && !c.resolved && !unreadAndUnresolvedPrimaryCommentIds.includes(c.id),
+                )?.length || 0)}
             <div
                 class="card screen-card"
                 class:selected={selectedScreens[screen.id]}
@@ -453,16 +457,23 @@
                     <InlineTitleEdit tag="h5" class="title" collection="screens" bind:model={screen} />
 
                     <div class="meta">
-                        {#if totalUnresolvedPrimaryComments}
+                        {#if totalUnresolvedPrimaryComments || totalUnreadComments}
                             <div
                                 class="meta-item"
                                 class:txt-warning={totalUnreadComments > 0}
-                                use:tooltip={totalUnresolvedPrimaryComments +
-                                    " unresolved" +
-                                    (totalUnreadComments ? "\n" + totalUnreadComments + " unread" : "")}
+                                use:tooltip={[
+                                    totalUnresolvedPrimaryComments
+                                        ? totalUnresolvedPrimaryComments + " unresolved"
+                                        : "",
+                                    totalUnreadComments ? totalUnreadComments + " unread" : "",
+                                ]
+                                    .filter(Boolean)
+                                    .join("\n")}
                             >
                                 <i class="iconoir-message-text" />
-                                <span class="txt">{totalUnresolvedPrimaryComments}</span>
+                                <span class="txt"
+                                    >{totalUnresolvedPrimaryComments || totalUnreadComments}</span
+                                >
                             </div>
                         {/if}
 

@@ -8,6 +8,8 @@
 
 - Disabled autocomplete for the registration form to avoid conflicts with the fields of other forms.
 
+- Fixed notification reply preview of resolved comment.
+
 - Upgraded to PocketBase v0.23 which comes with [many changes](https://github.com/pocketbase/pocketbase/blob/master/CHANGELOG.md), but probably the most interesting ones for Presentator administrators would be:
     - One-time password (OTP) auth
     - Multi-factor authentication (MFA)
