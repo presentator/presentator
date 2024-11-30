@@ -1387,9 +1387,9 @@ func init() {
 				"oauth2": {
 					"enabled": false,
 					"mappedFields": {
-						"avatarURL": "",
+						"avatarURL": "avatar",
 						"id": "",
-						"name": "",
+						"name": "name",
 						"username": "username"
 					}
 				},
