@@ -1,3 +1,10 @@
+## v3.3.2
+
+- Fixed the default hotspot template id generation.
+
+- Updated to PocketBase v0.23.6.
+
+
 ## v3.3.1
 
 - Added default OAuth2 avatar and display name fields mapping.

@@ -98,7 +98,7 @@
         }
 
         let template = {
-            id: "auto_" + utils.randomString(10),
+            id: "auto" + utils.randomString(11),
             prototype: $activeScreen["prototype"],
             screens: [$activeScreen.id],
             title: templateTitle,

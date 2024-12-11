@@ -21,7 +21,7 @@
     let upsertPanel;
     let upsertPanelActive = false;
     let sharePanelActive = false;
-    let links = [{ id: 1 }, { id: 2 }];
+    let links = [];
     let isLoading = false;
     let tempHide = false;
 
@@ -94,7 +94,7 @@
 
     <div class="project-links-list">
         {#if isLoading}
-            <div class="project-link">
+            <div class="project-link m-t-10 m-b-10">
                 <div class="skeleton-loader" />
             </div>
         {:else}
