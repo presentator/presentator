@@ -1,3 +1,10 @@
+## v3.3.3
+
+- Fixed migration error on armv7 platforms.
+
+- Updated to PocketBase v0.23.10.
+
+
 ## v3.3.2
 
 - Fixed the default hotspot template id generation.
