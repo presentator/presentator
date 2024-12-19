@@ -1,3 +1,8 @@
+## v3.3.4
+
+- Updated to PocketBase v0.23.11.
+
+
 ## v3.3.3
 
 - Fixed migration error on armv7 platforms.
