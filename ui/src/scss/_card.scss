@@ -229,6 +229,7 @@
         }
         .content {
             @include smFontSize();
+            line-height: var(--smLineHeight);
         }
     }
 
