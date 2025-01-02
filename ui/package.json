@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "luxon": "^3.4.4",
-        "pocketbase": "^0.22.1"
+        "pocketbase": "^0.24.0"
     },
     "devDependencies": {
         "@sveltejs/vite-plugin-svelte": "^3.0.0",

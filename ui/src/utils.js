@@ -465,6 +465,18 @@ export default class utils {
     }
 
     /**
+     * Returns a human readable file size string from size in bytes.
+     *
+     * @param  {Number} size s
+     * @return {String}
+     */
+    static formattedFileSize(size) {
+        const i = size ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
+
+        return (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "KB", "MB", "GB", "TB"][i];
+    }
+
+    /**
      * Returns a DateTime instance from a date object/string.
      *
      * @param  {String|Date} date

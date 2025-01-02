@@ -18,9 +18,7 @@ import (
 func bindAppHooks(app core.App) {
 	registerSystemEmails(app)
 
-	// init default cron
-	// -----------------------------------------------------------
-	app.Cron().MustAdd("unread", "*/10 * * * *", func() {
+	app.Cron().MustAdd("send_unread_notifications", "*/10 * * * *", func() {
 		if err := processUnreadNotifications(app, 1000); err != nil {
 			app.Logger().Error("Notifications cron failure", "error", err)
 		}
@@ -41,18 +39,30 @@ func bindAppHooks(app core.App) {
 		// custom routes
 		// -----------------------------------------------------------
 		e.Router.GET("/api/pr/options", func(e *core.RequestEvent) error {
+			sreensCollection, err := e.App.FindCachedCollectionByNameOrId("screens")
+			if err != nil {
+				return e.BadRequestError("Failed to retrieve cached screens collection", err)
+			}
+			var maxScreenFileSize int64
+			fileField, ok := sreensCollection.Fields.GetByName("file").(*core.FileField)
+			if ok {
+				maxScreenFileSize = fileField.MaxSize
+			}
+
 			options := struct {
-				Links            map[string]string `json:"links"`
-				AppName          string            `json:"appName"`
-				AppURL           string            `json:"appURL"`
-				TermsURL         string            `json:"termsURL"`
-				AllowHotspotsURL bool              `json:"allowHotspotsURL"`
+				Links             map[string]string `json:"links"`
+				AppName           string            `json:"appName"`
+				AppURL            string            `json:"appURL"`
+				TermsURL          string            `json:"termsURL"`
+				AllowHotspotsURL  bool              `json:"allowHotspotsURL"`
+				MaxScreenFileSize int64             `json:"maxScreenFileSize"`
 			}{
-				Links:            cast.ToStringMapString(app.Store().Get(OptionFooterLinks)),
-				AppName:          app.Settings().Meta.AppName,
-				AppURL:           app.Settings().Meta.AppURL,
-				TermsURL:         cast.ToString(app.Store().Get(OptionTermsURL)),
-				AllowHotspotsURL: cast.ToBool(app.Store().Get(OptionAllowHotspotsURL)),
+				Links:             cast.ToStringMapString(app.Store().Get(OptionFooterLinks)),
+				AppName:           app.Settings().Meta.AppName,
+				AppURL:            app.Settings().Meta.AppURL,
+				TermsURL:          cast.ToString(app.Store().Get(OptionTermsURL)),
+				AllowHotspotsURL:  cast.ToBool(app.Store().Get(OptionAllowHotspotsURL)),
+				MaxScreenFileSize: maxScreenFileSize,
 			}
 
 			return e.JSON(http.StatusOK, options)

@@ -6,6 +6,7 @@
     import pb from "@/pb";
     import utils from "@/utils";
     import tooltip from "@/actions/tooltip";
+    import { options } from "@/stores/app";
     import { confirm } from "@/stores/confirmation";
     import { addSuccessToast } from "@/stores/toasts";
     import { prototypes, activePrototype } from "@/stores/prototypes";
@@ -508,7 +509,14 @@
                                 <i class="iconoir-upload-square" />
                             </div>
                             <div class="title">Upload screens</div>
-                            <div class="content">Drop or click here to upload new screens</div>
+                            <div class="content">
+                                Drop or click here to upload new screens
+                                {#if $options.maxScreenFileSize}
+                                    <strong>
+                                        (max {utils.formattedFileSize($options.maxScreenFileSize)})
+                                    </strong>
+                                {/if}
+                            </div>
                         {/if}
                     </div>
                 </label>

@@ -1,3 +1,12 @@
+## v3.4.0 (WIP)
+
+- Increased the default comment message max limit to 1000.
+
+- Added the max screen file size to the public options API so that it can be visualized in the UI.
+
+- Updated to PocketBase v0.24.0.
+
+
 ## v3.3.5
 
 - Updated to PocketBase v0.23.12.
