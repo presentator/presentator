@@ -1,4 +1,4 @@
-## v3.4.0 (WIP)
+## v3.4.0
 
 - Increased the default comment message max limit to 1000.
 
