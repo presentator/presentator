@@ -1,3 +1,8 @@
+## v3.4.1
+
+- Updated to PocketBase v0.24.4.
+
+
 ## v3.4.0
 
 - Increased the default comment message max limit to 1000.
