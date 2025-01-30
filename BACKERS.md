@@ -1,7 +1,7 @@
 Presentator - Backers
 ======================================================================
 
-This page shows the project's backers and sponsors. Thank you for your supports!
+This page shows the project's backers and sponsors. Thank you for your support!
 
 You can join them in supporting Presentator development by visiting our [Support us](https://presentator.io/support-us) page.
 
@@ -15,6 +15,7 @@ You can join them in supporting Presentator development by visiting our [Support
 - [Steve Kraft (Hintergrundbewegung Medien & Entertainment)](https://hintergrundbewegung.de/)
 
 #### Generous Backer ($5+)
+- [Bartek Igielski](https://www.patreon.com/profile/creators?u=73170486)
 - [gondon](https://www.patreon.com/gondon/creators)
 - [Ryan Gorley (Freehive)](https://freehive.com/)
 - [Xaviju](https://xaviju.github.io/) (inactive)
