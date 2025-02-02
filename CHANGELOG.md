@@ -1,3 +1,10 @@
+## v3.4.2
+
+- Updated to PocketBase v0.25.0.
+
+- Updated npm dependencies.
+
+
 ## v3.4.1
 
 - Updated to PocketBase v0.24.4.
