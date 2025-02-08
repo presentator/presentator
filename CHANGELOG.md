@@ -1,3 +1,12 @@
+## v3.4.3
+
+- Updated to PocketBase v0.25.1.
+
+- Updated npm dependencies.
+
+- Bumped GitHub action min Go version to 1.23.6 as it comes with a [minor security fix](https://github.com/golang/go/issues?q=milestone%3AGo1.23.6+label%3ACherryPickApproved) for the ppc64le build.
+
+
 ## v3.4.2
 
 - Updated to PocketBase v0.25.0.
