@@ -1,11 +1,16 @@
+## v3.4.5
+
+- Updated to [PocketBase v0.25.4](https://github.com/pocketbase/pocketbase/releases/tag/v0.25.4).
+
+
 ## v3.4.4
 
-- Updated to PocketBase v0.25.3.
+- Updated to [PocketBase v0.25.3](https://github.com/pocketbase/pocketbase/releases/tag/v0.25.3).
 
 
 ## v3.4.3
 
-- Updated to PocketBase v0.25.1.
+- Updated to [PocketBase v0.25.1](https://github.com/pocketbase/pocketbase/releases/tag/v0.25.1).
 
 - Updated npm dependencies.
 
@@ -14,14 +19,14 @@
 
 ## v3.4.2
 
-- Updated to PocketBase v0.25.0.
+- Updated to [PocketBase v0.25.0](https://github.com/pocketbase/pocketbase/releases/tag/v0.25.0).
 
 - Updated npm dependencies.
 
 
 ## v3.4.1
 
-- Updated to PocketBase v0.24.4.
+- Updated to [PocketBase v0.24.4](https://github.com/pocketbase/pocketbase/releases/tag/v0.24.4).
 
 
 ## v3.4.0
@@ -30,31 +35,31 @@
 
 - Added the max screen file size to the public options API so that it can be visualized in the UI.
 
-- Updated to PocketBase v0.24.0.
+- Updated to [PocketBase v0.24.0](https://github.com/pocketbase/pocketbase/releases/tag/v0.24.0).
 
 
 ## v3.3.5
 
-- Updated to PocketBase v0.23.12.
+- Updated to [PocketBase v0.23.12](https://github.com/pocketbase/pocketbase/releases/tag/v0.23.12).
 
 
 ## v3.3.4
 
-- Updated to PocketBase v0.23.11.
+- Updated to [PocketBase v0.23.11](https://github.com/pocketbase/pocketbase/releases/tag/v0.23.11).
 
 
 ## v3.3.3
 
 - Fixed migration error on armv7 platforms.
 
-- Updated to PocketBase v0.23.10.
+- Updated to [PocketBase v0.23.10](https://github.com/pocketbase/pocketbase/releases/tag/v0.23.10).
 
 
 ## v3.3.2
 
 - Fixed the default hotspot template id generation.
 
-- Updated to PocketBase v0.23.6.
+- Updated to [PocketBase v0.23.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.23.6).
 
 
 ## v3.3.1
