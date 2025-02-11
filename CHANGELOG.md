@@ -1,3 +1,8 @@
+## v3.4.4
+
+- Updated to PocketBase v0.25.3.
+
+
 ## v3.4.3
 
 - Updated to PocketBase v0.25.1.
