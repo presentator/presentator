@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/pocketbase/dbx v1.11.0
-	github.com/pocketbase/pocketbase v0.25.8
+	github.com/pocketbase/pocketbase v0.25.9
 	github.com/spf13/cast v1.7.1
 	golang.org/x/sync v0.11.0
 )
