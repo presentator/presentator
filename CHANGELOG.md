@@ -1,3 +1,8 @@
+## v3.4.9
+
+- Updated to [PocketBase v0.26.1](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.1).
+
+
 ## v3.4.8
 
 - Updated to [PocketBase v0.26.0](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.0) which as a side-effect also reduced the binary size with ~10MB.
