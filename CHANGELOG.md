@@ -1,3 +1,8 @@
+## v3.4.12
+
+- Updated to [PocketBase v0.26.5](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.5) (_should fix an issue with the upload of backups to S3_).
+
+
 ## v3.4.11
 
 - Updated to [PocketBase v0.26.3](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.3).
