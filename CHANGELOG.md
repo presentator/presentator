@@ -1,3 +1,10 @@
+## v3.4.13
+
+- Refreshed comment pins position after screen resize caused by opening/closing the comments panel ([#205](https://github.com/presentator/presentator/issues/205)).
+
+- Updated to [PocketBase v0.26.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.6).
+
+
 ## v3.4.12
 
 - Updated to [PocketBase v0.26.5](https://github.com/pocketbase/pocketbase/releases/tag/v0.26.5) (_should fix an issue with the upload of backups to S3_).

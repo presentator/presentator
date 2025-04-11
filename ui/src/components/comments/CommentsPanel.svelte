@@ -32,14 +32,18 @@
     export function hide() {
         active = false;
     }
+
+    function onSlideEnd() {
+        utils.triggerEvent("resize", { noDebounce: true });
+    }
 </script>
 
 {#if active}
     <aside
-        class="screen-preview-sidebar comments-sidebar"
         transition:slide={{ duration: 200, axis: "x" }}
-        on:introend={utils.triggerResize}
-        on:outroend={utils.triggerResize}
+        class="screen-preview-sidebar comments-sidebar"
+        on:introend={onSlideEnd}
+        on:outroend={onSlideEnd}
     >
         <header class="sidebar-section sidebar-header">
             <h6>Screen comments</h6>

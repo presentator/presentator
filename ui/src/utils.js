@@ -636,9 +636,16 @@ export default class utils {
      * Triggers a window event.
      *
      * @param {String} eventName The event name to trigger.
+     * @param {mixed}  detail    Optional custom event data.
      */
-    static triggerEvent(eventName) {
-        window.dispatchEvent(new Event(eventName));
+    static triggerEvent(eventName, detail = undefined) {
+        let event;
+        if (detail) {
+            event = new CustomEvent(eventName, { detail });
+        } else {
+            event = new Event(eventName)
+        }
+        window.dispatchEvent(event);
     }
 
     /**

@@ -73,6 +73,11 @@
     .screen-preview-comment-popover-active &:not(.active) {
         opacity: 0.7;
     }
+
+    // fadeout comments during sidebar sliding to minimize flickering
+    .screen-preview-container:has(.screen-preview-sidebar[style~="animation:"]) .fit-to-screen & {
+        opacity: 0;
+    }
 }
 
 .comments-list {

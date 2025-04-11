@@ -111,10 +111,10 @@
         });
     }
 
-    function debounce(func, key = "", timeout = 100) {
+    function debounce(fn, key = "", timeout = 100) {
         key = key || "default";
         clearTimeout(debounceTimeouts[key]);
-        debounceTimeouts[key] = setTimeout(func, timeout);
+        debounceTimeouts[key] = setTimeout(fn, timeout);
     }
 
     function hAlignScreen(alignment, container) {
@@ -195,6 +195,11 @@
         }, 500);
     }
 
+    function onResize() {
+        hAlignScreen($activeScreen?.alignment, screenPreview);
+        updateActiveScale();
+    }
+
     onMount(() => {
         // eager load the first couple screens to minimize flickering
         for (let screen of $screens.slice(0, 50)) {
@@ -212,11 +217,12 @@
 </script>
 
 <svelte:window
-    on:resize={() => {
-        debounce(() => {
-            hAlignScreen($activeScreen?.alignment, screenPreview);
-            updateActiveScale();
-        });
+    on:resize={(e) => {
+        if (e?.detail?.noDebounce) {
+            onResize();
+        } else {
+            debounce(onResize);
+        }
     }}
 />
 
