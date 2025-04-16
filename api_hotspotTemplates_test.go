@@ -224,10 +224,7 @@ func TestHotspotTemplatesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
@@ -240,10 +237,7 @@ func TestHotspotTemplatesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner",
@@ -256,10 +250,7 @@ func TestHotspotTemplatesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
@@ -299,10 +290,7 @@ func TestHotspotTemplatesCreate(t *testing.T) {
 			ExpectedContent: []string{
 				`"data":{}`,
 			},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user with screens from different prototype",
@@ -315,10 +303,7 @@ func TestHotspotTemplatesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 	}
 

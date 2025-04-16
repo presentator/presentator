@@ -227,10 +227,7 @@ func TestPrototypesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as link",
@@ -243,10 +240,7 @@ func TestPrototypesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user non-owner",
@@ -259,10 +253,7 @@ func TestPrototypesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner",
@@ -302,11 +293,7 @@ func TestPrototypesCreate(t *testing.T) {
 			ExpectedContent: []string{
 				`"data":{}`,
 			},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-				// no validation because it fails the API rule
-			},
+			ExpectedEvents: map[string]int{"*": 0},
 		},
 		{
 			Name:   "auth as user owner with screens from different prototype",
@@ -319,10 +306,7 @@ func TestPrototypesCreate(t *testing.T) {
 			TestAppFactory:  setupTestApp,
 			ExpectedStatus:  400,
 			ExpectedContent: []string{`"data":{}`},
-			ExpectedEvents: map[string]int{
-				"*":                     0,
-				"OnRecordCreateRequest": 1,
-			},
+			ExpectedEvents:  map[string]int{"*": 0},
 		},
 	}
 
