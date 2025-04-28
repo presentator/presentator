@@ -61,8 +61,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pocketbase/dbx v1.11.0 h1:LpZezioMfT3K4tLrqA55wWFw1EtH1pM4tzSVa7kgszU=
 github.com/pocketbase/dbx v1.11.0/go.mod h1:xXRCIAKTHMgUCyCKZm55pUOdvFziJjQfXaWKhu2vhMs=
-github.com/pocketbase/pocketbase v0.27.0 h1:TWyWBOpPRODEvaJfGFSDS1+m13aJQJqVZqvOo2W3Tdo=
-github.com/pocketbase/pocketbase v0.27.0/go.mod h1:W1iPzrOpUtRhzOwHZu9+awW7LhPPdji5ZMnTL2XFcGM=
+github.com/pocketbase/pocketbase v0.27.2 h1:dQewBdRfaOMHOneB+AEVkFSW6e4tUxFCWedLdx04e3s=
+github.com/pocketbase/pocketbase v0.27.2/go.mod h1:aTpwwloVJzeJ7MlwTRrbI/x62QNR2/kkCrovmyrXpqs=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec h1:W09IVJc94icq4NjY3clb7Lk8O1qJ8BdBEF8z0ibU0rE=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
