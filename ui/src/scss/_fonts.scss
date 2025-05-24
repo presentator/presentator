@@ -4,9 +4,7 @@
     font-family: "Inter";
     font-style: normal;
     font-weight: normal;
-    src:
-        url("/fonts/inter/inter-v12-cyrillic_latin-500.woff2") format("woff2"),
-        url("/fonts/inter/inter-v12-cyrillic_latin-500.woff") format("woff");
+    src: url('/fonts/inter/inter-v18-cyrillic_latin_latin-ext-500.woff2') format('woff2');
 }
 
 /* inter-600 - cyrillic_latin */
@@ -15,7 +13,5 @@
     font-family: "Inter";
     font-style: normal;
     font-weight: bold;
-    src:
-        url("/fonts/inter/inter-v12-cyrillic_latin-600.woff2") format("woff2"),
-        url("/fonts/inter/inter-v12-cyrillic_latin-600.woff") format("woff");
+    src: url('/fonts/inter/inter-v18-cyrillic_latin_latin-ext-600.woff2') format('woff2');
 }

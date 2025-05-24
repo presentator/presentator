@@ -1,4 +1,12 @@
+## v3.4.18
+
+- Updated fonts to include `latin-ext` charset.
+
+- Updated to [PocketBase v0.28.2](https://github.com/pocketbase/pocketbase/releases/tag/v0.28.2).
+
+
 ## v3.4.17
+
 - Updated to [PocketBase v0.28.1](https://github.com/pocketbase/pocketbase/releases/tag/v0.28.1).
 
 
