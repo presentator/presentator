@@ -49,6 +49,11 @@ func bindAppHooks(app core.App) {
 				maxScreenFileSize = fileField.MaxSize
 			}
 
+			links := cast.ToStringMapString(app.Store().Get(OptionFooterLinks))
+			if links == nil {
+				links = map[string]string{}
+			}
+
 			options := struct {
 				Links             map[string]string `json:"links"`
 				AppName           string            `json:"appName"`
@@ -57,7 +62,7 @@ func bindAppHooks(app core.App) {
 				AllowHotspotsURL  bool              `json:"allowHotspotsURL"`
 				MaxScreenFileSize int64             `json:"maxScreenFileSize"`
 			}{
-				Links:             cast.ToStringMapString(app.Store().Get(OptionFooterLinks)),
+				Links:             links,
 				AppName:           app.Settings().Meta.AppName,
 				AppURL:            app.Settings().Meta.AppURL,
 				TermsURL:          cast.ToString(app.Store().Get(OptionTermsURL)),
