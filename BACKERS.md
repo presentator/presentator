@@ -15,6 +15,7 @@ You can join them in supporting Presentator development by visiting our [Support
 - [Steve Kraft (Hintergrundbewegung Medien & Entertainment)](https://hintergrundbewegung.de/)
 
 #### Generous Backer ($5+)
+- [Lukas Himsel](https://www.patreon.com/profile/creators?u=10959863)
 - [Bartek Igielski](https://www.patreon.com/profile/creators?u=73170486)
 - [gondon](https://www.patreon.com/gondon/creators)
 - [Ryan Gorley (Freehive)](https://freehive.com/)
