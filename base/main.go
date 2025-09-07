@@ -9,6 +9,7 @@ import (
 	"github.com/pocketbase/pocketbase/plugins/ghupdate"
 	"github.com/pocketbase/pocketbase/plugins/jsvm"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/pocketbase/pocketbase/tools/osutils"
 	"github.com/presentator/presentator/v3"
 )
 
@@ -44,7 +45,7 @@ func main() {
 	)
 
 	var migrationsDir string
-	if isGoRun() {
+	if osutils.IsProbablyGoRun() {
 		migrationsDir = filepath.Join(app.DataDir(), "../migrations")
 	}
 	app.RootCmd.PersistentFlags().StringVar(
@@ -100,7 +101,7 @@ func main() {
 	// migrate command
 	// use Go templates with "go run", otherwise JS
 	migrateConfig := migratecmd.Config{Dir: migrationsDir}
-	if !isGoRun() {
+	if !osutils.IsProbablyGoRun() {
 		migrateConfig.TemplateLang = migratecmd.TemplateLangJS
 	}
 	migratecmd.MustRegister(app, app.RootCmd, migrateConfig)
@@ -130,13 +131,4 @@ func arrayLinksToMap(links []string) map[string]string {
 	}
 
 	return result
-}
-
-// isGoRun loosely checks if "go run" or "go build" was used for compiling the executable.
-func isGoRun() bool {
-	if strings.HasPrefix(os.Args[0], os.TempDir()) {
-		return true // probably ran with go run
-	}
-
-	return false // probably ran with go build
 }
