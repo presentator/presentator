@@ -279,7 +279,7 @@ func TestScreensCreate(t *testing.T) {
 
 	validDatas := make([]*testFormData, 10)
 	for i := 0; i < 10; i++ {
-		validDatas[i] = createFormData(img.Name(), "acovztxr3nfnz8e", "new_screen")
+		validDatas[i] = createFormData(img.Name(), "acovztxr3nfnz8e", "   new_screen   ")
 	}
 
 	invalidDatas := make([]*testFormData, 10)
@@ -442,7 +442,7 @@ func TestScreensUpdate(t *testing.T) {
 			Name:   "auth as user owner",
 			Method: http.MethodPatch,
 			URL:    "/api/collections/screens/records/s02UKpYUSnYnh91",
-			Body:   strings.NewReader(`{"title":"updated"}`),
+			Body:   strings.NewReader(`{"title":"   updated   "}`),
 			Headers: map[string]string{
 				"Authorization": getAuthToken(t, "users", "test1"),
 			},

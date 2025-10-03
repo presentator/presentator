@@ -2,6 +2,7 @@ package presentator
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
@@ -274,6 +275,9 @@ func bindAppHooks(app core.App) {
 	})
 
 	onScreenCreateOrUpdate := func(e *core.RecordRequestEvent) error {
+		// trim the screen title as some designers use extra spaces as part of their Figma frames name
+		e.Record.Set("title", strings.TrimSpace(e.Record.GetString("title")))
+
 		if err := e.Next(); err != nil {
 			return err
 		}
