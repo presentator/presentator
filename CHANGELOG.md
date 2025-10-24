@@ -1,3 +1,8 @@
+## v3.4.27
+
+- Updated to [PocketBase v0.31.0](https://github.com/pocketbase/pocketbase/releases/tag/v0.31.0).
+
+
 ## v3.4.26
 
 - Trim spaces from screen titles.
