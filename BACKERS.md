@@ -12,6 +12,7 @@ You can join them in supporting Presentator development by visiting our [Support
 `none`
 
 #### Sponsor ($25+)
+- [William Meitzler](https://www.patreon.com/profile/creators?u=192362802)
 - [Steve Kraft (Hintergrundbewegung Medien & Entertainment)](https://hintergrundbewegung.de/)
 
 #### Generous Backer ($5+)
