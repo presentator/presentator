@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/pocketbase/dbx v1.11.0
-	github.com/pocketbase/pocketbase v0.36.0
+	github.com/pocketbase/pocketbase v0.36.1
 	github.com/spf13/cast v1.10.0
 	golang.org/x/sync v0.19.0
 )
@@ -44,5 +44,5 @@ require (
 	modernc.org/libc v1.67.6 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
-	modernc.org/sqlite v1.44.1 // indirect
+	modernc.org/sqlite v1.44.2 // indirect
 )
