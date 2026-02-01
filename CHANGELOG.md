@@ -1,3 +1,9 @@
+## v3.4.37
+
+- Updated [JS SDK to v0.26.8](https://github.com/pocketbase/js-sdk/releases/tag/v0.26.8).
+- Updated to [PocketBase v0.36.2](https://github.com/pocketbase/pocketbase/releases/tag/v0.36.2).
+
+
 ## v3.4.36
 
 - Updated to [PocketBase v0.36.1](https://github.com/pocketbase/pocketbase/releases/tag/v0.36.1).
