@@ -295,7 +295,7 @@
                         use:tooltip={{ position: "top", text: "Preview mode", sub: "P" }}
                         on:click|preventDefault={() => changeMode(modes.preview)}
                     >
-                        <i class="iconoir-play" />
+                        <i class="iconoir-airplay" />
                     </button>
 
                     {#if link?.allowComments}
