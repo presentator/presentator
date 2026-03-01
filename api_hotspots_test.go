@@ -48,6 +48,30 @@ func TestHotspotsList(t *testing.T) {
 			},
 		},
 		{
+			// https://github.com/presentator/presentator/issues/206
+			Name:   "auth as link with unrestricted prototypes AND client-side filter",
+			Method: http.MethodGet,
+			URL:    "/api/collections/hotspots/records?filter=screen.prototype.project%3D%22t45bjlayvsx2yj0%22%20%7C%7C%20hotspotTemplate.prototype.project%3D%22t45bjlayvsx2yj0%22",
+			Headers: map[string]string{
+				"Authorization": getAuthToken(t, "links", "test1"),
+			},
+			TestAppFactory: setupTestApp,
+			ExpectedStatus: 200,
+			ExpectedContent: []string{
+				// screen.prototype.project="t45bjlayvsx2yj0" || hotspotTemplate.prototype.project="t45bjlayvsx2yj0"
+				`"totalItems":4`,
+				`"id":"13tsk8uk9tc57n5"`,
+				`"id":"s9yim63g4xaqm6g"`,
+				`"id":"hn2rybm9nlpppta"`,
+				`"id":"xeyr2230dez2oha"`,
+			},
+			ExpectedEvents: map[string]int{
+				"*":                    0,
+				"OnRecordsListRequest": 1,
+				"OnRecordEnrich":       4,
+			},
+		},
+		{
 			Name:   "auth as link with restricted prototypes",
 			Method: http.MethodGet,
 			URL:    "/api/collections/hotspots/records",
