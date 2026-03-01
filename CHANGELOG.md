@@ -1,3 +1,11 @@
+## v3.4.41 (WIP)
+
+- Updated to [PocketBase v0.36.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.36.6).
+    _Fixes hotspots guest access ([#206](https://github.com/presentator/presentator/issues/206))._
+
+Other minor changes (updated npm deps, changed the preview mode icon to avoid ambiguities, etc.).
+
+
 ## v3.4.40
 
 - Updated to [PocketBase v0.36.5](https://github.com/pocketbase/pocketbase/releases/tag/v0.36.5).
