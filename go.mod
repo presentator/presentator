@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/pocketbase/dbx v1.12.0
-	github.com/pocketbase/pocketbase v0.37.5
+	github.com/pocketbase/pocketbase v0.38.0
 	github.com/spf13/cast v1.10.0
 	golang.org/x/sync v0.20.0
 )
