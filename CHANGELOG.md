@@ -1,3 +1,8 @@
+## v3.4.56
+
+- Updated to [PocketBase v0.39.3](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.3).
+
+
 ## v3.4.55
 
 - Updated to [PocketBase v0.39.2](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.2).
