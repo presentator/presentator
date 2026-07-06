@@ -1,3 +1,12 @@
+## v3.4.59 (WIP)
+
+- Fixed placeholder typo in the default change email template.
+
+- Use the inline OAuth2 logo SVGs instead of the deprecated static files.
+
+- (@todo) Updated to [PocketBase v0.39.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.6).
+
+
 ## v3.4.58
 
 - Updated to [PocketBase v0.39.5](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.5).

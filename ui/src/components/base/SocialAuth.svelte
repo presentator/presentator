@@ -50,7 +50,7 @@
                 <i class="iconoir-fingerprint" />
             {:else}
                 <img
-                    src="{pb.baseURL}/_/images/oauth2/{provider.name}.svg"
+                    src="data:image/svg+xml;base64,{btoa(provider.logo)}"
                     alt="{provider.displayName} logo"
                     on:error={() => {
                         missingImages[provider.name] = true;
