@@ -1,10 +1,12 @@
-## v3.4.59 (WIP)
+## v3.4.59
 
 - Fixed placeholder typo in the default change email template.
 
 - Use the inline OAuth2 logo SVGs instead of the deprecated static files.
 
-- (@todo) Updated to [PocketBase v0.39.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.6).
+- Bumped the min Go GitHub action version to 1.26.5 as it includes some [minor security fixes](https://github.com/golang/go/issues?q=milestone%3AGo1.26.5).
+
+- Updated to [PocketBase v0.39.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.6).
 
 
 ## v3.4.58
