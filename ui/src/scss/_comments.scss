@@ -117,18 +117,20 @@
 .comment-form {
     @extend %block;
     position: relative;
+
+    // inputs focus leeway
+    padding: 2px;
+    border-radius: var(--baseRadius);
+    background: var(--inputColor);
+
     textarea {
         min-height: 85px;
         padding-left: var(--xsSpacing);
         padding-right: 40px;
-        &.active,
-        &:focus,
-        &:focus-visible,
-        &:focus-within {
-            box-shadow: inset 0px 0px 0px 2px var(--inputFocusColor);
-        }
     }
     &:not(:first-child) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         & .form-field:first-child %input {
             border-top-left-radius: 0;
             border-top-right-radius: 0;

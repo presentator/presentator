@@ -1,3 +1,10 @@
+## v3.4.60
+
+- Fixed comment popover focus styles.
+
+- Updated to [PocketBase v0.39.7](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.7) _(includes a security fix)_.
+
+
 ## v3.4.59
 
 - Fixed placeholder typo in the default change email template.
