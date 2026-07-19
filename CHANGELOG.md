@@ -1,3 +1,10 @@
+## v3.4.61
+
+- Fixed error message typo.
+
+- Updated to [PocketBase v0.39.8](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.8).
+
+
 ## v3.4.60
 
 - Fixed comment popover focus styles.
