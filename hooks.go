@@ -126,7 +126,7 @@ func bindAppHooks(app core.App) {
 			}
 
 			if err := form.Submit(); err != nil {
-				return e.BadRequestError("An error occured during the submission.", err)
+				return e.BadRequestError("An error occurred during the submission.", err)
 			}
 
 			return e.NoContent(http.StatusNoContent)
