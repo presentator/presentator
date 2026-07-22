@@ -1,3 +1,8 @@
+## v3.4.62
+
+- Updated to [PocketBase v0.39.9](https://github.com/pocketbase/pocketbase/releases/tag/v0.39.9).
+
+
 ## v3.4.61
 
 - Fixed error message typo.
