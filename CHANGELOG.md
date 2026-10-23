@@ -1,3 +1,11 @@
+## v3.4.71
+
+- Updated to [PocketBase v0.40.6](https://github.com/pocketbase/pocketbase/releases/tag/v0.40.6).
+
+- Replaced the GitHub `update` command with update from the new host in relation to [#7841](https://github.com/pocketbase/pocketbase/discussions/7841).
+    ⚠️ Note that this will be most likely the last release here on GitHub. The next time when you run `update`, new releases will be fetched from `https://ganigeorgiev.com` _(there is nothing there yet)_.
+
+
 ## v3.4.70
 
 - Updated to [PocketBase v0.40.5](https://github.com/pocketbase/pocketbase/releases/tag/v0.40.5).

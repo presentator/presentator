@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pocketbase/pocketbase/plugins/ghupdate"
 	"github.com/pocketbase/pocketbase/plugins/jsvm"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/pocketbase/pocketbase/plugins/update"
 	"github.com/pocketbase/pocketbase/tools/osutils"
 	"github.com/presentator/presentator/v3"
 )
@@ -40,7 +40,7 @@ func main() {
 	app.RootCmd.PersistentFlags().IntVar(
 		&hooksPool,
 		"hooksPool",
-		25,
+		15,
 		"the total prewarm goja.Runtime instances for the JS app hooks execution",
 	)
 
@@ -106,11 +106,11 @@ func main() {
 	}
 	migratecmd.MustRegister(app, app.RootCmd, migrateConfig)
 
-	// GitHub selfupdate
-	ghupdate.MustRegister(app, app.RootCmd, ghupdate.Config{
-		Owner:             "presentator",
-		Repo:              "presentator",
-		ArchiveExecutable: "presentator",
+	// update command
+	update.MustRegister(app, app.RootCmd, update.Config{
+		BaseURL:    "https://ganigeorgiev.com",
+		Project:    "presentator",
+		Repository: "presentator",
 	})
 
 	if err := app.Start(); err != nil {
